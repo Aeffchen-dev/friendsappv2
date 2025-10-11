@@ -66,27 +66,40 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
     
     const distanceX = touchStart.x - touchEnd.x;
     const distanceY = touchStart.y - touchEnd.y;
-    const isHorizontalSwipe = Math.abs(distanceX) > Math.abs(distanceY);
+    const absDistanceX = Math.abs(distanceX);
+    const absDistanceY = Math.abs(distanceY);
+    
+    // Determine if it's horizontal or vertical based on which distance is greater
+    const isHorizontalSwipe = absDistanceX > absDistanceY;
 
     if (isHorizontalSwipe) {
       // Horizontal swipe - change category
-      if (distanceX > minSwipeDistance && currentCategoryIndex < selectedCategories.length - 1) {
-        setCurrentCategoryIndex(prev => prev + 1);
-      } else if (distanceX < -minSwipeDistance && currentCategoryIndex > 0) {
-        setCurrentCategoryIndex(prev => prev - 1);
+      if (absDistanceX > minSwipeDistance) {
+        if (distanceX > 0 && currentCategoryIndex < selectedCategories.length - 1) {
+          setCurrentCategoryIndex(prev => prev + 1);
+        } else if (distanceX < 0 && currentCategoryIndex > 0) {
+          setCurrentCategoryIndex(prev => prev - 1);
+        }
       }
     } else {
       // Vertical swipe - change question within category
-      if (distanceY > minSwipeDistance && currentQuestionIndex < currentQuestions.length - 1) {
-        setCurrentQuestionIndices(prev => ({
-          ...prev,
-          [currentCategory]: (prev[currentCategory] || 0) + 1
-        }));
-      } else if (distanceY < -minSwipeDistance && currentQuestionIndex > 0) {
-        setCurrentQuestionIndices(prev => ({
-          ...prev,
-          [currentCategory]: (prev[currentCategory] || 0) - 1
-        }));
+      if (absDistanceY > minSwipeDistance) {
+        const currentQIndex = currentQuestionIndices[currentCategory] || 0;
+        const maxIndex = (questionsByCategory[currentCategory]?.length || 1) - 1;
+        
+        if (distanceY > 0 && currentQIndex < maxIndex) {
+          // Swipe up - next question
+          setCurrentQuestionIndices(prev => ({
+            ...prev,
+            [currentCategory]: currentQIndex + 1
+          }));
+        } else if (distanceY < 0 && currentQIndex > 0) {
+          // Swipe down - previous question
+          setCurrentQuestionIndices(prev => ({
+            ...prev,
+            [currentCategory]: currentQIndex - 1
+          }));
+        }
       }
     }
   };
@@ -131,8 +144,9 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
   }
 
   // Calculate offset to center current card
+  const currentQuestionIndexForCategory = currentQuestionIndices[currentCategory] || 0;
   const horizontalOffset = currentCategoryIndex * (cardWidth + cardGapH);
-  const verticalOffset = currentQuestionIndex * (cardHeight + cardGapV);
+  const verticalOffset = currentQuestionIndexForCategory * (cardHeight + cardGapV);
 
   return (
     <div 
