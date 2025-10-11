@@ -239,7 +239,7 @@ export function QuizApp() {
     setTimeout(() => {
       setIsAnimating(false);
       setDragDirection(null);
-    }, 1600);
+    }, 1200);
   };
 
   const nextCategory = () => {
@@ -415,7 +415,7 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) rotateY(${rotateY}deg)`,
-                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 1600ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 1200ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
                   }}
@@ -459,7 +459,7 @@ export function QuizApp() {
                           width: '90vw',
                           height: '90vh',
                           transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapYPx}px)) scale(${scale})`,
-                          transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 1600ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                          transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 1200ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
                           willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto'
                         }}
