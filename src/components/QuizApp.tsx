@@ -371,6 +371,7 @@ export function QuizApp() {
   const handleToggleMode = () => {
     if (isShuffleMode) {
       // Switching from shuffle to category mode - open modal
+      setIsShuffleMode(false);
       setCategorySelectorOpen(true);
     } else {
       // Switching to shuffle mode - just toggle
