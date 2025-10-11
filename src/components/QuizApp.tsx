@@ -513,9 +513,19 @@ export function QuizApp() {
               
               // Calculate horizontal transform with proper spacing
               const baseCardSpacingPx = isMobile ? 16 : 16;
-              const cardWidthPx = window.innerWidth * 0.85; // 85vw in pixels
-              const totalCardWidth = cardWidthPx + baseCardSpacingPx;
-              const translateXPx = position * totalCardWidth;
+              const cardWidthVw = window.innerWidth * 0.85; // 85vw in pixels
+              const maxCardWidthPx = 600;
+              const actualCardWidth = isMobile ? cardWidthVw : Math.min(cardWidthVw, maxCardWidthPx);
+              
+              // For desktop, position -1 (prev card) at activeCardWidth + 16px + 24px
+              let translateXPx;
+              if (!isMobile && position === -1) {
+                translateXPx = -(actualCardWidth + 40); // 16px + 24px = 40px
+              } else {
+                const totalCardWidth = actualCardWidth + baseCardSpacingPx;
+                translateXPx = position * totalCardWidth;
+              }
+              
               const dragTranslateXPx = isDragging && dragDirection === 'horizontal' ? dragOffsetX : 0;
               
               // Rotation - rotate towards outside during transition
