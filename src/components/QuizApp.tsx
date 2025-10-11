@@ -52,6 +52,16 @@ export function QuizApp() {
       const lines = csvText.split('\n');
       const parsedQuestions: Question[] = [];
       
+      // Parse header to find column indices
+      const headerLine = lines[0].trim();
+      const headers = parseCSVLine(headerLine);
+      const questionColumnIndex = headers.findIndex(h => h.toLowerCase().includes('frage'));
+      const categoryColumnIndex = headers.findIndex(h => h.toLowerCase().includes('fahrer'));
+      
+      // Fallback to first two columns if headers not found
+      const qIndex = questionColumnIndex >= 0 ? questionColumnIndex : 0;
+      const cIndex = categoryColumnIndex >= 0 ? categoryColumnIndex : 1;
+      
       for (let i = 1; i < lines.length; i++) { // Start from 1 to skip header
         const line = lines[i].trim();
         if (!line) continue; // Skip empty lines
@@ -59,10 +69,10 @@ export function QuizApp() {
         // Simple CSV parsing - handles quotes and commas
         const columns = parseCSVLine(line);
         
-        if (columns.length >= 2 && columns[0] && columns[1]) {
+        if (columns.length > Math.max(qIndex, cIndex) && columns[qIndex] && columns[cIndex]) {
           parsedQuestions.push({
-            question: columns[0].trim(),
-            category: columns[1].trim()
+            question: columns[qIndex].trim(),
+            category: columns[cIndex].trim()
           });
         }
       }
