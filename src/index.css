@@ -220,25 +220,25 @@ All colors MUST be HSL.
     --quiz-future-bg: 199 89% 48%;
     --quiz-future-text: 0 0% 98%;
     
-    /* Darker background colors (5% darker than card background) */
-    --quiz-connection-bg-dark: 339 99% 75%;
-    --quiz-fuck-bg-dark: 18 99% 51%;
-    --quiz-identity-bg-dark: 150 57% 38%;
-    --quiz-party-bg-dark: 58 100% 49%;
-    --quiz-wer-aus-der-runde-bg-dark: 199 97% 35%;
-    --quiz-friends-bg-dark: 120 100% 45%;
-    --quiz-self-reflection-bg-dark: 195 100% 45%;
-    --quiz-family-bg-dark: 30 100% 65%;
-    --quiz-career-bg-dark: 35 100% 57%;
-    --quiz-travel-bg-dark: 92 100% 78%;
-    --quiz-health-bg-dark: 330 84% 62%;
-    --quiz-money-bg-dark: 45 95% 50%;
-    --quiz-love-bg-dark: 350 85% 55%;
-    --quiz-hobby-bg-dark: 25 60% 40%;
-    --quiz-dreams-bg-dark: 270 75% 60%;
-    --quiz-fear-bg-dark: 210 10% 35%;
-    --quiz-wisdom-bg-dark: 239 84% 62%;
-    --quiz-future-bg-dark: 199 89% 43%;
+    /* Darker background colors (5% darker than 400 shade) */
+    --quiz-connection-bg-dark: 339 99% 80%;
+    --quiz-fuck-bg-dark: 18 99% 63%;
+    --quiz-identity-bg-dark: 150 57% 50%;
+    --quiz-party-bg-dark: 58 100% 70%;
+    --quiz-wer-aus-der-runde-bg-dark: 199 97% 47%;
+    --quiz-friends-bg-dark: 120 100% 60%;
+    --quiz-self-reflection-bg-dark: 195 100% 60%;
+    --quiz-family-bg-dark: 30 100% 75%;
+    --quiz-career-bg-dark: 35 100% 70%;
+    --quiz-travel-bg-dark: 92 100% 83%;
+    --quiz-health-bg-dark: 330 84% 73%;
+    --quiz-money-bg-dark: 45 95% 65%;
+    --quiz-love-bg-dark: 350 85% 67%;
+    --quiz-hobby-bg-dark: 25 60% 55%;
+    --quiz-dreams-bg-dark: 270 75% 73%;
+    --quiz-fear-bg-dark: 210 10% 50%;
+    --quiz-wisdom-bg-dark: 239 84% 73%;
+    --quiz-future-bg-dark: 199 89% 55%;
     --quiz-category-bg-dark: 290 100% 80%;
     
     /* Gradients */
