@@ -545,15 +545,27 @@ export function QuizApp() {
                   className="absolute flex flex-col items-center justify-center"
                   onClick={() => {
                     if (position === 1) {
-                      // Click on next card - go next
+                      // Click on next card - go next with animation
+                      setIsAnimating(true);
+                      setDragDirection('horizontal');
                       setLogoSqueezeLeft(true);
                       setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
-                      setTimeout(() => setLogoSqueezeLeft(false), 300);
+                      setTimeout(() => {
+                        setLogoSqueezeLeft(false);
+                        setIsAnimating(false);
+                        setDragDirection(null);
+                      }, 350);
                     } else if (position === -1) {
-                      // Click on prev card - go prev
+                      // Click on prev card - go prev with animation
+                      setIsAnimating(true);
+                      setDragDirection('horizontal');
                       setLogoSqueezeRight(true);
                       setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
-                      setTimeout(() => setLogoSqueezeRight(false), 300);
+                      setTimeout(() => {
+                        setLogoSqueezeRight(false);
+                        setIsAnimating(false);
+                        setDragDirection(null);
+                      }, 350);
                     }
                   }}
                   style={{
@@ -651,18 +663,30 @@ export function QuizApp() {
                   className="absolute flex flex-col items-center justify-center"
                   onClick={() => {
                     if (!isCategoryActive && catPosition === 1) {
-                      // Click on next category
+                      // Click on next category with animation
+                      setIsAnimating(true);
+                      setDragDirection('horizontal');
                       setLogoSqueezeLeft(true);
                       setIsHorizontalSliding(true);
                       setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
-                      setTimeout(() => setLogoSqueezeLeft(false), 300);
+                      setTimeout(() => {
+                        setLogoSqueezeLeft(false);
+                        setIsAnimating(false);
+                        setDragDirection(null);
+                      }, 350);
                       setTimeout(() => setIsHorizontalSliding(false), 350);
                     } else if (!isCategoryActive && catPosition === -1) {
-                      // Click on prev category
+                      // Click on prev category with animation
+                      setIsAnimating(true);
+                      setDragDirection('horizontal');
                       setLogoSqueezeRight(true);
                       setIsHorizontalSliding(true);
                       setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
-                      setTimeout(() => setLogoSqueezeRight(false), 300);
+                      setTimeout(() => {
+                        setLogoSqueezeRight(false);
+                        setIsAnimating(false);
+                        setDragDirection(null);
+                      }, 350);
                       setTimeout(() => setIsHorizontalSliding(false), 350);
                     }
                   }}
@@ -734,17 +758,29 @@ export function QuizApp() {
                             const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
                             
                             if (qPosition === 1) {
-                              // Click on next question
+                              // Click on next question with animation
+                              setIsAnimating(true);
+                              setDragDirection('vertical');
                               setQuestionIndicesByCategory(prev => ({
                                 ...prev,
                                 [currentCategory]: ((prev[currentCategory] || 0) + 1) % currentCategoryQuestions.length
                               }));
+                              setTimeout(() => {
+                                setIsAnimating(false);
+                                setDragDirection(null);
+                              }, 350);
                             } else if (qPosition === -1) {
-                              // Click on prev question
+                              // Click on prev question with animation
+                              setIsAnimating(true);
+                              setDragDirection('vertical');
                               setQuestionIndicesByCategory(prev => ({
                                 ...prev,
                                 [currentCategory]: ((prev[currentCategory] || 0) - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length
                               }));
+                              setTimeout(() => {
+                                setIsAnimating(false);
+                                setDragDirection(null);
+                              }, 350);
                             }
                           }
                         }}
