@@ -310,7 +310,7 @@ export function QuizApp() {
 
   // Get header color for each category
   const getHeaderColorForCategory = (category: string): string => {
-    const categoryLower = category.toLowerCase();
+    const categoryLower = category.toLowerCase().replace(/-/g, ' ');
     switch (categoryLower) {
       case 'connection':
         return 'text-connection-900';  // #611610
