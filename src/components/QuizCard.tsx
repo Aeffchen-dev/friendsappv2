@@ -526,9 +526,8 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 3 starfish shapes and 3 X shapes per card
-        const numStarfish = 3;
-        const numX = 3;
+        // Generate 9 starfish shapes per card
+        const numStarfish = 9;
         
         return (
           <>
@@ -538,14 +537,6 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
                 key={`star-${index}`}
                 questionText={question.question}
                 lineIndex={index}
-              />
-            ))}
-            {/* X shapes */}
-            {Array.from({ length: numX }).map((_, index) => (
-              <XShape 
-                key={`x-${index}`}
-                questionText={question.question}
-                shapeIndex={index}
               />
             ))}
           </>
