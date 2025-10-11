@@ -406,13 +406,13 @@ export function QuizApp() {
                 if (isCategoryActive) {
                   // Active card rotates in direction of swipe
                   const dragProgress = isDragging ? dragOffsetX / window.innerWidth : 0;
-                  rotateZ = dragProgress * 5; // Max ±5deg based on drag
+                  rotateZ = dragProgress * 3; // Max ±3deg based on drag
                 } else if (catPosition === -1) {
                   // Prev card rotates counter-clockwise
-                  rotateZ = -5;
+                  rotateZ = -3;
                 } else if (catPosition === 1) {
                   // Next card rotates clockwise
-                  rotateZ = 5;
+                  rotateZ = 3;
                 }
               }
               
