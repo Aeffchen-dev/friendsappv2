@@ -169,20 +169,6 @@ export function QuizApp() {
   };
 
   const handleDragStart = (e: React.PointerEvent) => {
-    const isDesktop = window.innerWidth >= 768;
-    const target = e.target as HTMLElement;
-    
-    // Desktop only: Check if click is on a clickable element (category strip) - don't start drag
-    if (isDesktop && target.closest('[data-clickable="true"]')) {
-      return;
-    }
-    
-    // Desktop only: Check if click is on non-active horizontal card in default mode - don't start drag
-    const clickedCard = target.closest('[data-horizontal-card]');
-    if (isDesktop && !isShuffleMode && clickedCard && clickedCard.getAttribute('data-horizontal-card') !== 'active') {
-      return;
-    }
-    
     setIsDragging(true);
     setIsAnimating(false);
     setDragStartX(e.clientX);
