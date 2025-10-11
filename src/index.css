@@ -78,7 +78,7 @@ All colors MUST be HSL.
     --identity-600: 186 58% 76%;  /* card pattern #9FDCE3 */
     --identity-700: 168 100% 12%;
     --identity-800: 168 100% 10%;
-    --identity-900: 4 100% 96%;  /* text #FFECEB */
+    --identity-900: 168 100% 12%;  /* text #003C31 */
     
     /* party */
     --party-100: 228 50% 95%;
@@ -224,7 +224,7 @@ All colors MUST be HSL.
     /* Category strip colors (one shade darker = -500) */
     --quiz-connection-bg-dark: 336 82% 85%;  /* page background #F8BAD3 */
     --quiz-fuck-bg-dark: 4 60% 25%;  /* fuck page background #671F1A */
-    --quiz-identity-bg-dark: 186 58% 76%;  /* identity-500 #9FDCE3 */
+    --quiz-identity-bg-dark: 146 51% 53%;  /* identity page background #47C67F */
     --quiz-party-bg-dark: 243 96% 64%;  /* party page background #574DFB */
     --quiz-wer-aus-der-runde-bg-dark: 270 87% 85%;  /* wer-aus-der-runde-500 #D2B8FA */
     --quiz-friends-bg-dark: 120 100% 42%;  /* friends-500 */
