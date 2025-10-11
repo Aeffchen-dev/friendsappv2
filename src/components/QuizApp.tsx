@@ -388,13 +388,13 @@ export function QuizApp() {
               // Horizontal scale - moving in: 0.95→1, moving out: 1→0.95
               let scaleH = isCategoryActive ? 1 : 0.95;
               
-              // Horizontal rotation - 2D skew effect
+              // Horizontal rotation - 2D skew effect (max ±5deg)
               let skewX = 0;
               if (!isCategoryActive) {
-                skewX = -catPosition * 5; // Left card: +5deg, Right card: -5deg (reversed)
+                skewX = Math.max(-5, Math.min(5, -catPosition * 5)); // Max ±5deg
               } else if (isDragging && dragDirection === 'horizontal') {
-                // Active card skews opposite to drag direction when moving out
-                skewX = -(dragOffsetX / window.innerWidth) * 5; // Mirror direction
+                // Active card skews opposite to drag direction when moving out (max ±5deg)
+                skewX = Math.max(-5, Math.min(5, -(dragOffsetX / window.innerWidth) * 5));
               }
               
               return (
