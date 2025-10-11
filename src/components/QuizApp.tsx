@@ -482,12 +482,11 @@ export function QuizApp() {
                       baseTranslateY = -110; // Moves card fully above viewport
                     } else if (qPosition === 1) {
                       // Next card positioned with gap after active card
-                      // Mobile: 60vh + 16px, Desktop: 80vh + 32px
+                      // Mobile: 80vh + 16px, Desktop: 80vh + 32px
                       const isMobile = window.innerWidth < 768;
                       const gapPx = isMobile ? 16 : 32;
-                      const activeCardHeight = isMobile ? 60 : 80;
                       const gapVh = (gapPx / window.innerHeight) * 100;
-                      baseTranslateY = activeCardHeight + gapVh;
+                      baseTranslateY = 80 + gapVh;
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
                     }
