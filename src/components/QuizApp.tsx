@@ -161,10 +161,11 @@ export function QuizApp() {
     
     // Calculate velocity (pixels per millisecond)
     const velocity = timeDelta > 0 ? Math.abs(distance / timeDelta) : 0;
-    const velocityThreshold = 0.5; // px/ms - adjust for sensitivity
+    const velocityThreshold = 1.2; // Increased from 0.5 to reduce sensitivity
+    const minFlickDistance = 50; // Minimum distance for a flick to count
     
-    // Check if it's a quick flick
-    const isFlick = velocity > velocityThreshold;
+    // Check if it's a quick flick (requires both speed AND minimum distance)
+    const isFlick = velocity > velocityThreshold && Math.abs(dragOffset) > minFlickDistance;
     
     // Determine if we should navigate (with looping - no boundary checks)
     const shouldGoNext = dragOffset < -threshold || (isFlick && dragOffset < 0);
