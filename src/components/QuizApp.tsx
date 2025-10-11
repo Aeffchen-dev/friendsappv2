@@ -37,13 +37,10 @@ export function QuizApp() {
 
   const fetchQuestions = async () => {
     try {
-      // Google Sheets CSV export URL
-      const sheetId = '1-5NpzNwUiAsl_BPruHygyUbpO3LHkWr8E08fqkypOcU';
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
-      
-      const response = await fetch(csvUrl);
+      // Load from local CSV file
+      const response = await fetch('/quiz_questions.csv');
       if (!response.ok) {
-        throw new Error('Failed to fetch data from Google Sheets');
+        throw new Error('Failed to fetch questions');
       }
       
       const csvText = await response.text();
@@ -52,7 +49,7 @@ export function QuizApp() {
       const lines = csvText.split('\n');
       const parsedQuestions: Question[] = [];
       
-      for (let i = 0; i < lines.length; i++) {
+      for (let i = 1; i < lines.length; i++) { // Start from 1 to skip header
         const line = lines[i].trim();
         if (!line) continue; // Skip empty lines
         
@@ -79,7 +76,7 @@ export function QuizApp() {
         setSelectedCategories(categories); // Start with all categories selected
       }
     } catch (error) {
-      console.error('Error fetching questions from Google Sheets:', error);
+      console.error('Error fetching questions:', error);
     } finally {
       // Ensure animation plays for minimum 2.5s from start
       const elapsed = Date.now() - loadStartTime;
