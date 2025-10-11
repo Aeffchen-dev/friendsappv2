@@ -513,10 +513,10 @@ export function QuizApp() {
               
               const isActive = position === 0;
               
-              // Calculate horizontal transform - 80vw width
+              // Calculate horizontal transform - 80vw width + 32px spacing
               const baseCardSpacingPx = 32;
-              const vwCardWidth = window.innerWidth * 0.8; // 80vw
-              const hCardWidth = vwCardWidth;
+              const cardWidthVw = 80;
+              const hCardWidth = window.innerWidth * (cardWidthVw / 100);
               const totalCardWidth = hCardWidth + baseCardSpacingPx;
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100;
               const baseTranslateX = position * cardSpacingVw;
@@ -543,10 +543,10 @@ export function QuizApp() {
                   <div
                     style={{
                       position: 'absolute',
-                      top: window.innerWidth >= 768 ? '64px' : '96px',
+                      top: window.innerWidth >= 768 ? '64px' : '64px',
                       left: '10vw',
                       width: '80vw',
-                      height: '80vh'
+                      height: window.innerWidth >= 768 ? 'calc(100vh - 64px - 16px)' : 'calc(100vh - 64px - 16px)'
                     }}
                   >
                     <QuizCard
