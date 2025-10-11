@@ -229,7 +229,7 @@ export function QuizApp() {
     setTimeout(() => {
       setIsAnimating(false);
       setDragDirection(null);
-    }, 800);
+    }, 1600);
   };
 
   const nextCategory = () => {
@@ -385,8 +385,8 @@ export function QuizApp() {
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               const dragGapOffset = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
-              // Horizontal scale - moving in: 0.9→1, moving out: 1→0.9
-              let scaleH = isCategoryActive ? 1 : 0.9;
+              // Horizontal scale - moving in: 0.95→1, moving out: 1→0.95
+              let scaleH = isCategoryActive ? 1 : 0.95;
               
               // Horizontal rotation - 2D skew effect
               let skewX = 0;
@@ -405,7 +405,7 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) skewX(${skewX}deg)`,
-                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 1600ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none'
                   }}
                 >
@@ -421,19 +421,19 @@ export function QuizApp() {
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     const gapYPx = qPosition * 16;
                     
-                    // Vertical scale - transitions from 0.8 to 1
+                    // Vertical scale - transitions from 0.95 to 1
                     let scale = 1;
                     if (!isActive) {
-                      scale = 0.8;
+                      scale = 0.95;
                     }
                     if (isDragging && dragDirection === 'vertical' && isCategoryActive) {
                       const dragProgress = Math.abs(dragOffsetY) / window.innerHeight;
                       if (isActive) {
                         // Active card scales down when dragging away
-                        scale = Math.max(0.8, 1 - dragProgress * 0.2);
+                        scale = Math.max(0.95, 1 - dragProgress * 0.05);
                       } else if ((qPosition === 1 && dragOffsetY < 0) || (qPosition === -1 && dragOffsetY > 0)) {
                         // Next card scales up when dragging towards it
-                        scale = Math.min(1, 0.8 + dragProgress * 0.2);
+                        scale = Math.min(1, 0.95 + dragProgress * 0.05);
                       }
                     }
                     
@@ -448,7 +448,7 @@ export function QuizApp() {
                           width: '90vw',
                           height: '90vh',
                           transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapYPx}px)) scale(${scale})`,
-                          transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                          transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 1600ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none'
                         }}
                       >
