@@ -274,6 +274,18 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  @keyframes swipeHint {
+    0%, 100% {
+      transform: translateX(0) rotateZ(0deg);
+    }
+    25% {
+      transform: translateX(-12px) rotateZ(-0.5deg);
+    }
+    75% {
+      transform: translateX(12px) rotateZ(0.5deg);
+    }
+  }
+
   .dark {
     --background: 0 0% 0%;
     --foreground: 210 40% 98%;

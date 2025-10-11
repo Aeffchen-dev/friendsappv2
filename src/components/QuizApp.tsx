@@ -28,6 +28,7 @@ export function QuizApp() {
   const [isShuffleMode, setIsShuffleMode] = useState(true);
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
+  const [hasInteracted, setHasInteracted] = useState(false);
   
   // Drag state
   const [isDragging, setIsDragging] = useState(false);
@@ -209,6 +210,7 @@ export function QuizApp() {
   };
 
   const handleDragStart = (e: React.PointerEvent) => {
+    setHasInteracted(true);
     setIsDragging(true);
     setIsAnimating(false);
     setDragStartX(e.clientX);
@@ -594,6 +596,7 @@ export function QuizApp() {
                   key={`shuffle-${qIndex}`}
                   className="absolute flex flex-col items-center justify-center"
                   onClick={(e) => {
+                    setHasInteracted(true);
                     const isDesktop = window.innerWidth >= 768;
                     
                     if (position === 1) {
@@ -642,7 +645,7 @@ export function QuizApp() {
                     height: '100vh',
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) rotateZ(${rotateZ}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
-                    animation: 'none',
+                    animation: isActive && !hasInteracted && currentShuffleIndex === 0 ? 'swipeHint 2s ease-in-out 1s 3' : 'none',
                     pointerEvents: !isActive && (position === 1 || position === -1) ? 'auto' : (isActive ? 'auto' : 'none'),
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
