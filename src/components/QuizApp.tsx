@@ -400,7 +400,11 @@ export function QuizApp() {
               // Horizontal scale - only during animation/drag
               let scaleH = 1;
               if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
-                scaleH = isCategoryActive ? 0.95 : 1;
+                if (isCategoryActive) {
+                  scaleH = 0.95; // Active card scales down during transition
+                } else if (catPosition === 1 || catPosition === 2) {
+                  scaleH = 0.95; // Next and 2nd next cards also scale
+                }
               }
               
               // Horizontal rotation - 2D Y-axis rotation (max ±5deg)
@@ -445,8 +449,8 @@ export function QuizApp() {
                     if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
                       if (isActive) {
                         scale = 0.95; // Active card scales down during transition
-                      } else {
-                        scale = 1; // Incoming card at full scale
+                      } else if (qPosition === 1 || qPosition === 2) {
+                        scale = 0.95; // Next and 2nd next cards also scale
                       }
                     }
                     
