@@ -31,43 +31,43 @@ export function CategorySelector({
     
     switch (categoryLower) {
       case 'connection':
-        return { bg: 'hsl(240 100% 50%)', text: 'hsl(240 100% 20%)' };
+        return { bg: 'hsl(var(--connection-500))', text: 'hsl(var(--connection-900))' };
       case 'fuck':
-        return { bg: 'hsl(0 100% 50%)', text: 'hsl(0 100% 20%)' };
+        return { bg: 'hsl(var(--fuck-500))', text: 'hsl(var(--fuck-900))' };
       case 'identity':
-        return { bg: 'hsl(266 100% 51%)', text: 'hsl(266 100% 20%)' };
+        return { bg: 'hsl(var(--identity-500))', text: 'hsl(var(--identity-900))' };
       case 'party':
-        return { bg: 'hsl(60 100% 71%)', text: 'hsl(60 100% 20%)' };
+        return { bg: 'hsl(var(--party-500))', text: 'hsl(var(--party-900))' };
       case 'wer aus der runde':
-        return { bg: 'hsl(180 100% 50%)', text: 'hsl(180 100% 20%)' };
+        return { bg: 'hsl(var(--wer-aus-der-runde-500))', text: 'hsl(var(--wer-aus-der-runde-900))' };
       case 'friends':
-        return { bg: 'hsl(120 100% 50%)', text: 'hsl(120 100% 20%)' };
+        return { bg: 'hsl(var(--friends-500))', text: 'hsl(var(--friends-900))' };
       case 'self reflection':
-        return { bg: 'hsl(195 100% 50%)', text: 'hsl(195 100% 20%)' };
+        return { bg: 'hsl(var(--self-reflection-500))', text: 'hsl(var(--self-reflection-900))' };
       case 'family':
-        return { bg: 'hsl(30 100% 70%)', text: 'hsl(30 100% 20%)' };
+        return { bg: 'hsl(var(--family-500))', text: 'hsl(var(--family-900))' };
       case 'career':
-        return { bg: 'hsl(35 100% 62%)', text: 'hsl(35 100% 20%)' };
+        return { bg: 'hsl(var(--career-500))', text: 'hsl(var(--career-900))' };
       case 'travel':
-        return { bg: 'hsl(92 100% 83%)', text: 'hsl(92 100% 20%)' };
+        return { bg: 'hsl(var(--travel-500))', text: 'hsl(var(--travel-900))' };
       case 'health':
-        return { bg: 'hsl(330 84% 67%)', text: 'hsl(330 84% 20%)' };
+        return { bg: 'hsl(var(--health-500))', text: 'hsl(var(--health-900))' };
       case 'money':
-        return { bg: 'hsl(45 95% 55%)', text: 'hsl(45 95% 20%)' };
+        return { bg: 'hsl(var(--money-500))', text: 'hsl(var(--money-900))' };
       case 'love':
-        return { bg: 'hsl(350 85% 60%)', text: 'hsl(350 85% 20%)' };
+        return { bg: 'hsl(var(--love-500))', text: 'hsl(var(--love-900))' };
       case 'hobby':
-        return { bg: 'hsl(25 60% 45%)', text: 'hsl(25 60% 15%)' };
+        return { bg: 'hsl(var(--hobby-500))', text: 'hsl(var(--hobby-900))' };
       case 'dreams':
-        return { bg: 'hsl(270 75% 65%)', text: 'hsl(270 75% 20%)' };
+        return { bg: 'hsl(var(--dreams-500))', text: 'hsl(var(--dreams-900))' };
       case 'fear':
-        return { bg: 'hsl(210 10% 40%)', text: 'hsl(210 10% 15%)' };
+        return { bg: 'hsl(var(--fear-500))', text: 'hsl(var(--fear-900))' };
       case 'wisdom':
-        return { bg: 'hsl(239 84% 67%)', text: 'hsl(239 84% 20%)' };
+        return { bg: 'hsl(var(--wisdom-500))', text: 'hsl(var(--wisdom-900))' };
       case 'future':
-        return { bg: 'hsl(199 89% 48%)', text: 'hsl(199 89% 20%)' };
+        return { bg: 'hsl(var(--future-500))', text: 'hsl(var(--future-900))' };
       default:
-        return { bg: 'hsl(290 100% 85%)', text: 'hsl(290 100% 20%)' };
+        return { bg: 'hsl(var(--quiz-category-bg))', text: 'hsl(var(--quiz-category-text))' };
     }
   };
 
