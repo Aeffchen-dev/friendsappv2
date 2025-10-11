@@ -472,8 +472,14 @@ export function QuizApp() {
                     const totalCardHeight = cardHeight + vCardSpacingPx; // Total height including spacing
                     const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
                     
-                    // Calculate position
-                    const baseTranslateY = qPosition * cardSpacingVh;
+                    // Calculate position - move previous card out of viewport
+                    let baseTranslateY;
+                    if (qPosition === -1) {
+                      // Move previous card completely out of viewport to the top
+                      baseTranslateY = -110; // Moves card fully above viewport
+                    } else {
+                      baseTranslateY = qPosition * cardSpacingVh;
+                    }
                     
                     // Only apply vertical drag to the active category
                     const dragTranslateY = (isCategoryActive && isDragging && dragDirection === 'vertical') ? (dragOffsetY / window.innerHeight) * cardSpacingVh : 0;
