@@ -202,18 +202,11 @@ export function QuizApp() {
         }, 300);
       }, 16);
     } else {
-      // Snap back with momentum
-      const momentumOffset = velocity * 100;
-      const finalOffset = dragOffset + (dragOffset < 0 ? -momentumOffset : momentumOffset);
-      
-      // Animate back to center
-      setDragOffset(finalOffset);
+      // Snap back to center
+      setDragOffset(0);
       setTimeout(() => {
-        setDragOffset(0);
-        setTimeout(() => {
-          setIsAnimating(false);
-        }, 300);
-      }, 16);
+        setIsAnimating(false);
+      }, 300);
     }
   };
 
