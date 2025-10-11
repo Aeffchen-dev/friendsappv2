@@ -154,7 +154,7 @@ export function QuizApp() {
   const handleDragEnd = () => {
     if (!isDragging) return;
     
-    const threshold = 30; // Small threshold to prevent accidental swipes
+    const threshold = 80; // 80px drag threshold
     
     setIsDragging(false);
     setIsAnimating(true);
