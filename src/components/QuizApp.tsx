@@ -370,7 +370,8 @@ export function QuizApp() {
           transition: 'opacity 350ms ease-out'
         }}
       />
-      {/* App Header - Always visible */}
+      {/* App Header - Hidden during loading */}
+      {!loading && (
       <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50}}>
         <div className="flex justify-between items-center px-4 py-4">
           <svg 
@@ -396,6 +397,7 @@ export function QuizApp() {
           </button>
         </div>
       </div>
+      )}
 
       {/* Main Quiz Container */}
       <div 
