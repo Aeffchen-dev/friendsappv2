@@ -736,30 +736,33 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
   const eyeSize = getRandomValue(questionText + 'eyeSize', 2.5, 4);
   const eyeYPos = getRandomValue(questionText + 'eyeY', 38, 43);
   
-  // Different happy mouth expressions
-  const expressionType = Math.floor(getRandomValue(questionText + 'expression', 0, 4));
+  // Different happy mouth expressions - more variety
+  const expressionType = Math.floor(getRandomValue(questionText + 'expression', 0, 6));
+  
+  // Randomize mouth parameters for each expression
+  const mouthWidth = getRandomValue(questionText + 'mouthWidth' + expressionType, 22, 40);
+  const mouthHeight = getRandomValue(questionText + 'mouthHeight' + expressionType, 12, 28);
+  const mouthYStart = getRandomValue(questionText + 'mouthY' + expressionType, 52, 58);
   
   let mouthPath = '';
   if (expressionType === 0) {
     // Big wide smile
-    const mouthWidth = getRandomValue(questionText + 'mouthWidth', 30, 38);
-    const mouthHeight = getRandomValue(questionText + 'mouthHeight', 20, 28);
-    mouthPath = `M ${50 - mouthWidth/2},55 Q 50,${55 + mouthHeight} ${50 + mouthWidth/2},55`;
+    mouthPath = `M ${50 - mouthWidth/2},${mouthYStart} Q 50,${mouthYStart + mouthHeight} ${50 + mouthWidth/2},${mouthYStart}`;
   } else if (expressionType === 1) {
-    // Gentle smile
-    const mouthWidth = getRandomValue(questionText + 'mouthWidth', 22, 28);
-    const mouthHeight = getRandomValue(questionText + 'mouthHeight', 12, 16);
-    mouthPath = `M ${50 - mouthWidth/2},57 Q 50,${57 + mouthHeight} ${50 + mouthWidth/2},57`;
+    // Gentle curved smile
+    mouthPath = `M ${50 - mouthWidth/2},${mouthYStart} Q 50,${mouthYStart + mouthHeight * 0.7} ${50 + mouthWidth/2},${mouthYStart}`;
   } else if (expressionType === 2) {
-    // Wide grin
-    const mouthWidth = getRandomValue(questionText + 'mouthWidth', 32, 40);
-    const mouthHeight = getRandomValue(questionText + 'mouthHeight', 18, 24);
-    mouthPath = `M ${50 - mouthWidth/2},54 Q 50,${54 + mouthHeight} ${50 + mouthWidth/2},54`;
-  } else {
+    // Super wide grin
+    mouthPath = `M ${50 - mouthWidth/2},${mouthYStart - 2} Q 50,${mouthYStart + mouthHeight} ${50 + mouthWidth/2},${mouthYStart - 2}`;
+  } else if (expressionType === 3) {
     // Cheerful arc
-    const mouthWidth = getRandomValue(questionText + 'mouthWidth', 26, 34);
-    const mouthHeight = getRandomValue(questionText + 'mouthHeight', 14, 20);
-    mouthPath = `M ${50 - mouthWidth/2},56 Q 50,${56 + mouthHeight} ${50 + mouthWidth/2},56`;
+    mouthPath = `M ${50 - mouthWidth/2},${mouthYStart + 1} Q 50,${mouthYStart + mouthHeight * 0.85} ${50 + mouthWidth/2},${mouthYStart + 1}`;
+  } else if (expressionType === 4) {
+    // Beaming smile
+    mouthPath = `M ${50 - mouthWidth/2},${mouthYStart - 1} Q 50,${mouthYStart + mouthHeight * 1.1} ${50 + mouthWidth/2},${mouthYStart - 1}`;
+  } else {
+    // Joyful grin
+    mouthPath = `M ${50 - mouthWidth/2},${mouthYStart + 2} Q 50,${mouthYStart + mouthHeight * 0.9} ${50 + mouthWidth/2},${mouthYStart + 2}`;
   }
   
   return (
