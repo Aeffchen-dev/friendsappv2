@@ -502,7 +502,7 @@ export function QuizApp() {
                         style={{
                           position: 'absolute',
                           top: '64px',
-                          left: window.innerWidth >= 768 ? '16px' : '8px',
+                          left: '16px',
                           width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
                           height: '80vh',
                           transform: `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
