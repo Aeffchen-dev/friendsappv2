@@ -391,10 +391,10 @@ export function QuizApp() {
               
               // Calculate horizontal transform - spacing so category strip of next card is visible
               const cardSpacing = 92; // Spacing so ~8vw of next card (category strip) shows
-              const gapOffsetH = catPosition * 8; // Gap between cards
+              const gapOffsetH = catPosition * 4; // Reduced gap between cards
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
-              const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 8 : 0;
+              const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 4 : 0;
               
               // Horizontal scale - all cards at scale 1
               const scaleH = 1;
