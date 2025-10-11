@@ -419,7 +419,16 @@ export function QuizApp() {
               const hCardWidthPx = window.innerWidth - 32; // Card width: 100vw - 32px (16px on each side)
               const totalCardWidth = hCardWidthPx + hCardSpacingPx; // Total width including spacing
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
-              const baseTranslateX = catPosition * cardSpacingVw;
+              
+              // Show 10vh of next card
+              let baseTranslateX;
+              if (catPosition === 1) {
+                // Next card: position to show 10vh from right edge
+                const show10vh = (window.innerHeight * 0.1 / window.innerWidth) * 100; // 10vh in vw
+                baseTranslateX = cardSpacingVw - show10vh;
+              } else {
+                baseTranslateX = catPosition * cardSpacingVw;
+              }
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacingVw : 0;
               
               // Horizontal scale - all cards at scale 1
@@ -472,12 +481,12 @@ export function QuizApp() {
                     const totalCardHeight = vCardHeight + vCardSpacingPx; // Total height including spacing
                     const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
                     
-                    // Calculate position - move previous card out of viewport
+                    // Calculate position - show 10vh of previous card
                     let baseTranslateY;
                     
                     if (qPosition === -1) {
-                      // Move previous card completely out of viewport to the top
-                      baseTranslateY = -110; // Moves card fully above viewport
+                      // Previous card: position to show 10vh from top
+                      baseTranslateY = -(cardSpacingVh - 10);
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
                     }
