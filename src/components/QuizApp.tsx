@@ -543,16 +543,30 @@ export function QuizApp() {
                 <div
                   key={`shuffle-${qIndex}`}
                   className="absolute flex flex-col items-center justify-center"
+                  onClick={() => {
+                    if (position === 1) {
+                      // Click on next card - go next
+                      setLogoSqueezeLeft(true);
+                      setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
+                      setTimeout(() => setLogoSqueezeLeft(false), 300);
+                    } else if (position === -1) {
+                      // Click on prev card - go prev
+                      setLogoSqueezeRight(true);
+                      setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
+                      setTimeout(() => setLogoSqueezeRight(false), 300);
+                    }
+                  }}
                   style={{
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) rotateZ(${rotateZ}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                     animation: 'none',
-                    pointerEvents: isActive ? 'auto' : 'none',
+                    pointerEvents: !isActive && (position === 1 || position === -1) ? 'auto' : (isActive ? 'auto' : 'none'),
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
-                    visibility: shouldHide ? 'hidden' : 'visible'
+                    visibility: shouldHide ? 'hidden' : 'visible',
+                    cursor: !isActive && (position === 1 || position === -1) ? 'pointer' : 'default'
                   }}
                 >
                   <div
@@ -635,16 +649,34 @@ export function QuizApp() {
                 <div 
                   key={`category-${category}`}
                   className="absolute flex flex-col items-center justify-center"
+                  onClick={() => {
+                    if (!isCategoryActive && catPosition === 1) {
+                      // Click on next category
+                      setLogoSqueezeLeft(true);
+                      setIsHorizontalSliding(true);
+                      setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
+                      setTimeout(() => setLogoSqueezeLeft(false), 300);
+                      setTimeout(() => setIsHorizontalSliding(false), 350);
+                    } else if (!isCategoryActive && catPosition === -1) {
+                      // Click on prev category
+                      setLogoSqueezeRight(true);
+                      setIsHorizontalSliding(true);
+                      setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
+                      setTimeout(() => setLogoSqueezeRight(false), 300);
+                      setTimeout(() => setIsHorizontalSliding(false), 350);
+                    }
+                  }}
                   style={{
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${baseTranslateX + dragTranslateX}vw) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
                     transition: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? (isCategoryActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                     animation: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' && Math.abs(catPosition) <= 1 ? 'scaleTransition 350ms ease-in-out' : 'none',
-                    pointerEvents: isCategoryActive ? 'auto' : 'none',
+                    pointerEvents: isCategoryActive ? 'auto' : (!isCategoryActive && (catPosition === 1 || catPosition === -1) ? 'auto' : 'none'),
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
-                    visibility: shouldHide ? 'hidden' : 'visible'
+                    visibility: shouldHide ? 'hidden' : 'visible',
+                    cursor: !isCategoryActive && (catPosition === 1 || catPosition === -1) ? 'pointer' : 'default'
                   }}
                 >
                   {/* Render 5 question cards vertically: 2 previous, current, 2 next */}
@@ -695,6 +727,27 @@ export function QuizApp() {
                       <div
                         key={`${category}-${question.question}`}
                         className="absolute flex items-center justify-center"
+                        onClick={(e) => {
+                          if (isCategoryActive && !isActive) {
+                            e.stopPropagation(); // Prevent category click
+                            const currentCategory = displayCategories[currentCategoryIndex];
+                            const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
+                            
+                            if (qPosition === 1) {
+                              // Click on next question
+                              setQuestionIndicesByCategory(prev => ({
+                                ...prev,
+                                [currentCategory]: ((prev[currentCategory] || 0) + 1) % currentCategoryQuestions.length
+                              }));
+                            } else if (qPosition === -1) {
+                              // Click on prev question
+                              setQuestionIndicesByCategory(prev => ({
+                                ...prev,
+                                [currentCategory]: ((prev[currentCategory] || 0) - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length
+                              }));
+                            }
+                          }
+                        }}
                         style={{
                           position: 'absolute',
                           top: window.innerWidth >= 768 ? '64px' : '48px',
@@ -704,9 +757,10 @@ export function QuizApp() {
                           transform: `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                           animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
-                          pointerEvents: isActive ? 'auto' : 'none',
+                          pointerEvents: isActive ? 'auto' : (isCategoryActive && !isActive && (qPosition === 1 || qPosition === -1) ? 'auto' : 'none'),
                           willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto',
-                          zIndex: qPosition <= 0 ? 10 - qPosition : 10 - qPosition // Previous and current cards on top, next cards below
+                          zIndex: qPosition <= 0 ? 10 - qPosition : 10 - qPosition, // Previous and current cards on top, next cards below
+                          cursor: isCategoryActive && !isActive && (qPosition === 1 || qPosition === -1) ? 'pointer' : 'default'
                         }}
                       >
                         <QuizCard
