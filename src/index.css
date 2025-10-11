@@ -78,7 +78,7 @@ All colors MUST be HSL.
     --identity-600: 186 58% 76%;  /* card pattern #9FDCE3 */
     --identity-700: 168 100% 12%;
     --identity-800: 168 100% 10%;
-    --identity-900: 168 100% 12%;  /* text #003C31 */
+    --identity-900: 4 100% 96%;  /* text #FFECEB */
     
     /* party */
     --party-100: 228 50% 95%;
