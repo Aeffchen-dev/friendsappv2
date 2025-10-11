@@ -384,7 +384,7 @@ function Eye({ mousePosition, pupilDirection, isBlinking }: EyeProps) {
     const eyeCenterY = eyeRect.top + eyeRect.height / 2;
 
     const angle = Math.atan2(mousePosition.y - eyeCenterY, mousePosition.x - eyeCenterX);
-    const distance = Math.min(8, 8); // Max pupil movement
+    const distance = Math.min(12, 12); // Max pupil movement
 
     return {
       x: Math.cos(angle) * distance,
@@ -399,7 +399,7 @@ function Eye({ mousePosition, pupilDirection, isBlinking }: EyeProps) {
       ref={eyeRef}
       className="relative bg-white rounded-full transition-transform duration-150"
       style={{
-        width: '38px',
+        width: '35px',
         height: '100px',
         borderRadius: '50%',
         transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
