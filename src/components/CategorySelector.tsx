@@ -31,43 +31,119 @@ export function CategorySelector({
     
     switch (categoryLower) {
       case 'connection':
-        return { bg: 'hsl(var(--connection-500))', text: 'hsl(var(--connection-900))' };
+        return { 
+          stripeBg: 'hsl(var(--connection-500))', 
+          cardBg: 'hsl(var(--quiz-connection-bg))',
+          text: 'hsl(var(--connection-900))' 
+        };
       case 'fuck':
-        return { bg: 'hsl(var(--fuck-500))', text: 'hsl(var(--fuck-900))' };
+        return { 
+          stripeBg: 'hsl(var(--fuck-500))', 
+          cardBg: 'hsl(var(--quiz-fuck-bg))',
+          text: 'hsl(var(--fuck-900))' 
+        };
       case 'identity':
-        return { bg: 'hsl(var(--identity-500))', text: 'hsl(var(--identity-900))' };
+        return { 
+          stripeBg: 'hsl(var(--identity-500))', 
+          cardBg: 'hsl(var(--quiz-identity-bg))',
+          text: 'hsl(var(--identity-900))' 
+        };
       case 'party':
-        return { bg: 'hsl(var(--party-500))', text: 'hsl(var(--party-900))' };
+        return { 
+          stripeBg: 'hsl(var(--party-500))', 
+          cardBg: 'hsl(var(--quiz-party-bg))',
+          text: 'hsl(var(--party-900))' 
+        };
       case 'wer aus der runde':
-        return { bg: 'hsl(var(--wer-aus-der-runde-500))', text: 'hsl(var(--wer-aus-der-runde-900))' };
+        return { 
+          stripeBg: 'hsl(var(--wer-aus-der-runde-500))', 
+          cardBg: 'hsl(var(--quiz-wer-aus-der-runde-bg))',
+          text: 'hsl(var(--wer-aus-der-runde-900))' 
+        };
       case 'friends':
-        return { bg: 'hsl(var(--friends-500))', text: 'hsl(var(--friends-900))' };
+        return { 
+          stripeBg: 'hsl(var(--friends-500))', 
+          cardBg: 'hsl(var(--quiz-friends-bg))',
+          text: 'hsl(var(--friends-900))' 
+        };
       case 'self reflection':
-        return { bg: 'hsl(var(--self-reflection-500))', text: 'hsl(var(--self-reflection-900))' };
+        return { 
+          stripeBg: 'hsl(var(--self-reflection-500))', 
+          cardBg: 'hsl(var(--quiz-self-reflection-bg))',
+          text: 'hsl(var(--self-reflection-900))' 
+        };
       case 'family':
-        return { bg: 'hsl(var(--family-500))', text: 'hsl(var(--family-900))' };
+        return { 
+          stripeBg: 'hsl(var(--family-500))', 
+          cardBg: 'hsl(var(--quiz-family-bg))',
+          text: 'hsl(var(--family-900))' 
+        };
       case 'career':
-        return { bg: 'hsl(var(--career-500))', text: 'hsl(var(--career-900))' };
+        return { 
+          stripeBg: 'hsl(var(--career-500))', 
+          cardBg: 'hsl(var(--quiz-career-bg))',
+          text: 'hsl(var(--career-900))' 
+        };
       case 'travel':
-        return { bg: 'hsl(var(--travel-500))', text: 'hsl(var(--travel-900))' };
+        return { 
+          stripeBg: 'hsl(var(--travel-500))', 
+          cardBg: 'hsl(var(--quiz-travel-bg))',
+          text: 'hsl(var(--travel-900))' 
+        };
       case 'health':
-        return { bg: 'hsl(var(--health-500))', text: 'hsl(var(--health-900))' };
+        return { 
+          stripeBg: 'hsl(var(--health-500))', 
+          cardBg: 'hsl(var(--quiz-health-bg))',
+          text: 'hsl(var(--health-900))' 
+        };
       case 'money':
-        return { bg: 'hsl(var(--money-500))', text: 'hsl(var(--money-900))' };
+        return { 
+          stripeBg: 'hsl(var(--money-500))', 
+          cardBg: 'hsl(var(--quiz-money-bg))',
+          text: 'hsl(var(--money-900))' 
+        };
       case 'love':
-        return { bg: 'hsl(var(--love-500))', text: 'hsl(var(--love-900))' };
+        return { 
+          stripeBg: 'hsl(var(--love-500))', 
+          cardBg: 'hsl(var(--quiz-love-bg))',
+          text: 'hsl(var(--love-900))' 
+        };
       case 'hobby':
-        return { bg: 'hsl(var(--hobby-500))', text: 'hsl(var(--hobby-900))' };
+        return { 
+          stripeBg: 'hsl(var(--hobby-500))', 
+          cardBg: 'hsl(var(--quiz-hobby-bg))',
+          text: 'hsl(var(--hobby-900))' 
+        };
       case 'dreams':
-        return { bg: 'hsl(var(--dreams-500))', text: 'hsl(var(--dreams-900))' };
+        return { 
+          stripeBg: 'hsl(var(--dreams-500))', 
+          cardBg: 'hsl(var(--quiz-dreams-bg))',
+          text: 'hsl(var(--dreams-900))' 
+        };
       case 'fear':
-        return { bg: 'hsl(var(--fear-500))', text: 'hsl(var(--fear-900))' };
+        return { 
+          stripeBg: 'hsl(var(--fear-500))', 
+          cardBg: 'hsl(var(--quiz-fear-bg))',
+          text: 'hsl(var(--fear-900))' 
+        };
       case 'wisdom':
-        return { bg: 'hsl(var(--wisdom-500))', text: 'hsl(var(--wisdom-900))' };
+        return { 
+          stripeBg: 'hsl(var(--wisdom-500))', 
+          cardBg: 'hsl(var(--quiz-wisdom-bg))',
+          text: 'hsl(var(--wisdom-900))' 
+        };
       case 'future':
-        return { bg: 'hsl(var(--future-500))', text: 'hsl(var(--future-900))' };
+        return { 
+          stripeBg: 'hsl(var(--future-500))', 
+          cardBg: 'hsl(var(--quiz-future-bg))',
+          text: 'hsl(var(--future-900))' 
+        };
       default:
-        return { bg: 'hsl(var(--quiz-category-bg))', text: 'hsl(var(--quiz-category-text))' };
+        return { 
+          stripeBg: 'hsl(var(--quiz-category-bg))', 
+          cardBg: 'hsl(var(--quiz-category-bg))',
+          text: 'hsl(var(--quiz-category-text))' 
+        };
     }
   };
 
@@ -120,15 +196,18 @@ export function CategorySelector({
               return (
                 <div 
                   key={category}
-                  className="flex items-center justify-between py-3 pr-3 pl-8 bg-[#161616] cursor-pointer relative overflow-hidden"
-                  style={{ borderRadius: '4px 999px 999px 4px' }}
+                  className="flex items-center justify-between py-3 pr-3 pl-8 cursor-pointer relative overflow-hidden"
+                  style={{ 
+                    borderRadius: '4px 999px 999px 4px',
+                    backgroundColor: colors.cardBg
+                  }}
                   onClick={() => handleCategoryToggle(category)}
                 >
                   {/* Color strip - 8px when unselected, full width when selected */}
                   <div 
                     className={`absolute inset-y-0 left-0 transition-all duration-500 ease-out ${isSelected ? 'w-full' : 'w-2'}`}
                     style={{ 
-                      backgroundColor: colors.bg,
+                      backgroundColor: colors.stripeBg,
                       borderTopLeftRadius: isSelected ? '4px' : '4px',
                       borderBottomLeftRadius: isSelected ? '4px' : '4px',
                       borderTopRightRadius: isSelected ? '999px' : '4px',
