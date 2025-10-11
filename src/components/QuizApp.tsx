@@ -629,7 +629,7 @@ export function QuizApp() {
                       onBgColorChange={isActive ? handleBgColorChange : undefined}
                       disableSwipe={true}
                       useContainerSize={true}
-                      onPrevSlide={isActive ? () => {
+                      onCategoryStripClick={isActive ? () => {
                         // Click on category strip - go to prev horizontal slide in shuffle mode
                         setIsAnimating(true);
                         setDragDirection('horizontal');
@@ -891,7 +891,7 @@ export function QuizApp() {
                           animationClass=""
                           onBgColorChange={isActive ? handleBgColorChange : undefined}
                           disableSwipe={true}
-                          onPrevSlide={isActive ? () => {
+                          onCategoryStripClick={isActive ? () => {
                             // Click on category strip - go to prev horizontal slide (category)
                             setIsAnimating(true);
                             setDragDirection('horizontal');
@@ -904,6 +904,21 @@ export function QuizApp() {
                               setDragDirection(null);
                             }, 350);
                             setTimeout(() => setIsHorizontalSliding(false), 350);
+                          } : undefined}
+                          onTopClick={isActive ? () => {
+                            // Click on top area - go to prev vertical slide (question) - default mode only
+                            const currentCategory = displayCategories[currentCategoryIndex];
+                            const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
+                            setIsAnimating(true);
+                            setDragDirection('vertical');
+                            setQuestionIndicesByCategory(prev => ({
+                              ...prev,
+                              [currentCategory]: ((prev[currentCategory] || 0) - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length
+                            }));
+                            setTimeout(() => {
+                              setIsAnimating(false);
+                              setDragDirection(null);
+                            }, 350);
                           } : undefined}
                         />
                       </div>

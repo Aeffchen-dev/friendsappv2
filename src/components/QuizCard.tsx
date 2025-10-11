@@ -14,10 +14,11 @@ interface QuizCardProps {
   onBgColorChange?: (bgClass: string) => void;
   disableSwipe?: boolean;
   useContainerSize?: boolean;
-  onPrevSlide?: () => void;
+  onCategoryStripClick?: () => void;
+  onTopClick?: () => void;
 }
 
-export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '', onBgColorChange, disableSwipe = false, useContainerSize = false, onPrevSlide }: QuizCardProps) {
+export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '', onBgColorChange, disableSwipe = false, useContainerSize = false, onCategoryStripClick, onTopClick }: QuizCardProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [mouseStart, setMouseStart] = useState<number | null>(null);
@@ -605,13 +606,13 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
-      {/* Category Strip - clickable to go to prev slide */}
+      {/* Category Strip - clickable to go to prev horizontal slide */}
       <div 
-        className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10 ${onPrevSlide ? 'cursor-pointer' : ''}`}
+        className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10 ${onCategoryStripClick ? 'cursor-pointer' : ''}`}
         onClick={() => {
-          if (onPrevSlide) {
+          if (onCategoryStripClick) {
             triggerHaptic();
-            onPrevSlide();
+            onCategoryStripClick();
           }
         }}
       >
@@ -631,7 +632,22 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       </div>
 
       {/* Main Content */}
-      <div className="ml-8 lg:ml-10 h-full flex flex-col justify-center px-8 lg:pr-10 relative z-10">
+      <div 
+        className="ml-8 lg:ml-10 h-full flex flex-col justify-center px-8 lg:pr-10 relative z-10"
+        onClick={(e) => {
+          if (onTopClick) {
+            const clickY = e.clientY;
+            const cardTop = (e.currentTarget.closest('.relative') as HTMLElement)?.getBoundingClientRect().top || 0;
+            const relativeY = clickY - cardTop;
+            
+            // Top 25% of card triggers vertical prev
+            if (relativeY < (e.currentTarget.closest('.relative') as HTMLElement)?.getBoundingClientRect().height! * 0.25) {
+              triggerHaptic();
+              onTopClick();
+            }
+          }
+        }}
+      >
 
         <div ref={containerRef} className="flex-1 flex items-start justify-start text-left w-full pt-16">
           <h1 
