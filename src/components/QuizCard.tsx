@@ -460,11 +460,19 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
+        // Define distinct position ranges for each cloud to avoid overlap
+        const cloudPositions = [
+          { xMin: 15, xMax: 35, yMin: 15, yMax: 35 },  // Top-left area
+          { xMin: 50, xMax: 75, yMin: 20, yMax: 45 },  // Top-right area
+          { xMin: 25, xMax: 50, yMin: 55, yMax: 75 }   // Bottom-center area
+        ];
+        
         return (
           <>
             {[0, 1, 2].map((cloudIndex) => {
-              const posX = getRandomPos(question.question + 'cloudX' + cloudIndex, 10, 80);
-              const posY = getRandomPos(question.question + 'cloudY' + cloudIndex, 20, 70);
+              const pos = cloudPositions[cloudIndex];
+              const posX = getRandomPos(question.question + 'cloudX' + cloudIndex, pos.xMin, pos.xMax);
+              const posY = getRandomPos(question.question + 'cloudY' + cloudIndex, pos.yMin, pos.yMax);
               
               return (
                 <Cloud 
@@ -665,7 +673,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
       style={{
         left: `${posX}%`,
         top: `${posY}%`,
-        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`
+        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3})`
       }}
     >
       <svg width="80" height="50" viewBox="0 0 70 50">
