@@ -807,14 +807,18 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
     "M26,36 Q16,36 12,26 Q10,16 22,14 Q28,6 38,8 Q48,8 52,18 Q58,24 54,34 Q48,38 38,36 Q32,42 26,36 Z"
   ];
 
-  // Stagger animation duration slightly for each cloud for more organic feel
-  const animationDuration = 35 + cloudIndex * 2; // 35s, 37s, 39s
+  // Each cloud gets unique timing - much more variation
+  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 28, 45);
+  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 40, 65);
 
   // Randomize horizontal movement range
   const horizontalMovement = getRandomValue(questionText + 'cloudMove' + cloudIndex, -8, 12);
   
-  // Randomize blur intensity variation
-  const maxBlur = getRandomValue(questionText + 'cloudBlur' + cloudIndex, 1.5, 3.5);
+  // Reduced blur intensity
+  const maxBlur = getRandomValue(questionText + 'cloudBlur' + cloudIndex, 0.3, 0.8);
+  
+  // Create seamless loop: add first shape at the end
+  const morphValues = [...cloudShapes, cloudShapes[0]].join(';');
   
   return (
     <div 
@@ -823,7 +827,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
         left: `${posX}%`,
         top: `${posY}%`,
         transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3})`,
-        animation: `cloudFloat-${cloudIndex} ${animationDuration}s ease-in-out infinite`,
+        animation: `cloudFloat-${cloudIndex} ${floatDuration}s ease-in-out infinite`,
       }}
     >
       <style>
@@ -835,7 +839,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
             }
             25% { 
               transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement}px);
-              filter: blur(${maxBlur * 0.7}px);
+              filter: blur(${maxBlur * 0.6}px);
             }
             50% { 
               transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 1.5}px);
@@ -843,7 +847,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
             }
             75% { 
               transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 0.5}px);
-              filter: blur(${maxBlur * 0.4}px);
+              filter: blur(${maxBlur * 0.3}px);
             }
           }
         `}
@@ -855,11 +859,11 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
         >
           <animate
             attributeName="d"
-            values={cloudShapes.join(';')}
-            dur={`${animationDuration}s`}
+            values={morphValues}
+            dur={`${morphDuration}s`}
             repeatCount="indefinite"
             calcMode="spline"
-            keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
+            keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
           />
         </path>
       </svg>
