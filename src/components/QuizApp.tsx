@@ -139,6 +139,7 @@ export function QuizApp() {
     setDragStartY(e.clientY);
     setDragOffset(0);
     setHorizontalLock(false);
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch {}
   };
 
   const handleDragMove = (e: React.PointerEvent) => {
@@ -147,8 +148,8 @@ export function QuizApp() {
     const deltaX = e.clientX - dragStartX;
     const deltaY = e.clientY - dragStartY;
     
-    // Deadzone before determining intent (20px)
-    const deadzone = 20;
+    // Deadzone before determining intent (30px)
+    const deadzone = 30;
     const totalDrag = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     
     if (!horizontalLock && totalDrag > deadzone) {
@@ -156,13 +157,16 @@ export function QuizApp() {
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         setHorizontalLock(true);
       } else {
-        // Vertical scroll - cancel drag
+        // Vertical scroll - cancel drag and reset offset
         setIsDragging(false);
+        setDragOffset(0);
         return;
       }
     }
     
     if (horizontalLock) {
+      // Prevent scrolling while horizontally dragging
+      e.preventDefault();
       // Clamp offset to ±viewport width
       const maxOffset = window.innerWidth;
       const clampedOffset = Math.max(-maxOffset, Math.min(maxOffset, deltaX));
@@ -173,7 +177,7 @@ export function QuizApp() {
   const handleDragEnd = () => {
     if (!isDragging) return;
     
-    const threshold = 120; // Increased threshold for more deliberate swipes
+    const threshold = 80; // 80px drag threshold (user preference)
     
     setIsDragging(false);
     setIsAnimating(true);
@@ -333,7 +337,7 @@ export function QuizApp() {
       {/* Main Quiz Container */}
       <div 
         className="flex-1 flex justify-center items-center overflow-hidden relative z-10" 
-        style={{ width: '100vw', height: '100vh' }}
+        style={{ width: '100vw', height: '100vh', touchAction: 'pan-y' }}
         onPointerDown={handleDragStart}
         onPointerMove={handleDragMove}
         onPointerUp={handleDragEnd}
