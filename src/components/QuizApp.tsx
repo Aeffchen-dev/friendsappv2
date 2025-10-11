@@ -518,19 +518,6 @@ export function QuizApp() {
           </div>
         )}
       </div>
-        
-      {/* Bottom Link - Always visible */}
-      <div className="app-footer flex-shrink-0 h-5 relative z-10">
-        <div className="flex justify-center items-center px-4 h-full">
-          <a 
-            href="mailto:hello@relationshipbydesign.de?subject=Friends%20App%20Frage" 
-            className={`${headerTextColor} font-normal text-xs transition-colors duration-500`}
-            style={{fontSize: '14px', lineHeight: '20px'}}
-          >
-            Frage einreichen
-          </a>
-        </div>
-      </div>
       
       <CategorySelector
         open={categorySelectorOpen}
