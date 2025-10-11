@@ -283,10 +283,17 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
 
   const categoryColors = getCategoryColors(question.category);
 
-  // Notify parent about background color change
+  // Notify parent about background color change and update iOS Safari theme color
   useEffect(() => {
     if (onBgColorChange) {
       onBgColorChange(categoryColors.bgDark);
+      
+      // Update theme-color meta tag for iOS Safari status bar
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (metaThemeColor) {
+        const bgColorVar = categoryColors.bgDark.replace('bg-', '');
+        metaThemeColor.setAttribute('content', `hsl(var(--${bgColorVar}))`);
+      }
     }
   }, [categoryColors.bgDark, onBgColorChange]);
 
