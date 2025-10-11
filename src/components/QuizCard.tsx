@@ -538,6 +538,34 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
+      {/* Wavy lines in background - only for "connection" category */}
+      {question.category.toLowerCase() === 'connection' && (() => {
+        const getRandomValue = (seed: string, min: number, max: number) => {
+          let hash = 0;
+          for (let i = 0; i < seed.length; i++) {
+            hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+            hash = hash & hash;
+          }
+          const normalized = Math.abs(hash % 1000) / 1000;
+          return min + normalized * (max - min);
+        };
+        
+        // Generate 2-3 wavy lines per card
+        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 2, 4));
+        
+        return (
+          <>
+            {Array.from({ length: numLines }).map((_, index) => (
+              <WavyLine 
+                key={index}
+                questionText={question.question}
+                lineIndex={index}
+              />
+            ))}
+          </>
+        );
+      })()}
+
       {/* Category Strip */}
       <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10`}>
         <div className="transform -rotate-90 whitespace-nowrap">
@@ -883,6 +911,68 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
           stroke="#9FDCE3"
           strokeWidth="100"
           strokeLinecap="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
+// Wavy Line component with random organic paths
+interface WavyLineProps {
+  questionText: string;
+  lineIndex: number;
+}
+
+function WavyLine({ questionText, lineIndex }: WavyLineProps) {
+  const getRandomValue = (seed: string, min: number, max: number) => {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+      hash = hash & hash;
+    }
+    const normalized = Math.abs(hash % 1000) / 1000;
+    return min + normalized * (max - min);
+  };
+  
+  // Generate random wavy path using quadratic curves
+  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -50, 100);
+  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, -20, 120);
+  
+  // Generate multiple wave segments
+  const numWaves = Math.floor(getRandomValue(questionText + 'numWaves' + lineIndex, 3, 6));
+  let pathData = `M ${startX} ${startY}`;
+  
+  let currentX = startX;
+  let currentY = startY;
+  
+  for (let i = 0; i < numWaves; i++) {
+    const cpX = currentX + getRandomValue(questionText + 'cpX' + lineIndex + i, 20, 60);
+    const cpY = currentY + getRandomValue(questionText + 'cpY' + lineIndex + i, -40, 40);
+    const endX = cpX + getRandomValue(questionText + 'endX' + lineIndex + i, 20, 60);
+    const endY = cpY + getRandomValue(questionText + 'endY' + lineIndex + i, -40, 40);
+    
+    pathData += ` Q ${cpX} ${cpY}, ${endX} ${endY}`;
+    currentX = endX;
+    currentY = endY;
+  }
+  
+  return (
+    <div className="absolute inset-0 z-0 overflow-visible">
+      <svg 
+        className="absolute inset-0" 
+        width="100%" 
+        height="100%" 
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        style={{ overflow: 'visible' }}
+      >
+        <path 
+          d={pathData}
+          stroke="#F1A8C6"
+          strokeWidth="8"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </div>
