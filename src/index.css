@@ -181,15 +181,15 @@ All colors MUST be HSL.
     --future-900: 199 89% 10%;
     
     /* Category-specific colors for card backgrounds and text */
-    --quiz-connection-bg: 339 99% 80%;
-    --quiz-connection-text: 0 0% 0%;
-    --quiz-fuck-bg: 18 99% 56%;
-    --quiz-fuck-text: 0 0% 98%;
-    --quiz-identity-bg: 150 57% 43%;
-    --quiz-identity-text: 0 0% 98%;
-    --quiz-party-bg: 58 100% 54%;
-    --quiz-party-text: 0 0% 0%;
-    --quiz-wer-aus-der-runde-bg: 199 97% 40%;
+    --quiz-connection-bg: 21 100% 46%;  /* #eb5200 */
+    --quiz-connection-text: 0 0% 98%;
+    --quiz-fuck-bg: 6 100% 96%;  /* #ffecea */
+    --quiz-fuck-text: 0 0% 0%;
+    --quiz-identity-bg: 229 100% 88%;  /* #c2cdff */
+    --quiz-identity-text: 0 0% 0%;
+    --quiz-party-bg: 236 37% 41%;  /* #424790 */
+    --quiz-party-text: 0 0% 98%;
+    --quiz-wer-aus-der-runde-bg: 21 100% 46%;  /* #eb5200 */
     --quiz-wer-aus-der-runde-text: 0 0% 98%;
     
     /* Additional categories with proper colors */
@@ -221,11 +221,11 @@ All colors MUST be HSL.
     --quiz-future-text: 0 0% 98%;
     
     /* Darker background colors (5% darker than card background) */
-    --quiz-connection-bg-dark: 18 99% 56%;  /* #FE6220 */
-    --quiz-fuck-bg-dark: 18 100% 68%;  /* #FF8B5F */
-    --quiz-identity-bg-dark: 174 100% 14%;  /* #004639 */
-    --quiz-party-bg-dark: 5 8% 14%;  /* #272222 */
-    --quiz-wer-aus-der-runde-bg-dark: 199 100% 18%;  /* #00415E */
+    --quiz-connection-bg-dark: 335 71% 80%;  /* #f1a8c6 */
+    --quiz-fuck-bg-dark: 21 100% 46%;  /* #eb5200 */
+    --quiz-identity-bg-dark: 6 100% 96%;  /* #ffecea */
+    --quiz-party-bg-dark: 6 100% 96%;  /* #ffecea */
+    --quiz-wer-aus-der-runde-bg-dark: 229 100% 88%;  /* #c2cdff */
     --quiz-friends-bg-dark: 120 100% 45%;
     --quiz-self-reflection-bg-dark: 195 100% 45%;
     --quiz-family-bg-dark: 30 100% 65%;
