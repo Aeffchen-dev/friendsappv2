@@ -424,8 +424,8 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffsetH + dragGapOffsetH}px)) scale(${scaleH}) rotateY(${rotateY}deg)`,
-                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 350ms ease-in-out' : 'none',
-                    animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
+                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 350ms ease-out' : 'none',
+                    animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
                   }}
@@ -465,8 +465,8 @@ export function QuizApp() {
                           width: '80vw',
                           height: '80vh',
                           transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapOffsetV + dragGapOffsetV}px)) scale(${scale})`,
-                          transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 350ms ease-in-out' : 'none',
-                          animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
+                          transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 350ms ease-out' : 'none',
+                          animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
                           willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto'
                         }}
