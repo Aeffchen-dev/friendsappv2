@@ -799,7 +799,10 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
   const rotation = getRandomValue(questionText + 'smileyRot', -15, 15);
   const scale = getRandomValue(questionText + 'smileyScale', 0.5, 1.6);
   const eyeDistance = getRandomValue(questionText + 'eyeDistance', 12, 18);
-  const eyeSize = getRandomValue(questionText + 'eyeSize', 2.5, 4);
+  
+  // Check if this is the drugs question - make eyes HUGE
+  const isDrugsQuestion = questionText.toLowerCase().includes('drogen genommen');
+  const eyeSize = isDrugsQuestion ? getRandomValue(questionText + 'eyeSize', 8, 12) : getRandomValue(questionText + 'eyeSize', 2.5, 4);
   const eyeYPos = getRandomValue(questionText + 'eyeY', 38, 43);
   
   // Different happy mouth expressions - more variety
