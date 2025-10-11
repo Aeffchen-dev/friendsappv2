@@ -986,7 +986,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
         <path 
           d={pathData}
           stroke="#F1A8C6"
-          strokeWidth="32"
+          strokeWidth="16"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
