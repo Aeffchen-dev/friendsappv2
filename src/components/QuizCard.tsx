@@ -912,10 +912,20 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish-shaped circle outline - ensure visibility on card
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -20, 120);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -20, 120);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 15, 30);
+  // Create smooth starfish with grid-based positioning to avoid overlap
+  // Divide card into grid cells and place one shape per cell
+  const gridCols = 4;
+  const gridRows = 3;
+  const cellWidth = 100 / gridCols;
+  const cellHeight = 100 / gridRows;
+  
+  const cellIndex = lineIndex % (gridCols * gridRows);
+  const col = cellIndex % gridCols;
+  const row = Math.floor(cellIndex / gridCols);
+  
+  const centerX = (col * cellWidth) + (cellWidth / 2) + getRandomValue(questionText + 'offsetX' + lineIndex, -cellWidth * 0.3, cellWidth * 0.3);
+  const centerY = (row * cellHeight) + (cellHeight / 2) + getRandomValue(questionText + 'offsetY' + lineIndex, -cellHeight * 0.3, cellHeight * 0.3);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 8, 15);
   const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.2, 0.45);
   const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
   
