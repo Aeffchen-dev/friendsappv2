@@ -71,37 +71,45 @@ export function CurvyLinesPattern({ textColor }: PatternProps) {
         viewBox="0 0 500 500"
         preserveAspectRatio="none"
       >
-        {/* More curvy horizontal waves */}
+        {/* Varied curvy horizontal waves with different amplitudes */}
         <path 
-          d="M -50 80 Q 75 20, 150 80 Q 225 140, 300 80 Q 375 20, 450 80 Q 525 140, 600 80" 
+          d="M -50 60 Q 75 10, 150 60 Q 225 110, 300 60 Q 375 10, 450 60 Q 525 110, 600 60" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="70"
+          strokeWidth="50"
           strokeLinecap="round"
         />
         <path 
-          d="M -50 200 Q 75 140, 150 200 Q 225 260, 300 200 Q 375 140, 450 200 Q 525 260, 600 200" 
+          d="M -50 150 Q 50 110, 125 150 Q 200 190, 275 150 Q 350 110, 425 150 Q 500 190, 600 150" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="70"
+          strokeWidth="50"
           strokeLinecap="round"
         />
         <path 
-          d="M -50 320 Q 75 260, 150 320 Q 225 380, 300 320 Q 375 260, 450 320 Q 525 380, 600 320" 
+          d="M -50 240 Q 100 170, 175 240 Q 250 310, 325 240 Q 400 170, 475 240 Q 550 310, 600 240" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="70"
+          strokeWidth="50"
           strokeLinecap="round"
         />
         <path 
-          d="M -50 440 Q 75 380, 150 440 Q 225 500, 300 440 Q 375 380, 450 440 Q 525 500, 600 440" 
+          d="M -50 320 Q 60 280, 140 320 Q 220 360, 300 320 Q 380 280, 460 320 Q 540 360, 600 320" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="70"
+          strokeWidth="50"
+          strokeLinecap="round"
+        />
+        <path 
+          d="M -50 410 Q 90 340, 160 410 Q 230 480, 310 410 Q 390 340, 470 410 Q 550 480, 600 410" 
+          fill="none"
+          className={textColor}
+          stroke="currentColor"
+          strokeWidth="50"
           strokeLinecap="round"
         />
       </svg>
