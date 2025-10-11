@@ -466,7 +466,7 @@ export function QuizApp() {
             className={`${headerTextColor} font-normal text-xs align-baseline transition-colors duration-500 cursor-pointer`}
             style={{fontSize: '14px'}}
           >
-            {isShuffleMode ? 'Kategorien wählen' : 'Kategorien mischen'}
+            {isShuffleMode ? 'Kategorien sortieren' : 'Kategorien mischen'}
           </button>
         </div>
       </div>
