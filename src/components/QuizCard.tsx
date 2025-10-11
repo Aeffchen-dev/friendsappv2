@@ -26,6 +26,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [pupilDirection, setPupilDirection] = useState<'left' | 'right' | null>(null);
   const [isBlinking, setIsBlinking] = useState(false);
+  const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 });
   
   const textRef = useRef<HTMLHeadingElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -51,6 +52,17 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
     }, 15000 + Math.random() * 15000); // Blink every 15-30 seconds
 
     return () => clearInterval(blinkInterval);
+  }, []);
+
+  // Synchronized pupil movement
+  useEffect(() => {
+    const moveInterval = setInterval(() => {
+      const randomX = (Math.random() - 0.5) * 8; // ±4px movement
+      const randomY = (Math.random() - 0.5) * 8; // ±4px movement
+      setPupilOffset({ x: randomX, y: randomY });
+    }, 2000 + Math.random() * 3000); // Move every 2-5 seconds
+
+    return () => clearInterval(moveInterval);
   }, []);
 
   // Process text to handle long words individually
@@ -437,6 +449,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
               isBlinking={isBlinking} 
               questionText={question.question}
               eyeIndex={0}
+              pupilOffset={pupilOffset}
             />
             <Eye 
               mousePosition={mousePosition} 
@@ -444,6 +457,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
               isBlinking={isBlinking} 
               questionText={question.question}
               eyeIndex={1}
+              pupilOffset={pupilOffset}
             />
           </div>
         );
@@ -617,9 +631,10 @@ interface EyeProps {
   isBlinking: boolean;
   questionText: string;
   eyeIndex: number;
+  pupilOffset: { x: number; y: number };
 }
 
-function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex }: EyeProps) {
+function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex, pupilOffset }: EyeProps) {
   const eyeRef = useRef<HTMLDivElement>(null);
   
   // Generate consistent random values based on question text and eye index
@@ -685,8 +700,8 @@ function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex
     const distanceY = eyeHeight * 0.15; // Max vertical pupil movement
 
     return {
-      x: Math.cos(angle) * distanceX,
-      y: Math.sin(angle) * distanceY
+      x: Math.cos(angle) * distanceX + pupilOffset.x,
+      y: Math.sin(angle) * distanceY + pupilOffset.y
     };
   };
 
@@ -706,7 +721,7 @@ function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex
       }}
     >
       <div
-        className="absolute bg-black rounded-full transition-all duration-75"
+        className="absolute bg-black rounded-full transition-all duration-1000 ease-in-out"
         style={{
           width: `${pupilSize}px`,
           height: `${pupilSize}px`,
