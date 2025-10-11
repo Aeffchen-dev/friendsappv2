@@ -934,12 +934,12 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish-shaped circle outline - with more amplitude and rounded tips
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -10, 110);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -10, 110);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 15, 25);
-  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.25, 0.4);
-  const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 5, 6));
+  // Create smooth starfish-shaped circle outline - with random variation per shape
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -20, 120);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -20, 120);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 12, 30);
+  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.2, 0.45);
+  const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
   
   let pathData = '';
   
