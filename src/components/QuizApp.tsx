@@ -517,10 +517,10 @@ export function QuizApp() {
               const maxCardWidthPx = 600;
               const actualCardWidth = isMobile ? cardWidthVw : Math.min(cardWidthVw, maxCardWidthPx);
               
-              // For desktop, position -1 (prev card) at activeCardWidth + 16px + 24px
+              // For desktop, position -1 (prev card) at activeCardWidth + 16px + 24px + 16px
               let translateXPx;
               if (!isMobile && position === -1) {
-                translateXPx = -(actualCardWidth + 40); // 16px + 24px = 40px
+                translateXPx = -(actualCardWidth + 56); // 16px + 24px + 16px = 56px
               } else {
                 const totalCardWidth = actualCardWidth + baseCardSpacingPx;
                 translateXPx = position * totalCardWidth;
