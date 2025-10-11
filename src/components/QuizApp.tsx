@@ -472,15 +472,14 @@ export function QuizApp() {
                     const totalCardHeight = cardHeight + vCardSpacingPx; // Total height including spacing
                     const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
                     
-                    // Calculate position - adjust for mobile portrait screens
+                    // Calculate position - show next card's top at 90vh (10vh visible)
                     let baseTranslateY;
-                    const isPortraitMobile = window.innerHeight > window.innerWidth && window.innerWidth < 768;
                     
                     if (qPosition === -1) {
                       // Move previous card completely out of viewport to the top
                       baseTranslateY = -110; // Moves card fully above viewport
-                    } else if (qPosition === 1 && isPortraitMobile) {
-                      // Show exactly 10vh of the next card (top offset 10vh + translate 80vh = 90vh)
+                    } else if (qPosition === 1) {
+                      // Next card's top at 90vh (since top offset is 10vh, translate by 80vh)
                       baseTranslateY = 80;
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
