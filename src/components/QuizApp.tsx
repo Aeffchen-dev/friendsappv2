@@ -134,8 +134,8 @@ export function QuizApp() {
         setTimeout(() => {
           setAnimationClass('');
           setLogoSqueezeLeft(false);
-        }, 500);
-      }, 300);
+        }, 600);
+      }, 200);
     }
   };
 
@@ -149,8 +149,8 @@ export function QuizApp() {
         setTimeout(() => {
           setAnimationClass('');
           setLogoSqueezeRight(false);
-        }, 500);
-      }, 300);
+        }, 600);
+      }, 200);
     }
   };
 
