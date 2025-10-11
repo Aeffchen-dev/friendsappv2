@@ -381,10 +381,6 @@ export function QuizApp() {
 
   const handleModalClose = () => {
     setCategorySelectorOpen(false);
-    // When closing modal from shuffle mode button, switch back to category mode
-    if (isShuffleMode) {
-      setIsShuffleMode(false);
-    }
   };
 
   // Get header color for each category
