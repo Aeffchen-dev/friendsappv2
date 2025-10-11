@@ -352,10 +352,11 @@ export function QuizApp() {
           <img 
             src="/assets/logo.png" 
             alt="Logo" 
-            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''} transition-all duration-500`}
+            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''} ${headerTextColor} transition-all duration-500`}
             onClick={handleLogoClick}
             style={{
-              filter: headerTextColor.includes('900') ? 'brightness(0) saturate(100%)' : 'none'
+              filter: 'brightness(0) saturate(100%)',
+              opacity: 1
             }}
           />
           <button 
