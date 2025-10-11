@@ -397,26 +397,8 @@ export function QuizApp() {
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
               const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
-              // Horizontal scale - smooth interpolation during drag
-              let scaleH = 1;
-              const dragProgress = isDragging && dragDirection === 'horizontal' 
-                ? Math.min(1, Math.abs(dragOffsetX) / 100) // Normalize drag to 0-1
-                : 0;
-              
-              if (isCategoryActive) {
-                // Active card: scale from 1 to 0.9
-                scaleH = isDragging && dragDirection === 'horizontal'
-                  ? 1 - (dragProgress * 0.1) // Interpolate 1 → 0.9
-                  : 1;
-              } else if (catPosition === -1 || catPosition === 1) {
-                // Next/prev cards: scale from 0.9 to 1
-                scaleH = isDragging && dragDirection === 'horizontal'
-                  ? 0.9 + (dragProgress * 0.1) // Interpolate 0.9 → 1
-                  : 0.9;
-              } else {
-                // Cards further away stay at 0.9
-                scaleH = 0.9;
-              }
+              // Horizontal scale - all cards at scale 1
+              const scaleH = 1;
               
               // Horizontal rotation - rotate towards outside during transition
               let rotateZ = 0;
@@ -462,23 +444,8 @@ export function QuizApp() {
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 8 : 0;
                     
-                    // Vertical scale
-                    let scale = 1;
-                    if (isActive) {
-                      // Active card stays at scale 1 normally, scales to 0.9 during transition
-                      if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
-                        scale = 0.9;
-                      }
-                    } else if (qPosition === 1) {
-                      // Next card stays at 0.9, scales to 1 during transition
-                      scale = 0.9;
-                      if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
-                        scale = 1;
-                      }
-                    } else {
-                      // Cards further away stay at 0.9
-                      scale = 0.9;
-                    }
+                    // Vertical scale - all cards at scale 1
+                    const scale = 1;
                     
                     return (
                       <div
