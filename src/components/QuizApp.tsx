@@ -411,8 +411,8 @@ export function QuizApp() {
         {loading ? (
           <div className="h-full flex items-center justify-center">
             <svg 
-              width="64" 
-              height="64" 
+              width="48" 
+              height="48" 
               viewBox="0 0 64 64" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg"
@@ -422,9 +422,9 @@ export function QuizApp() {
               <circle cx="22" cy="26" r="3" fill="#000000" />
               <circle cx="42" cy="26" r="3" fill="#000000" />
               <path 
-                d="M 20 40 Q 32 50 44 40" 
+                d="M 18 38 Q 32 54 46 38" 
                 stroke="#000000" 
-                strokeWidth="3" 
+                strokeWidth="2" 
                 strokeLinecap="round" 
                 fill="none"
               />
