@@ -481,9 +481,9 @@ export function QuizApp() {
                       // Move previous card completely out of viewport to the top
                       baseTranslateY = -110; // Moves card fully above viewport
                     } else if (qPosition === 1) {
-                      // Next card positioned with exactly 32px gap after active card
-                      // Active card height (80vh) + 32px gap
-                      const gapVh = (32 / window.innerHeight) * 100;
+                      // Next card positioned with exactly 85px gap after active card
+                      // Active card height (80vh) + 85px gap
+                      const gapVh = (85 / window.innerHeight) * 100;
                       baseTranslateY = 80 + gapVh;
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
