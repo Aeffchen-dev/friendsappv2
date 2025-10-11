@@ -58,17 +58,20 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       if (!containerRef.current) return;
 
       const words = question.question.split(' ');
-      const containerWidth = containerRef.current.getBoundingClientRect().width;
+      const availableWidth = (textRef.current?.getBoundingClientRect().width ?? containerRef.current.getBoundingClientRect().width);
       
-      // Create temporary element to measure word width with exact same styles
+      // Create temporary element to measure word width with exact same computed styles
       const tempElement = document.createElement('span');
+      const computed = textRef.current ? window.getComputedStyle(textRef.current) : null;
       tempElement.style.cssText = `
         position: absolute;
         visibility: hidden;
         white-space: nowrap;
-        font-size: 3rem;
-        font-family: inherit;
-        font-weight: normal;
+        font-size: ${computed?.fontSize ?? 'inherit'};
+        font-family: ${computed?.fontFamily ?? 'inherit'};
+        font-weight: ${computed?.fontWeight ?? 'inherit'};
+        letter-spacing: ${computed?.letterSpacing ?? 'normal'};
+        text-transform: ${computed?.textTransform ?? 'none'};
         padding: 0;
         margin: 0;
         border: 0;
@@ -83,7 +86,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         
         // Only apply hyphenation if word is actually wider than available space
         // Use full container width minus some padding buffer
-        const needsHyphenation = wordWidth > (containerWidth - 20);
+        const needsHyphenation = wordWidth > (availableWidth - 20);
         
         return (
           <span 
@@ -423,6 +426,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           <h1 
             ref={textRef}
             className={`text-3xl md:text-4xl lg:text-[2.625rem] font-bricolage font-bold ${categoryColors.text} leading-[1.2] lg:leading-[1.1] w-full max-w-full`}
+            style={{ hyphens: 'manual', overflowWrap: 'normal', wordBreak: 'normal' }}
           >
             {processedText.length > 0 ? processedText : question.question}
           </h1>
