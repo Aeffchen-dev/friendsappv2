@@ -422,7 +422,7 @@ export function QuizApp() {
               <circle cx="22" cy="26" r="3" fill="#000000" />
               <circle cx="42" cy="26" r="3" fill="#000000" />
               <path 
-                d="M 18 38 Q 32 54 46 38" 
+                d="M 22 40 Q 32 48 42 40" 
                 stroke="#000000" 
                 strokeWidth="2" 
                 strokeLinecap="round" 
