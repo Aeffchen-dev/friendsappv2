@@ -222,7 +222,7 @@ export function CategorySelector({
                     style={{ color: isSelected ? colors.text : 'white' }}>
                     {category}
                   </span>
-                  <div onClick={(e) => e.stopPropagation()}>
+                  <div>
                     <div
                       className="relative cursor-pointer"
                       onClick={() => {

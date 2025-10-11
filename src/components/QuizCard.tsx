@@ -612,7 +612,6 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         data-clickable="true"
         onClick={(e) => {
           if (onCategoryStripClick) {
-            e.stopPropagation();
             triggerHaptic();
             onCategoryStripClick();
           }
@@ -639,7 +638,6 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         data-clickable="true"
         onClick={(e) => {
           if (onTopClick) {
-            e.stopPropagation();
             const clickY = e.clientY;
             const cardTop = (e.currentTarget.closest('.relative') as HTMLElement)?.getBoundingClientRect().top || 0;
             const relativeY = clickY - cardTop;

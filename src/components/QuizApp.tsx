@@ -571,7 +571,6 @@ export function QuizApp() {
                     
                     if (position === 1) {
                       // Click on next card - go next with animation
-                      e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeLeft(true);
@@ -583,7 +582,6 @@ export function QuizApp() {
                       }, 350);
                     } else if (position === -1) {
                       // Click on prev card - go prev with animation
-                      e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeRight(true);
@@ -600,7 +598,6 @@ export function QuizApp() {
                       
                       if (clickX < windowWidth * 0.3) {
                         // Left 30% of screen - go to prev
-                        e.stopPropagation();
                         setIsAnimating(true);
                         setDragDirection('horizontal');
                         setLogoSqueezeRight(true);
@@ -725,7 +722,6 @@ export function QuizApp() {
                     
                     if (!isCategoryActive && catPosition === 1 && isDesktop) {
                       // Desktop: Click on next category card with animation
-                      e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeLeft(true);
@@ -741,7 +737,6 @@ export function QuizApp() {
                       }, 350);
                     } else if (!isCategoryActive && catPosition === -1 && isDesktop) {
                       // Desktop: Click on prev category card with animation
-                      e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeRight(true);
@@ -762,7 +757,6 @@ export function QuizApp() {
                       
                       if (clickX < windowWidth * 0.3) {
                         // Left 30% of screen - go to prev category
-                        e.stopPropagation();
                         setIsAnimating(true);
                         setDragDirection('horizontal');
                         setLogoSqueezeRight(true);
@@ -846,7 +840,6 @@ export function QuizApp() {
                         className="absolute flex items-center justify-center"
                         onClick={(e) => {
                           if (isCategoryActive && !isActive) {
-                            e.stopPropagation(); // Prevent category click
                             const currentCategory = displayCategories[currentCategoryIndex];
                             const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
                             
@@ -876,7 +869,6 @@ export function QuizApp() {
                               }, 350);
                             }
                           } else if (isActive) {
-                            e.stopPropagation(); // Prevent category click
                             const clickY = e.clientY;
                             const headerHeight = window.innerWidth >= 768 ? 64 : 48;
                             
