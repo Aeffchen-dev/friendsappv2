@@ -426,8 +426,8 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform; cards are centered with 5vh padding inside each category container
-                    const cardHeight = 90; // 90vh card inside 100vh container
+                    // Calculate vertical transform; cards are 80vh to show 10% of adjacent cards
+                    const cardHeight = 80; // 80vh card inside 100vh container
                     const baseTranslateY = qPosition * cardHeight;
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     const gapYPx = qPosition * 16;
@@ -454,10 +454,10 @@ export function QuizApp() {
                         className="absolute flex items-center justify-center"
                         style={{
                           position: 'absolute',
-                          top: '5vh',
-                          left: '5vw',
-                          width: '90vw',
-                          height: '90vh',
+                          top: '10vh',
+                          left: '10vw',
+                          width: '80vw',
+                          height: '80vh',
                           transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapYPx}px)) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 500ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
