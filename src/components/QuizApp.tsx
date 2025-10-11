@@ -415,8 +415,8 @@ export function QuizApp() {
               const isCategoryActive = catPosition === 0;
               
               // Calculate horizontal transform - equal spacing between all cards (32px)
-              const hCardSpacingPx = 32; // 32px spacing between cards
-              const hCardWidth = window.innerWidth - 64; // Card width: 100vw - 32px left - 32px right
+              const hCardSpacingPx = 32; // 32px spacing
+              const hCardWidth = window.innerWidth * 0.8; // Card width (80vw)
               const totalCardWidth = hCardWidth + hCardSpacingPx; // Total width including spacing
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
               const baseTranslateX = catPosition * cardSpacingVw;
@@ -468,7 +468,7 @@ export function QuizApp() {
                     
                     // Calculate vertical transform - fixed spacing between cards (32px)
                     const vCardSpacingPx = 32; // 32px gap between cards
-                    const cardHeight = window.innerHeight - 64; // Card height: 100vh - 32px top - 32px bottom
+                    const cardHeight = window.innerHeight * 0.8; // Card height (80vh)
                     const totalCardHeight = cardHeight + vCardSpacingPx; // Total height including spacing
                     const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
                     
@@ -497,10 +497,10 @@ export function QuizApp() {
                         className="absolute flex items-center justify-center"
                         style={{
                           position: 'absolute',
-                          top: '32px',
-                          left: '32px',
-                          width: 'calc(100vw - 64px)',
-                          height: 'calc(100vh - 64px)',
+                          top: '10vh',
+                          left: '16px',
+                          width: '80vw',
+                          height: '80vh',
                           transform: `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                           animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
