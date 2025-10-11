@@ -471,9 +471,10 @@ export function QuizApp() {
                     } else {
                       baseTranslateY = qPosition * 80;
                     }
-                    const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 80 : 0;
-                    const dragTranslateYPx = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardSpacingPx : 0;
-                    
+                    // Only apply vertical drag to the active category
+                    const dragTranslateY = (isCategoryActive && isDragging && dragDirection === 'vertical') ? (dragOffsetY / window.innerHeight) * 80 : 0;
+                    const dragTranslateYPx = (isCategoryActive && isDragging && dragDirection === 'vertical') ? (dragOffsetY / window.innerHeight) * cardSpacingPx : 0;
+
                     // Vertical scale - all cards at scale 1
                     const scale = 1;
                     
