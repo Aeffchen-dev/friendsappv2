@@ -964,11 +964,11 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.9, amplitude * 1.3);
     
     const cp1X = currentX + segmentLength * 0.25;
-    const cp1Y = currentY + (curveDirection * curveAmp * 0.8);
+    const cp1Y = currentY + (curveDirection * curveAmp * 1.4);
     const cp2X = currentX + segmentLength * 0.75;
-    const cp2Y = currentY + (curveDirection * curveAmp * 1.1);
+    const cp2Y = currentY + (curveDirection * curveAmp * 1.6);
     const endX = currentX + segmentLength;
-    const endY = currentY + (curveDirection * curveAmp * 0.2);
+    const endY = currentY + (curveDirection * curveAmp * 0.3);
     
     pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
     currentX = endX;
