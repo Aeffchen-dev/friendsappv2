@@ -46,7 +46,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
     const blinkInterval = setInterval(() => {
       setIsBlinking(true);
       setTimeout(() => setIsBlinking(false), 150);
-    }, 5000 + Math.random() * 7000); // Blink every 5-12 seconds
+    }, 15000 + Math.random() * 15000); // Blink every 15-30 seconds
 
     return () => clearInterval(blinkInterval);
   }, []);
