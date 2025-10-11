@@ -455,7 +455,7 @@ export function QuizApp() {
                         style={{
                           position: 'absolute',
                           top: '10vh',
-                          left: '10vw',
+                          left: '16px',
                           width: '80vw',
                           height: '80vh',
                           transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapYPx}px)) scale(${scale})`,
