@@ -812,26 +812,34 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
     "M23,31 Q21,27 25,24 Q23,20 28,18 Q31,14 37,16 Q41,12 47,15 Q53,13 57,18 Q61,16 65,20 Q68,24 66,28 Q69,32 65,35 Q67,39 61,40 Q58,44 51,42 Q47,46 41,44 Q35,46 31,42 Q25,44 21,40 Q18,36 21,31 Z"
   ];
 
-  // Each cloud gets unique timing - much more variation
-  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 28, 45);
-  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 40, 65);
+  // Each cloud gets unique timing - strong variation
+  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 20, 55);
+  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 35, 80);
 
   // Randomize horizontal movement range AND direction for each cloud
   const movementDirection = getRandomValue(questionText + 'cloudDir' + cloudIndex, 0, 1) > 0.5 ? 1 : -1;
-  const horizontalMovement = getRandomValue(questionText + 'cloudMove' + cloudIndex, 8, 15) * movementDirection;
+  const horizontalMovement = getRandomValue(questionText + 'cloudMove' + cloudIndex, 5, 20) * movementDirection;
   
-  // Reduced blur intensity - different for each cloud
-  const maxBlur = getRandomValue(questionText + 'cloudBlur' + cloudIndex, 0.3, 0.8);
+  // Different blur intensity for each cloud
+  const maxBlur = getRandomValue(questionText + 'cloudBlur' + cloudIndex, 0.2, 1.2);
   
-  // Random animation delay to desynchronize clouds
-  const animationDelay = getRandomValue(questionText + 'cloudDelay' + cloudIndex, 0, floatDuration * 0.8);
+  // Random animation delay to desynchronize clouds - much larger range
+  const animationDelay = getRandomValue(questionText + 'cloudDelay' + cloudIndex, 0, floatDuration);
   
   // Randomize blur timing for each cloud (different keyframe percentages)
-  const blurPeak1 = getRandomValue(questionText + 'blurPeak1' + cloudIndex, 20, 35);
-  const blurPeak2 = getRandomValue(questionText + 'blurPeak2' + cloudIndex, 55, 70);
+  const blurPeak1 = getRandomValue(questionText + 'blurPeak1' + cloudIndex, 15, 40);
+  const blurPeak2 = getRandomValue(questionText + 'blurPeak2' + cloudIndex, 50, 85);
+  
+  // Random movement pattern variation
+  const moveMultiplier1 = getRandomValue(questionText + 'moveMult1' + cloudIndex, 0.3, 0.8);
+  const moveMultiplier2 = getRandomValue(questionText + 'moveMult2' + cloudIndex, 0.9, 1.5);
+  const moveMultiplier3 = getRandomValue(questionText + 'moveMult3' + cloudIndex, 0.2, 0.6);
   
   // Create seamless loop: add first shape at the end
   const morphValues = [...cloudShapes, cloudShapes[0]].join(';');
+  
+  // Random start shape for more variation
+  const startShapeIndex = Math.floor(getRandomValue(questionText + 'startShape' + cloudIndex, 0, cloudShapes.length));
   
   return (
     <div 
@@ -849,18 +857,18 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
           @keyframes cloudFloat-${cloudIndex} {
             0%, 100% { 
               transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(0px);
-              filter: blur(0px);
+              filter: blur(${maxBlur * 0.1}px);
             }
             ${blurPeak1}% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 0.6}px);
-              filter: blur(${maxBlur * 0.7}px);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * moveMultiplier1}px);
+              filter: blur(${maxBlur * 0.8}px);
             }
             50% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement}px);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * moveMultiplier2}px);
               filter: blur(0px);
             }
             ${blurPeak2}% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 0.4}px);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * moveMultiplier3}px);
               filter: blur(${maxBlur}px);
             }
           }
@@ -868,7 +876,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
       </style>
       <svg width="80" height="50" viewBox="0 0 70 50">
         <path 
-          d={cloudShapes[0]}
+          d={cloudShapes[startShapeIndex]}
           fill="#AFD2EE"
         >
           <animate
@@ -878,6 +886,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
             repeatCount="indefinite"
             calcMode="spline"
             keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
+            begin={`${getRandomValue(questionText + 'morphDelay' + cloudIndex, 0, morphDuration * 0.5)}s`}
           />
         </path>
       </svg>
