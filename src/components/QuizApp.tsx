@@ -539,7 +539,7 @@ export function QuizApp() {
                     style={{
                       position: 'absolute',
                       top: '50%',
-                      left: '10vw',
+                      left: '16px',
                       width: '80vw',
                       height: isMobile 
                         ? 'calc(100svh - 48px - 46px - 16px)' // header + footer + extra spacing
