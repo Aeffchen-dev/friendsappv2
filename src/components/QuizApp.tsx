@@ -420,6 +420,7 @@ export function QuizApp() {
                     height: '100vh',
                     transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffsetH + dragGapOffsetH}px)) scale(${scaleH}) rotateY(${rotateY}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 500ms ease-in-out' : 'none',
+                    animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 500ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
                   }}
@@ -459,6 +460,7 @@ export function QuizApp() {
                           height: '80vh',
                           transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapOffsetV + dragGapOffsetV}px)) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 500ms ease-in-out' : 'none',
+                          animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 500ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
                           willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto'
                         }}
