@@ -435,25 +435,49 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           </h1>
         </div>
 
-        {/* Eyes in bottom 1/4 of card - only for "fuck" category */}
-        {question.category.toLowerCase() === 'fuck' && (
-          <div ref={eyesRef} className="h-1/4 flex items-center justify-center gap-12 pb-8">
-            <Eye 
-              mousePosition={mousePosition} 
-              pupilDirection={pupilDirection} 
-              isBlinking={isBlinking} 
-              questionText={question.question}
-              eyeIndex={0}
-            />
-            <Eye 
-              mousePosition={mousePosition} 
-              pupilDirection={pupilDirection} 
-              isBlinking={isBlinking} 
-              questionText={question.question}
-              eyeIndex={1}
-            />
-          </div>
-        )}
+        {/* Eyes - only for "fuck" category with randomized position */}
+        {question.category.toLowerCase() === 'fuck' && (() => {
+          // Generate consistent random position based on question text
+          const getRandomPos = (seed: string, min: number, max: number) => {
+            let hash = 0;
+            for (let i = 0; i < seed.length; i++) {
+              hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+              hash = hash & hash;
+            }
+            const normalized = Math.abs(hash % 1000) / 1000;
+            return min + normalized * (max - min);
+          };
+          
+          const posX = getRandomPos(question.question + 'posX', 15, 60); // 15% to 60% from left
+          const posY = getRandomPos(question.question + 'posY', 45, 75); // 45% to 75% from top
+          
+          return (
+            <div 
+              ref={eyesRef} 
+              className="absolute flex items-center justify-center gap-12"
+              style={{
+                left: `${posX}%`,
+                top: `${posY}%`,
+                transform: 'translate(-50%, -50%)'
+              }}
+            >
+              <Eye 
+                mousePosition={mousePosition} 
+                pupilDirection={pupilDirection} 
+                isBlinking={isBlinking} 
+                questionText={question.question}
+                eyeIndex={0}
+              />
+              <Eye 
+                mousePosition={mousePosition} 
+                pupilDirection={pupilDirection} 
+                isBlinking={isBlinking} 
+                questionText={question.question}
+                eyeIndex={1}
+              />
+            </div>
+          );
+        })()}
 
       </div>
 
@@ -510,6 +534,10 @@ function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex
   const offsetX = getRandomValue(seed + 'x', -20, 20);
   const offsetY = getRandomValue(seed + 'y', -30, 30);
   
+  // Randomize rotation (40% chance of rotation)
+  const shouldRotate = getRandomValue(seed + 'rot', 0, 1);
+  const rotation = shouldRotate < 0.4 ? getRandomValue(seed + 'angle', -25, 25) : 0;
+  
   // Randomize pupil size relative to eye size
   const pupilSize = Math.min(eyeWidth, eyeHeight) * getRandomValue(seed + 'p', 0.25, 0.4);
 
@@ -547,7 +575,7 @@ function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex
         width: `${eyeWidth}px`,
         height: `${eyeHeight}px`,
         borderRadius: '50%',
-        transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
+        transform: `scaleY(${isBlinking ? 0.1 : 1}) rotate(${rotation}deg)`,
         marginLeft: `${offsetX}px`,
         marginTop: `${offsetY}px`,
       }}
