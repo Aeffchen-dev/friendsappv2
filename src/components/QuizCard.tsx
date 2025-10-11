@@ -27,6 +27,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
   const [pupilDirection, setPupilDirection] = useState<'left' | 'right' | null>(null);
   const [isBlinking, setIsBlinking] = useState(false);
   const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 });
+  const [isRollingEyes, setIsRollingEyes] = useState(false);
   
   const textRef = useRef<HTMLHeadingElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -57,12 +58,22 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
   // Synchronized pupil movement
   useEffect(() => {
     const moveInterval = setInterval(() => {
-      const randomX = (Math.random() - 0.5) * 24; // ±12px movement
-      const randomY = (Math.random() - 0.5) * 24; // ±12px movement
+      const randomX = (Math.random() - 0.5) * 40; // ±20px movement
+      const randomY = (Math.random() - 0.5) * 40; // ±20px movement
       setPupilOffset({ x: randomX, y: randomY });
     }, 6000 + Math.random() * 8000); // Move every 6-14 seconds
 
     return () => clearInterval(moveInterval);
+  }, []);
+
+  // Eye rolling animation
+  useEffect(() => {
+    const rollInterval = setInterval(() => {
+      setIsRollingEyes(true);
+      setTimeout(() => setIsRollingEyes(false), 2000); // Roll for 2 seconds
+    }, 15000 + Math.random() * 20000); // Roll every 15-35 seconds
+
+    return () => clearInterval(rollInterval);
   }, []);
 
   // Process text to handle long words individually
@@ -450,6 +461,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
               questionText={question.question}
               eyeIndex={0}
               pupilOffset={pupilOffset}
+              isRollingEyes={isRollingEyes}
             />
             <Eye 
               mousePosition={mousePosition} 
@@ -458,6 +470,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
               questionText={question.question}
               eyeIndex={1}
               pupilOffset={pupilOffset}
+              isRollingEyes={false}
             />
           </div>
         );
@@ -632,10 +645,29 @@ interface EyeProps {
   questionText: string;
   eyeIndex: number;
   pupilOffset: { x: number; y: number };
+  isRollingEyes: boolean;
 }
 
-function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex, pupilOffset }: EyeProps) {
+function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex, pupilOffset, isRollingEyes }: EyeProps) {
   const eyeRef = useRef<HTMLDivElement>(null);
+  const [rollAngle, setRollAngle] = useState(0);
+
+  // Eye rolling animation
+  useEffect(() => {
+    if (isRollingEyes) {
+      let angle = 0;
+      const rollInterval = setInterval(() => {
+        angle += 30; // Increment angle for circular motion
+        setRollAngle(angle);
+        if (angle >= 360) {
+          clearInterval(rollInterval);
+          setRollAngle(0);
+        }
+      }, 50); // Update every 50ms for smooth rotation
+
+      return () => clearInterval(rollInterval);
+    }
+  }, [isRollingEyes]);
   
   // Generate consistent random values based on question text and eye index
   const getRandomValue = (seed: string, min: number, max: number) => {
@@ -682,6 +714,16 @@ function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex
   const pupilSize = Math.min(eyeWidth, eyeHeight) * getRandomValue(seed + 'p', 0.25, 0.4);
 
   const getPupilPosition = () => {
+    if (isRollingEyes) {
+      // Circular motion when rolling eyes
+      const radius = Math.min(eyeWidth, eyeHeight) * 0.2;
+      const angleInRadians = (rollAngle * Math.PI) / 180;
+      return {
+        x: Math.cos(angleInRadians) * radius,
+        y: Math.sin(angleInRadians) * radius
+      };
+    }
+
     if (pupilDirection === 'left') {
       return { x: -12, y: 0 };
     }
