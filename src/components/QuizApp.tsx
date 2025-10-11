@@ -239,21 +239,21 @@ export function QuizApp() {
     setTimeout(() => {
       setIsAnimating(false);
       setDragDirection(null);
-    }, 500);
+    }, 350);
   };
 
   const nextCategory = () => {
     setLogoSqueezeLeft(true);
     setCurrentCategoryIndex(prev => (prev + 1) % categories.length);
     setCurrentQuestionIndex(0);
-    setTimeout(() => setLogoSqueezeLeft(false), 300);
+    setTimeout(() => setLogoSqueezeLeft(false), 350);
   };
 
   const prevCategory = () => {
     setLogoSqueezeRight(true);
     setCurrentCategoryIndex(prev => (prev - 1 + categories.length) % categories.length);
     setCurrentQuestionIndex(0);
-    setTimeout(() => setLogoSqueezeRight(false), 300);
+    setTimeout(() => setLogoSqueezeRight(false), 350);
   };
 
   const nextQuestion = () => {
