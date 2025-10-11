@@ -934,48 +934,67 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create flower-shaped outlines
+  // Create sea star (starfish) shapes
   const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 20, 80);
   const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 20, 80);
-  const petalLength = getRandomValue(questionText + 'petalLength' + lineIndex, 8, 15);
-  const petalWidth = getRandomValue(questionText + 'petalWidth' + lineIndex, 5, 10);
-  const numPetals = Math.floor(getRandomValue(questionText + 'petals' + lineIndex, 5, 8));
+  const armLength = getRandomValue(questionText + 'armLength' + lineIndex, 10, 18);
+  const armWidth = getRandomValue(questionText + 'armWidth' + lineIndex, 6, 10);
+  const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 5, 6));
   
   let pathData = '';
   
-  // Draw each petal
-  for (let p = 0; p < numPetals; p++) {
-    const angle = (360 / numPetals) * p;
+  // Start from the first arm and trace the entire outline
+  const points = [];
+  
+  for (let p = 0; p < numArms; p++) {
+    const angle = (360 / numArms) * p;
     const rad = (angle * Math.PI) / 180;
     
-    // Calculate petal base points
-    const baseX1 = centerX + Math.cos(rad - 0.3) * (petalWidth * 0.5);
-    const baseY1 = centerY + Math.sin(rad - 0.3) * (petalWidth * 0.5);
-    const baseX2 = centerX + Math.cos(rad + 0.3) * (petalWidth * 0.5);
-    const baseY2 = centerY + Math.sin(rad + 0.3) * (petalWidth * 0.5);
+    // Arm tip
+    const tipX = centerX + Math.cos(rad) * armLength;
+    const tipY = centerY + Math.sin(rad) * armLength;
     
-    // Petal tip
-    const tipX = centerX + Math.cos(rad) * petalLength;
-    const tipY = centerY + Math.sin(rad) * petalLength;
+    // Arm base left side
+    const leftAngle = rad - (Math.PI / numArms) * 0.7;
+    const baseLeftX = centerX + Math.cos(leftAngle) * (armWidth * 0.8);
+    const baseLeftY = centerY + Math.sin(leftAngle) * (armWidth * 0.8);
     
-    // Control points for smooth petal curves
-    const cp1X = baseX1 + Math.cos(rad - 0.5) * (petalLength * 0.7);
-    const cp1Y = baseY1 + Math.sin(rad - 0.5) * (petalLength * 0.7);
-    const cp2X = tipX + Math.cos(rad - Math.PI / 2) * (petalWidth * 0.3);
-    const cp2Y = tipY + Math.sin(rad - Math.PI / 2) * (petalWidth * 0.3);
+    // Arm base right side
+    const rightAngle = rad + (Math.PI / numArms) * 0.7;
+    const baseRightX = centerX + Math.cos(rightAngle) * (armWidth * 0.8);
+    const baseRightY = centerY + Math.sin(rightAngle) * (armWidth * 0.8);
     
-    const cp3X = tipX + Math.cos(rad + Math.PI / 2) * (petalWidth * 0.3);
-    const cp3Y = tipY + Math.sin(rad + Math.PI / 2) * (petalWidth * 0.3);
-    const cp4X = baseX2 + Math.cos(rad + 0.5) * (petalLength * 0.7);
-    const cp4Y = baseY2 + Math.sin(rad + 0.5) * (petalLength * 0.7);
+    // Control points for smooth curves
+    const cpTipLeftX = tipX + Math.cos(rad - 0.8) * (armWidth * 0.4);
+    const cpTipLeftY = tipY + Math.sin(rad - 0.8) * (armWidth * 0.4);
+    const cpTipRightX = tipX + Math.cos(rad + 0.8) * (armWidth * 0.4);
+    const cpTipRightY = tipY + Math.sin(rad + 0.8) * (armWidth * 0.4);
     
-    // Draw petal outline
-    pathData += `M ${baseX1},${baseY1} C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${tipX},${tipY} C ${cp3X},${cp3Y} ${cp4X},${cp4Y} ${baseX2},${baseY2}`;
+    points.push({
+      baseLeft: { x: baseLeftX, y: baseLeftY },
+      tip: { x: tipX, y: tipY },
+      baseRight: { x: baseRightX, y: baseRightY },
+      cpTipLeft: { x: cpTipLeftX, y: cpTipLeftY },
+      cpTipRight: { x: cpTipRightX, y: cpTipRightY }
+    });
   }
   
-  // Draw center circle
-  const centerRadius = getRandomValue(questionText + 'centerR' + lineIndex, 2, 4);
-  pathData += ` M ${centerX + centerRadius},${centerY} a ${centerRadius},${centerRadius} 0 1,0 -${centerRadius * 2},0 a ${centerRadius},${centerRadius} 0 1,0 ${centerRadius * 2},0`;
+  // Draw the sea star outline
+  pathData = `M ${points[0].baseRight.x},${points[0].baseRight.y}`;
+  
+  for (let i = 0; i < points.length; i++) {
+    const point = points[i];
+    
+    // Curve to arm tip
+    pathData += ` Q ${point.cpTipRight.x},${point.cpTipRight.y} ${point.tip.x},${point.tip.y}`;
+    pathData += ` Q ${point.cpTipLeft.x},${point.cpTipLeft.y} ${point.baseLeft.x},${point.baseLeft.y}`;
+    
+    // Connect to next arm's base right (or close the path)
+    const nextPoint = points[(i + 1) % points.length];
+    pathData += ` L ${nextPoint.baseRight.x},${nextPoint.baseRight.y}`;
+  }
+  
+  pathData += ' Z';
   
   return (
     <div className="absolute inset-0 z-0 overflow-visible">
