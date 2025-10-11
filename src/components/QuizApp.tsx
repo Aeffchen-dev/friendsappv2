@@ -513,7 +513,7 @@ export function QuizApp() {
               
               const isActive = position === 0;
               
-              // Calculate horizontal transform
+              // Calculate horizontal transform - same as category mode
               const baseCardSpacingPx = 32;
               const maxCardWidthPx = 600;
               const vwCardWidth = window.innerWidth * 0.8;
@@ -540,9 +540,11 @@ export function QuizApp() {
                   }}
                 >
                   <div style={{
+                    position: 'absolute',
+                    top: window.innerWidth >= 768 ? '64px' : '48px',
+                    left: window.innerWidth >= 768 ? '16px' : '16px',
                     width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
-                    height: 'calc(100% - 112px)',
-                    marginTop: window.innerWidth >= 768 ? '64px' : '48px'
+                    height: 'calc(100% - 112px)'
                   }}>
                     <QuizCard
                       question={question}
