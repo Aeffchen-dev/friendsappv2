@@ -785,9 +785,6 @@ interface CloudProps {
 }
 
 function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
-  const [currentShapeIndex, setCurrentShapeIndex] = useState(0);
-  const [morphProgress, setMorphProgress] = useState(0);
-
   const getRandomValue = (seed: string, min: number, max: number) => {
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
@@ -801,7 +798,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
   
-  // All available cloud shapes for morphing
+  // All available cloud shapes for smooth morphing
   const cloudShapes = [
     "M25,35 Q15,35 10,25 Q10,15 20,15 Q25,5 35,10 Q45,10 50,20 Q60,25 55,35 Q50,40 40,38 Q35,45 25,35 Z",
     "M30,40 Q20,40 15,30 Q12,20 22,18 Q28,10 38,12 Q48,12 52,22 Q58,28 54,38 Q48,42 38,40 Q32,45 30,40 Z",
@@ -810,37 +807,9 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
     "M26,37 Q16,37 12,27 Q10,17 22,15 Q28,7 38,9 Q48,9 52,19 Q58,25 54,35 Q48,39 38,37 Q32,43 26,37 Z"
   ];
 
-  // Morph animation
-  useEffect(() => {
-    const morphDuration = 8000 + Math.random() * 7000; // 8-15 seconds per morph
-    let startTime: number | null = null;
-    let animationFrame: number;
-
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / morphDuration, 1);
-
-      setMorphProgress(progress);
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      } else {
-        // Switch to next shape and restart
-        setCurrentShapeIndex((prev) => (prev + 1) % cloudShapes.length);
-        setMorphProgress(0);
-        startTime = null;
-        animationFrame = requestAnimationFrame(animate);
-      }
-    };
-
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, []);
-
-  // Interpolate between current and next shape
-  const currentShape = cloudShapes[currentShapeIndex];
-  const nextShape = cloudShapes[(currentShapeIndex + 1) % cloudShapes.length];
+  // Create smooth animation sequence
+  const allShapes = cloudShapes.join(';');
+  const animationDuration = (10 + cloudIndex * 2).toString(); // Stagger animations
 
   return (
     <div 
@@ -853,17 +822,16 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
     >
       <svg width="80" height="50" viewBox="0 0 70 50">
         <path 
-          d={currentShape}
           fill="#AFD2EE"
-          style={{
-            transition: 'all 1s ease-in-out'
-          }}
         >
           <animate
             attributeName="d"
-            dur="8s"
+            dur={`${animationDuration}s`}
             repeatCount="indefinite"
-            values={`${currentShape};${nextShape};${currentShape}`}
+            values={allShapes}
+            calcMode="spline"
+            keyTimes="0;0.2;0.4;0.6;0.8;1"
+            keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
           />
         </path>
       </svg>
