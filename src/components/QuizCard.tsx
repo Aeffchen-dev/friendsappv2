@@ -551,7 +551,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         };
         
         // Generate 2-3 wavy lines per card
-        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 4, 7));
+        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 2, 4));
         
         return (
           <>
@@ -963,9 +963,9 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 40, 60);
     const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.6, amplitude * 0.9);
     
-    const cp1X = currentX + segmentLength * 0.35;
+    const cp1X = currentX + segmentLength * 0.4;
     const cp1Y = currentY + (curveDirection * curveAmp * 1.2);
-    const cp2X = currentX + segmentLength * 0.65;
+    const cp2X = currentX + segmentLength * 0.6;
     const cp2Y = currentY + (curveDirection * curveAmp * 1.2);
     const endX = currentX + segmentLength;
     const endY = currentY + (curveDirection * curveAmp * 0.1);
