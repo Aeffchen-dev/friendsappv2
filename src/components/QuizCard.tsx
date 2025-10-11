@@ -714,9 +714,13 @@ function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex
   const pupilSize = Math.min(eyeWidth, eyeHeight) * getRandomValue(seed + 'p', 0.25, 0.4);
 
   const getPupilPosition = () => {
+    // Calculate max allowed movement based on eye and pupil size
+    const maxDistanceX = (eyeWidth / 2) - (pupilSize / 2) - 5; // 5px padding
+    const maxDistanceY = (eyeHeight / 2) - (pupilSize / 2) - 5; // 5px padding
+
     if (isRollingEyes) {
-      // Circular motion when rolling eyes
-      const radius = Math.min(eyeWidth, eyeHeight) * 0.2;
+      // Circular motion when rolling eyes - constrained
+      const radius = Math.min(maxDistanceX * 0.7, maxDistanceY * 0.7);
       const angleInRadians = (rollAngle * Math.PI) / 180;
       return {
         x: Math.cos(angleInRadians) * radius,
@@ -725,26 +729,21 @@ function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex
     }
 
     if (pupilDirection === 'left') {
-      return { x: -12, y: 0 };
+      return { x: Math.max(-maxDistanceX, -12), y: 0 };
     }
     if (pupilDirection === 'right') {
-      return { x: 12, y: 0 };
+      return { x: Math.min(maxDistanceX, 12), y: 0 };
     }
 
-    if (!eyeRef.current) return { x: 0, y: 0 };
+    // Apply synchronized offset but clamp to eye boundaries
+    let x = pupilOffset.x;
+    let y = pupilOffset.y;
 
-    const eyeRect = eyeRef.current.getBoundingClientRect();
-    const eyeCenterX = eyeRect.left + eyeRect.width / 2;
-    const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+    // Clamp to stay within eye boundaries
+    x = Math.max(-maxDistanceX, Math.min(maxDistanceX, x));
+    y = Math.max(-maxDistanceY, Math.min(maxDistanceY, y));
 
-    const angle = Math.atan2(mousePosition.y - eyeCenterY, mousePosition.x - eyeCenterX);
-    const distanceX = eyeWidth * 0.25; // Max horizontal pupil movement
-    const distanceY = eyeHeight * 0.15; // Max vertical pupil movement
-
-    return {
-      x: Math.cos(angle) * distanceX + pupilOffset.x,
-      y: Math.sin(angle) * distanceY + pupilOffset.y
-    };
+    return { x, y };
   };
 
   const pupilPos = getPupilPosition();
