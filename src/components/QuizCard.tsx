@@ -21,12 +21,35 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
   const [isDragging, setIsDragging] = useState(false);
   const [processedText, setProcessedText] = useState<JSX.Element[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [pupilDirection, setPupilDirection] = useState<'left' | 'right' | null>(null);
+  const [isBlinking, setIsBlinking] = useState(false);
   
   const textRef = useRef<HTMLHeadingElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const eyesRef = useRef<HTMLDivElement>(null);
 
   const minSwipeDistance = 50;
 
+  // Mouse tracking for pupils
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Random blinking
+  useEffect(() => {
+    const blinkInterval = setInterval(() => {
+      setIsBlinking(true);
+      setTimeout(() => setIsBlinking(false), 150);
+    }, 3000 + Math.random() * 4000); // Blink every 3-7 seconds
+
+    return () => clearInterval(blinkInterval);
+  }, []);
 
   // Process text to handle long words individually
   useEffect(() => {
@@ -212,8 +235,12 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
     const isRightSwipe = distance < -minSwipeDistance;
 
     if (isLeftSwipe) {
+      setPupilDirection('left');
+      setTimeout(() => setPupilDirection(null), 300);
       onSwipeLeft();
     } else if (isRightSwipe) {
+      setPupilDirection('right');
+      setTimeout(() => setPupilDirection(null), 300);
       onSwipeRight();
     }
   };
@@ -241,8 +268,12 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
     const isRightDrag = distance < -minSwipeDistance;
 
     if (isLeftDrag) {
+      setPupilDirection('left');
+      setTimeout(() => setPupilDirection(null), 300);
       onSwipeLeft();
     } else if (isRightDrag) {
+      setPupilDirection('right');
+      setTimeout(() => setPupilDirection(null), 300);
       onSwipeRight();
     }
     
@@ -316,8 +347,74 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           </h1>
         </div>
 
+        {/* Eyes in bottom 1/4 of card */}
+        <div ref={eyesRef} className="h-1/4 flex items-center justify-center gap-8 pb-8">
+          <Eye mousePosition={mousePosition} pupilDirection={pupilDirection} isBlinking={isBlinking} />
+          <Eye mousePosition={mousePosition} pupilDirection={pupilDirection} isBlinking={isBlinking} />
+        </div>
+
       </div>
 
+    </div>
+  );
+}
+
+// Eye component
+interface EyeProps {
+  mousePosition: { x: number; y: number };
+  pupilDirection: 'left' | 'right' | null;
+  isBlinking: boolean;
+}
+
+function Eye({ mousePosition, pupilDirection, isBlinking }: EyeProps) {
+  const eyeRef = useRef<HTMLDivElement>(null);
+
+  const getPupilPosition = () => {
+    if (pupilDirection === 'left') {
+      return { x: -8, y: 0 };
+    }
+    if (pupilDirection === 'right') {
+      return { x: 8, y: 0 };
+    }
+
+    if (!eyeRef.current) return { x: 0, y: 0 };
+
+    const eyeRect = eyeRef.current.getBoundingClientRect();
+    const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+    const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+    const angle = Math.atan2(mousePosition.y - eyeCenterY, mousePosition.x - eyeCenterX);
+    const distance = Math.min(8, 8); // Max pupil movement
+
+    return {
+      x: Math.cos(angle) * distance,
+      y: Math.sin(angle) * distance
+    };
+  };
+
+  const pupilPos = getPupilPosition();
+
+  return (
+    <div 
+      ref={eyeRef}
+      className="relative bg-white rounded-full transition-transform duration-150"
+      style={{
+        width: '50px',
+        height: '80px',
+        transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
+      }}
+    >
+      <div
+        className="absolute bg-black rounded-full transition-all duration-200"
+        style={{
+          width: '20px',
+          height: '20px',
+          top: '50%',
+          left: '50%',
+          transform: `translate(calc(-50% + ${pupilPos.x}px), calc(-50% + ${pupilPos.y}px))`,
+          opacity: isBlinking ? 0 : 1
+        }}
+      />
     </div>
   );
 }
