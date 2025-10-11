@@ -113,163 +113,143 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
     };
   }, [question.question]);
 
-  // Get category-specific colors and gradient
+  // Get category-specific colors
   const getCategoryColors = (category: string) => {
     const categoryLower = category.toLowerCase();
-    const useGradient = Math.random() > 0.5; // 50% chance for gradient
     
     switch (categoryLower) {
       case 'connection':
         return {
-          bg: useGradient ? '' : 'bg-quiz-connection-bg',
+          bg: 'bg-quiz-connection-bg',
           text: 'text-quiz-connection-text',
           stripeBg: 'bg-connection-600',
-          stripeText: 'text-white',
-          gradient: useGradient ? 'linear-gradient(135deg, hsl(var(--connection-400)), hsl(var(--fuck-400)))' : undefined
+          stripeText: 'text-white'
         };
       case 'fuck':
         return {
-          bg: useGradient ? '' : 'bg-quiz-fuck-bg',
+          bg: 'bg-quiz-fuck-bg',
           text: 'text-quiz-fuck-text',
           stripeBg: 'bg-fuck-600',
-          stripeText: 'text-white',
-          gradient: useGradient ? 'linear-gradient(135deg, hsl(var(--fuck-400)), hsl(var(--connection-400)))' : undefined
+          stripeText: 'text-white'
         };
       case 'identity':
         return {
-          bg: useGradient ? '' : 'bg-quiz-identity-bg',
+          bg: 'bg-quiz-identity-bg',
           text: 'text-quiz-identity-text',
           stripeBg: 'bg-identity-600',
-          stripeText: 'text-white',
-          gradient: useGradient ? 'linear-gradient(135deg, hsl(var(--identity-400)), hsl(150 100% 14%))' : undefined
+          stripeText: 'text-white'
         };
       case 'party':
         return {
           bg: 'bg-quiz-party-bg',
           text: 'text-quiz-party-text',
           stripeBg: 'bg-party-600',
-          stripeText: 'text-black',
-          gradient: undefined
+          stripeText: 'text-black'
         };
       case 'wer aus der runde':
         return {
-          bg: useGradient ? '' : 'bg-quiz-wer-aus-der-runde-bg',
+          bg: 'bg-quiz-wer-aus-der-runde-bg',
           text: 'text-quiz-wer-aus-der-runde-text',
           stripeBg: 'bg-wer-aus-der-runde-600',
-          stripeText: 'text-white',
-          gradient: useGradient ? 'linear-gradient(135deg, hsl(var(--wer-aus-der-runde-400)), hsl(199 62% 86%))' : undefined
+          stripeText: 'text-white'
         };
       case 'friends':
         return {
           bg: 'bg-quiz-friends-bg',
           text: 'text-quiz-friends-text',
           stripeBg: 'bg-quiz-friends-bg',
-          stripeText: 'text-quiz-friends-text',
-          gradient: undefined
+          stripeText: 'text-quiz-friends-text'
         };
       case 'self reflection':
         return {
           bg: 'bg-quiz-self-reflection-bg',
           text: 'text-quiz-self-reflection-text',
           stripeBg: 'bg-quiz-self-reflection-bg',
-          stripeText: 'text-quiz-self-reflection-text',
-          gradient: undefined
+          stripeText: 'text-quiz-self-reflection-text'
         };
       case 'family':
         return {
           bg: 'bg-quiz-family-bg',
           text: 'text-quiz-family-text',
           stripeBg: 'bg-quiz-family-bg',
-          stripeText: 'text-quiz-family-text',
-          gradient: undefined
+          stripeText: 'text-quiz-family-text'
         };
       case 'career':
         return {
           bg: 'bg-quiz-career-bg',
           text: 'text-quiz-career-text',
           stripeBg: 'bg-quiz-career-bg',
-          stripeText: 'text-quiz-career-text',
-          gradient: undefined
+          stripeText: 'text-quiz-career-text'
         };
       case 'travel':
         return {
           bg: 'bg-quiz-travel-bg',
           text: 'text-quiz-travel-text',
           stripeBg: 'bg-quiz-travel-bg',
-          stripeText: 'text-quiz-travel-text',
-          gradient: undefined
+          stripeText: 'text-quiz-travel-text'
         };
       case 'health':
         return {
           bg: 'bg-quiz-health-bg',
           text: 'text-quiz-health-text',
           stripeBg: 'bg-quiz-health-bg',
-          stripeText: 'text-quiz-health-text',
-          gradient: undefined
+          stripeText: 'text-quiz-health-text'
         };
       case 'money':
         return {
           bg: 'bg-quiz-money-bg',
           text: 'text-quiz-money-text',
           stripeBg: 'bg-quiz-money-bg',
-          stripeText: 'text-quiz-money-text',
-          gradient: undefined
+          stripeText: 'text-quiz-money-text'
         };
       case 'love':
         return {
           bg: 'bg-quiz-love-bg',
           text: 'text-quiz-love-text',
           stripeBg: 'bg-quiz-love-bg',
-          stripeText: 'text-quiz-love-text',
-          gradient: undefined
+          stripeText: 'text-quiz-love-text'
         };
       case 'hobby':
         return {
           bg: 'bg-quiz-hobby-bg',
           text: 'text-quiz-hobby-text',
           stripeBg: 'bg-quiz-hobby-bg',
-          stripeText: 'text-quiz-hobby-text',
-          gradient: undefined
+          stripeText: 'text-quiz-hobby-text'
         };
       case 'dreams':
         return {
           bg: 'bg-quiz-dreams-bg',
           text: 'text-quiz-dreams-text',
           stripeBg: 'bg-quiz-dreams-bg',
-          stripeText: 'text-quiz-dreams-text',
-          gradient: undefined
+          stripeText: 'text-quiz-dreams-text'
         };
       case 'fear':
         return {
           bg: 'bg-quiz-fear-bg',
           text: 'text-quiz-fear-text',
           stripeBg: 'bg-quiz-fear-bg',
-          stripeText: 'text-quiz-fear-text',
-          gradient: undefined
+          stripeText: 'text-quiz-fear-text'
         };
       case 'wisdom':
         return {
           bg: 'bg-quiz-wisdom-bg',
           text: 'text-quiz-wisdom-text',
           stripeBg: 'bg-quiz-wisdom-bg',
-          stripeText: 'text-quiz-wisdom-text',
-          gradient: undefined
+          stripeText: 'text-quiz-wisdom-text'
         };
       case 'future':
         return {
           bg: 'bg-quiz-future-bg',
           text: 'text-quiz-future-text',
           stripeBg: 'bg-quiz-future-bg',
-          stripeText: 'text-quiz-future-text',
-          gradient: undefined
+          stripeText: 'text-quiz-future-text'
         };
       default:
         return {
           bg: 'bg-quiz-category-bg',
           text: 'text-quiz-category-text',
           stripeBg: 'bg-quiz-category-bg',
-          stripeText: 'text-quiz-category-text',
-          gradient: undefined
+          stripeText: 'text-quiz-category-text'
         };
     }
   };
@@ -362,8 +342,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       style={{
         height: 'calc(100svh - 64px - 20px - 16px - 32px)',
         maxHeight: '100%',
-        transition: 'height 0.2s ease-out',
-        background: categoryColors.gradient || undefined
+        transition: 'height 0.2s ease-out'
       }}
     >
       {/* Left Click Area - Previous */}
