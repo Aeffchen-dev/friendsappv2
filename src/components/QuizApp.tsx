@@ -25,7 +25,7 @@ export function QuizApp() {
   const [bgColor, setBgColor] = useState('bg-background');
   const [prevBgColor, setPrevBgColor] = useState('bg-background');
   const [headerTextColor, setHeaderTextColor] = useState('text-white');
-  const [isShuffleMode, setIsShuffleMode] = useState(false);
+  const [isShuffleMode, setIsShuffleMode] = useState(true);
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
   
@@ -59,11 +59,51 @@ export function QuizApp() {
     return categories;
   }, [categories, selectedCategories, availableCategories]);
 
-  // Create shuffled questions from selected categories
+  // Create shuffled questions from selected categories with optimal category mixing
   useEffect(() => {
     if (isShuffleMode && questions.length > 0) {
       const filtered = questions.filter(q => selectedCategories.includes(q.category));
-      const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+      
+      // Group by category
+      const byCategory: { [key: string]: Question[] } = {};
+      filtered.forEach(q => {
+        if (!byCategory[q.category]) byCategory[q.category] = [];
+        byCategory[q.category].push(q);
+      });
+      
+      // Shuffle each category's questions
+      Object.keys(byCategory).forEach(cat => {
+        byCategory[cat] = [...byCategory[cat]].sort(() => Math.random() - 0.5);
+      });
+      
+      // Mix categories optimally to avoid consecutive same categories
+      const shuffled: Question[] = [];
+      const categoryKeys = Object.keys(byCategory);
+      let lastCategory = '';
+      
+      while (Object.values(byCategory).some(arr => arr.length > 0)) {
+        // Get available categories (excluding the last used one if possible)
+        let availableCategories = categoryKeys.filter(cat => 
+          byCategory[cat].length > 0 && cat !== lastCategory
+        );
+        
+        // If no other categories available, use any remaining category
+        if (availableCategories.length === 0) {
+          availableCategories = categoryKeys.filter(cat => byCategory[cat].length > 0);
+        }
+        
+        if (availableCategories.length === 0) break;
+        
+        // Pick a random category from available ones
+        const randomCategory = availableCategories[Math.floor(Math.random() * availableCategories.length)];
+        const question = byCategory[randomCategory].shift();
+        
+        if (question) {
+          shuffled.push(question);
+          lastCategory = randomCategory;
+        }
+      }
+      
       setShuffledQuestions(shuffled);
       setCurrentShuffleIndex(0);
     }
