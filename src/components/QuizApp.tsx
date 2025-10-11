@@ -668,9 +668,9 @@ export function QuizApp() {
                     let baseTranslateY;
                     
                     if (qPosition === -1) {
-                      // Move previous card up by 70vh + header offset + 32px
+                      // Move previous card up by 70vh + header offset + 48px
                       const isMobile = window.innerWidth < 768;
-                      const offsetPx = isMobile ? 96 : 112; // 64+16+16 or 80+16+16
+                      const offsetPx = isMobile ? 112 : 128; // 64+16+16+16 or 80+16+16+16
                       const offsetVh = (offsetPx / window.innerHeight) * 100;
                       baseTranslateY = -(70 + offsetVh);
                     } else if (qPosition === 1) {
