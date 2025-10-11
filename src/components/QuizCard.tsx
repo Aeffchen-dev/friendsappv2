@@ -551,7 +551,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         };
         
         // Generate 2-3 wavy lines per card
-        const numLines = 3;
+        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 4, 7));
         
         return (
           <>
@@ -934,9 +934,9 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate smooth S-curve paths with more waves
-  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -30, 20);
-  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, 0, 100);
+  // Generate smooth S-curve paths with more waves - start and end off-canvas
+  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -50, -10);
+  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, -20, 120);
   
   // Create flowing path with multiple curves
   const direction = getRandomValue(questionText + 'direction' + lineIndex, 0, 1) > 0.5 ? 1 : -1;
@@ -946,8 +946,8 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   let currentX = startX;
   let currentY = startY;
   
-  // Generate 4-6 curves for each line
-  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 4, 7));
+  // Generate 5-7 curves to ensure line extends well beyond card
+  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 5, 8));
   
   for (let i = 0; i < numCurves; i++) {
     const curveDirection = i % 2 === 0 ? direction : -direction;
