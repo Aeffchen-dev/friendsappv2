@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { QuizGrid } from './QuizGrid';
+import { QuizCard } from './QuizCard';
 import { CategorySelector } from './CategorySelector';
 
 interface Question {
@@ -9,6 +9,9 @@ interface Question {
 }
 
 export function QuizApp() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [animationClass, setAnimationClass] = useState('');
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadStartTime] = useState(Date.now());
@@ -16,6 +19,8 @@ export function QuizApp() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [logoStretch, setLogoStretch] = useState(false);
+  const [logoSqueezeLeft, setLogoSqueezeLeft] = useState(false);
+  const [logoSqueezeRight, setLogoSqueezeRight] = useState(false);
   const [bgColor, setBgColor] = useState('bg-background');
   const [prevBgColor, setPrevBgColor] = useState('bg-background');
   const [headerTextColor, setHeaderTextColor] = useState('text-white');
@@ -69,6 +74,7 @@ export function QuizApp() {
         // Shuffle questions randomly
         const shuffledQuestions = [...parsedQuestions].sort(() => Math.random() - 0.5);
         setAllQuestions(shuffledQuestions);
+        setQuestions(shuffledQuestions);
         
         // Extract unique categories
         const categories = Array.from(new Set(parsedQuestions.map(q => q.category)));
@@ -117,6 +123,62 @@ export function QuizApp() {
     result.push(current);
     return result;
   };
+
+  const nextQuestion = () => {
+    if (currentIndex < questions.length - 1) {
+      setLogoSqueezeLeft(true);
+      setAnimationClass('animate-slide-out-left');
+      setTimeout(() => {
+        setCurrentIndex(prev => prev + 1);
+        setAnimationClass('animate-slide-in-right');
+        setTimeout(() => {
+          setAnimationClass('');
+          setLogoSqueezeLeft(false);
+        }, 500);
+      }, 300);
+    }
+  };
+
+  const prevQuestion = () => {
+    if (currentIndex > 0) {
+      setLogoSqueezeRight(true);
+      setAnimationClass('animate-slide-out-right');
+      setTimeout(() => {
+        setCurrentIndex(prev => prev - 1);
+        setAnimationClass('animate-slide-in-left');
+        setTimeout(() => {
+          setAnimationClass('');
+          setLogoSqueezeRight(false);
+        }, 500);
+      }, 300);
+    }
+  };
+
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      prevQuestion();
+    } else if (e.key === 'ArrowRight') {
+      nextQuestion();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [currentIndex]);
+
+  // Filter questions based on selected categories
+  useEffect(() => {
+    if (selectedCategories.length === 0) {
+      setQuestions([]);
+    } else {
+      const filteredQuestions = allQuestions.filter(q => 
+        selectedCategories.includes(q.category)
+      );
+      setQuestions(filteredQuestions);
+      setCurrentIndex(0); // Reset to first question when filtering
+    }
+  }, [selectedCategories, allQuestions]);
 
   const triggerLogoStretch = () => {
     setLogoStretch(true);
@@ -178,7 +240,7 @@ export function QuizApp() {
           <img 
             src="/assets/logo.png" 
             alt="Logo" 
-            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} transition-all duration-500`}
+            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''} transition-all duration-500`}
             onClick={handleLogoClick}
             style={{
               filter: headerTextColor.includes('900') ? 'brightness(0) saturate(100%)' : 'none'
@@ -195,18 +257,24 @@ export function QuizApp() {
       </div>
 
       {/* Main Quiz Container */}
-      <div className="flex-1 flex justify-center items-center overflow-hidden relative z-10" style={{ padding: '16px 0' }}>
+      <div className="flex-1 flex justify-center items-center mx-4 overflow-hidden relative z-10" style={{ padding: '16px 0', paddingTop: '48px' }}>
         <div className="w-full h-full flex justify-center items-center">
           {loading ? (
             <div className="h-full flex items-center justify-center min-h-[calc(100svh-120px)]">
               {/* Loading text removed - handled by static HTML */}
             </div>
-          ) : (
-            <QuizGrid
-              allQuestions={allQuestions}
-              selectedCategories={selectedCategories}
+          ) : questions.length > 0 ? (
+            <QuizCard
+              question={questions[currentIndex]}
+              onSwipeLeft={nextQuestion}
+              onSwipeRight={prevQuestion}
+              animationClass={animationClass}
               onBgColorChange={handleBgColorChange}
             />
+          ) : (
+            <div className="h-full flex items-center justify-center min-h-[calc(100svh-120px)]">
+              <div className="text-white text-sm">Keine Fragen verfügbar</div>
+            </div>
           )}
         </div>
       </div>
