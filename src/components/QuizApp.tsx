@@ -543,7 +543,7 @@ export function QuizApp() {
                 <div
                   key={`shuffle-${qIndex}`}
                   className="absolute flex flex-col items-center justify-center"
-                  onClick={() => {
+                  onClick={(e) => {
                     if (position === 1) {
                       // Click on next card - go next with animation
                       setIsAnimating(true);
@@ -566,6 +566,23 @@ export function QuizApp() {
                         setIsAnimating(false);
                         setDragDirection(null);
                       }, 350);
+                    } else if (isActive) {
+                      // Click on active card - check if left side clicked
+                      const clickX = e.clientX;
+                      const windowWidth = window.innerWidth;
+                      
+                      if (clickX < windowWidth * 0.3) {
+                        // Left 30% of screen - go to prev
+                        setIsAnimating(true);
+                        setDragDirection('horizontal');
+                        setLogoSqueezeRight(true);
+                        setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
+                        setTimeout(() => {
+                          setLogoSqueezeRight(false);
+                          setIsAnimating(false);
+                          setDragDirection(null);
+                        }, 350);
+                      }
                     }
                   }}
                   style={{
@@ -661,7 +678,7 @@ export function QuizApp() {
                 <div 
                   key={`category-${category}`}
                   className="absolute flex flex-col items-center justify-center"
-                  onClick={() => {
+                  onClick={(e) => {
                     if (!isCategoryActive && catPosition === 1) {
                       // Click on next category with animation
                       setIsAnimating(true);
@@ -688,6 +705,25 @@ export function QuizApp() {
                         setDragDirection(null);
                       }, 350);
                       setTimeout(() => setIsHorizontalSliding(false), 350);
+                    } else if (isCategoryActive && catPosition === 0) {
+                      // Click on active category - check if left side clicked
+                      const clickX = e.clientX;
+                      const windowWidth = window.innerWidth;
+                      
+                      if (clickX < windowWidth * 0.3) {
+                        // Left 30% of screen - go to prev category
+                        setIsAnimating(true);
+                        setDragDirection('horizontal');
+                        setLogoSqueezeRight(true);
+                        setIsHorizontalSliding(true);
+                        setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
+                        setTimeout(() => {
+                          setLogoSqueezeRight(false);
+                          setIsAnimating(false);
+                          setDragDirection(null);
+                        }, 350);
+                        setTimeout(() => setIsHorizontalSliding(false), 350);
+                      }
                     }
                   }}
                   style={{
@@ -771,6 +807,26 @@ export function QuizApp() {
                               }, 350);
                             } else if (qPosition === -1) {
                               // Click on prev question with animation
+                              setIsAnimating(true);
+                              setDragDirection('vertical');
+                              setQuestionIndicesByCategory(prev => ({
+                                ...prev,
+                                [currentCategory]: ((prev[currentCategory] || 0) - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length
+                              }));
+                              setTimeout(() => {
+                                setIsAnimating(false);
+                                setDragDirection(null);
+                              }, 350);
+                            }
+                          } else if (isActive) {
+                            e.stopPropagation(); // Prevent category click
+                            const clickY = e.clientY;
+                            const headerHeight = window.innerWidth >= 768 ? 64 : 48;
+                            
+                            if (clickY < headerHeight + 100) {
+                              // Top area - go to prev question
+                              const currentCategory = displayCategories[currentCategoryIndex];
+                              const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
                               setIsAnimating(true);
                               setDragDirection('vertical');
                               setQuestionIndicesByCategory(prev => ({
