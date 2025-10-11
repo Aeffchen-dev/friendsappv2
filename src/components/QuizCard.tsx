@@ -935,22 +935,22 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create thick organic wavy filled shapes - thinner and covering 30% of card
-  const startX = getRandomValue(questionText + 'startX' + lineIndex, -10, 110);
-  const startY = getRandomValue(questionText + 'startY' + lineIndex, -10, 110);
-  const thickness = getRandomValue(questionText + 'thickness' + lineIndex, 8, 15);
+  // Create thick organic wavy filled shapes like the reference
+  const startX = getRandomValue(questionText + 'startX' + lineIndex, -20, 120);
+  const startY = getRandomValue(questionText + 'startY' + lineIndex, -20, 120);
+  const thickness = getRandomValue(questionText + 'thickness' + lineIndex, 15, 35);
   
   let pathData = `M ${startX},${startY}`;
   let currentX = startX;
   let currentY = startY;
   
-  // Create 5-8 smooth curves for longer coverage
-  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 5, 9));
+  // Create 3-5 smooth curves
+  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 3, 6));
   
   for (let i = 0; i < numCurves; i++) {
     const angle = getRandomValue(questionText + 'angle' + lineIndex + i, 0, 360);
     const rad = (angle * Math.PI) / 180;
-    const distance = getRandomValue(questionText + 'dist' + lineIndex + i, 40, 80);
+    const distance = getRandomValue(questionText + 'dist' + lineIndex + i, 30, 60);
     
     const nextX = currentX + Math.cos(rad) * distance;
     const nextY = currentY + Math.sin(rad) * distance;
