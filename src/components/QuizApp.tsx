@@ -258,25 +258,46 @@ export function QuizApp() {
 
       {/* Main Quiz Container */}
       <div className="flex-1 flex justify-center items-center overflow-hidden relative z-10" style={{ width: '100vw', height: '100vh' }}>
-        <div className="w-full h-full flex justify-center items-center">
-          {loading ? (
-            <div className="h-full flex items-center justify-center min-h-[calc(100svh-120px)]">
-              {/* Loading text removed - handled by static HTML */}
-            </div>
-          ) : questions.length > 0 ? (
-            <QuizCard
-              question={questions[currentIndex]}
-              onSwipeLeft={nextQuestion}
-              onSwipeRight={prevQuestion}
-              animationClass={animationClass}
-              onBgColorChange={handleBgColorChange}
-            />
-          ) : (
-            <div className="h-full flex items-center justify-center min-h-[calc(100svh-120px)]">
-              <div className="text-white text-sm">Keine Fragen verfügbar</div>
-            </div>
-          )}
-        </div>
+        {loading ? (
+          <div className="h-full flex items-center justify-center">
+            {/* Loading text removed - handled by static HTML */}
+          </div>
+        ) : questions.length > 0 ? (
+          <div className="relative w-full h-full flex justify-center items-center">
+            {/* Render previous, current, and next cards */}
+            {[currentIndex - 1, currentIndex, currentIndex + 1].map((index) => {
+              if (index < 0 || index >= questions.length) return null;
+              
+              const position = index - currentIndex; // -1, 0, or 1
+              const isActive = position === 0;
+              
+              return (
+                <div
+                  key={`card-${index}`}
+                  className="absolute"
+                  style={{
+                    transform: `translateX(calc(${position * 100}% + ${position * 16}px)) scale(${isActive ? 1 : 0.8})`,
+                    transition: animationClass ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    zIndex: isActive ? 10 : 5,
+                    pointerEvents: isActive ? 'auto' : 'none'
+                  }}
+                >
+                  <QuizCard
+                    question={questions[index]}
+                    onSwipeLeft={nextQuestion}
+                    onSwipeRight={prevQuestion}
+                    animationClass=""
+                    onBgColorChange={isActive ? handleBgColorChange : undefined}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="h-full flex items-center justify-center">
+            <div className="text-white text-sm">Keine Fragen verfügbar</div>
+          </div>
+        )}
       </div>
         
       {/* Bottom Link - Always visible */}
