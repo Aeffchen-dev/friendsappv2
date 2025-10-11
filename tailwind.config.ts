@@ -20,6 +20,7 @@ export default {
 		extend: {
 			fontFamily: {
 				'bricolage': ['Bricolage Grotesque', 'sans-serif'],
+				'offbit': ['OffBit', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
