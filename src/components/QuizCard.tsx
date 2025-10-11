@@ -864,22 +864,22 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
         transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`
       }}
     >
-      <svg width="300" height="300" viewBox="0 0 200 200">
+      <svg width="400" height="400" viewBox="0 0 300 300">
         {/* X shape - two lines crossing */}
         <line 
-          x1="20" 
-          y1="20" 
-          x2="180" 
-          y2="180" 
+          x1="50" 
+          y1="50" 
+          x2="250" 
+          y2="250" 
           stroke="#9FDCE3"
           strokeWidth="100"
           strokeLinecap="round"
         />
         <line 
-          x1="180" 
-          y1="20" 
-          x2="20" 
-          y2="180" 
+          x1="250" 
+          y1="50" 
+          x2="50" 
+          y2="250" 
           stroke="#9FDCE3"
           strokeWidth="100"
           strokeLinecap="round"
