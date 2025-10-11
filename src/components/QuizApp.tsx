@@ -407,8 +407,8 @@ export function QuizApp() {
               if (!isCategoryActive) {
                 rotateY = catPosition * 5; // Left: -5deg, Right: +5deg
               } else if (isDragging && dragDirection === 'horizontal') {
-                // Active card rotates as it moves out (max ±5deg)
-                rotateY = Math.max(-5, Math.min(5, -(dragOffsetX / window.innerWidth) * 5));
+                // Active card rotates in opposite direction as it moves out (max ±5deg)
+                rotateY = Math.max(-5, Math.min(5, (dragOffsetX / window.innerWidth) * 5));
               }
               
               return (
