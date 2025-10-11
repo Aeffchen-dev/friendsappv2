@@ -949,7 +949,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const startY = startPos.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -5, 5);
   
   const direction = lineIndex % 2 === 0 ? 1 : -1;
-  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 15, 25);
+  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 5, 8);
   
   let pathData = `M ${startX},${startY}`;
   let currentX = startX;
@@ -960,7 +960,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   
   for (let i = 0; i < numCurves; i++) {
     const curveDirection = i % 2 === 0 ? direction : -direction;
-    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 40, 60);
+    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 13, 20);
     const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.6, amplitude * 0.9);
     
     const cp1X = currentX + segmentLength * 0.4;
