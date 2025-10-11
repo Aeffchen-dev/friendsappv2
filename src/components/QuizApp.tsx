@@ -365,32 +365,6 @@ export function QuizApp() {
           transition: 'opacity 350ms ease-out'
         }}
       />
-      {/* App Header - Always visible */}
-      <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50}}>
-        <div className="flex justify-between items-center px-4 py-4">
-          <svg 
-            width="67" 
-            height="32" 
-            viewBox="0 0 67 32" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''} transition-all duration-500`}
-            onClick={handleLogoClick}
-          >
-            <path d="M24.1808 3.79373C17.2269 3.79372 15.558 5.76916 13.3328 14.7997C11.1076 23.8302 9.80953 27.9692 9.43866 28.9099" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
-            <path d="M38.6502 3.79373C31.6964 3.79372 30.0274 5.76916 27.8022 14.7997C25.577 23.8302 24.279 27.9692 23.9081 28.9099" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
-            <path d="M53.1193 3.79373C46.1655 3.79372 44.4966 5.76916 42.2713 14.7997C40.0461 23.8302 38.7481 27.9692 38.3772 28.9099" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
-            <path d="M3 20.0332C4.22067 19.6156 5.12769 19.3985 6.5249 19.1832C16.8259 17.5961 27.318 16.7384 37.7276 16.3157C45.2899 16.0086 52.8539 16.7693 60.4071 16.361C61.8418 16.2835 62.5665 15.8384 64 16.157" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
-          </svg>
-          <button 
-            onClick={() => setCategorySelectorOpen(true)}
-            className={`${headerTextColor} font-normal text-xs align-baseline transition-colors duration-500`}
-            style={{fontSize: '14px'}}
-          >
-            Kategorien wählen
-          </button>
-        </div>
-      </div>
 
       {/* Main Quiz Container */}
       <div 
@@ -472,15 +446,16 @@ export function QuizApp() {
                     const totalCardHeight = cardHeight + vCardSpacingPx; // Total height including spacing
                     const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
                     
-                    // Calculate position - show next card's top at 90vh (10vh visible)
+                    // Calculate position - on mobile reduce margin to show more of next card
                     let baseTranslateY;
+                    const isMobile = window.innerWidth < 768;
                     
                     if (qPosition === -1) {
                       // Move previous card completely out of viewport to the top
                       baseTranslateY = -110; // Moves card fully above viewport
                     } else if (qPosition === 1) {
-                      // Next card's top at 90vh (since top offset is 10vh, translate by 80vh)
-                      baseTranslateY = 80;
+                      // Next card positioning: mobile shows more of next card (less margin)
+                      baseTranslateY = isMobile ? 85 : 80;
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
                     }
@@ -497,7 +472,7 @@ export function QuizApp() {
                         className="absolute flex items-center justify-center"
                         style={{
                           position: 'absolute',
-                          top: '10vh',
+                          top: '4vh',
                           left: '16px',
                           width: '80vw',
                           height: '80vh',
