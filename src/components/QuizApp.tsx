@@ -338,7 +338,8 @@ export function QuizApp() {
     >
       {/* Overlay that fades in with new color */}
       <div 
-        className="absolute inset-0"
+        key={bgColor}
+        className="absolute inset-0 pointer-events-none"
         style={{
           background: getColorFromBgClass(bgColor),
           opacity: bgColor === prevBgColor ? 0 : 1,
