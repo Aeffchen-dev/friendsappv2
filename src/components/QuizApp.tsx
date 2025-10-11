@@ -707,8 +707,8 @@ export function QuizApp() {
                   onClick={(e) => {
                     const isDesktop = window.innerWidth >= 768;
                     
-                    if (!isCategoryActive && catPosition === 1 && isDesktop) {
-                      // Desktop: Click on next category card with animation
+                    if (!isCategoryActive && catPosition === 1) {
+                      // Mobile & Desktop: Click on next category card with animation
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeLeft(true);
@@ -722,8 +722,8 @@ export function QuizApp() {
                         setDragDirection(null);
                         setIsHorizontalSliding(false);
                       }, 350);
-                    } else if (!isCategoryActive && catPosition === -1 && isDesktop) {
-                      // Desktop: Click on prev category card with animation
+                    } else if (!isCategoryActive && catPosition === -1) {
+                      // Mobile & Desktop: Click on prev category card with animation
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeRight(true);
