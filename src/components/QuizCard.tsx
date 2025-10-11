@@ -732,12 +732,35 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
   
   const rotation = getRandomValue(questionText + 'smileyRot', -15, 15);
   const scale = getRandomValue(questionText + 'smileyScale', 0.5, 1.6);
-  const mouthWidth = getRandomValue(questionText + 'mouthWidth', 22, 38);
-  const mouthHeight = getRandomValue(questionText + 'mouthHeight', 12, 28);
   const eyeDistance = getRandomValue(questionText + 'eyeDistance', 12, 18);
   const eyeSize = getRandomValue(questionText + 'eyeSize', 2.5, 4);
   const eyeYPos = getRandomValue(questionText + 'eyeY', 38, 43);
-  const mouthYStart = getRandomValue(questionText + 'mouthY', 52, 58);
+  
+  // Different happy mouth expressions
+  const expressionType = Math.floor(getRandomValue(questionText + 'expression', 0, 4));
+  
+  let mouthPath = '';
+  if (expressionType === 0) {
+    // Big wide smile
+    const mouthWidth = getRandomValue(questionText + 'mouthWidth', 30, 38);
+    const mouthHeight = getRandomValue(questionText + 'mouthHeight', 20, 28);
+    mouthPath = `M ${50 - mouthWidth/2},55 Q 50,${55 + mouthHeight} ${50 + mouthWidth/2},55`;
+  } else if (expressionType === 1) {
+    // Gentle smile
+    const mouthWidth = getRandomValue(questionText + 'mouthWidth', 22, 28);
+    const mouthHeight = getRandomValue(questionText + 'mouthHeight', 12, 16);
+    mouthPath = `M ${50 - mouthWidth/2},57 Q 50,${57 + mouthHeight} ${50 + mouthWidth/2},57`;
+  } else if (expressionType === 2) {
+    // Wide grin
+    const mouthWidth = getRandomValue(questionText + 'mouthWidth', 32, 40);
+    const mouthHeight = getRandomValue(questionText + 'mouthHeight', 18, 24);
+    mouthPath = `M ${50 - mouthWidth/2},54 Q 50,${54 + mouthHeight} ${50 + mouthWidth/2},54`;
+  } else {
+    // Cheerful arc
+    const mouthWidth = getRandomValue(questionText + 'mouthWidth', 26, 34);
+    const mouthHeight = getRandomValue(questionText + 'mouthHeight', 14, 20);
+    mouthPath = `M ${50 - mouthWidth/2},56 Q 50,${56 + mouthHeight} ${50 + mouthWidth/2},56`;
+  }
   
   return (
     <div 
@@ -772,7 +795,7 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
         />
         {/* Happy mouth */}
         <path 
-          d={`M ${50 - mouthWidth/2},${mouthYStart} Q 50,${mouthYStart + mouthHeight} ${50 + mouthWidth/2},${mouthYStart}`}
+          d={mouthPath}
           stroke="#21245B"
           strokeWidth="3"
           fill="none"
