@@ -154,33 +154,17 @@ export function QuizApp() {
   const handleDragEnd = () => {
     if (!isDragging) return;
     
-    const threshold = 80; // 80px drag threshold
-    const now = Date.now();
-    const timeDelta = now - lastDragTime;
-    const distance = lastDragX - dragStartX;
-    
-    // Calculate velocity (pixels per millisecond)
-    const velocity = timeDelta > 0 ? Math.abs(distance / timeDelta) : 0;
-    const velocityThreshold = 1.2; // Increased from 0.5 to reduce sensitivity
-    const minFlickDistance = 50; // Minimum distance for a flick to count
-    
-    // Check if it's a quick flick (requires both speed AND minimum distance)
-    const isFlick = velocity > velocityThreshold && Math.abs(dragOffset) > minFlickDistance;
-    
-    // Determine if we should navigate (with looping - no boundary checks)
-    const shouldGoNext = dragOffset < -threshold || (isFlick && dragOffset < 0);
-    const shouldGoPrev = dragOffset > threshold || (isFlick && dragOffset > 0);
+    const threshold = 30; // Small threshold to prevent accidental swipes
     
     setIsDragging(false);
     setIsAnimating(true);
     
-    if (shouldGoNext) {
-      // Update index immediately and compensate with offset
+    // Simple logic: if dragged left, go next; if dragged right, go prev
+    if (dragOffset < -threshold) {
       setLogoSqueezeLeft(true);
       setCurrentIndex(prev => (prev + 1) % questions.length);
-      setDragOffset(window.innerWidth); // Start new card from right
+      setDragOffset(window.innerWidth);
       
-      // Animate to center
       setTimeout(() => {
         setDragOffset(0);
         setTimeout(() => {
@@ -188,13 +172,11 @@ export function QuizApp() {
           setLogoSqueezeLeft(false);
         }, 300);
       }, 16);
-    } else if (shouldGoPrev) {
-      // Update index immediately and compensate with offset
+    } else if (dragOffset > threshold) {
       setLogoSqueezeRight(true);
       setCurrentIndex(prev => (prev - 1 + questions.length) % questions.length);
-      setDragOffset(-window.innerWidth); // Start new card from left
+      setDragOffset(-window.innerWidth);
       
-      // Animate to center
       setTimeout(() => {
         setDragOffset(0);
         setTimeout(() => {
