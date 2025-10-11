@@ -550,15 +550,15 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 3 starfish shapes per card
-        const numStarfish = 3;
+        // Generate 3-5 thick organic wavy shapes per card
+        const numShapes = Math.floor(getRandomValue(question.question + 'numLines', 3, 6));
         
         return (
           <>
-            {/* Starfish shapes */}
-            {Array.from({ length: numStarfish }).map((_, index) => (
+            {/* Thick organic wavy shapes */}
+            {Array.from({ length: numShapes }).map((_, index) => (
               <WavyLine 
-                key={`star-${index}`}
+                key={`wave-${index}`}
                 questionText={question.question}
                 lineIndex={index}
               />
@@ -935,51 +935,36 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish with positioning ensuring 60% visibility - unique per index
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex + 'unique', 15, 85);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex + 'unique', 15, 85);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex + 'unique', 15, 30);
-  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex + 'unique', 0.15, 0.5);
-  const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
+  // Create thick organic wavy filled shapes like the reference
+  const startX = getRandomValue(questionText + 'startX' + lineIndex, -20, 120);
+  const startY = getRandomValue(questionText + 'startY' + lineIndex, -20, 120);
+  const thickness = getRandomValue(questionText + 'thickness' + lineIndex, 15, 35);
   
-  let pathData = '';
+  let pathData = `M ${startX},${startY}`;
+  let currentX = startX;
+  let currentY = startY;
   
-  // Calculate all points around the starfish
-  const points = [];
+  // Create 3-5 smooth curves
+  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 3, 6));
   
-  for (let i = 0; i < numArms * 2; i++) {
-    const angle = (360 / (numArms * 2)) * i;
+  for (let i = 0; i < numCurves; i++) {
+    const angle = getRandomValue(questionText + 'angle' + lineIndex + i, 0, 360);
     const rad = (angle * Math.PI) / 180;
-    const isOuter = i % 2 === 0;
-    const radius = isOuter ? outerRadius : innerRadius;
+    const distance = getRandomValue(questionText + 'dist' + lineIndex + i, 30, 60);
     
-    const x = centerX + Math.cos(rad) * radius;
-    const y = centerY + Math.sin(rad) * radius;
+    const nextX = currentX + Math.cos(rad) * distance;
+    const nextY = currentY + Math.sin(rad) * distance;
     
-    points.push({ x, y, isOuter });
+    const cp1X = currentX + Math.cos(rad - 0.5) * (distance * 0.4);
+    const cp1Y = currentY + Math.sin(rad - 0.5) * (distance * 0.4);
+    const cp2X = currentX + Math.cos(rad + 0.5) * (distance * 0.7);
+    const cp2Y = currentY + Math.sin(rad + 0.5) * (distance * 0.7);
+    
+    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${nextX},${nextY}`;
+    
+    currentX = nextX;
+    currentY = nextY;
   }
-  
-  // Start the path
-  pathData = `M ${points[0].x},${points[0].y}`;
-  
-  // Create smooth curves between all points with rounded transitions
-  for (let i = 0; i < points.length; i++) {
-    const next = points[(i + 1) % points.length];
-    const nextNext = points[(i + 2) % points.length];
-    
-    // Use cubic bezier for smoother, rounder curves
-    const cp1X = next.x;
-    const cp1Y = next.y;
-    const cp2X = next.x;
-    const cp2Y = next.y;
-    const endX = (next.x + nextNext.x) / 2;
-    const endY = (next.y + nextNext.y) / 2;
-    
-    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
-  }
-  
-  // Close the path
-  pathData += ' Z';
   
   return (
     <div className="absolute inset-0 z-0 overflow-visible">
@@ -994,7 +979,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
         <path 
           d={pathData}
           stroke="#F1A8C6"
-          strokeWidth="5"
+          strokeWidth={thickness}
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
