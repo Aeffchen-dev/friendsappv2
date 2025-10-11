@@ -325,7 +325,7 @@ export function QuizApp() {
                   className="absolute"
                   style={{
                     transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale})`,
-                    transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: 'none',
                     zIndex: isActive ? 10 : 5,
                     pointerEvents: isActive ? 'auto' : 'none'
                   }}
