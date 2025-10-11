@@ -389,10 +389,12 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform - 10% of next card visible (10% of 80vw = 8vw)
+              // Calculate horizontal transform - 10% of next card visible (10% of 80vw = 8vw) + 16px gap
               const cardSpacing = 92; // 92vw spacing (100vw - 8vw = next card shows 8vw)
+              const gapOffsetH = catPosition * 16; // 16px gap between cards
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
+              const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
               // Horizontal scale - only during animation/drag
               let scaleH = 1;
@@ -416,7 +418,7 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw)) scale(${scaleH}) rotateY(${rotateY}deg)`,
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffsetH + dragGapOffsetH}px)) scale(${scaleH}) rotateY(${rotateY}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 500ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
@@ -428,11 +430,12 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform; cards are 80vh to show 10% of adjacent cards
-                    const cardHeight = 80; // 80vh card inside 100vh container
+                    // Calculate vertical transform - 10% of next card visible + 16px gap
+                    const cardHeight = 80; // 80vh card
+                    const gapOffsetV = qPosition * 16; // 16px gap between cards
                     const baseTranslateY = qPosition * cardHeight;
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
-                    const gapYPx = qPosition * 16;
+                    const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 16 : 0;
                     
                     // Vertical scale - only during animation/drag
                     let scale = 1;
@@ -454,7 +457,7 @@ export function QuizApp() {
                           left: '16px',
                           width: '80vw',
                           height: '80vh',
-                          transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapYPx}px)) scale(${scale})`,
+                          transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapOffsetV + dragGapOffsetV}px)) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 500ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
                           willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto'
