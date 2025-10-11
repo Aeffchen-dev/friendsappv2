@@ -461,13 +461,9 @@ export function QuizApp() {
             <path d="M53.1193 3.79373C46.1655 3.79372 44.4966 5.76916 42.2713 14.7997C40.0461 23.8302 38.7481 27.9692 38.3772 28.9099" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
             <path d="M3 20.0332C4.22067 19.6156 5.12769 19.3985 6.5249 19.1832C16.8259 17.5961 27.318 16.7384 37.7276 16.3157C45.2899 16.0086 52.8539 16.7693 60.4071 16.361C61.8418 16.2835 62.5665 15.8384 64 16.157" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
           </svg>
-          <button 
-            onClick={handleToggleMode}
-            className={`${headerTextColor} font-normal text-xs align-baseline transition-colors duration-500`}
-            style={{fontSize: '14px'}}
-          >
-            {isShuffleMode ? 'Kategorien wählen' : 'Kategorien mischen'}
-          </button>
+          <div className={`${headerTextColor} font-normal text-xs align-baseline transition-colors duration-500`} style={{fontSize: '14px'}}>
+            Kategorien sortieren
+          </div>
         </div>
       </div>
       )}
@@ -546,7 +542,7 @@ export function QuizApp() {
                       top: window.innerWidth >= 768 ? '64px' : '48px',
                       left: '10vw',
                       width: '80vw',
-                      height: `calc(100svh - ${window.innerWidth >= 768 ? 64 : 48}px)`
+                      height: `calc(100svh - ${window.innerWidth >= 768 ? 64 : 48}px - 16px)`
                     }}
                   >
                     <QuizCard
@@ -698,6 +694,21 @@ export function QuizApp() {
           </div>
         )}
       </div>
+      
+      {/* Bottom Action Button - Hidden during loading */}
+      {!loading && (
+        <div className="app-footer flex-shrink-0 relative z-10" style={{paddingTop: '16px', paddingBottom: '16px'}}>
+          <div className="flex justify-center items-center">
+            <button 
+              onClick={handleToggleMode}
+              className={`${headerTextColor} font-normal text-xs transition-colors duration-500`}
+              style={{fontSize: '14px'}}
+            >
+              {isShuffleMode ? 'Kategorien wählen' : 'Kategorien mischen'}
+            </button>
+          </div>
+        </div>
+      )}
       
       <CategorySelector
         open={categorySelectorOpen}
