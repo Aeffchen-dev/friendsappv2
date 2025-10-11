@@ -371,7 +371,7 @@ export function QuizApp() {
             {/* Loading text removed - handled by static HTML */}
           </div>
         ) : categories.length > 0 ? (
-          <div className="relative w-full h-full flex justify-center items-center">
+          <div className="relative w-full h-full flex justify-center items-center" style={{ perspective: '1000px' }}>
             {/* Render 3 category columns: previous, current, next */}
             {[-1, 0, 1].map((catPosition) => {
               const catIndex = (currentCategoryIndex + catPosition + categories.length) % categories.length;
@@ -379,27 +379,29 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform
+              // Calculate horizontal transform with 16px gap
               const baseTranslateX = catPosition * 100;
+              const gapOffset = catPosition * 16; // 16px gap between cards
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
+              const dragGapOffset = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
-              // Horizontal scale - transitions from 0.6 to 1 for better visibility
+              // Horizontal scale - transitions from 0.8 to 1
               let scaleH = 1;
               if (!isCategoryActive) {
-                scaleH = 0.6;
+                scaleH = 0.8;
               }
               if (isDragging && dragDirection === 'horizontal') {
                 const dragProgress = Math.abs(dragOffsetX) / window.innerWidth;
                 if (isCategoryActive) {
                   // Active card scales down when dragging away
-                  scaleH = Math.max(0.6, 1 - dragProgress * 0.4);
+                  scaleH = Math.max(0.8, 1 - dragProgress * 0.2);
                 } else if ((catPosition === 1 && dragOffsetX < 0) || (catPosition === -1 && dragOffsetX > 0)) {
                   // Next card scales up when dragging towards it
-                  scaleH = Math.min(1, 0.6 + dragProgress * 0.4);
+                  scaleH = Math.min(1, 0.8 + dragProgress * 0.2);
                 }
               }
               
-              // Horizontal rotation - side cards rotate outward (increased to 30deg for visibility)
+              // Horizontal rotation - side cards rotate outward (30deg for visibility)
               let rotationY = 0;
               if (!isCategoryActive) {
                 rotationY = catPosition * 30; // Left card: -30deg, Right card: +30deg (outward)
@@ -412,7 +414,8 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw)) scale(${scaleH}) rotateY(${rotationY}deg)`,
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) rotateY(${rotationY}deg)`,
+                    transformStyle: 'preserve-3d',
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none'
                   }}
