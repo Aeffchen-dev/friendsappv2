@@ -785,6 +785,9 @@ interface CloudProps {
 }
 
 function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
+  const [currentShapeIndex, setCurrentShapeIndex] = useState(0);
+  const [morphProgress, setMorphProgress] = useState(0);
+
   const getRandomValue = (seed: string, min: number, max: number) => {
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
@@ -797,19 +800,48 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
-  // Each cloud gets a specific shape based on its index
-  const shapeVariant = cloudIndex % 3;
   
-  // Different cloud shapes using SVG paths
+  // All available cloud shapes for morphing
   const cloudShapes = [
-    // Cloud shape 1
     "M25,35 Q15,35 10,25 Q10,15 20,15 Q25,5 35,10 Q45,10 50,20 Q60,25 55,35 Q50,40 40,38 Q35,45 25,35 Z",
-    // Cloud shape 2
     "M30,40 Q20,40 15,30 Q12,20 22,18 Q28,10 38,12 Q48,12 52,22 Q58,28 54,38 Q48,42 38,40 Q32,45 30,40 Z",
-    // Cloud shape 3
-    "M28,38 Q18,38 14,28 Q12,18 24,16 Q30,8 40,10 Q50,10 54,20 Q60,26 56,36 Q50,40 40,38 Q34,44 28,38 Z"
+    "M28,38 Q18,38 14,28 Q12,18 24,16 Q30,8 40,10 Q50,10 54,20 Q60,26 56,36 Q50,40 40,38 Q34,44 28,38 Z",
+    "M27,36 Q17,36 13,26 Q11,16 23,14 Q29,6 39,8 Q49,8 53,18 Q59,24 55,34 Q49,38 39,36 Q33,42 27,36 Z",
+    "M26,37 Q16,37 12,27 Q10,17 22,15 Q28,7 38,9 Q48,9 52,19 Q58,25 54,35 Q48,39 38,37 Q32,43 26,37 Z"
   ];
-  
+
+  // Morph animation
+  useEffect(() => {
+    const morphDuration = 8000 + Math.random() * 7000; // 8-15 seconds per morph
+    let startTime: number | null = null;
+    let animationFrame: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / morphDuration, 1);
+
+      setMorphProgress(progress);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        // Switch to next shape and restart
+        setCurrentShapeIndex((prev) => (prev + 1) % cloudShapes.length);
+        setMorphProgress(0);
+        startTime = null;
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
+
+  // Interpolate between current and next shape
+  const currentShape = cloudShapes[currentShapeIndex];
+  const nextShape = cloudShapes[(currentShapeIndex + 1) % cloudShapes.length];
+
   return (
     <div 
       className="absolute z-0"
@@ -821,9 +853,19 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
     >
       <svg width="80" height="50" viewBox="0 0 70 50">
         <path 
-          d={cloudShapes[shapeVariant]}
+          d={currentShape}
           fill="#AFD2EE"
-        />
+          style={{
+            transition: 'all 1s ease-in-out'
+          }}
+        >
+          <animate
+            attributeName="d"
+            dur="8s"
+            repeatCount="indefinite"
+            values={`${currentShape};${nextShape};${currentShape}`}
+          />
+        </path>
       </svg>
     </div>
   );
