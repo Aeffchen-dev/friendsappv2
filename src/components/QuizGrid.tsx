@@ -13,223 +13,141 @@ interface QuizGridProps {
 }
 
 export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: QuizGridProps) {
-  const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
-  const [currentQuestionIndices, setCurrentQuestionIndices] = useState<{[key: string]: number}>({});
-  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
-  const [dragX, setDragX] = useState(0);
-  const [dragY, setDragY] = useState(0);
-  const [axis, setAxis] = useState<'x' | 'y' | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [dragStart, setDragStart] = useState<number | null>(null);
+  const [dragOffset, setDragOffset] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Organize questions by category
-  const questionsByCategory = selectedCategories.reduce((acc, category) => {
-    acc[category] = allQuestions.filter(q => q.category === category);
-    return acc;
-  }, {} as {[key: string]: Question[]});
+  const allCards = selectedCategories.flatMap(category => 
+    allQuestions
+      .filter(q => q.category === category)
+      .map(q => ({ ...q, category }))
+  );
 
-  // Initialize question indices for each category
-  useEffect(() => {
-    const indices: {[key: string]: number} = {};
-    selectedCategories.forEach(cat => {
-      indices[cat] = 0;
-    });
-    setCurrentQuestionIndices(indices);
-  }, [selectedCategories]);
-
-  const currentCategory = selectedCategories[currentCategoryIndex];
-  const currentQuestions = questionsByCategory[currentCategory] || [];
-  const currentQuestionIndex = currentQuestionIndices[currentCategory] || 0;
-
-  // Card dimensions with peek - cards are smaller than viewport to show neighbors
-  const cardWidth = 80; // vw - shows 10% peek on each side
-  const cardHeight = 80; // vh - shows 10% peek top/bottom
-  const cardGapH = 2.5; // horizontal gap between cards (vw)
-  const cardGapV = 2.5; // vertical gap between cards (vh)
-
-  const minSwipeDistance = 50;
+  const totalCards = allCards.length;
 
   const onPointerDown = (e: React.PointerEvent) => {
-    const point = { x: e.clientX, y: e.clientY };
-    setDragStart(point);
-    setDragX(0);
-    setDragY(0);
-    setAxis(null);
-    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+    setDragStart(e.clientX);
+    setDragOffset(0);
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
-    if (!dragStart) return;
-    const dx = e.clientX - dragStart.x;
-    const dy = e.clientY - dragStart.y;
-
-    if (!axis) {
-      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
-        setAxis(Math.abs(dx) > Math.abs(dy) ? 'x' : 'y');
-      } else {
-        return;
-      }
-    }
-
-    if (axis === 'x') {
-      setDragX(dx);
-      setDragY(0);
-    } else if (axis === 'y') {
-      setDragY(dy);
-      setDragX(0);
-    }
+    if (dragStart === null) return;
+    const dx = e.clientX - dragStart;
+    setDragOffset(dx);
     e.preventDefault();
   };
 
   const onPointerUp = () => {
-    if (dragStart) {
-      const dx = dragX;
-      const dy = dragY;
-      const absX = Math.abs(dx);
-      const absY = Math.abs(dy);
-      const thresholdPx = Math.min(window.innerWidth, window.innerHeight) * 0.12; // 12% viewport
-
-      if (axis === 'x' && absX > thresholdPx) {
-        if (dx < 0 && currentCategoryIndex < selectedCategories.length - 1) {
-          setCurrentCategoryIndex((i) => i + 1);
-        } else if (dx > 0 && currentCategoryIndex > 0) {
-          setCurrentCategoryIndex((i) => i - 1);
-        }
-      } else if (axis === 'y' && absY > thresholdPx) {
-        const currentQIndex = currentQuestionIndices[currentCategory] || 0;
-        const maxIndex = (questionsByCategory[currentCategory]?.length || 1) - 1;
-
-        if (dy < 0 && currentQIndex < maxIndex) {
-          setCurrentQuestionIndices((prev) => ({
-            ...prev,
-            [currentCategory]: currentQIndex + 1
-          }));
-        } else if (dy > 0 && currentQIndex > 0) {
-          setCurrentQuestionIndices((prev) => ({
-            ...prev,
-            [currentCategory]: currentQIndex - 1
-          }));
+    if (dragStart !== null) {
+      const threshold = window.innerWidth * 0.15;
+      const absOffset = Math.abs(dragOffset);
+      
+      if (absOffset > threshold) {
+        if (dragOffset < 0 && currentIndex < totalCards - 1) {
+          setCurrentIndex(i => i + 1);
+        } else if (dragOffset > 0 && currentIndex > 0) {
+          setCurrentIndex(i => i - 1);
         }
       }
     }
     setDragStart(null);
-    setDragX(0);
-    setDragY(0);
-    setAxis(null);
-  };
-
-  const handleEdgeTap = (direction: 'left' | 'right' | 'top' | 'bottom') => {
-    if (direction === 'left' && currentCategoryIndex > 0) {
-      setCurrentCategoryIndex(prev => prev - 1);
-    } else if (direction === 'right' && currentCategoryIndex < selectedCategories.length - 1) {
-      setCurrentCategoryIndex(prev => prev + 1);
-    } else if (direction === 'top' && currentQuestionIndex > 0) {
-      setCurrentQuestionIndices(prev => ({
-        ...prev,
-        [currentCategory]: (prev[currentCategory] || 0) - 1
-      }));
-    } else if (direction === 'bottom' && currentQuestionIndex < currentQuestions.length - 1) {
-      setCurrentQuestionIndices(prev => ({
-        ...prev,
-        [currentCategory]: (prev[currentCategory] || 0) + 1
-      }));
-    }
+    setDragOffset(0);
   };
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') handleEdgeTap('left');
-      else if (e.key === 'ArrowRight') handleEdgeTap('right');
-      else if (e.key === 'ArrowUp') handleEdgeTap('top');
-      else if (e.key === 'ArrowDown') handleEdgeTap('bottom');
+      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        setCurrentIndex(i => i - 1);
+      } else if (e.key === 'ArrowRight' && currentIndex < totalCards - 1) {
+        setCurrentIndex(i => i + 1);
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentCategoryIndex, currentQuestionIndex, currentCategory, currentQuestions.length, selectedCategories.length]);
+  }, [currentIndex, totalCards]);
 
-  if (selectedCategories.length === 0 || !currentCategory) {
+  if (totalCards === 0) {
     return (
       <div className="h-full flex items-center justify-center">
-        <div className="text-white text-sm">Keine Kategorien ausgewählt</div>
+        <div className="text-white text-sm">Keine Fragen verfügbar</div>
       </div>
     );
   }
 
-  // Calculate offset to center current card
-  const currentQuestionIndexForCategory = currentQuestionIndices[currentCategory] || 0;
-  const horizontalOffset = currentCategoryIndex * (cardWidth + cardGapH);
-  const verticalOffset = currentQuestionIndexForCategory * (cardHeight + cardGapV);
+  const getCardStyle = (index: number) => {
+    const diff = index - currentIndex;
+    const dragFactor = dragStart !== null ? dragOffset / window.innerWidth : 0;
+    
+    let x = 0;
+    let scale = 1;
+    let zIndex = 1;
+    let pointerEvents: 'auto' | 'none' = 'none';
+    
+    if (diff === 0) {
+      // Current card
+      x = dragFactor * 100;
+      scale = 1;
+      zIndex = 3;
+      pointerEvents = 'auto';
+    } else if (diff === 1) {
+      // Next card (right)
+      x = 100 + 16 / window.innerWidth * 100 + dragFactor * 100;
+      scale = 0.8;
+      zIndex = 1;
+    } else if (diff === -1) {
+      // Previous card (left)
+      x = -100 - 16 / window.innerWidth * 100 + dragFactor * 100;
+      scale = 0.8;
+      zIndex = 1;
+    } else if (diff > 1) {
+      // Cards further right
+      x = 100 + 16 / window.innerWidth * 100;
+      scale = 0.8;
+      zIndex = 0;
+    } else {
+      // Cards further left
+      x = -100 - 16 / window.innerWidth * 100;
+      scale = 0.8;
+      zIndex = 0;
+    }
+
+    return {
+      transform: `translateX(${x}%) scale(${scale})`,
+      zIndex,
+      pointerEvents,
+      transition: dragStart !== null ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+    };
+  };
 
   return (
     <div 
       ref={containerRef}
-      className="w-screen h-screen overflow-hidden"
-      style={{ width: '100vw', height: '100vh', touchAction: 'none' }}
+      className="flex-1 flex items-stretch justify-center min-h-0 relative"
+      style={{ overflow: 'visible' }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
     >
-      {/* Grid container that slides to show active card centered */}
-      <div 
-        className="absolute"
-        style={{
-          transform: `translate(calc(50vw - ${cardWidth / 2}vw - ${horizontalOffset}vw + ${(dragX / window.innerWidth) * 100}vw), calc(50vh - ${cardHeight / 2}vh - ${verticalOffset}vh + ${(dragY / window.innerHeight) * 100}vh))`,
-          left: 0,
-          top: 0,
-          transition: dragStart ? 'none' : 'transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-        }}
-      >
-        {/* Horizontal layout of categories */}
-        {selectedCategories.map((category, catIndex) => (
+      <div className="relative w-full h-full flex items-center justify-center" style={{ touchAction: 'pan-y' }}>
+        {allCards.map((question, index) => (
           <div
-            key={category}
-            className="absolute"
-            style={{
-              left: `${catIndex * (cardWidth + cardGapH)}vw`,
-              top: 0
-            }}
+            key={`${question.category}-${index}`}
+            className="absolute inset-0 w-full h-full"
+            style={getCardStyle(index)}
           >
-            {/* Vertical layout of questions within category */}
-            {questionsByCategory[category]?.map((question, qIndex) => (
-              <div
-                key={`${category}-${qIndex}`}
-                className="absolute"
-                style={{
-                  width: `${cardWidth}vw`,
-                  height: `${cardHeight}vh`,
-                  top: `${qIndex * (cardHeight + cardGapV)}vh`,
-                  left: 0
-                }}
-              >
-                {/* Edge tap zones */}
-                <div 
-                  className="absolute left-0 top-0 w-16 h-full z-20 cursor-pointer"
-                  onClick={() => handleEdgeTap('left')}
-                />
-                <div 
-                  className="absolute right-0 top-0 w-16 h-full z-20 cursor-pointer"
-                  onClick={() => handleEdgeTap('right')}
-                />
-                <div 
-                  className="absolute top-0 left-0 right-0 h-16 z-20 cursor-pointer"
-                  onClick={() => handleEdgeTap('top')}
-                />
-                <div 
-                  className="absolute bottom-0 left-0 right-0 h-16 z-20 cursor-pointer"
-                  onClick={() => handleEdgeTap('bottom')}
-                />
-
-                <QuizCard
-                  question={question}
-                  onSwipeLeft={() => {}}
-                  onSwipeRight={() => {}}
-                  animationClass=""
-                  onBgColorChange={onBgColorChange}
-                />
-              </div>
-            ))}
+            <QuizCard
+              question={question}
+              onSwipeLeft={() => {}}
+              onSwipeRight={() => {}}
+              animationClass=""
+              onBgColorChange={onBgColorChange}
+            />
           </div>
         ))}
       </div>
