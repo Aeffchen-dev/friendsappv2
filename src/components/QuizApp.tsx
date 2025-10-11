@@ -463,27 +463,13 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform - fixed spacing between cards
-                    const cardSpacingPx = 2; // 2px gap between cards
+                    // Calculate vertical transform - matching horizontal spacing
+                    const cardSpacing = 88; // Match horizontal spacing in vh
                     
-                    // Move previous slide further up to be completely out of viewport
-                    // Position 2 (second next) moves together with position 1 (next)
-                    let baseTranslateY;
-                    let baseTranslateYPx = 0;
-                    if (qPosition === -1) {
-                      baseTranslateY = -120;
-                    } else if (qPosition === 1) {
-                      baseTranslateY = 80; // Card height
-                      baseTranslateYPx = cardSpacingPx; // 32px spacing
-                    } else if (qPosition === 2) {
-                      baseTranslateY = 80; // Card height
-                      baseTranslateYPx = cardSpacingPx * 2 + 4; // Double spacing plus small gap
-                    } else {
-                      baseTranslateY = qPosition * 80;
-                    }
+                    let baseTranslateY = qPosition * cardSpacing;
+                    
                     // Only apply vertical drag to the active category
-                    const dragTranslateY = (isCategoryActive && isDragging && dragDirection === 'vertical') ? (dragOffsetY / window.innerHeight) * 80 : 0;
-                    const dragTranslateYPx = (isCategoryActive && isDragging && dragDirection === 'vertical') ? (dragOffsetY / window.innerHeight) * cardSpacingPx : 0;
+                    const dragTranslateY = (isCategoryActive && isDragging && dragDirection === 'vertical') ? (dragOffsetY / window.innerHeight) * cardSpacing : 0;
 
                     // Vertical scale - all cards at scale 1
                     const scale = 1;
@@ -498,7 +484,7 @@ export function QuizApp() {
                           left: '16px',
                           width: '80vw',
                           height: '80vh',
-                          transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${baseTranslateYPx + dragTranslateYPx}px)) scale(${scale})`,
+                          transform: `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                           animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
