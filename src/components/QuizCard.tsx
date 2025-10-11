@@ -394,10 +394,9 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
     <div 
       className={`relative h-full ${categoryColors.bg} rounded-2xl overflow-hidden select-none border border-black ${animationClass}`}
       style={{
-        width: 'calc(100vw - 32px)',
+        width: '100%',
+        height: '100%',
         boxShadow: '0 0 12px 4px rgba(30, 30, 30, 0.1)',
-        height: 'calc(100svh - 64px - 20px - 16px - 64px)',
-        maxHeight: '100%',
         transition: 'height 0.2s ease-out'
       }}
       onTouchStart={disableSwipe ? undefined : onTouchStart}
