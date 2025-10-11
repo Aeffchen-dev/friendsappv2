@@ -955,20 +955,20 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   let currentX = startX;
   let currentY = startY;
   
-  // Generate 4-6 large curves
-  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 4, 7));
+  // Generate 2-3 tight S-curves
+  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 2, 4));
   
   for (let i = 0; i < numCurves; i++) {
     const curveDirection = i % 2 === 0 ? direction : -direction;
-    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 80, 120);
-    const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.9, amplitude * 1.3);
+    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 60, 90);
+    const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.6, amplitude * 0.9);
     
     const cp1X = currentX + segmentLength * 0.35;
-    const cp1Y = currentY + (curveDirection * curveAmp * 1.4);
+    const cp1Y = currentY + (curveDirection * curveAmp * 1.2);
     const cp2X = currentX + segmentLength * 0.65;
-    const cp2Y = currentY + (curveDirection * curveAmp * 1.6);
+    const cp2Y = currentY + (curveDirection * curveAmp * 1.2);
     const endX = currentX + segmentLength;
-    const endY = currentY + (curveDirection * curveAmp * 0.3);
+    const endY = currentY + (curveDirection * curveAmp * 0.1);
     
     pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
     currentX = endX;
