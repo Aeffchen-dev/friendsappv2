@@ -500,15 +500,21 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Position smiley in lower area to stay below the text, small overlap OK
+        // Check if question text is long
+        const isLongQuestion = question.question.length > 80;
+        
+        // Position smiley at bottom with cutoff if question is long, otherwise in lower area
         const posX = getRandomPos(question.question + 'smileyX', 15, 85);
-        const posY = getRandomPos(question.question + 'smileyY', 60, 85);
+        const posY = isLongQuestion 
+          ? getRandomPos(question.question + 'smileyY', 92, 102) // Bottom with cutoff
+          : getRandomPos(question.question + 'smileyY', 60, 85); // Normal lower area
         
         return (
           <Smiley 
             questionText={question.question}
             posX={posX}
             posY={posY}
+            isLongQuestion={isLongQuestion}
           />
         );
       })()}
@@ -771,9 +777,10 @@ interface SmileyProps {
   questionText: string;
   posX: number;
   posY: number;
+  isLongQuestion?: boolean;
 }
 
-function Smiley({ questionText, posX, posY }: SmileyProps) {
+function Smiley({ questionText, posX, posY, isLongQuestion = false }: SmileyProps) {
   const [isWinking, setIsWinking] = useState(false);
   
   const getRandomValue = (seed: string, min: number, max: number) => {
@@ -797,7 +804,10 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
   }, []);
   
   const rotation = getRandomValue(questionText + 'smileyRot', -15, 15);
-  const scale = getRandomValue(questionText + 'smileyScale', 0.5, 1.6);
+  // Make smiley much bigger if question is long
+  const scale = isLongQuestion 
+    ? getRandomValue(questionText + 'smileyScale', 1.4, 2.2) 
+    : getRandomValue(questionText + 'smileyScale', 0.5, 1.6);
   const eyeDistance = getRandomValue(questionText + 'eyeDistance', 12, 18);
   
   // Check if this is the drugs question - make eyes HUGE
