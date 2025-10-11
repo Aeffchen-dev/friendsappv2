@@ -144,7 +144,7 @@ export function QuizApp() {
   const handleDragEnd = () => {
     if (!isDragging) return;
     
-    const threshold = window.innerWidth * 0.15; // 15% width threshold
+    const threshold = 80; // 80px drag threshold
     
     if (dragOffset < -threshold && currentIndex < questions.length - 1) {
       // Swiped left - next question
