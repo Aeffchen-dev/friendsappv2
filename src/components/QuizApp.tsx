@@ -416,9 +416,9 @@ export function QuizApp() {
               
               // Calculate horizontal transform - equal spacing between all cards (32px)
               const hCardSpacingPx = 32; // 32px spacing
-              const maxCardWidthPx = 500; // Max width for desktop
+              const maxCardWidthPx = 600; // Max width for desktop
               const vwCardWidth = window.innerWidth * 0.8; // 80vw
-              const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx); // Card width (80vw or 500px max)
+              const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx); // Card width (80vw or 600px max)
               const totalCardWidth = hCardWidth + hCardSpacingPx; // Total width including spacing
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
               const baseTranslateX = catPosition * cardSpacingVw;
@@ -503,7 +503,7 @@ export function QuizApp() {
                           position: 'absolute',
                           top: '64px',
                           left: '16px',
-                          width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 500)}px` : '80vw',
+                          width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : '80vw',
                           height: '80vh',
                           transform: `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
