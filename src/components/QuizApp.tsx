@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { QuizCard } from './QuizCard';
 import { CategorySelector } from './CategorySelector';
 
@@ -9,7 +9,8 @@ interface Question {
 }
 
 export function QuizApp() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [animationClass, setAnimationClass] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
@@ -27,11 +28,24 @@ export function QuizApp() {
   
   // Drag state
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState(0);
+  const [dragOffsetX, setDragOffsetX] = useState(0);
+  const [dragOffsetY, setDragOffsetY] = useState(0);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragStartY, setDragStartY] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [horizontalLock, setHorizontalLock] = useState(false);
+  const [dragDirection, setDragDirection] = useState<'horizontal' | 'vertical' | null>(null);
+
+  // Group questions by category
+  const questionsByCategory = useMemo(() => {
+    const grouped: { [key: string]: Question[] } = {};
+    questions.forEach(q => {
+      if (!grouped[q.category]) grouped[q.category] = [];
+      grouped[q.category].push(q);
+    });
+    return grouped;
+  }, [questions]);
+
+  const categories = useMemo(() => Object.keys(questionsByCategory), [questionsByCategory]);
 
   useEffect(() => {
     // Start logo animation and data loading together
@@ -137,8 +151,9 @@ export function QuizApp() {
     setIsAnimating(false);
     setDragStartX(e.clientX);
     setDragStartY(e.clientY);
-    setDragOffset(0);
-    setHorizontalLock(false);
+    setDragOffsetX(0);
+    setDragOffsetY(0);
+    setDragDirection(null);
     try { e.currentTarget.setPointerCapture(e.pointerId); } catch {}
   };
 
@@ -152,90 +167,110 @@ export function QuizApp() {
     const deadzone = 30;
     const totalDrag = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     
-    if (!horizontalLock && totalDrag > deadzone) {
-      // Lock to horizontal if horizontal movement is dominant
+    if (!dragDirection && totalDrag > deadzone) {
+      // Determine primary direction
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        setHorizontalLock(true);
+        setDragDirection('horizontal');
       } else {
-        // Vertical scroll - cancel drag and reset offset
-        setIsDragging(false);
-        setDragOffset(0);
-        return;
+        setDragDirection('vertical');
       }
     }
     
-    if (horizontalLock) {
-      // Prevent scrolling while horizontally dragging
+    if (dragDirection === 'horizontal') {
       e.preventDefault();
-      // Clamp offset to ±viewport width
       const maxOffset = window.innerWidth;
       const clampedOffset = Math.max(-maxOffset, Math.min(maxOffset, deltaX));
-      setDragOffset(clampedOffset);
+      setDragOffsetX(clampedOffset);
+    } else if (dragDirection === 'vertical') {
+      e.preventDefault();
+      const maxOffset = window.innerHeight;
+      const clampedOffset = Math.max(-maxOffset, Math.min(maxOffset, deltaY));
+      setDragOffsetY(clampedOffset);
     }
   };
 
   const handleDragEnd = () => {
     if (!isDragging) return;
     
-    const threshold = 80; // 80px drag threshold (user preference)
+    const threshold = 80;
     
     setIsDragging(false);
     setIsAnimating(true);
     
-    // Simple logic: if dragged left, go next; if dragged right, go prev
-    if (dragOffset < -threshold) {
-      setLogoSqueezeLeft(true);
-      setCurrentIndex(prev => (prev + 1) % questions.length);
-      setDragOffset(window.innerWidth);
-      
-      setTimeout(() => {
-        setDragOffset(0);
-        setTimeout(() => {
-          setIsAnimating(false);
-          setLogoSqueezeLeft(false);
-        }, 800);
-      }, 16);
-    } else if (dragOffset > threshold) {
-      setLogoSqueezeRight(true);
-      setCurrentIndex(prev => (prev - 1 + questions.length) % questions.length);
-      setDragOffset(-window.innerWidth);
-      
-      setTimeout(() => {
-        setDragOffset(0);
-        setTimeout(() => {
-          setIsAnimating(false);
-          setLogoSqueezeRight(false);
-        }, 800);
-      }, 16);
+    if (dragDirection === 'horizontal') {
+      // Change category
+      if (dragOffsetX < -threshold && currentCategoryIndex < categories.length - 1) {
+        setLogoSqueezeLeft(true);
+        setCurrentCategoryIndex(prev => prev + 1);
+        setCurrentQuestionIndex(0);
+        setTimeout(() => setLogoSqueezeLeft(false), 300);
+      } else if (dragOffsetX > threshold && currentCategoryIndex > 0) {
+        setLogoSqueezeRight(true);
+        setCurrentCategoryIndex(prev => prev - 1);
+        setCurrentQuestionIndex(0);
+        setTimeout(() => setLogoSqueezeRight(false), 300);
+      }
+      setDragOffsetX(0);
+    } else if (dragDirection === 'vertical') {
+      // Change question within category
+      const currentCategoryQuestions = questionsByCategory[categories[currentCategoryIndex]] || [];
+      if (dragOffsetY < -threshold && currentQuestionIndex < currentCategoryQuestions.length - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+      } else if (dragOffsetY > threshold && currentQuestionIndex > 0) {
+        setCurrentQuestionIndex(prev => prev - 1);
+      }
+      setDragOffsetY(0);
     } else {
-      // Snap back to center
-      setDragOffset(0);
-      setTimeout(() => {
-        setIsAnimating(false);
-      }, 800);
+      // Snap back
+      setDragOffsetX(0);
+      setDragOffsetY(0);
+    }
+    
+    setTimeout(() => {
+      setIsAnimating(false);
+      setDragDirection(null);
+    }, 800);
+  };
+
+  const nextCategory = () => {
+    if (currentCategoryIndex < categories.length - 1) {
+      setLogoSqueezeLeft(true);
+      setCurrentCategoryIndex(prev => prev + 1);
+      setCurrentQuestionIndex(0);
+      setTimeout(() => setLogoSqueezeLeft(false), 300);
+    }
+  };
+
+  const prevCategory = () => {
+    if (currentCategoryIndex > 0) {
+      setLogoSqueezeRight(true);
+      setCurrentCategoryIndex(prev => prev - 1);
+      setCurrentQuestionIndex(0);
+      setTimeout(() => setLogoSqueezeRight(false), 300);
     }
   };
 
   const nextQuestion = () => {
-    setLogoSqueezeLeft(true);
-    setCurrentIndex(prev => (prev + 1) % questions.length); // Loop to first
-    setTimeout(() => {
-      setLogoSqueezeLeft(false);
-    }, 300);
+    const currentCategoryQuestions = questionsByCategory[categories[currentCategoryIndex]] || [];
+    if (currentQuestionIndex < currentCategoryQuestions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
+    }
   };
 
   const prevQuestion = () => {
-    setLogoSqueezeRight(true);
-    setCurrentIndex(prev => (prev - 1 + questions.length) % questions.length); // Loop to last
-    setTimeout(() => {
-      setLogoSqueezeRight(false);
-    }, 300);
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
+    }
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft') {
-      prevQuestion();
+      prevCategory();
     } else if (e.key === 'ArrowRight') {
+      nextCategory();
+    } else if (e.key === 'ArrowUp') {
+      prevQuestion();
+    } else if (e.key === 'ArrowDown') {
       nextQuestion();
     }
   };
@@ -243,18 +278,13 @@ export function QuizApp() {
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [currentIndex]);
+  }, [currentCategoryIndex, currentQuestionIndex, categories]);
 
-  // Filter questions based on selected categories
+  // Reset indices when questions change
   useEffect(() => {
-    if (selectedCategories.length === 0) {
-      setQuestions([]);
-    } else {
-      const filteredQuestions = allQuestions.filter(q => 
-        selectedCategories.includes(q.category)
-      );
-      setQuestions(filteredQuestions);
-      setCurrentIndex(0); // Reset to first question when filtering
+    if (categories.length > 0) {
+      setCurrentCategoryIndex(0);
+      setCurrentQuestionIndex(0);
     }
   }, [selectedCategories, allQuestions]);
 
@@ -337,7 +367,7 @@ export function QuizApp() {
       {/* Main Quiz Container */}
       <div 
         className="flex-1 flex justify-center items-center overflow-hidden relative z-10" 
-        style={{ width: '100vw', height: '100vh', touchAction: 'pan-y' }}
+        style={{ width: '100vw', touchAction: 'none' }}
         onPointerDown={handleDragStart}
         onPointerMove={handleDragMove}
         onPointerUp={handleDragEnd}
@@ -347,60 +377,50 @@ export function QuizApp() {
           <div className="h-full flex items-center justify-center">
             {/* Loading text removed - handled by static HTML */}
           </div>
-        ) : questions.length > 0 ? (
-          <div className="relative w-full h-full flex justify-center items-center">
-            {/* Render extended range of cards to keep them visible longer during transitions */}
-            {[currentIndex - 3, currentIndex - 2, currentIndex - 1, currentIndex, currentIndex + 1, currentIndex + 2, currentIndex + 3].map((rawIndex) => {
-              const index = (rawIndex + questions.length) % questions.length; // Handle wrap-around
-              if (questions.length === 0) return null;
-              
-              const position = rawIndex - currentIndex; // -1, 0, or 1
-              const isActive = position === 0;
-              
-              // Calculate dynamic transform based on drag
-              const baseTranslate = position * 100;
-              const baseGap = position * 16;
-              const dragTranslate = isDragging ? (dragOffset / window.innerWidth) * 100 : 0;
-              
-              // Dynamic scale based on drag progress
-              const dragProgress = Math.abs(dragOffset) / window.innerWidth;
-              let scale = isActive ? 1 : 0.8;
-              if (isDragging) {
-                if (isActive) {
-                  scale = Math.max(0.8, 1 - dragProgress * 0.2);
-                } else if ((position === 1 && dragOffset < 0) || (position === -1 && dragOffset > 0)) {
-                  // Next card scales up when dragging towards it
-                  scale = Math.min(1, 0.8 + dragProgress * 0.2);
-                }
-              }
-              
-              // Rotation: side cards lean outward, active card bends opposite to drag
-              let rotation = 0;
-              if (isActive && isDragging) {
-                // Active card bends opposite to drag direction (stronger effect)
-                rotation = -(dragOffset / window.innerWidth) * 15; // Max ±15deg
-              } else if (!isActive) {
-                rotation = position * 3; // -3deg for left card, +3deg for right card
-              }
+        ) : categories.length > 0 ? (
+          <div 
+            className="flex"
+            style={{
+              transform: `translateX(calc(-${currentCategoryIndex * 100}vw + ${dragOffsetX}px))`,
+              transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+            }}
+          >
+            {categories.map((category, catIndex) => {
+              const categoryQuestions = questionsByCategory[category] || [];
+              const isCategoryActive = catIndex === currentCategoryIndex;
               
               return (
-                <div
-                  key={`${questions[index].question}-${position}`}
-                  className="absolute"
+                <div 
+                  key={category}
+                  className="flex flex-col flex-shrink-0"
                   style={{
-                    transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale}) rotateY(${rotation}deg)`,
-                    transition: isAnimating ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
-                    zIndex: isActive ? 10 : 5,
-                    pointerEvents: isActive ? 'auto' : 'none'
+                    width: '100vw',
+                    transform: isCategoryActive ? `translateY(calc(-${currentQuestionIndex * 100}vh + ${dragOffsetY}px))` : 'none',
+                    transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                   }}
                 >
-                  <QuizCard
-                    question={questions[index]}
-                    onSwipeLeft={nextQuestion}
-                    onSwipeRight={prevQuestion}
-                    animationClass=""
-                    onBgColorChange={isActive ? handleBgColorChange : undefined}
-                  />
+                  {categoryQuestions.map((question, qIndex) => {
+                    const isActive = isCategoryActive && qIndex === currentQuestionIndex;
+                    
+                    return (
+                      <div
+                        key={`${question.question}-${qIndex}`}
+                        className="flex-shrink-0 flex items-center justify-center"
+                        style={{
+                          height: '100vh',
+                          pointerEvents: isActive ? 'auto' : 'none'
+                        }}
+                      >
+                        <QuizCard
+                          question={question}
+                          onSwipeLeft={nextCategory}
+                          onSwipeRight={prevCategory}
+                          animationClass=""
+                          onBgColorChange={isActive ? handleBgColorChange : undefined}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               );
             })}
