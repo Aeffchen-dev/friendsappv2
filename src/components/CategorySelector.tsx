@@ -205,13 +205,16 @@ export function CategorySelector({
                 >
                   {/* Color strip - 8px when unselected, full width when selected */}
                   <div 
-                    className={`absolute inset-y-0 left-0 transition-all duration-500 ease-out ${isSelected ? 'w-full' : 'w-2'}`}
+                    className={`absolute inset-y-0 left-0 ${isSelected ? 'w-full' : 'w-2'}`}
                     style={{ 
                       backgroundColor: colors.cardBg,
                       borderTopLeftRadius: isSelected ? '4px' : '4px',
                       borderBottomLeftRadius: isSelected ? '4px' : '4px',
                       borderTopRightRadius: isSelected ? '999px' : '4px',
-                      borderBottomRightRadius: isSelected ? '999px' : '4px'
+                      borderBottomRightRadius: isSelected ? '999px' : '4px',
+                      transition: isSelected 
+                        ? 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+                        : 'all 0.15s ease-out'
                     }} 
                   />
                   
@@ -229,8 +232,8 @@ export function CategorySelector({
                          setTempSelection(newCategories);
                        }}
                     >
-                      <div
-                        className={`w-8 h-8 border border-white flex items-center justify-center transition-all ease-out ${isSelected ? 'bg-white duration-300 delay-200' : 'bg-transparent duration-100 hover:bg-white/10'}`}
+                       <div
+                        className={`w-8 h-8 border border-white flex items-center justify-center transition-all ease-out ${isSelected ? 'bg-white duration-200 delay-150' : 'bg-transparent duration-100 hover:bg-white/10'}`}
                          style={{ 
                            width: '32px', 
                            height: '32px', 
