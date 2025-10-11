@@ -448,6 +448,38 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
+      {/* Clouds in background - only for "wer aus der runde" category */}
+      {question.category.toLowerCase() === 'wer aus der runde' && (() => {
+        const getRandomPos = (seed: string, min: number, max: number) => {
+          let hash = 0;
+          for (let i = 0; i < seed.length; i++) {
+            hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+            hash = hash & hash;
+          }
+          const normalized = Math.abs(hash % 1000) / 1000;
+          return min + normalized * (max - min);
+        };
+        
+        return (
+          <>
+            {[0, 1, 2].map((cloudIndex) => {
+              const posX = getRandomPos(question.question + 'cloudX' + cloudIndex, 10, 80);
+              const posY = getRandomPos(question.question + 'cloudY' + cloudIndex, 20, 70);
+              
+              return (
+                <Cloud 
+                  key={cloudIndex}
+                  questionText={question.question}
+                  cloudIndex={cloudIndex}
+                  posX={posX}
+                  posY={posY}
+                />
+              );
+            })}
+          </>
+        );
+      })()}
+
       {/* Category Strip */}
       <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10`}>
         <div className="transform -rotate-90 whitespace-nowrap">
@@ -590,6 +622,58 @@ function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex
           opacity: isBlinking ? 0 : 1
         }}
       />
+    </div>
+  );
+}
+
+// Cloud component with randomized shape and size
+interface CloudProps {
+  questionText: string;
+  cloudIndex: number;
+  posX: number;
+  posY: number;
+}
+
+function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
+  const getRandomValue = (seed: string, min: number, max: number) => {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+      hash = hash & hash;
+    }
+    const normalized = Math.abs(hash % 1000) / 1000;
+    return min + normalized * (max - min);
+  };
+  
+  const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
+  const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
+  const shapeVariant = Math.floor(getRandomValue(questionText + 'cloudShape' + cloudIndex, 0, 3));
+  
+  // Different cloud shapes using SVG paths
+  const cloudShapes = [
+    // Cloud shape 1
+    "M25,35 Q15,35 10,25 Q10,15 20,15 Q25,5 35,10 Q45,10 50,20 Q60,25 55,35 Q50,40 40,38 Q35,45 25,35 Z",
+    // Cloud shape 2
+    "M30,40 Q20,40 15,30 Q12,20 22,18 Q28,10 38,12 Q48,12 52,22 Q58,28 54,38 Q48,42 38,40 Q32,45 30,40 Z",
+    // Cloud shape 3
+    "M28,38 Q18,38 14,28 Q12,18 24,16 Q30,8 40,10 Q50,10 54,20 Q60,26 56,36 Q50,40 40,38 Q34,44 28,38 Z"
+  ];
+  
+  return (
+    <div 
+      className="absolute z-0 opacity-30"
+      style={{
+        left: `${posX}%`,
+        top: `${posY}%`,
+        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`
+      }}
+    >
+      <svg width="80" height="50" viewBox="0 0 70 50">
+        <path 
+          d={cloudShapes[shapeVariant]}
+          fill="#AFD2EE"
+        />
+      </svg>
     </div>
   );
 }
