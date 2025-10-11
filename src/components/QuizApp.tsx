@@ -371,7 +371,7 @@ export function QuizApp() {
             {/* Loading text removed - handled by static HTML */}
           </div>
         ) : categories.length > 0 ? (
-          <div className="relative w-full h-full flex justify-center items-center" style={{ perspective: '1000px' }}>
+          <div className="relative w-full h-full flex justify-center items-center">
             {/* Render 3 category columns: previous, current, next */}
             {[-1, 0, 1].map((catPosition) => {
               const catIndex = (currentCategoryIndex + catPosition + categories.length) % categories.length;
@@ -401,10 +401,10 @@ export function QuizApp() {
                 }
               }
               
-              // Horizontal rotation - side cards rotate outward (30deg for visibility)
-              let rotationY = 0;
+              // Horizontal rotation - 2D skew effect simulating Y-axis rotation
+              let skewY = 0;
               if (!isCategoryActive) {
-                rotationY = catPosition * 30; // Left card: -30deg, Right card: +30deg (outward)
+                skewY = catPosition * 5; // Left card: -5deg, Right card: +5deg
               }
               
               return (
@@ -414,8 +414,7 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) rotateY(${rotationY}deg)`,
-                    transformStyle: 'preserve-3d',
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) skewY(${skewY}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none'
                   }}
