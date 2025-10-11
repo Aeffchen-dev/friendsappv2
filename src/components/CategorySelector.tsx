@@ -40,7 +40,7 @@ export function CategorySelector({
         return { 
           stripeBg: 'hsl(var(--fuck-500))', 
           cardBg: 'hsl(var(--quiz-fuck-bg))',
-          text: '#6F5A48'
+          text: '#DBCFBE'
         };
       case 'identity':
         return { 
@@ -216,7 +216,7 @@ export function CategorySelector({
                   />
                   
                   <span className="font-bold text-sm uppercase tracking-wide relative z-10 transition-colors duration-300" 
-                    style={{ color: colors.text }}>
+                    style={{ color: isSelected ? colors.text : 'white' }}>
                     {category}
                   </span>
                   <div onClick={(e) => e.stopPropagation()}>
