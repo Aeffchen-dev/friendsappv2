@@ -209,15 +209,31 @@ export function QuizApp() {
     }
   };
 
+  // Get HSL color value from background class
+  const getColorFromBgClass = (bgClass: string): string => {
+    const match = bgClass.match(/bg-(.+)/);
+    if (!match) return 'hsl(0 0% 0%)';
+    const varName = match[1];
+    return `hsl(var(--${varName}))`;
+  };
+
   return (
-    <div className={`h-[100svh] overflow-hidden flex flex-col relative`}
+    <div 
+      className="h-[100svh] overflow-hidden flex flex-col relative"
       style={{
-        background: `linear-gradient(${bgColor === prevBgColor ? '0deg' : '180deg'}, var(--prev-color), var(--new-color))`,
-        '--prev-color': `hsl(var(--${prevBgColor.replace('bg-', '')}))`,
-        '--new-color': `hsl(var(--${bgColor.replace('bg-', '')}))`,
-        transition: 'background 4000ms cubic-bezier(0.4, 0.0, 0.2, 1)'
-      } as React.CSSProperties}
+        background: getColorFromBgClass(prevBgColor),
+        transition: 'background 4000ms cubic-bezier(0.33, 1, 0.68, 1)'
+      }}
     >
+      {/* Overlay that fades in with new color */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: getColorFromBgClass(bgColor),
+          opacity: bgColor === prevBgColor ? 0 : 1,
+          transition: 'opacity 4000ms cubic-bezier(0.33, 1, 0.68, 1)'
+        }}
+      />
       {/* App Header - Always visible */}
       <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50}}>
         <div className="flex justify-between items-baseline px-4 py-4">
