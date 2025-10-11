@@ -934,66 +934,46 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create sea star (starfish) shapes
+  // Create smooth starfish-shaped circle outline
   const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 20, 80);
   const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 20, 80);
-  const armLength = getRandomValue(questionText + 'armLength' + lineIndex, 10, 18);
-  const armWidth = getRandomValue(questionText + 'armWidth' + lineIndex, 6, 10);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 12, 20);
+  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.5, 0.7);
   const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 5, 6));
   
   let pathData = '';
   
-  // Start from the first arm and trace the entire outline
+  // Calculate all points around the starfish
   const points = [];
   
-  for (let p = 0; p < numArms; p++) {
-    const angle = (360 / numArms) * p;
+  for (let i = 0; i < numArms * 2; i++) {
+    const angle = (360 / (numArms * 2)) * i;
     const rad = (angle * Math.PI) / 180;
+    const isOuter = i % 2 === 0;
+    const radius = isOuter ? outerRadius : innerRadius;
     
-    // Arm tip
-    const tipX = centerX + Math.cos(rad) * armLength;
-    const tipY = centerY + Math.sin(rad) * armLength;
+    const x = centerX + Math.cos(rad) * radius;
+    const y = centerY + Math.sin(rad) * radius;
     
-    // Arm base left side
-    const leftAngle = rad - (Math.PI / numArms) * 0.7;
-    const baseLeftX = centerX + Math.cos(leftAngle) * (armWidth * 0.8);
-    const baseLeftY = centerY + Math.sin(leftAngle) * (armWidth * 0.8);
-    
-    // Arm base right side
-    const rightAngle = rad + (Math.PI / numArms) * 0.7;
-    const baseRightX = centerX + Math.cos(rightAngle) * (armWidth * 0.8);
-    const baseRightY = centerY + Math.sin(rightAngle) * (armWidth * 0.8);
-    
-    // Control points for smooth curves
-    const cpTipLeftX = tipX + Math.cos(rad - 0.8) * (armWidth * 0.4);
-    const cpTipLeftY = tipY + Math.sin(rad - 0.8) * (armWidth * 0.4);
-    const cpTipRightX = tipX + Math.cos(rad + 0.8) * (armWidth * 0.4);
-    const cpTipRightY = tipY + Math.sin(rad + 0.8) * (armWidth * 0.4);
-    
-    points.push({
-      baseLeft: { x: baseLeftX, y: baseLeftY },
-      tip: { x: tipX, y: tipY },
-      baseRight: { x: baseRightX, y: baseRightY },
-      cpTipLeft: { x: cpTipLeftX, y: cpTipLeftY },
-      cpTipRight: { x: cpTipRightX, y: cpTipRightY }
-    });
+    points.push({ x, y, isOuter });
   }
   
-  // Draw the sea star outline
-  pathData = `M ${points[0].baseRight.x},${points[0].baseRight.y}`;
+  // Start the path
+  pathData = `M ${points[0].x},${points[0].y}`;
   
+  // Create smooth curves between all points
   for (let i = 0; i < points.length; i++) {
-    const point = points[i];
+    const current = points[i];
+    const next = points[(i + 1) % points.length];
     
-    // Curve to arm tip
-    pathData += ` Q ${point.cpTipRight.x},${point.cpTipRight.y} ${point.tip.x},${point.tip.y}`;
-    pathData += ` Q ${point.cpTipLeft.x},${point.cpTipLeft.y} ${point.baseLeft.x},${point.baseLeft.y}`;
+    // Use quadratic curve for smooth transitions
+    const midX = (current.x + next.x) / 2;
+    const midY = (current.y + next.y) / 2;
     
-    // Connect to next arm's base right (or close the path)
-    const nextPoint = points[(i + 1) % points.length];
-    pathData += ` L ${nextPoint.baseRight.x},${nextPoint.baseRight.y}`;
+    pathData += ` Q ${current.x},${current.y} ${midX},${midY}`;
   }
   
+  // Close the path smoothly back to start
   pathData += ' Z';
   
   return (
