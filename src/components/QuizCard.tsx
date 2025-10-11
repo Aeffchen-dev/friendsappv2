@@ -392,7 +392,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       />
 
       {/* Category Strip */}
-      <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center`}>
+      <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black`}>
         <div className="transform -rotate-90 whitespace-nowrap">
           {Array(20).fill(question.category).map((cat, index) => (
             <span 
