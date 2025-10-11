@@ -434,7 +434,8 @@ export function QuizApp() {
                     // Calculate vertical transform - 10% of next card visible + 16px gap
                     const cardHeight = 80; // 80vh card
                     const gapOffsetV = qPosition * 16; // 16px gap between cards
-                    const baseTranslateY = qPosition * cardHeight;
+                    // Move previous slide further up to be completely out of viewport
+                    const baseTranslateY = qPosition === -1 ? -120 : qPosition * cardHeight;
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 16 : 0;
                     
