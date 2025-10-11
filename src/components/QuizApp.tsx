@@ -420,7 +420,7 @@ export function QuizApp() {
               const totalCardWidth = hCardWidth + hCardSpacingPx; // Total width including spacing
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
               const baseTranslateX = catPosition * cardSpacingVw;
-              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacingVw : 0;
+              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               
               // Horizontal scale - all cards at scale 1
               const scaleH = 1;
