@@ -370,8 +370,9 @@ export function QuizApp() {
 
   const handleToggleMode = () => {
     if (isShuffleMode) {
-      // Switching from shuffle to category mode - just switch
+      // Switching from shuffle to category mode - reset filter to all categories
       setIsShuffleMode(false);
+      setSelectedCategories(availableCategories);
     } else {
       // Switching to shuffle mode - just toggle
       setIsShuffleMode(true);
