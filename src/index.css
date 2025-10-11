@@ -531,4 +531,18 @@ All colors MUST be HSL.
       scale: 1;
     }
   }
+  
+  /* Spin animation for loading smiley */
+  @keyframes spin-ease {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .animate-spin-ease {
+    animation: spin-ease 2s ease-in-out infinite;
+  }
 }

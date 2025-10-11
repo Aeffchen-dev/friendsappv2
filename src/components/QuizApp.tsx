@@ -408,7 +408,25 @@ export function QuizApp() {
       >
         {loading ? (
           <div className="h-full flex items-center justify-center">
-            {/* Loading text removed - handled by static HTML */}
+            <svg 
+              width="64" 
+              height="64" 
+              viewBox="0 0 64 64" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+              className="animate-spin-ease"
+            >
+              <circle cx="32" cy="32" r="30" fill="#F8BAD3" />
+              <circle cx="22" cy="26" r="3" fill="#000000" />
+              <circle cx="42" cy="26" r="3" fill="#000000" />
+              <path 
+                d="M 20 40 Q 32 50 44 40" 
+                stroke="#000000" 
+                strokeWidth="3" 
+                strokeLinecap="round" 
+                fill="none"
+              />
+            </svg>
           </div>
         ) : categories.length > 0 ? (
           <div className="relative w-full h-full flex justify-center items-center overflow-hidden">
