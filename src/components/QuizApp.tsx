@@ -379,9 +379,10 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform with 10% of next card visible
-              const cardWidth = 90; // 90vw to show 10% of next card
-              const baseTranslateX = catPosition * cardWidth;
+              // Calculate horizontal transform with 10% of next card visible on each side
+              const cardWidth = 90; // 90vw
+              const centerOffset = 5; // Center the active card (5vw on each side)
+              const baseTranslateX = catPosition * cardWidth - catPosition * centerOffset;
               const gapOffset = catPosition * 16; // 16px gap between cards
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardWidth : 0;
               const dragGapOffset = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
@@ -416,9 +417,10 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform with 10% of next card visible
-                    const cardHeight = 90; // 90vh to show 10% of next card
-                    const baseTranslateY = qPosition * cardHeight;
+                    // Calculate vertical transform with 10% of next card visible on each side
+                    const cardHeight = 90; // 90vh
+                    const centerOffsetY = 5; // Center the active card (5vh on each side)
+                    const baseTranslateY = qPosition * cardHeight - qPosition * centerOffsetY;
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     
                     // Vertical scale - transitions from 0.8 to 1
