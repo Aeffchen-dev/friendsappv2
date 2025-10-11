@@ -213,8 +213,11 @@ export function QuizApp() {
     <div className={`h-[100svh] ${prevBgColor} overflow-hidden flex flex-col relative`}>
       {/* Crossfade overlay for smooth color transitions */}
       <div 
-        className={`absolute inset-0 ${bgColor} transition-opacity duration-[3500ms] ease-out`}
-        style={{ opacity: bgColor === prevBgColor ? 0 : 1 }}
+        className={`absolute inset-0 ${bgColor}`}
+        style={{ 
+          opacity: bgColor === prevBgColor ? 0 : 1,
+          transition: 'opacity 3000ms cubic-bezier(0.4, 0.0, 0.2, 1)'
+        }}
       />
       {/* App Header - Always visible */}
       <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50}}>
