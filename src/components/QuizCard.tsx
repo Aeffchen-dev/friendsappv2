@@ -550,15 +550,15 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 4-6 organic wavy lines per card to cover ~30%
-        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 4, 7));
+        // Generate 3 starfish shapes per card
+        const numStarfish = 3;
         
         return (
           <>
-            {/* Organic wavy lines */}
-            {Array.from({ length: numLines }).map((_, index) => (
+            {/* Starfish shapes */}
+            {Array.from({ length: numStarfish }).map((_, index) => (
               <WavyLine 
-                key={`wavy-${index}`}
+                key={`star-${index}`}
                 questionText={question.question}
                 lineIndex={index}
               />
@@ -918,7 +918,7 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
   );
 }
 
-// Wavy Line component with thick organic flowing ribbon shapes
+// Wavy Line component with random organic paths
 interface WavyLineProps {
   questionText: string;
   lineIndex: number;
@@ -935,93 +935,69 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Random starting position
-  const startX = getRandomValue(questionText + 'startX' + lineIndex, -30, 100);
-  const startY = getRandomValue(questionText + 'startY' + lineIndex, -30, 100);
+  // Create smooth starfish with positioning ensuring 60% visibility - unique per index
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex + 'unique', 15, 85);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex + 'unique', 15, 85);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex + 'unique', 15, 30);
+  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex + 'unique', 0.15, 0.5);
+  const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
   
-  // Base thickness with variation
-  const baseThickness = getRandomValue(questionText + 'thickness' + lineIndex, 25, 50);
+  let pathData = '';
   
-  // Number of curves (2-4 for nice S-curves)
-  const numCurves = Math.floor(getRandomValue(questionText + 'curves' + lineIndex, 2, 5));
+  // Calculate all points around the starfish
+  const points = [];
   
-  // Generate center path points
-  const centerPoints = [{ x: startX, y: startY }];
-  let currentX = startX;
-  let currentY = startY;
-  
-  for (let i = 0; i < numCurves; i++) {
-    currentX += getRandomValue(questionText + 'dx' + lineIndex + i, 30, 60);
-    currentY += getRandomValue(questionText + 'dy' + lineIndex + i, -40, 40);
-    centerPoints.push({ x: currentX, y: currentY });
+  for (let i = 0; i < numArms * 2; i++) {
+    const angle = (360 / (numArms * 2)) * i;
+    const rad = (angle * Math.PI) / 180;
+    const isOuter = i % 2 === 0;
+    const radius = isOuter ? outerRadius : innerRadius;
+    
+    const x = centerX + Math.cos(rad) * radius;
+    const y = centerY + Math.sin(rad) * radius;
+    
+    points.push({ x, y, isOuter });
   }
   
-  // Create wavy edges on both sides of the center path
-  const topEdge: string[] = [];
-  const bottomEdge: string[] = [];
+  // Start the path
+  pathData = `M ${points[0].x},${points[0].y}`;
   
-  for (let i = 0; i < centerPoints.length; i++) {
-    const point = centerPoints[i];
-    const nextPoint = centerPoints[i + 1];
+  // Create smooth curves between all points with rounded transitions
+  for (let i = 0; i < points.length; i++) {
+    const next = points[(i + 1) % points.length];
+    const nextNext = points[(i + 2) % points.length];
     
-    if (!nextPoint) break;
+    // Use cubic bezier for smoother, rounder curves
+    const cp1X = next.x;
+    const cp1Y = next.y;
+    const cp2X = next.x;
+    const cp2Y = next.y;
+    const endX = (next.x + nextNext.x) / 2;
+    const endY = (next.y + nextNext.y) / 2;
     
-    // Calculate perpendicular direction
-    const dx = nextPoint.x - point.x;
-    const dy = nextPoint.y - point.y;
-    const length = Math.sqrt(dx * dx + dy * dy);
-    const perpX = -dy / length;
-    const perpY = dx / length;
-    
-    // Varying thickness along the curve
-    const thicknessVariation = getRandomValue(questionText + 'thickVar' + lineIndex + i, 0.7, 1.3);
-    const halfThick = (baseThickness * thicknessVariation) / 2;
-    
-    // Add wave to edges
-    const waveAmount = getRandomValue(questionText + 'wave' + lineIndex + i, -8, 8);
-    
-    // Top edge point
-    const topX = point.x + perpX * (halfThick + waveAmount);
-    const topY = point.y + perpY * (halfThick + waveAmount);
-    
-    // Bottom edge point
-    const bottomX = point.x - perpX * (halfThick - waveAmount);
-    const bottomY = point.y - perpY * (halfThick - waveAmount);
-    
-    if (i === 0) {
-      topEdge.push(`M ${topX},${topY}`);
-      bottomEdge.push(`${bottomX},${bottomY}`);
-    } else {
-      // Create smooth curves between points
-      const prevTop = topEdge[topEdge.length - 1];
-      topEdge.push(`Q ${point.x + perpX * halfThick},${point.y + perpY * halfThick} ${topX},${topY}`);
-      bottomEdge.push(`${bottomX},${bottomY}`);
-    }
+    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
   }
   
-  // Build complete path - top edge forward, bottom edge backward, close
-  const pathData = topEdge.join(' ') + 
-    ` L ${bottomEdge[bottomEdge.length - 1]} ` +
-    bottomEdge.slice(0, -1).reverse().map((p, i) => {
-      if (i === 0) return `L ${p}`;
-      return `L ${p}`;
-    }).join(' ') + 
-    ' Z';
+  // Close the path
+  pathData += ' Z';
   
   return (
-    <div className="absolute inset-0 z-0 overflow-visible pointer-events-none">
+    <div className="absolute inset-0 z-0 overflow-visible">
       <svg 
         className="absolute" 
-        width="200%" 
-        height="200%" 
-        viewBox="-50 -50 200 200"
+        width="250%" 
+        height="250%" 
+        viewBox="-75 -75 250 250"
         preserveAspectRatio="none"
-        style={{ overflow: 'visible', left: '-50%', top: '-50%' }}
+        style={{ overflow: 'visible', left: '-75%', top: '-75%' }}
       >
         <path 
           d={pathData}
-          fill="#F1A8C6"
-          opacity="0.9"
+          stroke="#F1A8C6"
+          strokeWidth="5"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </div>
