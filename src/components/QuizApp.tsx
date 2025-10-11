@@ -512,7 +512,7 @@ export function QuizApp() {
               const isMobile = window.innerWidth < 768;
               
               // Calculate horizontal transform with proper spacing
-              const baseCardSpacingPx = isMobile ? 16 : 32;
+              const baseCardSpacingPx = isMobile ? 16 : 24;
               const cardWidthPx = window.innerWidth * 0.85; // 85vw in pixels
               const totalCardWidth = cardWidthPx + baseCardSpacingPx;
               const translateXPx = position * totalCardWidth;
@@ -607,7 +607,7 @@ export function QuizApp() {
                       maxWidth: '500px',
                       height: isMobile 
                         ? 'calc(100svh - 48px - 46px - 32px)' // header + footer + spacing
-                        : 'calc(100svh - 64px - 46px - 8px)', // header + footer - 8px
+                        : 'calc(100svh - 64px - 46px - 4px)', // header + footer - 4px
                       transform: 'translateY(-50%)'
                     }}
                   >
