@@ -414,8 +414,8 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform - equal spacing between all cards (32px)
-              const hCardSpacingPx = 32; // 32px spacing
+              // Calculate horizontal transform - equal spacing between all cards (64px)
+              const hCardSpacingPx = 64; // 64px spacing
               const maxCardWidthPx = 600; // Max width for desktop
               const vwCardWidth = window.innerWidth * 0.8; // 80vw
               const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx); // Card width (80vw or 600px max)
