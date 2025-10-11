@@ -934,33 +934,33 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate smooth S-curve paths with large waves - start positions off-screen left with more vertical spacing
+  // Generate smooth S-curve paths - positioned to be visible on card
   const startOptions = [
-    { x: -100, y: 5 },
-    { x: -80, y: 35 },
-    { x: -90, y: 65 },
-    { x: -110, y: 95 },
-    { x: -70, y: 125 },
-    { x: -120, y: 155 }
+    { x: -20, y: 15 },
+    { x: -15, y: 35 },
+    { x: -25, y: 55 },
+    { x: -10, y: 75 },
+    { x: -30, y: 95 },
+    { x: -18, y: 115 }
   ];
   
   const startPos = startOptions[lineIndex % startOptions.length];
-  const startX = startPos.x + getRandomValue(questionText + 'startOffset' + lineIndex, -20, 10);
-  const startY = startPos.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -5, 5);
+  const startX = startPos.x + getRandomValue(questionText + 'startOffset' + lineIndex, -5, 5);
+  const startY = startPos.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -3, 3);
   
   const direction = lineIndex % 2 === 0 ? 1 : -1;
-  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 5, 8);
+  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 8, 12);
   
   let pathData = `M ${startX},${startY}`;
   let currentX = startX;
   let currentY = startY;
   
-  // Generate 4-6 tight S-curves to extend beyond viewport
-  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 5, 8));
+  // Generate curves to extend across visible card area
+  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 6, 10));
   
   for (let i = 0; i < numCurves; i++) {
     const curveDirection = i % 2 === 0 ? direction : -direction;
-    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 13, 20);
+    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 20, 30);
     const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.6, amplitude * 0.9);
     
     const cp1X = currentX + segmentLength * 0.4;
