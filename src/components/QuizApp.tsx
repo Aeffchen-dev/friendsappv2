@@ -389,12 +389,10 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform using spacing to show 10vw of next card
-              const cardSpacing = 90; // 90vw spacing to show 10vw of next card
+              // Calculate horizontal transform - next card should be 10vw visible (starts at 90vw)
+              const cardSpacing = 90; // 90vw spacing (card at 16px + 80vw width + gap = next card at ~90vw showing 10vw)
               const baseTranslateX = catPosition * cardSpacing;
-              const gapOffset = catPosition * 16; // 16px gap between categories
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
-              const dragGapOffset = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
               // Horizontal scale - moving in: 0.95→1, moving out: 1→0.95
               let scaleH = isCategoryActive ? 1 : 0.95;
@@ -415,7 +413,7 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) rotateY(${rotateY}deg)`,
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw)) scale(${scaleH}) rotateY(${rotateY}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 500ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
