@@ -385,19 +385,19 @@ export function QuizApp() {
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               const dragGapOffset = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
-              // Horizontal scale - transitions from 0.8 to 1
+              // Horizontal scale - moving in: 0.9→1, moving out: 1→0.9
               let scaleH = 1;
               if (!isCategoryActive) {
-                scaleH = 0.8;
+                scaleH = 0.9;
               }
               if (isDragging && dragDirection === 'horizontal') {
                 const dragProgress = Math.abs(dragOffsetX) / window.innerWidth;
                 if (isCategoryActive) {
-                  // Active card scales down when dragging away
-                  scaleH = Math.max(0.8, 1 - dragProgress * 0.2);
+                  // Active card scales from 1 to 0.9 when moving out
+                  scaleH = Math.max(0.9, 1 - dragProgress * 0.1);
                 } else if ((catPosition === 1 && dragOffsetX < 0) || (catPosition === -1 && dragOffsetX > 0)) {
-                  // Next card scales up when dragging towards it
-                  scaleH = Math.min(1, 0.8 + dragProgress * 0.2);
+                  // Next card scales from 0.9 to 1 when moving in
+                  scaleH = Math.min(1, 0.9 + dragProgress * 0.1);
                 }
               }
               
