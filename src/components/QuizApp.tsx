@@ -892,7 +892,7 @@ export function QuizApp() {
                           onBgColorChange={isActive ? handleBgColorChange : undefined}
                           disableSwipe={true}
                           onCategoryStripClick={isActive ? () => {
-                            // Click on category strip - go to prev horizontal slide (category)
+                            // Click on category strip - go to prev horizontal slide (category) with animation
                             setIsAnimating(true);
                             setDragDirection('horizontal');
                             setLogoSqueezeRight(true);
@@ -900,10 +900,12 @@ export function QuizApp() {
                             setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                             setTimeout(() => {
                               setLogoSqueezeRight(false);
+                            }, 300);
+                            setTimeout(() => {
                               setIsAnimating(false);
                               setDragDirection(null);
+                              setIsHorizontalSliding(false);
                             }, 350);
-                            setTimeout(() => setIsHorizontalSliding(false), 350);
                           } : undefined}
                           onTopClick={isActive ? () => {
                             // Click on top area - go to prev vertical slide (question) - default mode only
