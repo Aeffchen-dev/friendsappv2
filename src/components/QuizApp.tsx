@@ -390,12 +390,12 @@ export function QuizApp() {
               const isCategoryActive = catPosition === 0;
               
               
-              // Calculate horizontal transform - next card adjacent to active card with 8px gap
+              // Calculate horizontal transform - next card adjacent to active card with 16px gap
               const cardSpacing = 80; // 80vw spacing (cards are 80vw wide, so they're adjacent)
-              const gapOffsetH = catPosition * 8; // 8px gap between cards
+              const gapOffsetH = catPosition * 16; // 16px gap between cards
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
-              const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 8 : 0;
+              const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
               // Horizontal scale - only during animation/drag
               let scaleH = 1;
