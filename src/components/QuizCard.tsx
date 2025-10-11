@@ -11,9 +11,10 @@ interface QuizCardProps {
   onSwipeLeft: () => void;
   onSwipeRight: () => void;
   animationClass?: string;
+  onBgColorChange?: (bgClass: string) => void;
 }
 
-export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '' }: QuizCardProps) {
+export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '', onBgColorChange }: QuizCardProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [mouseStart, setMouseStart] = useState<number | null>(null);
@@ -123,133 +124,152 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           bg: 'bg-quiz-connection-bg',
           text: 'text-connection-900',
           stripeBg: 'bg-connection-500',
-          stripeText: 'text-connection-900'
+          stripeText: 'text-connection-900',
+          bgDark: 'bg-quiz-connection-bg-dark'
         };
       case 'fuck':
         return {
           bg: 'bg-quiz-fuck-bg',
           text: 'text-fuck-900',
           stripeBg: 'bg-fuck-500',
-          stripeText: 'text-fuck-900'
+          stripeText: 'text-fuck-900',
+          bgDark: 'bg-quiz-fuck-bg-dark'
         };
       case 'identity':
         return {
           bg: 'bg-quiz-identity-bg',
           text: 'text-identity-900',
           stripeBg: 'bg-identity-500',
-          stripeText: 'text-identity-900'
+          stripeText: 'text-identity-900',
+          bgDark: 'bg-quiz-identity-bg-dark'
         };
       case 'party':
         return {
           bg: 'bg-quiz-party-bg',
           text: 'text-party-900',
           stripeBg: 'bg-party-500',
-          stripeText: 'text-party-900'
+          stripeText: 'text-party-900',
+          bgDark: 'bg-quiz-party-bg-dark'
         };
       case 'wer aus der runde':
         return {
           bg: 'bg-quiz-wer-aus-der-runde-bg',
           text: 'text-wer-aus-der-runde-900',
           stripeBg: 'bg-wer-aus-der-runde-500',
-          stripeText: 'text-wer-aus-der-runde-900'
+          stripeText: 'text-wer-aus-der-runde-900',
+          bgDark: 'bg-quiz-wer-aus-der-runde-bg-dark'
         };
       case 'friends':
         return {
           bg: 'bg-quiz-friends-bg',
           text: 'text-friends-900',
           stripeBg: 'bg-friends-500',
-          stripeText: 'text-friends-900'
+          stripeText: 'text-friends-900',
+          bgDark: 'bg-quiz-friends-bg-dark'
         };
       case 'self reflection':
         return {
           bg: 'bg-quiz-self-reflection-bg',
           text: 'text-self-reflection-900',
           stripeBg: 'bg-self-reflection-500',
-          stripeText: 'text-self-reflection-900'
+          stripeText: 'text-self-reflection-900',
+          bgDark: 'bg-quiz-self-reflection-bg-dark'
         };
       case 'family':
         return {
           bg: 'bg-quiz-family-bg',
           text: 'text-family-900',
           stripeBg: 'bg-family-500',
-          stripeText: 'text-family-900'
+          stripeText: 'text-family-900',
+          bgDark: 'bg-quiz-family-bg-dark'
         };
       case 'career':
         return {
           bg: 'bg-quiz-career-bg',
           text: 'text-career-900',
           stripeBg: 'bg-career-500',
-          stripeText: 'text-career-900'
+          stripeText: 'text-career-900',
+          bgDark: 'bg-quiz-career-bg-dark'
         };
       case 'travel':
         return {
           bg: 'bg-quiz-travel-bg',
           text: 'text-travel-900',
           stripeBg: 'bg-travel-500',
-          stripeText: 'text-travel-900'
+          stripeText: 'text-travel-900',
+          bgDark: 'bg-quiz-travel-bg-dark'
         };
       case 'health':
         return {
           bg: 'bg-quiz-health-bg',
           text: 'text-health-900',
           stripeBg: 'bg-health-500',
-          stripeText: 'text-health-900'
+          stripeText: 'text-health-900',
+          bgDark: 'bg-quiz-health-bg-dark'
         };
       case 'money':
         return {
           bg: 'bg-quiz-money-bg',
           text: 'text-money-900',
           stripeBg: 'bg-money-500',
-          stripeText: 'text-money-900'
+          stripeText: 'text-money-900',
+          bgDark: 'bg-quiz-money-bg-dark'
         };
       case 'love':
         return {
           bg: 'bg-quiz-love-bg',
           text: 'text-love-900',
           stripeBg: 'bg-love-500',
-          stripeText: 'text-love-900'
+          stripeText: 'text-love-900',
+          bgDark: 'bg-quiz-love-bg-dark'
         };
       case 'hobby':
         return {
           bg: 'bg-quiz-hobby-bg',
           text: 'text-hobby-900',
           stripeBg: 'bg-hobby-500',
-          stripeText: 'text-hobby-900'
+          stripeText: 'text-hobby-900',
+          bgDark: 'bg-quiz-hobby-bg-dark'
         };
       case 'dreams':
         return {
           bg: 'bg-quiz-dreams-bg',
           text: 'text-dreams-900',
           stripeBg: 'bg-dreams-500',
-          stripeText: 'text-dreams-900'
+          stripeText: 'text-dreams-900',
+          bgDark: 'bg-quiz-dreams-bg-dark'
         };
       case 'fear':
         return {
           bg: 'bg-quiz-fear-bg',
           text: 'text-fear-900',
           stripeBg: 'bg-fear-500',
-          stripeText: 'text-fear-900'
+          stripeText: 'text-fear-900',
+          bgDark: 'bg-quiz-fear-bg-dark'
         };
       case 'wisdom':
         return {
           bg: 'bg-quiz-wisdom-bg',
           text: 'text-wisdom-900',
           stripeBg: 'bg-wisdom-500',
-          stripeText: 'text-wisdom-900'
+          stripeText: 'text-wisdom-900',
+          bgDark: 'bg-quiz-wisdom-bg-dark'
         };
       case 'future':
         return {
           bg: 'bg-quiz-future-bg',
           text: 'text-future-900',
           stripeBg: 'bg-future-500',
-          stripeText: 'text-future-900'
+          stripeText: 'text-future-900',
+          bgDark: 'bg-quiz-future-bg-dark'
         };
       default:
         return {
           bg: 'bg-quiz-category-bg',
           text: 'text-quiz-category-text',
           stripeBg: 'bg-quiz-category-bg',
-          stripeText: 'text-quiz-category-text'
+          stripeText: 'text-quiz-category-text',
+          bgDark: 'bg-quiz-category-bg-dark'
         };
     }
   };
@@ -262,6 +282,13 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
   };
 
   const categoryColors = getCategoryColors(question.category);
+
+  // Notify parent about background color change
+  useEffect(() => {
+    if (onBgColorChange) {
+      onBgColorChange(categoryColors.bgDark);
+    }
+  }, [categoryColors.bgDark, onBgColorChange]);
 
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);

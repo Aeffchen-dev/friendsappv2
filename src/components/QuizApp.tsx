@@ -21,6 +21,8 @@ export function QuizApp() {
   const [logoStretch, setLogoStretch] = useState(false);
   const [logoSqueezeLeft, setLogoSqueezeLeft] = useState(false);
   const [logoSqueezeRight, setLogoSqueezeRight] = useState(false);
+  const [bgColor, setBgColor] = useState('bg-background');
+  const [prevBgColor, setPrevBgColor] = useState('bg-background');
 
   useEffect(() => {
     // Start logo animation and data loading together
@@ -194,8 +196,13 @@ export function QuizApp() {
     setCategorySelectorOpen(false);
   };
 
+  const handleBgColorChange = (newBgClass: string) => {
+    setPrevBgColor(bgColor);
+    setBgColor(newBgClass);
+  };
+
   return (
-    <div className="h-[100svh] bg-background overflow-hidden flex flex-col">
+    <div className={`h-[100svh] ${bgColor} overflow-hidden flex flex-col transition-colors duration-500`}>
       {/* App Header - Always visible */}
       <div className="app-header bg-black flex-shrink-0" style={{position: 'sticky', top: 0, zIndex: 50, backgroundColor: '#000000'}}>
         <div className="flex justify-between items-baseline px-4 py-4">
@@ -228,6 +235,7 @@ export function QuizApp() {
               onSwipeLeft={nextQuestion}
               onSwipeRight={prevQuestion}
               animationClass={animationClass}
+              onBgColorChange={handleBgColorChange}
             />
           ) : (
             <div className="h-full flex items-center justify-center min-h-[calc(100svh-120px)]">

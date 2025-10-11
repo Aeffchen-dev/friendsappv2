@@ -241,7 +241,26 @@ export default {
 					'wisdom-bg': 'hsl(var(--quiz-wisdom-bg))',
 					'wisdom-text': 'hsl(var(--quiz-wisdom-text))',
 					'future-bg': 'hsl(var(--quiz-future-bg))',
-					'future-text': 'hsl(var(--quiz-future-text))'
+					'future-text': 'hsl(var(--quiz-future-text))',
+					'connection-bg-dark': 'hsl(var(--quiz-connection-bg-dark))',
+					'fuck-bg-dark': 'hsl(var(--quiz-fuck-bg-dark))',
+					'identity-bg-dark': 'hsl(var(--quiz-identity-bg-dark))',
+					'party-bg-dark': 'hsl(var(--quiz-party-bg-dark))',
+					'wer-aus-der-runde-bg-dark': 'hsl(var(--quiz-wer-aus-der-runde-bg-dark))',
+					'friends-bg-dark': 'hsl(var(--quiz-friends-bg-dark))',
+					'self-reflection-bg-dark': 'hsl(var(--quiz-self-reflection-bg-dark))',
+					'family-bg-dark': 'hsl(var(--quiz-family-bg-dark))',
+					'career-bg-dark': 'hsl(var(--quiz-career-bg-dark))',
+					'travel-bg-dark': 'hsl(var(--quiz-travel-bg-dark))',
+					'health-bg-dark': 'hsl(var(--quiz-health-bg-dark))',
+					'money-bg-dark': 'hsl(var(--quiz-money-bg-dark))',
+					'love-bg-dark': 'hsl(var(--quiz-love-bg-dark))',
+					'hobby-bg-dark': 'hsl(var(--quiz-hobby-bg-dark))',
+					'dreams-bg-dark': 'hsl(var(--quiz-dreams-bg-dark))',
+					'fear-bg-dark': 'hsl(var(--quiz-fear-bg-dark))',
+					'wisdom-bg-dark': 'hsl(var(--quiz-wisdom-bg-dark))',
+					'future-bg-dark': 'hsl(var(--quiz-future-bg-dark))',
+					'category-bg-dark': 'hsl(var(--quiz-category-bg-dark))'
 				}
 			},
 			backgroundImage: {
