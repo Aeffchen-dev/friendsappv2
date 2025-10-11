@@ -121,6 +121,58 @@ export default {
 					800: 'hsl(var(--wer-aus-der-runde-800))',
 					900: 'hsl(var(--wer-aus-der-runde-900))'
 				},
+				friends: {
+					400: 'hsl(var(--friends-400))',
+					600: 'hsl(var(--friends-600))'
+				},
+				'self-reflection': {
+					400: 'hsl(var(--self-reflection-400))',
+					600: 'hsl(var(--self-reflection-600))'
+				},
+				family: {
+					400: 'hsl(var(--family-400))',
+					600: 'hsl(var(--family-600))'
+				},
+				career: {
+					400: 'hsl(var(--career-400))',
+					600: 'hsl(var(--career-600))'
+				},
+				travel: {
+					400: 'hsl(var(--travel-400))',
+					600: 'hsl(var(--travel-600))'
+				},
+				health: {
+					400: 'hsl(var(--health-400))',
+					600: 'hsl(var(--health-600))'
+				},
+				money: {
+					400: 'hsl(var(--money-400))',
+					600: 'hsl(var(--money-600))'
+				},
+				love: {
+					400: 'hsl(var(--love-400))',
+					600: 'hsl(var(--love-600))'
+				},
+				hobby: {
+					400: 'hsl(var(--hobby-400))',
+					600: 'hsl(var(--hobby-600))'
+				},
+				dreams: {
+					400: 'hsl(var(--dreams-400))',
+					600: 'hsl(var(--dreams-600))'
+				},
+				fear: {
+					400: 'hsl(var(--fear-400))',
+					600: 'hsl(var(--fear-600))'
+				},
+				wisdom: {
+					400: 'hsl(var(--wisdom-400))',
+					600: 'hsl(var(--wisdom-600))'
+				},
+				future: {
+					400: 'hsl(var(--future-400))',
+					600: 'hsl(var(--future-600))'
+				},
 				quiz: {
 					primary: 'hsl(var(--quiz-primary))',
 					accent: 'hsl(var(--quiz-accent))',

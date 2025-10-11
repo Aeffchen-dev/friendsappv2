@@ -102,6 +102,58 @@ All colors MUST be HSL.
     --wer-aus-der-runde-800: 199 97% 13%;
     --wer-aus-der-runde-900: 199 97% 6%;
     
+    /* friends (green) */
+    --friends-400: 120 100% 50%;
+    --friends-600: 120 100% 35%;
+    
+    /* self-reflection (light blue) */
+    --self-reflection-400: 195 100% 50%;
+    --self-reflection-600: 195 100% 35%;
+    
+    /* family (orange) */
+    --family-400: 30 100% 70%;
+    --family-600: 30 100% 50%;
+    
+    /* career (orange) */
+    --career-400: 35 100% 62%;
+    --career-600: 35 100% 45%;
+    
+    /* travel (light green) */
+    --travel-400: 92 100% 83%;
+    --travel-600: 92 100% 60%;
+    
+    /* health (pink) */
+    --health-400: 330 84% 67%;
+    --health-600: 330 84% 50%;
+    
+    /* money (gold) */
+    --money-400: 45 95% 55%;
+    --money-600: 45 95% 40%;
+    
+    /* love (red) */
+    --love-400: 350 85% 60%;
+    --love-600: 350 85% 45%;
+    
+    /* hobby (brown) */
+    --hobby-400: 25 60% 45%;
+    --hobby-600: 25 60% 30%;
+    
+    /* dreams (purple) */
+    --dreams-400: 270 75% 65%;
+    --dreams-600: 270 75% 48%;
+    
+    /* fear (gray) */
+    --fear-400: 210 10% 40%;
+    --fear-600: 210 10% 28%;
+    
+    /* wisdom (indigo) */
+    --wisdom-400: 239 84% 67%;
+    --wisdom-600: 239 84% 50%;
+    
+    /* future (sky blue) */
+    --future-400: 199 89% 48%;
+    --future-600: 199 89% 35%;
+    
     /* Category-specific colors for card backgrounds and text */
     --quiz-connection-bg: 339 99% 80%;
     --quiz-connection-text: 0 0% 0%;
