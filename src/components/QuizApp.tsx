@@ -402,9 +402,9 @@ export function QuizApp() {
               }
               
               // Horizontal rotation - 2D skew effect simulating Y-axis rotation
-              let skewY = 0;
+              let skewX = 0;
               if (!isCategoryActive) {
-                skewY = catPosition * 5; // Left card: -5deg, Right card: +5deg
+                skewX = catPosition * 5; // Left card: -5deg, Right card: +5deg
               }
               
               return (
@@ -414,7 +414,7 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) skewY(${skewY}deg)`,
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) skewX(${skewX}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none'
                   }}
