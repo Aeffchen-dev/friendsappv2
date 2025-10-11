@@ -853,7 +853,7 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
   };
   
   const rotation = getRandomValue(questionText + 'xRot', -30, 30);
-  const scale = getRandomValue(questionText + 'xScale', 0.8, 1.8);
+  const scale = getRandomValue(questionText + 'xScale', 0.4, 1.0);
   
   return (
     <div 
