@@ -360,7 +360,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
     <div 
       className={`relative h-full w-full max-w-[500px] mx-auto ${categoryColors.bg} rounded-2xl overflow-hidden select-none border border-black ${animationClass}`}
       style={{
-        boxShadow: '0 0 12px rgba(0, 0, 0, 0.3)',
+        boxShadow: '0 0 12px 4px rgba(30, 30, 30, 0.2)',
         height: 'calc(100svh - 64px - 20px - 16px - 32px)',
         maxHeight: '100%',
         transition: 'height 0.2s ease-out'
