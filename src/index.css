@@ -222,7 +222,7 @@ All colors MUST be HSL.
     --quiz-future-text: 199 89% 10%;  /* future-900 */
     
     /* Category strip colors (one shade darker = -500) */
-    --quiz-connection-bg-dark: 339 100% 76%;  /* connection-500 #FF82B5 */
+    --quiz-connection-bg-dark: 336 82% 85%;  /* page background #F8BAD3 */
     --quiz-fuck-bg-dark: 18 87% 56%;  /* fuck-500 #F06A30 */
     --quiz-identity-bg-dark: 186 58% 76%;  /* identity-500 #9FDCE3 */
     --quiz-party-bg-dark: 237 90% 76%;  /* party-500 #8A8FF8 */
