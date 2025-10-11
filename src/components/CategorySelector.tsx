@@ -27,86 +27,50 @@ export function CategorySelector({
   }, [selectedCategories]);
 
   const getCategoryColors = (category: string) => {
-    switch (category.toLowerCase()) {
-      case 'fuck':
-        return 'hsl(0 100% 50%)';
-      case 'friends':
-        return 'hsl(120 100% 50%)';
-      case 'family':
-        return 'hsl(30 100% 70%)';
-      case 'self reflection':
-        return 'hsl(195 100% 50%)';
-      case 'party':
-        return 'hsl(60 100% 71%)';
+    const categoryLower = category.toLowerCase();
+    
+    switch (categoryLower) {
       case 'connection':
-        return 'hsl(240 100% 50%)';
+        return { bg: 'hsl(240 100% 50%)', text: 'hsl(240 100% 20%)' };
+      case 'fuck':
+        return { bg: 'hsl(0 100% 50%)', text: 'hsl(0 100% 20%)' };
       case 'identity':
-        return 'hsl(266 100% 51%)';
+        return { bg: 'hsl(266 100% 51%)', text: 'hsl(266 100% 20%)' };
+      case 'party':
+        return { bg: 'hsl(60 100% 71%)', text: 'hsl(60 100% 20%)' };
+      case 'wer aus der runde':
+        return { bg: 'hsl(180 100% 50%)', text: 'hsl(180 100% 20%)' };
+      case 'friends':
+        return { bg: 'hsl(120 100% 50%)', text: 'hsl(120 100% 20%)' };
+      case 'self reflection':
+        return { bg: 'hsl(195 100% 50%)', text: 'hsl(195 100% 20%)' };
+      case 'family':
+        return { bg: 'hsl(30 100% 70%)', text: 'hsl(30 100% 20%)' };
       case 'career':
-        return 'hsl(35 100% 62%)';
+        return { bg: 'hsl(35 100% 62%)', text: 'hsl(35 100% 20%)' };
       case 'travel':
-        return 'hsl(92 100% 83%)';
+        return { bg: 'hsl(92 100% 83%)', text: 'hsl(92 100% 20%)' };
       case 'health':
-        return 'hsl(330 84% 67%)';
+        return { bg: 'hsl(330 84% 67%)', text: 'hsl(330 84% 20%)' };
       case 'money':
-        return 'hsl(45 95% 55%)';
+        return { bg: 'hsl(45 95% 55%)', text: 'hsl(45 95% 20%)' };
       case 'love':
-        return 'hsl(350 85% 60%)';
+        return { bg: 'hsl(350 85% 60%)', text: 'hsl(350 85% 20%)' };
       case 'hobby':
-        return 'hsl(25 60% 45%)';
+        return { bg: 'hsl(25 60% 45%)', text: 'hsl(25 60% 15%)' };
       case 'dreams':
-        return 'hsl(270 75% 65%)';
+        return { bg: 'hsl(270 75% 65%)', text: 'hsl(270 75% 20%)' };
       case 'fear':
-        return 'hsl(210 10% 40%)';
+        return { bg: 'hsl(210 10% 40%)', text: 'hsl(210 10% 15%)' };
       case 'wisdom':
-        return 'hsl(239 84% 67%)';
+        return { bg: 'hsl(239 84% 67%)', text: 'hsl(239 84% 20%)' };
       case 'future':
-        return 'hsl(199 89% 48%)';
+        return { bg: 'hsl(199 89% 48%)', text: 'hsl(199 89% 20%)' };
       default:
-        return 'hsl(290 100% 85%)';
+        return { bg: 'hsl(290 100% 85%)', text: 'hsl(290 100% 20%)' };
     }
   };
 
-  const getCategoryTextColors = (category: string) => {
-    switch (category.toLowerCase()) {
-      case 'fuck':
-        return 'hsl(0 0% 98%)'; // White text on red
-      case 'friends':
-        return 'hsl(0 0% 0%)'; // Black text on green
-      case 'family':
-        return 'hsl(0 0% 0%)'; // Black text on orange
-      case 'self reflection':
-        return 'hsl(0 0% 0%)'; // Black text on light blue
-      case 'party':
-        return 'hsl(0 0% 0%)'; // Black text on yellow
-      case 'connection':
-        return 'hsl(0 0% 100%)'; // White text on blue
-      case 'identity':
-        return 'hsl(0 0% 98%)'; // White text on purple
-      case 'career':
-        return 'hsl(0 0% 0%)'; // Black text on orange
-      case 'travel':
-        return 'hsl(0 0% 0%)'; // Black text on light green
-      case 'health':
-        return 'hsl(0 0% 98%)'; // White text on pink
-      case 'money':
-        return 'hsl(0 0% 0%)'; // Black text on gold
-      case 'love':
-        return 'hsl(0 0% 98%)'; // White text on red
-      case 'hobby':
-        return 'hsl(0 0% 98%)'; // White text on brown
-      case 'dreams':
-        return 'hsl(0 0% 98%)'; // White text on purple
-      case 'fear':
-        return 'hsl(0 0% 98%)'; // White text on gray
-      case 'wisdom':
-        return 'hsl(0 0% 98%)'; // White text on indigo
-      case 'future':
-        return 'hsl(0 0% 98%)'; // White text on sky blue
-      default:
-        return 'hsl(0 0% 15%)'; // Default dark text
-    }
-  };
 
   const handleCategoryToggle = (category: string) => {
     setTempSelection(prev => 
@@ -128,7 +92,7 @@ export function CategorySelector({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-full max-w-[500px] mx-auto bg-background border-0 rounded-2xl p-0 overflow-hidden [&>button]:hidden h-[100svh] md:h-[90vh] data-[state=closed]:animate-none data-[state=closed]:duration-0">
+      <DialogContent className="w-full max-w-none mx-0 bg-black border-0 rounded-none p-0 overflow-hidden [&>button]:hidden h-screen w-screen data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out">
         <DialogDescription className="sr-only">
           Wählen Sie die Kategorien aus, die Sie sehen möchten
         </DialogDescription>
@@ -148,11 +112,10 @@ export function CategorySelector({
           </div>
 
           {/* Categories List */}
-          <div className="flex-1 p-4 pt-20 space-y-3 overflow-y-auto">
+          <div className="flex-1 p-4 pt-20 space-y-3 overflow-y-auto max-w-[500px] mx-auto w-full">
             {categories.map((category) => {
               const isSelected = tempSelection.includes(category);
-              const colorClasses = getCategoryColors(category);
-              const textColor = getCategoryTextColors(category);
+              const colors = getCategoryColors(category);
               
               return (
                 <div 
@@ -165,7 +128,7 @@ export function CategorySelector({
                   <div 
                     className={`absolute inset-y-0 left-0 transition-all duration-500 ease-out ${isSelected ? 'w-full' : 'w-2'}`}
                     style={{ 
-                      backgroundColor: colorClasses,
+                      backgroundColor: colors.bg,
                       borderTopLeftRadius: isSelected ? '4px' : '4px',
                       borderBottomLeftRadius: isSelected ? '4px' : '4px',
                       borderTopRightRadius: isSelected ? '999px' : '4px',
@@ -174,7 +137,7 @@ export function CategorySelector({
                   />
                   
                   <span className="font-bold text-sm uppercase tracking-wide relative z-10 transition-colors duration-300" 
-                    style={{ color: isSelected ? textColor : 'white' }}>
+                    style={{ color: isSelected ? colors.text : 'white' }}>
                     {category}
                   </span>
                   <div onClick={(e) => e.stopPropagation()}>
