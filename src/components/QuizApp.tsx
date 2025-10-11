@@ -538,7 +538,7 @@ export function QuizApp() {
                   <div
                     style={{
                       position: 'absolute',
-                      top: isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2))' : '50%',
+                      top: isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : '50%',
                       left: '16px',
                       width: '85vw',
                       height: isMobile 
