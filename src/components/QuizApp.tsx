@@ -383,6 +383,12 @@ export function QuizApp() {
               const baseTranslateX = catPosition * 100;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               
+              // Horizontal rotation - active card leans towards exit direction
+              let rotationY = 0;
+              if (isDragging && dragDirection === 'horizontal' && isCategoryActive) {
+                rotationY = -(dragOffsetX / window.innerWidth) * 15; // Lean opposite to drag
+              }
+              
               return (
                 <div 
                   key={`${category}-${catPosition}`}
@@ -390,9 +396,8 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw))`,
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw)) rotateY(${rotationY}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
-                    opacity: isCategoryActive ? 1 : 0.3,
                     pointerEvents: isCategoryActive ? 'auto' : 'none'
                   }}
                 >
@@ -406,6 +411,22 @@ export function QuizApp() {
                     const baseTranslateY = qPosition * 100;
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 100 : 0;
                     
+                    // Vertical scale - transitions from 0.8 to 1
+                    let scale = 1;
+                    if (!isActive) {
+                      scale = 0.8;
+                    }
+                    if (isDragging && dragDirection === 'vertical' && isCategoryActive) {
+                      const dragProgress = Math.abs(dragOffsetY) / window.innerHeight;
+                      if (isActive) {
+                        // Active card scales down when dragging away
+                        scale = Math.max(0.8, 1 - dragProgress * 0.2);
+                      } else if ((qPosition === 1 && dragOffsetY < 0) || (qPosition === -1 && dragOffsetY > 0)) {
+                        // Next card scales up when dragging towards it
+                        scale = Math.min(1, 0.8 + dragProgress * 0.2);
+                      }
+                    }
+                    
                     return (
                       <div
                         key={`${question.question}-${qPosition}`}
@@ -413,9 +434,8 @@ export function QuizApp() {
                         style={{
                           width: '100vw',
                           height: '100vh',
-                          transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh))`,
+                          transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh)) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
-                          opacity: isActive ? 1 : 0.5,
                           pointerEvents: isActive ? 'auto' : 'none'
                         }}
                       >
