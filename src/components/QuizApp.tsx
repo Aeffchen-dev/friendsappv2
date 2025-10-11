@@ -331,6 +331,15 @@ export function QuizApp() {
 
   const handleCategoriesChange = (categories: string[]) => {
     setSelectedCategories(categories);
+    // Adjust current category index to stay within bounds
+    setCurrentCategoryIndex(prev => {
+      const newDisplayCategories = Object.keys(questionsByCategory).filter(cat => 
+        categories.length < availableCategories.length ? categories.includes(cat) : true
+      );
+      if (newDisplayCategories.length === 0) return 0;
+      // If current index is out of bounds, reset to 0
+      return prev >= newDisplayCategories.length ? 0 : prev;
+    });
   };
 
   const handleModalClose = () => {
