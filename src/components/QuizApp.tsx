@@ -463,8 +463,8 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform - matching horizontal spacing
-                    const cardSpacing = 88; // Match horizontal spacing in vh
+                    // Calculate vertical transform - spacing adjusted so next card shows 10% in viewport
+                    const cardSpacing = 80; // 80vh spacing allows next card to peek 10vh into view
                     
                     let baseTranslateY = qPosition * cardSpacing;
                     
