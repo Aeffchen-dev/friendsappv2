@@ -360,7 +360,7 @@ export function QuizApp() {
       {/* Main Quiz Container */}
       <div 
         className="flex-1 flex justify-center items-center overflow-hidden relative z-10" 
-        style={{ width: '100vw', touchAction: 'none' }}
+        style={{ width: '100vw', height: '100vh', touchAction: 'none' }}
         onPointerDown={handleDragStart}
         onPointerMove={handleDragMove}
         onPointerUp={handleDragEnd}
@@ -379,12 +379,10 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform with 10% of next card visible on each side
-              const cardWidth = 90; // 90vw
-              const centerOffset = 5; // Center the active card (5vw on each side)
-              const baseTranslateX = catPosition * cardWidth - catPosition * centerOffset;
-              const gapOffset = catPosition * 16; // 16px gap between cards
-              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardWidth : 0;
+              // Calculate horizontal transform using full viewport width; cards are centered with 5vw side padding inside each category container
+              const baseTranslateX = catPosition * 100; // 100vw per category
+              const gapOffset = catPosition * 16; // 16px gap between categories
+              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               const dragGapOffset = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
               // Horizontal scale - moving in: 0.9→1, moving out: 1→0.9
@@ -404,8 +402,8 @@ export function QuizApp() {
                   key={`${category}-${catPosition}`}
                   className="absolute flex flex-col items-center justify-center"
                   style={{
-                    width: '90vw',
-                    height: '90vh',
+                    width: '100vw',
+                    height: '100vh',
                     transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) skewX(${skewX}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none'
@@ -417,11 +415,11 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform with 10% of next card visible on each side
-                    const cardHeight = 90; // 90vh
-                    const centerOffsetY = 5; // Center the active card (5vh on each side)
-                    const baseTranslateY = qPosition * cardHeight - qPosition * centerOffsetY;
+                    // Calculate vertical transform; cards are centered with 5vh padding inside each category container
+                    const cardHeight = 90; // 90vh card inside 100vh container
+                    const baseTranslateY = qPosition * cardHeight;
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
+                    const gapYPx = qPosition * 16;
                     
                     // Vertical scale - transitions from 0.8 to 1
                     let scale = 1;
@@ -444,9 +442,12 @@ export function QuizApp() {
                         key={`${question.question}-${qPosition}`}
                         className="absolute flex items-center justify-center"
                         style={{
+                          position: 'absolute',
+                          top: '5vh',
+                          left: '5vw',
                           width: '90vw',
                           height: '90vh',
-                          transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh)) scale(${scale})`,
+                          transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapYPx}px)) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none'
                         }}
