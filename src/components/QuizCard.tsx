@@ -513,30 +513,6 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
-      {/* X in background - only for "identity" category */}
-      {question.category.toLowerCase() === 'identity' && (() => {
-        const getRandomPos = (seed: string, min: number, max: number) => {
-          let hash = 0;
-          for (let i = 0; i < seed.length; i++) {
-            hash = ((hash << 5) - hash) + seed.charCodeAt(i);
-            hash = hash & hash;
-          }
-          const normalized = Math.abs(hash % 1000) / 1000;
-          return min + normalized * (max - min);
-        };
-        
-        // Position X in lower area, allow cutoff
-        const posX = getRandomPos(question.question + 'xPosX', 0, 90);
-        const posY = getRandomPos(question.question + 'xPosY', 60, 95);
-        
-        return (
-          <XShape 
-            questionText={question.question}
-            posX={posX}
-            posY={posY}
-          />
-        );
-      })()}
 
       {/* Wavy lines in background - only for "connection" category */}
       {question.category.toLowerCase() === 'connection' && (() => {
@@ -550,16 +526,26 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 3 starfish shapes per card
-        const numShapes = 3;
+        // Generate 3 starfish shapes and 3 X shapes per card
+        const numStarfish = 3;
+        const numX = 3;
         
         return (
           <>
-            {Array.from({ length: numShapes }).map((_, index) => (
+            {/* Starfish shapes */}
+            {Array.from({ length: numStarfish }).map((_, index) => (
               <WavyLine 
-                key={index}
+                key={`star-${index}`}
                 questionText={question.question}
                 lineIndex={index}
+              />
+            ))}
+            {/* X shapes */}
+            {Array.from({ length: numX }).map((_, index) => (
+              <XShape 
+                key={`x-${index}`}
+                questionText={question.question}
+                shapeIndex={index}
               />
             ))}
           </>
@@ -865,11 +851,10 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
 // X Shape component with randomized size and rotation
 interface XShapeProps {
   questionText: string;
-  posX: number;
-  posY: number;
+  shapeIndex: number;
 }
 
-function XShape({ questionText, posX, posY }: XShapeProps) {
+function XShape({ questionText, shapeIndex }: XShapeProps) {
   const getRandomValue = (seed: string, min: number, max: number) => {
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
@@ -880,8 +865,10 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
     return min + normalized * (max - min);
   };
   
-  const rotation = getRandomValue(questionText + 'xRot', -30, 30);
-  const scale = getRandomValue(questionText + 'xScale', 0.4, 1.0);
+  const posX = getRandomValue(questionText + 'xPosX' + shapeIndex, -20, 120);
+  const posY = getRandomValue(questionText + 'xPosY' + shapeIndex, -20, 120);
+  const rotation = getRandomValue(questionText + 'xRot' + shapeIndex, -30, 30);
+  const scale = getRandomValue(questionText + 'xScale' + shapeIndex, 0.3, 0.8);
   
   return (
     <div 
@@ -934,10 +921,10 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish-shaped circle outline - with random variation per shape
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 10, 90);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 10, 90);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 10, 20);
+  // Create smooth starfish-shaped circle outline - bigger and can be cut off
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -30, 130);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -30, 130);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 18, 35);
   const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.2, 0.45);
   const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
   
