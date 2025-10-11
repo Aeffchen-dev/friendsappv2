@@ -604,9 +604,10 @@ export function QuizApp() {
                       top: isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : '50%',
                       left: '16px',
                       width: '85vw',
+                      maxWidth: '500px',
                       height: isMobile 
                         ? 'calc(100svh - 48px - 46px - 32px)' // header + footer + spacing
-                        : 'calc(100svh - 64px - 46px)', // header + footer
+                        : 'calc(100svh - 64px - 46px - 8px)', // header + footer - 8px
                       transform: 'translateY(-50%)'
                     }}
                   >
@@ -750,6 +751,10 @@ export function QuizApp() {
                     
                     const isActive = isCategoryActive && qPosition === 0;
                     
+                    // Hide previous vertical slide on desktop during horizontal slide
+                    const isDesktop = window.innerWidth >= 768;
+                    const shouldHideVerticalPrev = isDesktop && isHorizontalSliding && qPosition === -1;
+                    
                     // Calculate vertical transform - fixed spacing between cards (32px)
                     const vCardSpacingPx = 32; // 32px gap between cards
                     const cardHeight = window.innerHeight * 0.8; // Card height (80vh)
@@ -852,7 +857,9 @@ export function QuizApp() {
                           pointerEvents: isActive ? 'auto' : (isCategoryActive && !isActive && (qPosition === 1 || qPosition === -1) ? 'auto' : 'none'),
                           willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto',
                           zIndex: qPosition <= 0 ? 10 - qPosition : 10 - qPosition, // Previous and current cards on top, next cards below
-                          cursor: isCategoryActive && !isActive && (qPosition === 1 || qPosition === -1) ? 'pointer' : 'default'
+                          cursor: isCategoryActive && !isActive && (qPosition === 1 || qPosition === -1) ? 'pointer' : 'default',
+                          opacity: shouldHideVerticalPrev ? 0 : 1,
+                          visibility: shouldHideVerticalPrev ? 'hidden' : 'visible'
                         }}
                       >
                         <QuizCard
