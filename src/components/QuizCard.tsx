@@ -609,8 +609,10 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       {/* Category Strip - clickable to go to prev horizontal slide */}
       <div 
         className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10 ${onCategoryStripClick ? 'cursor-pointer' : ''}`}
-        onClick={() => {
+        data-clickable="true"
+        onClick={(e) => {
           if (onCategoryStripClick) {
+            e.stopPropagation();
             triggerHaptic();
             onCategoryStripClick();
           }
@@ -634,8 +636,10 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       {/* Main Content */}
       <div 
         className="ml-8 lg:ml-10 h-full flex flex-col justify-center px-8 lg:pr-10 relative z-10"
+        data-clickable="true"
         onClick={(e) => {
           if (onTopClick) {
+            e.stopPropagation();
             const clickY = e.clientY;
             const cardTop = (e.currentTarget.closest('.relative') as HTMLElement)?.getBoundingClientRect().top || 0;
             const relativeY = clickY - cardTop;

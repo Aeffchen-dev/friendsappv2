@@ -169,6 +169,12 @@ export function QuizApp() {
   };
 
   const handleDragStart = (e: React.PointerEvent) => {
+    // Check if click is on a clickable element (category strip) - don't start drag
+    const target = e.target as HTMLElement;
+    if (target.closest('[data-clickable="true"]')) {
+      return;
+    }
+    
     setIsDragging(true);
     setIsAnimating(false);
     setDragStartX(e.clientX);
