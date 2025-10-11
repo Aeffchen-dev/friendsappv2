@@ -935,9 +935,9 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   };
   
   // Create smooth starfish-shaped circle outline - with random variation per shape
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -20, 120);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -20, 120);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 12, 30);
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 10, 90);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 10, 90);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 10, 20);
   const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.2, 0.45);
   const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
   
