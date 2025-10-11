@@ -499,7 +499,7 @@ export function QuizApp() {
                         className="absolute flex items-center justify-center"
                         style={{
                           position: 'absolute',
-                          top: 'calc(64px + 16px)',
+                          top: '64px',
                           left: '16px',
                           width: '80vw',
                           height: '80vh',
