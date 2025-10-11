@@ -934,32 +934,41 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate smooth S-curve paths with more waves - start and end off-canvas
-  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -50, -10);
-  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, -20, 120);
+  // Generate smooth S-curve paths with large waves - start positions spread out
+  const startOptions = [
+    { x: -40, y: 10 },
+    { x: -20, y: 50 },
+    { x: -30, y: 90 },
+    { x: 10, y: -20 },
+    { x: 40, y: 110 },
+    { x: -50, y: 70 }
+  ];
   
-  // Create flowing path with multiple curves
-  const direction = getRandomValue(questionText + 'direction' + lineIndex, 0, 1) > 0.5 ? 1 : -1;
-  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 35, 55);
+  const startPos = startOptions[lineIndex % startOptions.length];
+  const startX = startPos.x + getRandomValue(questionText + 'startOffset' + lineIndex, -10, 10);
+  const startY = startPos.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -15, 15);
+  
+  const direction = lineIndex % 2 === 0 ? 1 : -1;
+  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 50, 80);
   
   let pathData = `M ${startX},${startY}`;
   let currentX = startX;
   let currentY = startY;
   
-  // Generate 5-7 curves to ensure line extends well beyond card
-  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 5, 8));
+  // Generate 4-6 large curves
+  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 4, 7));
   
   for (let i = 0; i < numCurves; i++) {
     const curveDirection = i % 2 === 0 ? direction : -direction;
-    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 60, 100);
-    const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.8, amplitude * 1.2);
+    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 80, 120);
+    const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.9, amplitude * 1.3);
     
-    const cp1X = currentX + segmentLength * 0.3;
-    const cp1Y = currentY + (curveDirection * curveAmp * 0.7);
-    const cp2X = currentX + segmentLength * 0.7;
-    const cp2Y = currentY + (curveDirection * curveAmp);
+    const cp1X = currentX + segmentLength * 0.25;
+    const cp1Y = currentY + (curveDirection * curveAmp * 0.8);
+    const cp2X = currentX + segmentLength * 0.75;
+    const cp2Y = currentY + (curveDirection * curveAmp * 1.1);
     const endX = currentX + segmentLength;
-    const endY = currentY + (curveDirection * curveAmp * 0.3);
+    const endY = currentY + (curveDirection * curveAmp * 0.2);
     
     pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
     currentX = endX;
