@@ -668,8 +668,10 @@ export function QuizApp() {
                     let baseTranslateY;
                     
                     if (qPosition === -1) {
-                      // Move previous card up by 70vh
-                      baseTranslateY = -70;
+                      // Move previous card up by header height + 16px
+                      const isMobile = window.innerWidth < 768;
+                      const offsetPx = isMobile ? -64 : -80;
+                      baseTranslateY = (offsetPx / window.innerHeight) * 100; // Convert to vh
                     } else if (qPosition === 1) {
                       // Next card positioned with gap after active card
                       // Mobile: 70vh + 16px, Desktop: 80vh + 32px
