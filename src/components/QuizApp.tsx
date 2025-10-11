@@ -200,13 +200,23 @@ export function QuizApp() {
     if (dragDirection === 'horizontal') {
       // Change category with wrapping
       if (dragOffsetX < -threshold) {
+        console.log('Swipe left - current index:', currentCategoryIndex, 'total categories:', categories.length);
         setLogoSqueezeLeft(true);
-        setCurrentCategoryIndex(prev => (prev + 1) % categories.length);
+        setCurrentCategoryIndex(prev => {
+          const next = (prev + 1) % categories.length;
+          console.log('Moving from category', prev, 'to', next);
+          return next;
+        });
         setCurrentQuestionIndex(0);
         setTimeout(() => setLogoSqueezeLeft(false), 300);
       } else if (dragOffsetX > threshold) {
+        console.log('Swipe right - current index:', currentCategoryIndex, 'total categories:', categories.length);
         setLogoSqueezeRight(true);
-        setCurrentCategoryIndex(prev => (prev - 1 + categories.length) % categories.length);
+        setCurrentCategoryIndex(prev => {
+          const next = (prev - 1 + categories.length) % categories.length;
+          console.log('Moving from category', prev, 'to', next);
+          return next;
+        });
         setCurrentQuestionIndex(0);
         setTimeout(() => setLogoSqueezeRight(false), 300);
       }
