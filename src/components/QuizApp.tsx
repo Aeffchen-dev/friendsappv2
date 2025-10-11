@@ -480,8 +480,8 @@ export function QuizApp() {
                       // Move previous card completely out of viewport to the top
                       baseTranslateY = -110; // Moves card fully above viewport
                     } else if (qPosition === 1 && isPortraitMobile) {
-                      // Move next card higher up on portrait mobile screens
-                      baseTranslateY = cardSpacingVh * 0.75; // 25% closer
+                      // Show exactly 10vh of the next card (top offset 10vh + translate 80vh = 90vh)
+                      baseTranslateY = 80;
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
                     }
