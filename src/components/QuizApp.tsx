@@ -414,21 +414,12 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform - use card width from DOM for accurate spacing
-              const hCardSpacingPx = 16; // 16px spacing
-              const hCardWidthPx = window.innerWidth - 32; // Card width: 100vw - 32px (16px on each side)
-              const totalCardWidth = hCardWidthPx + hCardSpacingPx; // Total width including spacing
+              // Calculate horizontal transform - equal spacing between all cards (32px)
+              const hCardSpacingPx = 32; // 32px spacing
+              const hCardWidth = window.innerWidth * 0.8; // Card width (80vw)
+              const totalCardWidth = hCardWidth + hCardSpacingPx; // Total width including spacing
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
-              
-              // Show 10vh of next card
-              let baseTranslateX;
-              if (catPosition === 1) {
-                // Next card: position to show 10vh from right edge
-                const show10vh = (window.innerHeight * 0.1 / window.innerWidth) * 100; // 10vh in vw
-                baseTranslateX = cardSpacingVw - show10vh;
-              } else {
-                baseTranslateX = catPosition * cardSpacingVw;
-              }
+              const baseTranslateX = catPosition * cardSpacingVw;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacingVw : 0;
               
               // Horizontal scale - all cards at scale 1
@@ -475,18 +466,17 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform - fixed 16px spacing (matching horizontal calculation)
-                    const vCardSpacingPx = 16; // 16px gap between cards
-                    const vCardHeight = window.innerHeight * 0.8; // Card height (80vh)
-                    const totalCardHeight = vCardHeight + vCardSpacingPx; // Total height including spacing
+                    // Calculate vertical transform - fixed spacing between cards (32px)
+                    const vCardSpacingPx = 32; // 32px gap between cards
+                    const cardHeight = window.innerHeight * 0.8; // Card height (80vh)
+                    const totalCardHeight = cardHeight + vCardSpacingPx; // Total height including spacing
                     const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
                     
-                    // Calculate position - show 10vh of previous card
+                    // Calculate position - move previous card out of viewport
                     let baseTranslateY;
-                    
                     if (qPosition === -1) {
-                      // Previous card: position to show 10vh from top
-                      baseTranslateY = -(cardSpacingVh - 10);
+                      // Move previous card completely out of viewport to the top
+                      baseTranslateY = -110; // Moves card fully above viewport
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
                     }
