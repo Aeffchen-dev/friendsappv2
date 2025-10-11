@@ -551,7 +551,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         };
         
         // Generate 2-3 wavy lines per card
-        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 2, 4));
+        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 2, 3.99));
         
         return (
           <>
@@ -986,7 +986,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
         <path 
           d={pathData}
           stroke="#F1A8C6"
-          strokeWidth="16"
+          strokeWidth="8"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
