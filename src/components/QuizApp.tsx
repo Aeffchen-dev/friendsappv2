@@ -166,9 +166,9 @@ export function QuizApp() {
     // Check if it's a quick flick
     const isFlick = velocity > velocityThreshold;
     
-    // Determine if we should navigate
-    const shouldGoNext = (dragOffset < -threshold || (isFlick && dragOffset < 0)) && currentIndex < questions.length - 1;
-    const shouldGoPrev = (dragOffset > threshold || (isFlick && dragOffset > 0)) && currentIndex > 0;
+    // Determine if we should navigate (with looping - no boundary checks)
+    const shouldGoNext = dragOffset < -threshold || (isFlick && dragOffset < 0);
+    const shouldGoPrev = dragOffset > threshold || (isFlick && dragOffset > 0);
     
     setIsDragging(false);
     setIsAnimating(true);
@@ -178,7 +178,7 @@ export function QuizApp() {
       setDragOffset(-window.innerWidth);
       setTimeout(() => {
         setLogoSqueezeLeft(true);
-        setCurrentIndex(prev => prev + 1);
+        setCurrentIndex(prev => (prev + 1) % questions.length); // Loop to first
         setDragOffset(0);
         setIsAnimating(false);
         setTimeout(() => setLogoSqueezeLeft(false), 300);
@@ -188,7 +188,7 @@ export function QuizApp() {
       setDragOffset(window.innerWidth);
       setTimeout(() => {
         setLogoSqueezeRight(true);
-        setCurrentIndex(prev => prev - 1);
+        setCurrentIndex(prev => (prev - 1 + questions.length) % questions.length); // Loop to last
         setDragOffset(0);
         setIsAnimating(false);
         setTimeout(() => setLogoSqueezeRight(false), 300);
@@ -210,23 +210,19 @@ export function QuizApp() {
   };
 
   const nextQuestion = () => {
-    if (currentIndex < questions.length - 1) {
-      setLogoSqueezeLeft(true);
-      setCurrentIndex(prev => prev + 1);
-      setTimeout(() => {
-        setLogoSqueezeLeft(false);
-      }, 300);
-    }
+    setLogoSqueezeLeft(true);
+    setCurrentIndex(prev => (prev + 1) % questions.length); // Loop to first
+    setTimeout(() => {
+      setLogoSqueezeLeft(false);
+    }, 300);
   };
 
   const prevQuestion = () => {
-    if (currentIndex > 0) {
-      setLogoSqueezeRight(true);
-      setCurrentIndex(prev => prev - 1);
-      setTimeout(() => {
-        setLogoSqueezeRight(false);
-      }, 300);
-    }
+    setLogoSqueezeRight(true);
+    setCurrentIndex(prev => (prev - 1 + questions.length) % questions.length); // Loop to last
+    setTimeout(() => {
+      setLogoSqueezeRight(false);
+    }, 300);
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
@@ -346,11 +342,12 @@ export function QuizApp() {
           </div>
         ) : questions.length > 0 ? (
           <div className="relative w-full h-full flex justify-center items-center">
-            {/* Render previous, current, and next cards */}
-            {[currentIndex - 1, currentIndex, currentIndex + 1].map((index) => {
-              if (index < 0 || index >= questions.length) return null;
+            {/* Render previous, current, and next cards with looping */}
+            {[currentIndex - 1, currentIndex, currentIndex + 1].map((rawIndex) => {
+              const index = (rawIndex + questions.length) % questions.length; // Handle wrap-around
+              if (questions.length === 0) return null;
               
-              const position = index - currentIndex; // -1, 0, or 1
+              const position = rawIndex - currentIndex; // -1, 0, or 1
               const isActive = position === 0;
               
               // Calculate dynamic transform based on drag
