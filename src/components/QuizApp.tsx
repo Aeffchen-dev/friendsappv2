@@ -508,16 +508,14 @@ export function QuizApp() {
               if (!question) return null;
               
               const isActive = position === 0;
-              
-              // Calculate horizontal transform - different spacing for mobile vs desktop
               const isMobile = window.innerWidth < 768;
+              
+              // Calculate horizontal transform with proper spacing
               const baseCardSpacingPx = isMobile ? 16 : 32;
-              const cardWidthVw = 80;
-              const hCardWidth = window.innerWidth * (cardWidthVw / 100);
-              const totalCardWidth = hCardWidth + baseCardSpacingPx;
-              const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100;
-              const baseTranslateX = position * cardSpacingVw;
-              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
+              const cardWidthPx = window.innerWidth * 0.8; // 80vw in pixels
+              const totalCardWidth = cardWidthPx + baseCardSpacingPx;
+              const translateXPx = position * totalCardWidth;
+              const dragTranslateXPx = isDragging && dragDirection === 'horizontal' ? dragOffsetX : 0;
               
               const shouldHide = Math.abs(position) === 2 && (isDragging || isAnimating);
               
@@ -528,7 +526,7 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(${baseTranslateX + dragTranslateX}vw)`,
+                    transform: `translateX(${translateXPx + dragTranslateXPx}px)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                     animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isActive ? 'auto' : 'none',
@@ -540,11 +538,13 @@ export function QuizApp() {
                   <div
                     style={{
                       position: 'absolute',
-                      top: window.innerWidth >= 768 ? '64px' : '50%',
-                      left: window.innerWidth >= 768 ? '10vw' : 'calc(10vw - 8px)',
-                      width: window.innerWidth >= 768 ? '80vw' : 'calc(80vw + 16px)',
-                      height: `calc(100svh - ${window.innerWidth >= 768 ? 64 : 48}px - 46px${window.innerWidth >= 768 ? '' : ' - 16px'})`,
-                      transform: window.innerWidth >= 768 ? 'none' : 'translateY(-50%)'
+                      top: '50%',
+                      left: '10vw',
+                      width: '80vw',
+                      height: isMobile 
+                        ? 'calc(100svh - 48px - 46px - 16px)' // header + footer + extra spacing
+                        : 'calc(100svh - 64px - 46px)', // header + footer
+                      transform: 'translateY(-50%)'
                     }}
                   >
                     <QuizCard
