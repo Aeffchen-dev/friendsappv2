@@ -414,11 +414,13 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform - equal spacing between all cards
-              const cardSpacing = 32; // spacing in px
-              const cardSpacingVw = (cardSpacing / window.innerWidth) * 100;
-              const baseTranslateX = catPosition * (100 + cardSpacingVw);
-              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * (100 + cardSpacingVw) : 0;
+              // Calculate horizontal transform - equal spacing between all cards (32px)
+              const hCardSpacingPx = 32; // 32px spacing
+              const hCardWidth = window.innerWidth * 0.8; // Card width (80vw)
+              const totalCardWidth = hCardWidth + hCardSpacingPx; // Total width including spacing
+              const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
+              const baseTranslateX = catPosition * cardSpacingVw;
+              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacingVw : 0;
               
               // Horizontal scale - all cards at scale 1
               const scaleH = 1;
