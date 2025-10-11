@@ -798,13 +798,18 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
   
-  // 5 different organic cloud shapes for smooth morphing
+  // 5 different organic, fluffy cloud shapes for smooth morphing
   const cloudShapes = [
-    "M25,35 Q15,35 10,25 Q10,15 20,15 Q25,5 35,10 Q45,10 50,20 Q60,25 55,35 Q50,40 40,38 Q35,45 25,35 Z",
-    "M30,40 Q20,40 15,30 Q12,20 22,18 Q28,10 38,12 Q48,12 52,22 Q58,28 54,38 Q48,42 38,40 Q32,45 30,40 Z",
-    "M28,38 Q18,38 14,28 Q12,18 24,16 Q30,8 40,10 Q50,10 54,20 Q60,26 56,36 Q50,40 40,38 Q34,44 28,38 Z",
-    "M27,37 Q17,37 13,27 Q11,17 23,15 Q29,7 39,9 Q49,9 53,19 Q59,25 55,35 Q49,39 39,37 Q33,43 27,37 Z",
-    "M26,36 Q16,36 12,26 Q10,16 22,14 Q28,6 38,8 Q48,8 52,18 Q58,24 54,34 Q48,38 38,36 Q32,42 26,36 Z"
+    // Fluffiger Cloud 1 - rounded bumps
+    "M20,30 Q18,25 22,22 Q20,18 25,16 Q28,12 34,14 Q38,10 44,13 Q50,11 54,16 Q58,14 62,18 Q65,22 63,26 Q66,30 62,33 Q64,37 58,38 Q55,42 48,40 Q44,44 38,42 Q32,44 28,40 Q22,42 18,38 Q15,34 18,30 Z",
+    // Fluffiger Cloud 2 - more irregular
+    "M22,32 Q20,28 24,24 Q22,20 27,18 Q30,14 36,16 Q40,12 46,15 Q52,13 56,18 Q60,16 64,20 Q67,24 65,28 Q68,32 64,35 Q66,39 60,40 Q57,44 50,42 Q46,46 40,44 Q34,46 30,42 Q24,44 20,40 Q17,36 20,32 Z",
+    // Fluffiger Cloud 3 - compact and round
+    "M24,31 Q22,27 26,23 Q24,19 29,17 Q32,13 38,15 Q42,11 48,14 Q54,12 58,17 Q62,15 66,19 Q69,23 67,27 Q70,31 66,34 Q68,38 62,39 Q59,43 52,41 Q48,45 42,43 Q36,45 32,41 Q26,43 22,39 Q19,35 22,31 Z",
+    // Fluffiger Cloud 4 - stretched
+    "M21,30 Q19,26 23,23 Q21,19 26,17 Q29,13 35,15 Q39,11 45,14 Q51,12 55,17 Q59,15 63,19 Q66,23 64,27 Q67,31 63,34 Q65,38 59,39 Q56,43 49,41 Q45,45 39,43 Q33,45 29,41 Q23,43 19,39 Q16,35 19,30 Z",
+    // Fluffiger Cloud 5 - wide and puffy
+    "M23,31 Q21,27 25,24 Q23,20 28,18 Q31,14 37,16 Q41,12 47,15 Q53,13 57,18 Q61,16 65,20 Q68,24 66,28 Q69,32 65,35 Q67,39 61,40 Q58,44 51,42 Q47,46 41,44 Q35,46 31,42 Q25,44 21,40 Q18,36 21,31 Z"
   ];
 
   // Each cloud gets unique timing - much more variation
