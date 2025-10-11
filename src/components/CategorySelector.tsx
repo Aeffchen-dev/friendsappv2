@@ -213,7 +213,7 @@ export function CategorySelector({
                       borderTopRightRadius: isSelected ? '999px' : '4px',
                       borderBottomRightRadius: isSelected ? '999px' : '4px',
                       transition: isSelected 
-                        ? 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                        ? 'all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6)'
                         : 'all 0.15s ease-out'
                     }} 
                   />
