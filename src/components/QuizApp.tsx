@@ -513,7 +513,7 @@ export function QuizApp() {
               
               const isActive = position === 0;
               
-              // Calculate horizontal transform - same as category mode
+              // Calculate horizontal transform - exact same as category mode
               const baseCardSpacingPx = 32;
               const maxCardWidthPx = 600;
               const vwCardWidth = window.innerWidth * 0.8;
@@ -528,24 +528,28 @@ export function QuizApp() {
               return (
                 <div
                   key={`shuffle-${qIndex}`}
-                  className="absolute flex items-center justify-center"
+                  className="absolute flex flex-col items-center justify-center"
                   style={{
                     width: '100vw',
-                    height: '100%',
+                    height: '100vh',
                     transform: `translateX(${baseTranslateX + dragTranslateX}vw)`,
-                    transition: isAnimating ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    transition: isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
+                    animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isActive ? 'auto' : 'none',
+                    willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
                     visibility: shouldHide ? 'hidden' : 'visible'
                   }}
                 >
-                  <div style={{
-                    position: 'absolute',
-                    top: window.innerWidth >= 768 ? '64px' : '48px',
-                    left: window.innerWidth >= 768 ? '16px' : '16px',
-                    width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
-                    height: 'calc(100% - 112px)'
-                  }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: window.innerWidth >= 768 ? '64px' : '48px',
+                      left: window.innerWidth >= 768 ? '16px' : '16px',
+                      width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
+                      height: '80vh'
+                    }}
+                  >
                     <QuizCard
                       question={question}
                       onSwipeLeft={() => {}}
