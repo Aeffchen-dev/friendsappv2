@@ -308,15 +308,34 @@ export function QuizApp() {
     setCategorySelectorOpen(false);
   };
 
+  // Get header color for each category
+  const getHeaderColorForCategory = (category: string): string => {
+    const categoryLower = category.toLowerCase();
+    switch (categoryLower) {
+      case 'connection':
+        return 'text-connection-900';  // #611610
+      case 'fuck':
+        return 'text-[#DBCFBE]';  // #DBCFBE
+      case 'identity':
+        return 'text-[#003C31]';  // #003C31
+      case 'party':
+        return 'text-[#D3D9EF]';  // #D3D9EF
+      case 'wer aus der runde':
+        return 'text-[#053053]';  // #053053
+      default:
+        return 'text-white';
+    }
+  };
+
   const handleBgColorChange = (newBgClass: string) => {
     setPrevBgColor(bgColor);
     setBgColor(newBgClass);
     
-    // Extract color class for header text
+    // Extract category from background class
     const colorMatch = newBgClass.match(/bg-quiz-(\w+(-\w+)*)-bg-dark/);
     if (colorMatch) {
       const category = colorMatch[1];
-      setHeaderTextColor(`text-${category}-900`);
+      setHeaderTextColor(getHeaderColorForCategory(category));
     }
   };
 
@@ -352,10 +371,10 @@ export function QuizApp() {
           <img 
             src="/assets/logo.png" 
             alt="Logo" 
-            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''} transition-all duration-500`}
+            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''} ${headerTextColor} transition-all duration-500`}
             onClick={handleLogoClick}
             style={{
-              filter: headerTextColor.includes('900') ? 'brightness(0) saturate(100%)' : 'none'
+              filter: 'brightness(0) saturate(100%)'
             }}
           />
           <button 
