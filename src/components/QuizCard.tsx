@@ -417,8 +417,9 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        const posX = getRandomPos(question.question + 'posX', 15, 60);
-        const posY = getRandomPos(question.question + 'posY', 45, 75);
+        // Keep eyes within safe area to prevent cutoff
+        const posX = getRandomPos(question.question + 'posX', 25, 55);
+        const posY = getRandomPos(question.question + 'posY', 50, 70);
         
         return (
           <div 
