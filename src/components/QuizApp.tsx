@@ -29,6 +29,10 @@ export function QuizApp() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
   const [dragStartX, setDragStartX] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [dragStartTime, setDragStartTime] = useState(0);
+  const [lastDragX, setLastDragX] = useState(0);
+  const [lastDragTime, setLastDragTime] = useState(0);
 
   useEffect(() => {
     // Start logo animation and data loading together
@@ -131,31 +135,69 @@ export function QuizApp() {
 
   const handleDragStart = (e: React.PointerEvent) => {
     setIsDragging(true);
+    setIsAnimating(false);
     setDragStartX(e.clientX);
     setDragOffset(0);
+    setDragStartTime(Date.now());
+    setLastDragX(e.clientX);
+    setLastDragTime(Date.now());
   };
 
   const handleDragMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
     const offset = e.clientX - dragStartX;
     setDragOffset(offset);
+    setLastDragX(e.clientX);
+    setLastDragTime(Date.now());
   };
 
   const handleDragEnd = () => {
     if (!isDragging) return;
     
     const threshold = 80; // 80px drag threshold
+    const now = Date.now();
+    const timeDelta = now - lastDragTime;
+    const distance = lastDragX - dragStartX;
     
-    if (dragOffset < -threshold && currentIndex < questions.length - 1) {
+    // Calculate velocity (pixels per millisecond)
+    const velocity = timeDelta > 0 ? Math.abs(distance / timeDelta) : 0;
+    const velocityThreshold = 0.5; // px/ms - adjust for sensitivity
+    
+    // Check if it's a quick flick
+    const isFlick = velocity > velocityThreshold;
+    
+    // Determine if we should navigate
+    const shouldGoNext = (dragOffset < -threshold || (isFlick && dragOffset < 0)) && currentIndex < questions.length - 1;
+    const shouldGoPrev = (dragOffset > threshold || (isFlick && dragOffset > 0)) && currentIndex > 0;
+    
+    if (shouldGoNext) {
       // Swiped left - next question
       nextQuestion();
-    } else if (dragOffset > threshold && currentIndex > 0) {
+      setIsDragging(false);
+      setDragOffset(0);
+    } else if (shouldGoPrev) {
       // Swiped right - previous question
       prevQuestion();
+      setIsDragging(false);
+      setDragOffset(0);
+    } else {
+      // Snap back with momentum
+      setIsDragging(false);
+      setIsAnimating(true);
+      
+      // Apply momentum to snap back
+      const momentumOffset = velocity * 100; // Scale velocity for visual effect
+      const finalOffset = dragOffset + (dragOffset < 0 ? -momentumOffset : momentumOffset);
+      
+      // Animate back to center
+      setDragOffset(finalOffset);
+      setTimeout(() => {
+        setDragOffset(0);
+        setTimeout(() => {
+          setIsAnimating(false);
+        }, 300);
+      }, 16);
     }
-    
-    setIsDragging(false);
-    setDragOffset(0);
   };
 
   const nextQuestion = () => {
@@ -325,7 +367,7 @@ export function QuizApp() {
                   className="absolute"
                   style={{
                     transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale})`,
-                    transition: 'none',
+                    transition: isAnimating ? 'transform 300ms cubic-bezier(0.33, 1, 0.68, 1)' : 'none',
                     zIndex: isActive ? 10 : 5,
                     pointerEvents: isActive ? 'auto' : 'none'
                   }}
