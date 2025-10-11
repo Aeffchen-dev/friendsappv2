@@ -509,8 +509,9 @@ export function QuizApp() {
               
               const isActive = position === 0;
               
-              // Calculate horizontal transform - 80vw width + 32px spacing
-              const baseCardSpacingPx = 32;
+              // Calculate horizontal transform - different spacing for mobile vs desktop
+              const isMobile = window.innerWidth < 768;
+              const baseCardSpacingPx = isMobile ? 16 : 32;
               const cardWidthVw = 80;
               const hCardWidth = window.innerWidth * (cardWidthVw / 100);
               const totalCardWidth = hCardWidth + baseCardSpacingPx;
@@ -541,8 +542,8 @@ export function QuizApp() {
                       position: 'absolute',
                       top: window.innerWidth >= 768 ? '64px' : '50%',
                       left: window.innerWidth >= 768 ? '10vw' : 'calc(10vw - 8px)',
-                      width: '80vw',
-                      height: `calc(100svh - ${window.innerWidth >= 768 ? 64 : 48}px - 46px)`,
+                      width: window.innerWidth >= 768 ? '80vw' : 'calc(80vw + 16px)',
+                      height: `calc(100svh - ${window.innerWidth >= 768 ? 64 : 48}px - 46px${window.innerWidth >= 768 ? '' : ' - 16px'})`,
                       transform: window.innerWidth >= 768 ? 'none' : 'translateY(-50%)'
                     }}
                   >
