@@ -210,15 +210,14 @@ export function QuizApp() {
   };
 
   return (
-    <div className={`h-[100svh] ${prevBgColor} overflow-hidden flex flex-col relative`}>
-      {/* Crossfade overlay for smooth color transitions */}
-      <div 
-        className={`absolute inset-0 ${bgColor}`}
-        style={{ 
-          opacity: bgColor === prevBgColor ? 0 : 1,
-          transition: 'opacity 3000ms cubic-bezier(0.4, 0.0, 0.2, 1)'
-        }}
-      />
+    <div className={`h-[100svh] overflow-hidden flex flex-col relative`}
+      style={{
+        background: `linear-gradient(${bgColor === prevBgColor ? '0deg' : '180deg'}, var(--prev-color), var(--new-color))`,
+        '--prev-color': `hsl(var(--${prevBgColor.replace('bg-', '')}))`,
+        '--new-color': `hsl(var(--${bgColor.replace('bg-', '')}))`,
+        transition: 'background 4000ms cubic-bezier(0.4, 0.0, 0.2, 1)'
+      } as React.CSSProperties}
+    >
       {/* App Header - Always visible */}
       <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50}}>
         <div className="flex justify-between items-baseline px-4 py-4">
