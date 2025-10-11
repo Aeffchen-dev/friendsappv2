@@ -382,8 +382,8 @@ export function QuizApp() {
           </div>
         ) : categories.length > 0 ? (
           <div className="relative w-full h-full flex justify-center items-center">
-            {/* Render 3 category columns: previous, current, next */}
-            {[-1, 0, 1].map((catPosition) => {
+            {/* Render 5 category columns: 2 previous, current, 2 next */}
+            {[-2, -1, 0, 1, 2].map((catPosition) => {
               const catIndex = (currentCategoryIndex + catPosition + categories.length) % categories.length;
               const category = categories[catIndex];
               const categoryQuestions = questionsByCategory[category] || [];
@@ -426,8 +426,8 @@ export function QuizApp() {
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
                   }}
                 >
-                  {/* Render 3 question cards vertically: previous, current, next */}
-                  {[-1, 0, 1].map((qPosition) => {
+                  {/* Render 5 question cards vertically: 2 previous, current, 2 next */}
+                  {[-2, -1, 0, 1, 2].map((qPosition) => {
                     const qIndex = (currentQuestionIndex + qPosition + categoryQuestions.length) % categoryQuestions.length;
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
