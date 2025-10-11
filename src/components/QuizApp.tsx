@@ -415,7 +415,7 @@ export function QuizApp() {
               const isCategoryActive = catPosition === 0;
               
               // Calculate horizontal transform - use card width from DOM for accurate spacing
-              const hCardSpacingPx = 32; // 32px spacing
+              const hCardSpacingPx = 16; // 16px spacing
               const hCardWidthPx = window.innerWidth - 32; // Card width: 100vw - 32px (16px on each side)
               const totalCardWidth = hCardWidthPx + hCardSpacingPx; // Total width including spacing
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
@@ -466,8 +466,8 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform - fixed 32px spacing (matching horizontal calculation)
-                    const vCardSpacingPx = 32; // 32px gap between cards
+                    // Calculate vertical transform - fixed 16px spacing (matching horizontal calculation)
+                    const vCardSpacingPx = 16; // 16px gap between cards
                     const vCardHeight = window.innerHeight * 0.8; // Card height (80vh)
                     const totalCardHeight = vCardHeight + vCardSpacingPx; // Total height including spacing
                     const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
