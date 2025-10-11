@@ -918,7 +918,7 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
   );
 }
 
-// Wavy Line component with thick organic flowing curves
+// Wavy Line component with thick organic flowing ribbon shapes
 interface WavyLineProps {
   questionText: string;
   lineIndex: number;
@@ -935,39 +935,78 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Random starting position - can start from anywhere including edges
-  const startX = getRandomValue(questionText + 'startX' + lineIndex, -20, 120);
-  const startY = getRandomValue(questionText + 'startY' + lineIndex, -20, 120);
+  // Random starting position
+  const startX = getRandomValue(questionText + 'startX' + lineIndex, -30, 100);
+  const startY = getRandomValue(questionText + 'startY' + lineIndex, -30, 100);
   
-  // Thickness of the line
-  const thickness = getRandomValue(questionText + 'thickness' + lineIndex, 20, 45);
+  // Base thickness with variation
+  const baseThickness = getRandomValue(questionText + 'thickness' + lineIndex, 25, 50);
   
-  // Number of curves in the path (3-5 curves for nice organic flow)
-  const numCurves = Math.floor(getRandomValue(questionText + 'curves' + lineIndex, 3, 6));
+  // Number of curves (2-4 for nice S-curves)
+  const numCurves = Math.floor(getRandomValue(questionText + 'curves' + lineIndex, 2, 5));
   
-  let pathData = `M ${startX},${startY}`;
+  // Generate center path points
+  const centerPoints = [{ x: startX, y: startY }];
   let currentX = startX;
   let currentY = startY;
   
-  // Create smooth flowing curves
   for (let i = 0; i < numCurves; i++) {
-    // Control point 1 - determines the curve direction
-    const cp1X = currentX + getRandomValue(questionText + 'cp1x' + lineIndex + i, 15, 40);
-    const cp1Y = currentY + getRandomValue(questionText + 'cp1y' + lineIndex + i, -30, 30);
-    
-    // Control point 2 - creates the S-curve effect
-    const cp2X = cp1X + getRandomValue(questionText + 'cp2x' + lineIndex + i, 10, 35);
-    const cp2Y = cp1Y + getRandomValue(questionText + 'cp2y' + lineIndex + i, -25, 25);
-    
-    // End point - continues the flow
-    const endX = cp2X + getRandomValue(questionText + 'endx' + lineIndex + i, 15, 35);
-    const endY = cp2Y + getRandomValue(questionText + 'endy' + lineIndex + i, -20, 20);
-    
-    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
-    
-    currentX = endX;
-    currentY = endY;
+    currentX += getRandomValue(questionText + 'dx' + lineIndex + i, 30, 60);
+    currentY += getRandomValue(questionText + 'dy' + lineIndex + i, -40, 40);
+    centerPoints.push({ x: currentX, y: currentY });
   }
+  
+  // Create wavy edges on both sides of the center path
+  const topEdge: string[] = [];
+  const bottomEdge: string[] = [];
+  
+  for (let i = 0; i < centerPoints.length; i++) {
+    const point = centerPoints[i];
+    const nextPoint = centerPoints[i + 1];
+    
+    if (!nextPoint) break;
+    
+    // Calculate perpendicular direction
+    const dx = nextPoint.x - point.x;
+    const dy = nextPoint.y - point.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const perpX = -dy / length;
+    const perpY = dx / length;
+    
+    // Varying thickness along the curve
+    const thicknessVariation = getRandomValue(questionText + 'thickVar' + lineIndex + i, 0.7, 1.3);
+    const halfThick = (baseThickness * thicknessVariation) / 2;
+    
+    // Add wave to edges
+    const waveAmount = getRandomValue(questionText + 'wave' + lineIndex + i, -8, 8);
+    
+    // Top edge point
+    const topX = point.x + perpX * (halfThick + waveAmount);
+    const topY = point.y + perpY * (halfThick + waveAmount);
+    
+    // Bottom edge point
+    const bottomX = point.x - perpX * (halfThick - waveAmount);
+    const bottomY = point.y - perpY * (halfThick - waveAmount);
+    
+    if (i === 0) {
+      topEdge.push(`M ${topX},${topY}`);
+      bottomEdge.push(`${bottomX},${bottomY}`);
+    } else {
+      // Create smooth curves between points
+      const prevTop = topEdge[topEdge.length - 1];
+      topEdge.push(`Q ${point.x + perpX * halfThick},${point.y + perpY * halfThick} ${topX},${topY}`);
+      bottomEdge.push(`${bottomX},${bottomY}`);
+    }
+  }
+  
+  // Build complete path - top edge forward, bottom edge backward, close
+  const pathData = topEdge.join(' ') + 
+    ` L ${bottomEdge[bottomEdge.length - 1]} ` +
+    bottomEdge.slice(0, -1).reverse().map((p, i) => {
+      if (i === 0) return `L ${p}`;
+      return `L ${p}`;
+    }).join(' ') + 
+    ' Z';
   
   return (
     <div className="absolute inset-0 z-0 overflow-visible pointer-events-none">
@@ -981,11 +1020,8 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
       >
         <path 
           d={pathData}
-          stroke="#F1A8C6"
-          strokeWidth={thickness}
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          fill="#F1A8C6"
+          opacity="0.9"
         />
       </svg>
     </div>
