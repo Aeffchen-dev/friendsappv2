@@ -10,7 +10,7 @@ interface Question {
 
 export function QuizApp() {
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [questionIndicesByCategory, setQuestionIndicesByCategory] = useState<{[category: string]: number}>({});
   const [animationClass, setAnimationClass] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
@@ -217,7 +217,6 @@ export function QuizApp() {
           console.log('Moving from category', prev, 'to', next);
           return next;
         });
-        setCurrentQuestionIndex(0);
         setTimeout(() => setLogoSqueezeLeft(false), 300);
         setTimeout(() => setIsHorizontalSliding(false), 350);
       } else if (dragOffsetX > threshold) {
@@ -229,18 +228,24 @@ export function QuizApp() {
           console.log('Moving from category', prev, 'to', next);
           return next;
         });
-        setCurrentQuestionIndex(0);
         setTimeout(() => setLogoSqueezeRight(false), 300);
         setTimeout(() => setIsHorizontalSliding(false), 350);
       }
       setDragOffsetX(0);
     } else if (dragDirection === 'vertical') {
       // Change question within category with wrapping
-      const currentCategoryQuestions = questionsByCategory[displayCategories[currentCategoryIndex]] || [];
+      const currentCategory = displayCategories[currentCategoryIndex];
+      const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
       if (dragOffsetY < -threshold) {
-        setCurrentQuestionIndex(prev => (prev + 1) % currentCategoryQuestions.length);
+        setQuestionIndicesByCategory(prev => ({
+          ...prev,
+          [currentCategory]: ((prev[currentCategory] || 0) + 1) % currentCategoryQuestions.length
+        }));
       } else if (dragOffsetY > threshold) {
-        setCurrentQuestionIndex(prev => (prev - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length);
+        setQuestionIndicesByCategory(prev => ({
+          ...prev,
+          [currentCategory]: ((prev[currentCategory] || 0) - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length
+        }));
       }
       setDragOffsetY(0);
     } else {
@@ -258,25 +263,31 @@ export function QuizApp() {
   const nextCategory = () => {
     setLogoSqueezeLeft(true);
     setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
-    setCurrentQuestionIndex(0);
     setTimeout(() => setLogoSqueezeLeft(false), 350);
   };
 
   const prevCategory = () => {
     setLogoSqueezeRight(true);
     setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
-    setCurrentQuestionIndex(0);
     setTimeout(() => setLogoSqueezeRight(false), 350);
   };
 
   const nextQuestion = () => {
-    const currentCategoryQuestions = questionsByCategory[displayCategories[currentCategoryIndex]] || [];
-    setCurrentQuestionIndex(prev => (prev + 1) % currentCategoryQuestions.length);
+    const currentCategory = displayCategories[currentCategoryIndex];
+    const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
+    setQuestionIndicesByCategory(prev => ({
+      ...prev,
+      [currentCategory]: ((prev[currentCategory] || 0) + 1) % currentCategoryQuestions.length
+    }));
   };
 
   const prevQuestion = () => {
-    const currentCategoryQuestions = questionsByCategory[displayCategories[currentCategoryIndex]] || [];
-    setCurrentQuestionIndex(prev => (prev - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length);
+    const currentCategory = displayCategories[currentCategoryIndex];
+    const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
+    setQuestionIndicesByCategory(prev => ({
+      ...prev,
+      [currentCategory]: ((prev[currentCategory] || 0) - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length
+    }));
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
@@ -294,13 +305,18 @@ export function QuizApp() {
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [currentCategoryIndex, currentQuestionIndex, displayCategories]);
+  }, [currentCategoryIndex, questionIndicesByCategory, displayCategories]);
 
   // Reset indices when questions change
   useEffect(() => {
     if (displayCategories.length > 0) {
       setCurrentCategoryIndex(0);
-      setCurrentQuestionIndex(0);
+      // Initialize question indices for all categories to 0
+      const initialIndices: {[category: string]: number} = {};
+      displayCategories.forEach(cat => {
+        initialIndices[cat] = 0;
+      });
+      setQuestionIndicesByCategory(initialIndices);
     }
   }, [selectedCategories, allQuestions]);
 
@@ -499,6 +515,7 @@ export function QuizApp() {
                 >
                   {/* Render 5 question cards vertically: 2 previous, current, 2 next */}
                   {[-2, -1, 0, 1, 2].map((qPosition) => {
+                    const currentQuestionIndex = questionIndicesByCategory[category] || 0;
                     const qIndex = (currentQuestionIndex + qPosition + categoryQuestions.length) % categoryQuestions.length;
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
