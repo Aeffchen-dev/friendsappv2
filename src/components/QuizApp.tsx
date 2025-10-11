@@ -405,8 +405,8 @@ export function QuizApp() {
                   scaleH = 0.8;
                 }
               } else if (catPosition === -1 || catPosition === 1) {
-                // Next/prev cards visible at scale 0.95, scale to 1 during transition
-                scaleH = 0.95;
+                // Next/prev cards stay at 0.8, scale to 1 during transition
+                scaleH = 0.8;
                 if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
                   scaleH = 1;
                 }
@@ -467,8 +467,8 @@ export function QuizApp() {
                         scale = 0.8;
                       }
                     } else if (qPosition === 1) {
-                      // Next card visible at scale 0.95, scales to 1 during transition
-                      scale = 0.95;
+                      // Next card stays at 0.8, scales to 1 during transition
+                      scale = 0.8;
                       if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
                         scale = 1;
                       }
