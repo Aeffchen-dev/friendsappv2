@@ -193,7 +193,7 @@ export function QuizApp() {
         setTimeout(() => {
           setIsAnimating(false);
           setLogoSqueezeLeft(false);
-        }, 300);
+        }, 500);
       }, 16);
     } else if (dragOffset > threshold) {
       setLogoSqueezeRight(true);
@@ -205,14 +205,14 @@ export function QuizApp() {
         setTimeout(() => {
           setIsAnimating(false);
           setLogoSqueezeRight(false);
-        }, 300);
+        }, 500);
       }, 16);
     } else {
       // Snap back to center
       setDragOffset(0);
       setTimeout(() => {
         setIsAnimating(false);
-      }, 300);
+      }, 500);
     }
   };
 
@@ -386,7 +386,7 @@ export function QuizApp() {
                   className="absolute"
                   style={{
                     transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale}) rotateY(${rotation}deg)`,
-                    transition: isAnimating ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    transition: isAnimating ? 'transform 500ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     zIndex: isActive ? 10 : 5,
                     pointerEvents: isActive ? 'auto' : 'none'
                   }}
