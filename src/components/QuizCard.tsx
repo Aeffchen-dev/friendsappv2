@@ -934,76 +934,48 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create coral-like organic branching forms
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 25, 75);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 30, 70);
+  // Create flower-shaped outlines
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 20, 80);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 20, 80);
+  const petalLength = getRandomValue(questionText + 'petalLength' + lineIndex, 8, 15);
+  const petalWidth = getRandomValue(questionText + 'petalWidth' + lineIndex, 5, 10);
+  const numPetals = Math.floor(getRandomValue(questionText + 'petals' + lineIndex, 5, 8));
   
   let pathData = '';
   
-  // Create multiple branches from center
-  const numBranches = Math.floor(getRandomValue(questionText + 'branches' + lineIndex, 3, 6));
-  
-  for (let b = 0; b < numBranches; b++) {
-    const branchAngle = (360 / numBranches) * b + getRandomValue(questionText + 'angle' + lineIndex + b, -30, 30);
-    const branchLength = getRandomValue(questionText + 'length' + lineIndex + b, 15, 25);
-    const rad = (branchAngle * Math.PI) / 180;
+  // Draw each petal
+  for (let p = 0; p < numPetals; p++) {
+    const angle = (360 / numPetals) * p;
+    const rad = (angle * Math.PI) / 180;
     
-    // Start from center
-    let currentX = centerX;
-    let currentY = centerY;
-    pathData += `M ${currentX},${currentY}`;
+    // Calculate petal base points
+    const baseX1 = centerX + Math.cos(rad - 0.3) * (petalWidth * 0.5);
+    const baseY1 = centerY + Math.sin(rad - 0.3) * (petalWidth * 0.5);
+    const baseX2 = centerX + Math.cos(rad + 0.3) * (petalWidth * 0.5);
+    const baseY2 = centerY + Math.sin(rad + 0.3) * (petalWidth * 0.5);
     
-    // Create 2-3 segments per branch with organic curves
-    const segments = Math.floor(getRandomValue(questionText + 'seg' + lineIndex + b, 2, 4));
+    // Petal tip
+    const tipX = centerX + Math.cos(rad) * petalLength;
+    const tipY = centerY + Math.sin(rad) * petalLength;
     
-    for (let s = 0; s < segments; s++) {
-      const segLength = branchLength / segments;
-      const curve = getRandomValue(questionText + 'curve' + lineIndex + b + s, -5, 5);
-      
-      const targetX = currentX + Math.cos(rad + (s * 0.3)) * segLength;
-      const targetY = currentY + Math.sin(rad + (s * 0.3)) * segLength;
-      
-      const cp1X = currentX + (targetX - currentX) * 0.4 + curve;
-      const cp1Y = currentY + (targetY - currentY) * 0.4 + curve;
-      const cp2X = currentX + (targetX - currentX) * 0.7 - curve;
-      const cp2Y = currentY + (targetY - currentY) * 0.7 - curve;
-      
-      pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${targetX},${targetY}`;
-      
-      currentX = targetX;
-      currentY = targetY;
-      
-      // Add small bulb at end of branch
-      if (s === segments - 1) {
-        const bulbRadius = getRandomValue(questionText + 'bulb' + lineIndex + b, 2, 4);
-        pathData += ` m ${bulbRadius},0 a ${bulbRadius},${bulbRadius} 0 1,0 -${bulbRadius * 2},0 a ${bulbRadius},${bulbRadius} 0 1,0 ${bulbRadius * 2},0`;
-      }
-    }
+    // Control points for smooth petal curves
+    const cp1X = baseX1 + Math.cos(rad - 0.5) * (petalLength * 0.7);
+    const cp1Y = baseY1 + Math.sin(rad - 0.5) * (petalLength * 0.7);
+    const cp2X = tipX + Math.cos(rad - Math.PI / 2) * (petalWidth * 0.3);
+    const cp2Y = tipY + Math.sin(rad - Math.PI / 2) * (petalWidth * 0.3);
     
-    // Occasionally add sub-branches
-    if (getRandomValue(questionText + 'subbranch' + lineIndex + b, 0, 1) > 0.5) {
-      const subAngle = branchAngle + getRandomValue(questionText + 'subangle' + lineIndex + b, 30, 90);
-      const subRad = (subAngle * Math.PI) / 180;
-      const subLength = branchLength * 0.6;
-      
-      const midX = centerX + Math.cos(rad) * (branchLength * 0.5);
-      const midY = centerY + Math.sin(rad) * (branchLength * 0.5);
-      
-      pathData += ` M ${midX},${midY}`;
-      
-      const subTargetX = midX + Math.cos(subRad) * subLength;
-      const subTargetY = midY + Math.sin(subRad) * subLength;
-      
-      const cpX = midX + (subTargetX - midX) * 0.5 + getRandomValue(questionText + 'subcurve' + lineIndex + b, -3, 3);
-      const cpY = midY + (subTargetY - midY) * 0.5 + getRandomValue(questionText + 'subcurve2' + lineIndex + b, -3, 3);
-      
-      pathData += ` Q ${cpX},${cpY} ${subTargetX},${subTargetY}`;
-      
-      // Small bulb at sub-branch end
-      const subBulbRadius = getRandomValue(questionText + 'subbulb' + lineIndex + b, 1.5, 3);
-      pathData += ` m ${subBulbRadius},0 a ${subBulbRadius},${subBulbRadius} 0 1,0 -${subBulbRadius * 2},0 a ${subBulbRadius},${subBulbRadius} 0 1,0 ${subBulbRadius * 2},0`;
-    }
+    const cp3X = tipX + Math.cos(rad + Math.PI / 2) * (petalWidth * 0.3);
+    const cp3Y = tipY + Math.sin(rad + Math.PI / 2) * (petalWidth * 0.3);
+    const cp4X = baseX2 + Math.cos(rad + 0.5) * (petalLength * 0.7);
+    const cp4Y = baseY2 + Math.sin(rad + 0.5) * (petalLength * 0.7);
+    
+    // Draw petal outline
+    pathData += `M ${baseX1},${baseY1} C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${tipX},${tipY} C ${cp3X},${cp3Y} ${cp4X},${cp4Y} ${baseX2},${baseY2}`;
   }
+  
+  // Draw center circle
+  const centerRadius = getRandomValue(questionText + 'centerR' + lineIndex, 2, 4);
+  pathData += ` M ${centerX + centerRadius},${centerY} a ${centerRadius},${centerRadius} 0 1,0 -${centerRadius * 2},0 a ${centerRadius},${centerRadius} 0 1,0 ${centerRadius * 2},0`;
   
   return (
     <div className="absolute inset-0 z-0 overflow-visible">
