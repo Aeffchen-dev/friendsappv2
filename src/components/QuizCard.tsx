@@ -310,8 +310,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         <div ref={containerRef} className="flex-1 flex items-start justify-start text-left w-full pt-16">
           <h1 
             ref={textRef}
-            className="text-3xl md:text-4xl lg:text-4xl font-bricolage text-foreground leading-tight w-full max-w-full"
-            style={{ transform: 'scaleY(1.1)' }}
+            className="text-3xl md:text-4xl lg:text-4xl font-normal text-foreground leading-tight w-full max-w-full" 
           >
             {processedText.length > 0 ? processedText : question.question}
           </h1>
