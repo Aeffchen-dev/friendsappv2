@@ -397,13 +397,20 @@ export function QuizApp() {
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
               const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
-              // Horizontal scale - only during animation/drag
+              // Horizontal scale
               let scaleH = 1;
-              if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
-                if (isCategoryActive) {
-                  scaleH = 0.96; // Active card scales down during transition
-                } else if (catPosition === 1 || catPosition === 2) {
-                  scaleH = 0.96; // Next and 2nd next cards also scale
+              if (isCategoryActive) {
+                // Active card stays at scale 1 normally, scales to 0.8 during transition
+                if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
+                  scaleH = 0.8;
+                }
+              } else {
+                // Next/prev cards stay at scale 0.8 normally, scale to 1 during transition
+                scaleH = 0.8;
+                if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
+                  if (catPosition === -1 || catPosition === 1) {
+                    scaleH = 1;
+                  }
                 }
               }
               
@@ -444,13 +451,20 @@ export function QuizApp() {
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 8 : 0;
                     
-                    // Vertical scale - only during animation/drag
+                    // Vertical scale
                     let scale = 1;
-                    if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
-                      if (isActive) {
-                        scale = 0.96; // Active card scales down during transition
-                      } else if (qPosition === 1 || qPosition === 2) {
-                        scale = 0.96; // Next and 2nd next cards also scale
+                    if (isActive) {
+                      // Active card stays at scale 1 normally, scales to 0.8 during transition
+                      if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
+                        scale = 0.8;
+                      }
+                    } else {
+                      // Next/prev cards stay at scale 0.8 normally, scale to 1 during transition
+                      scale = 0.8;
+                      if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
+                        if (qPosition === -1 || qPosition === 1) {
+                          scale = 1;
+                        }
                       }
                     }
                     
