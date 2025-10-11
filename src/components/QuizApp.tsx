@@ -401,9 +401,9 @@ export function QuizApp() {
               let scaleH = 1;
               if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
                 if (isCategoryActive) {
-                  scaleH = 0.99; // Active card scales down during transition
+                  scaleH = 0.96; // Active card scales down during transition
                 } else if (catPosition === 1 || catPosition === 2) {
-                  scaleH = 0.99; // Next and 2nd next cards also scale
+                  scaleH = 0.96; // Next and 2nd next cards also scale
                 }
               }
               
@@ -448,9 +448,9 @@ export function QuizApp() {
                     let scale = 1;
                     if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
                       if (isActive) {
-                        scale = 0.99; // Active card scales down during transition
+                        scale = 0.96; // Active card scales down during transition
                       } else if (qPosition === 1 || qPosition === 2) {
-                        scale = 0.99; // Next and 2nd next cards also scale
+                        scale = 0.96; // Next and 2nd next cards also scale
                       }
                     }
                     
