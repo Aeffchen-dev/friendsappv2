@@ -629,6 +629,18 @@ export function QuizApp() {
                       onBgColorChange={isActive ? handleBgColorChange : undefined}
                       disableSwipe={true}
                       useContainerSize={true}
+                      onPrevSlide={isActive ? () => {
+                        // Click on category strip - go to prev horizontal slide in shuffle mode
+                        setIsAnimating(true);
+                        setDragDirection('horizontal');
+                        setLogoSqueezeRight(true);
+                        setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
+                        setTimeout(() => {
+                          setLogoSqueezeRight(false);
+                          setIsAnimating(false);
+                          setDragDirection(null);
+                        }, 350);
+                      } : undefined}
                     />
                   </div>
                 </div>
@@ -880,19 +892,18 @@ export function QuizApp() {
                           onBgColorChange={isActive ? handleBgColorChange : undefined}
                           disableSwipe={true}
                           onPrevSlide={isActive ? () => {
-                            // Click on category strip - go to prev question
-                            const currentCategory = displayCategories[currentCategoryIndex];
-                            const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
+                            // Click on category strip - go to prev horizontal slide (category)
                             setIsAnimating(true);
-                            setDragDirection('vertical');
-                            setQuestionIndicesByCategory(prev => ({
-                              ...prev,
-                              [currentCategory]: ((prev[currentCategory] || 0) - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length
-                            }));
+                            setDragDirection('horizontal');
+                            setLogoSqueezeRight(true);
+                            setIsHorizontalSliding(true);
+                            setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                             setTimeout(() => {
+                              setLogoSqueezeRight(false);
                               setIsAnimating(false);
                               setDragDirection(null);
                             }, 350);
+                            setTimeout(() => setIsHorizontalSliding(false), 350);
                           } : undefined}
                         />
                       </div>
