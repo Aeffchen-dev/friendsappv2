@@ -198,26 +198,26 @@ export function QuizApp() {
     setIsAnimating(true);
     
     if (dragDirection === 'horizontal') {
-      // Change category
-      if (dragOffsetX < -threshold && currentCategoryIndex < categories.length - 1) {
+      // Change category with wrapping
+      if (dragOffsetX < -threshold) {
         setLogoSqueezeLeft(true);
-        setCurrentCategoryIndex(prev => prev + 1);
+        setCurrentCategoryIndex(prev => (prev + 1) % categories.length);
         setCurrentQuestionIndex(0);
         setTimeout(() => setLogoSqueezeLeft(false), 300);
-      } else if (dragOffsetX > threshold && currentCategoryIndex > 0) {
+      } else if (dragOffsetX > threshold) {
         setLogoSqueezeRight(true);
-        setCurrentCategoryIndex(prev => prev - 1);
+        setCurrentCategoryIndex(prev => (prev - 1 + categories.length) % categories.length);
         setCurrentQuestionIndex(0);
         setTimeout(() => setLogoSqueezeRight(false), 300);
       }
       setDragOffsetX(0);
     } else if (dragDirection === 'vertical') {
-      // Change question within category
+      // Change question within category with wrapping
       const currentCategoryQuestions = questionsByCategory[categories[currentCategoryIndex]] || [];
-      if (dragOffsetY < -threshold && currentQuestionIndex < currentCategoryQuestions.length - 1) {
-        setCurrentQuestionIndex(prev => prev + 1);
-      } else if (dragOffsetY > threshold && currentQuestionIndex > 0) {
-        setCurrentQuestionIndex(prev => prev - 1);
+      if (dragOffsetY < -threshold) {
+        setCurrentQuestionIndex(prev => (prev + 1) % currentCategoryQuestions.length);
+      } else if (dragOffsetY > threshold) {
+        setCurrentQuestionIndex(prev => (prev - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length);
       }
       setDragOffsetY(0);
     } else {
@@ -233,34 +233,27 @@ export function QuizApp() {
   };
 
   const nextCategory = () => {
-    if (currentCategoryIndex < categories.length - 1) {
-      setLogoSqueezeLeft(true);
-      setCurrentCategoryIndex(prev => prev + 1);
-      setCurrentQuestionIndex(0);
-      setTimeout(() => setLogoSqueezeLeft(false), 300);
-    }
+    setLogoSqueezeLeft(true);
+    setCurrentCategoryIndex(prev => (prev + 1) % categories.length);
+    setCurrentQuestionIndex(0);
+    setTimeout(() => setLogoSqueezeLeft(false), 300);
   };
 
   const prevCategory = () => {
-    if (currentCategoryIndex > 0) {
-      setLogoSqueezeRight(true);
-      setCurrentCategoryIndex(prev => prev - 1);
-      setCurrentQuestionIndex(0);
-      setTimeout(() => setLogoSqueezeRight(false), 300);
-    }
+    setLogoSqueezeRight(true);
+    setCurrentCategoryIndex(prev => (prev - 1 + categories.length) % categories.length);
+    setCurrentQuestionIndex(0);
+    setTimeout(() => setLogoSqueezeRight(false), 300);
   };
 
   const nextQuestion = () => {
     const currentCategoryQuestions = questionsByCategory[categories[currentCategoryIndex]] || [];
-    if (currentQuestionIndex < currentCategoryQuestions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
-    }
+    setCurrentQuestionIndex(prev => (prev + 1) % currentCategoryQuestions.length);
   };
 
   const prevQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
-    }
+    const currentCategoryQuestions = questionsByCategory[categories[currentCategoryIndex]] || [];
+    setCurrentQuestionIndex(prev => (prev - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length);
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
@@ -378,36 +371,51 @@ export function QuizApp() {
             {/* Loading text removed - handled by static HTML */}
           </div>
         ) : categories.length > 0 ? (
-          <div 
-            className="flex"
-            style={{
-              transform: `translateX(calc(-${currentCategoryIndex * 100}vw + ${dragOffsetX}px))`,
-              transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
-            }}
-          >
-            {categories.map((category, catIndex) => {
+          <div className="relative w-full h-full flex justify-center items-center">
+            {/* Render 3 category columns: previous, current, next */}
+            {[-1, 0, 1].map((catPosition) => {
+              const catIndex = (currentCategoryIndex + catPosition + categories.length) % categories.length;
+              const category = categories[catIndex];
               const categoryQuestions = questionsByCategory[category] || [];
-              const isCategoryActive = catIndex === currentCategoryIndex;
+              const isCategoryActive = catPosition === 0;
+              
+              // Calculate horizontal transform
+              const baseTranslateX = catPosition * 100;
+              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               
               return (
                 <div 
-                  key={category}
-                  className="flex flex-col flex-shrink-0"
+                  key={`${category}-${catPosition}`}
+                  className="absolute flex flex-col items-center justify-center"
                   style={{
                     width: '100vw',
-                    transform: isCategoryActive ? `translateY(calc(-${currentQuestionIndex * 100}vh + ${dragOffsetY}px))` : 'none',
-                    transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    height: '100vh',
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw))`,
+                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    opacity: isCategoryActive ? 1 : 0.3,
+                    pointerEvents: isCategoryActive ? 'auto' : 'none'
                   }}
                 >
-                  {categoryQuestions.map((question, qIndex) => {
-                    const isActive = isCategoryActive && qIndex === currentQuestionIndex;
+                  {/* Render 3 question cards vertically: previous, current, next */}
+                  {[-1, 0, 1].map((qPosition) => {
+                    const qIndex = (currentQuestionIndex + qPosition + categoryQuestions.length) % categoryQuestions.length;
+                    const question = categoryQuestions[qIndex];
+                    const isActive = isCategoryActive && qPosition === 0;
+                    
+                    // Calculate vertical transform
+                    const baseTranslateY = qPosition * 100;
+                    const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 100 : 0;
                     
                     return (
                       <div
-                        key={`${question.question}-${qIndex}`}
-                        className="flex-shrink-0 flex items-center justify-center"
+                        key={`${question.question}-${qPosition}`}
+                        className="absolute flex items-center justify-center"
                         style={{
+                          width: '100vw',
                           height: '100vh',
+                          transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh))`,
+                          transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                          opacity: isActive ? 1 : 0.5,
                           pointerEvents: isActive ? 'auto' : 'none'
                         }}
                       >
