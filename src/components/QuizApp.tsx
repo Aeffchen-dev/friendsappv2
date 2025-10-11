@@ -23,6 +23,7 @@ export function QuizApp() {
   const [logoSqueezeRight, setLogoSqueezeRight] = useState(false);
   const [bgColor, setBgColor] = useState('bg-background');
   const [prevBgColor, setPrevBgColor] = useState('bg-background');
+  const [headerTextColor, setHeaderTextColor] = useState('text-white');
 
   useEffect(() => {
     // Start logo animation and data loading together
@@ -199,22 +200,32 @@ export function QuizApp() {
   const handleBgColorChange = (newBgClass: string) => {
     setPrevBgColor(bgColor);
     setBgColor(newBgClass);
+    
+    // Extract color class for header text
+    const colorMatch = newBgClass.match(/bg-quiz-(\w+(-\w+)*)-bg-dark/);
+    if (colorMatch) {
+      const category = colorMatch[1];
+      setHeaderTextColor(`text-${category}-900`);
+    }
   };
 
   return (
     <div className={`h-[100svh] ${bgColor} overflow-hidden flex flex-col transition-colors duration-500`}>
       {/* App Header - Always visible */}
-      <div className="app-header bg-black flex-shrink-0" style={{position: 'sticky', top: 0, zIndex: 50, backgroundColor: '#000000'}}>
+      <div className="app-header flex-shrink-0" style={{position: 'sticky', top: 0, zIndex: 50}}>
         <div className="flex justify-between items-baseline px-4 py-4">
           <img 
             src="/assets/logo.png" 
             alt="Logo" 
-            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''}`}
+            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''} transition-all duration-500`}
             onClick={handleLogoClick}
+            style={{
+              filter: headerTextColor.includes('900') ? 'brightness(0) saturate(100%)' : 'none'
+            }}
           />
           <button 
             onClick={() => setCategorySelectorOpen(true)}
-            className="text-white font-normal text-xs align-baseline"
+            className={`${headerTextColor} font-normal text-xs align-baseline transition-colors duration-500`}
             style={{fontSize: '14px'}}
           >
             Kategorien wählen
