@@ -399,14 +399,15 @@ export function QuizApp() {
               
               return (
                 <div 
-                  key={`${category}-${catPosition}`}
+                  key={`cat-${catIndex}`}
                   className="absolute flex flex-col items-center justify-center"
                   style={{
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) skewX(${skewX}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 1600ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
-                    pointerEvents: isCategoryActive ? 'auto' : 'none'
+                    pointerEvents: isCategoryActive ? 'auto' : 'none',
+                    willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
                   }}
                 >
                   {/* Render 3 question cards vertically: previous, current, next */}
@@ -439,7 +440,7 @@ export function QuizApp() {
                     
                     return (
                       <div
-                        key={`${question.question}-${qPosition}`}
+                        key={`cat-${catIndex}-q-${qIndex}`}
                         className="absolute flex items-center justify-center"
                         style={{
                           position: 'absolute',
@@ -449,7 +450,8 @@ export function QuizApp() {
                           height: '90vh',
                           transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapYPx}px)) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 1600ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
-                          pointerEvents: isActive ? 'auto' : 'none'
+                          pointerEvents: isActive ? 'auto' : 'none',
+                          willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto'
                         }}
                       >
                         <QuizCard
