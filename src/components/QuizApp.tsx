@@ -374,9 +374,12 @@ export function QuizApp() {
                 }
               }
               
-              // Slight outward rotation for side cards
+              // Rotation: side cards lean outward, active card bends opposite to drag
               let rotation = 0;
-              if (!isActive) {
+              if (isActive && isDragging) {
+                // Active card bends opposite to drag direction (stronger effect)
+                rotation = -(dragOffset / window.innerWidth) * 15; // Max ±15deg
+              } else if (!isActive) {
                 rotation = position * 3; // -3deg for left card, +3deg for right card
               }
               
