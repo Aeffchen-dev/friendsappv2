@@ -526,8 +526,8 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 9 starfish shapes per card
-        const numStarfish = 9;
+        // Generate 11 starfish shapes per card
+        const numStarfish = 11;
         
         return (
           <>
@@ -912,10 +912,10 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish-shaped circle outline - bigger and can be cut off
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -30, 130);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -30, 130);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 18, 35);
+  // Create smooth starfish-shaped circle outline - ensure visibility on card
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -20, 120);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -20, 120);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 15, 30);
   const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.2, 0.45);
   const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
   
