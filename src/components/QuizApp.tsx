@@ -440,7 +440,15 @@ export function QuizApp() {
                     const cardHeight = 80; // 80vh card
                     const gapOffsetV = qPosition * 8; // 8px gap between cards
                     // Move previous slide further up to be completely out of viewport
-                    const baseTranslateY = qPosition === -1 ? -120 : qPosition * cardHeight;
+                    // Position 2 (second next) moves together with position 1 (next)
+                    let baseTranslateY;
+                    if (qPosition === -1) {
+                      baseTranslateY = -120;
+                    } else if (qPosition === 2) {
+                      baseTranslateY = cardHeight + 8; // Same offset as position 1 plus small gap
+                    } else {
+                      baseTranslateY = qPosition * cardHeight;
+                    }
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 8 : 0;
                     
