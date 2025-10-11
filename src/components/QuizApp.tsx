@@ -34,6 +34,7 @@ export function QuizApp() {
   const [dragStartY, setDragStartY] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [dragDirection, setDragDirection] = useState<'horizontal' | 'vertical' | null>(null);
+  const [isHorizontalSliding, setIsHorizontalSliding] = useState(false);
 
   // Group questions by category
   const questionsByCategory = useMemo(() => {
@@ -202,6 +203,7 @@ export function QuizApp() {
       if (dragOffsetX < -threshold) {
         console.log('Swipe left - current index:', currentCategoryIndex, 'total categories:', categories.length);
         setLogoSqueezeLeft(true);
+        setIsHorizontalSliding(true);
         setCurrentCategoryIndex(prev => {
           const next = (prev + 1) % categories.length;
           console.log('Moving from category', prev, 'to', next);
@@ -209,9 +211,11 @@ export function QuizApp() {
         });
         setCurrentQuestionIndex(0);
         setTimeout(() => setLogoSqueezeLeft(false), 300);
+        setTimeout(() => setIsHorizontalSliding(false), 350);
       } else if (dragOffsetX > threshold) {
         console.log('Swipe right - current index:', currentCategoryIndex, 'total categories:', categories.length);
         setLogoSqueezeRight(true);
+        setIsHorizontalSliding(true);
         setCurrentCategoryIndex(prev => {
           const next = (prev - 1 + categories.length) % categories.length;
           console.log('Moving from category', prev, 'to', next);
@@ -219,6 +223,7 @@ export function QuizApp() {
         });
         setCurrentQuestionIndex(0);
         setTimeout(() => setLogoSqueezeRight(false), 300);
+        setTimeout(() => setIsHorizontalSliding(false), 350);
       }
       setDragOffsetX(0);
     } else if (dragDirection === 'vertical') {
@@ -414,8 +419,9 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform - equal spacing between all cards (32px)
-              const hCardSpacingPx = 32; // 32px spacing
+              // Calculate horizontal transform - equal spacing between all cards (32px, 64px during slide)
+              const baseCardSpacingPx = 32; // Base 32px spacing
+              const hCardSpacingPx = isHorizontalSliding ? baseCardSpacingPx * 2 : baseCardSpacingPx; // Double during slide
               const maxCardWidthPx = 600; // Max width for desktop
               const vwCardWidth = window.innerWidth * 0.8; // 80vw
               const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx); // Card width (80vw or 600px max)
@@ -454,8 +460,8 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${baseTranslateX + dragTranslateX}vw) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
-                    transition: isAnimating && dragDirection === 'horizontal' ? (isCategoryActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
-                    animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
+                    transition: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? (isCategoryActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
+                    animation: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
