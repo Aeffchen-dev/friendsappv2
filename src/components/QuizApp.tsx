@@ -210,7 +210,7 @@ export function QuizApp() {
   };
 
   return (
-    <div className={`h-[100svh] ${bgColor} overflow-hidden flex flex-col transition-colors duration-[1500ms] ease-out`}>
+    <div className={`h-[100svh] ${bgColor} overflow-hidden flex flex-col transition-colors duration-[2500ms] ease-out`}>
       {/* App Header - Always visible */}
       <div className="app-header flex-shrink-0" style={{position: 'sticky', top: 0, zIndex: 50}}>
         <div className="flex justify-between items-baseline px-4 py-4">
