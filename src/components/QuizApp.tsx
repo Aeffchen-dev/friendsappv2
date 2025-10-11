@@ -389,12 +389,12 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform - 10% of next card visible (10% of 80vw = 8vw) + 16px gap
+              // Calculate horizontal transform - 10% of next card visible (10% of 80vw = 8vw) + 8px gap
               const cardSpacing = 92; // 92vw spacing (100vw - 8vw = next card shows 8vw)
-              const gapOffsetH = catPosition * 16; // 16px gap between cards
+              const gapOffsetH = catPosition * 8; // 8px gap between cards
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
-              const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
+              const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 8 : 0;
               
               // Horizontal scale - only during animation/drag
               let scaleH = 1;
@@ -431,13 +431,13 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform - 10% of next card visible + 16px gap
+                    // Calculate vertical transform - 10% of next card visible + 8px gap
                     const cardHeight = 80; // 80vh card
-                    const gapOffsetV = qPosition * 16; // 16px gap between cards
+                    const gapOffsetV = qPosition * 8; // 8px gap between cards
                     // Move previous slide further up to be completely out of viewport
                     const baseTranslateY = qPosition === -1 ? -120 : qPosition * cardHeight;
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
-                    const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 16 : 0;
+                    const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 8 : 0;
                     
                     // Vertical scale - only during animation/drag
                     let scale = 1;
