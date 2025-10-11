@@ -389,10 +389,11 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform using full viewport width; cards are centered with 5vw side padding inside each category container
-              const baseTranslateX = catPosition * 100; // 100vw per category
+              // Calculate horizontal transform using spacing to show 10vw of next card
+              const cardSpacing = 90; // 90vw spacing to show 10vw of next card
+              const baseTranslateX = catPosition * cardSpacing;
               const gapOffset = catPosition * 16; // 16px gap between categories
-              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
+              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
               const dragGapOffset = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
               // Horizontal scale - moving in: 0.95→1, moving out: 1→0.95
