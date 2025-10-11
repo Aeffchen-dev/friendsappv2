@@ -414,13 +414,20 @@ export function QuizApp() {
                 }
               }
               
-              // Horizontal rotation - 2D Y-axis rotation (max ±5deg)
-              let rotateY = 0;
-              if (!isCategoryActive) {
-                rotateY = catPosition * 5; // Left: -5deg, Right: +5deg
-              } else if (isDragging && dragDirection === 'horizontal') {
-                // Active card rotates in opposite direction as it moves out (max ±5deg)
-                rotateY = Math.max(-5, Math.min(5, (dragOffsetX / window.innerWidth) * 5));
+              // Horizontal rotation - rotate towards outside during transition
+              let rotateZ = 0;
+              if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
+                if (isCategoryActive) {
+                  // Active card rotates in direction of swipe
+                  const dragProgress = isDragging ? dragOffsetX / window.innerWidth : 0;
+                  rotateZ = dragProgress * 5; // Max ±5deg based on drag
+                } else if (catPosition === -1) {
+                  // Prev card rotates counter-clockwise
+                  rotateZ = -5;
+                } else if (catPosition === 1) {
+                  // Next card rotates clockwise
+                  rotateZ = 5;
+                }
               }
               
               return (
@@ -430,7 +437,7 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffsetH + dragGapOffsetH}px)) scale(${scaleH}) rotateY(${rotateY}deg)`,
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffsetH + dragGapOffsetH}px)) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 350ms ease-out' : 'none',
                     animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
