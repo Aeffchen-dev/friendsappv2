@@ -797,18 +797,24 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
-  // Each cloud gets a specific shape based on its index
-  const shapeVariant = cloudIndex % 3;
   
-  // Different cloud shapes using SVG paths
+  // 5 different organic cloud shapes for smooth morphing
   const cloudShapes = [
-    // Cloud shape 1
     "M25,35 Q15,35 10,25 Q10,15 20,15 Q25,5 35,10 Q45,10 50,20 Q60,25 55,35 Q50,40 40,38 Q35,45 25,35 Z",
-    // Cloud shape 2
     "M30,40 Q20,40 15,30 Q12,20 22,18 Q28,10 38,12 Q48,12 52,22 Q58,28 54,38 Q48,42 38,40 Q32,45 30,40 Z",
-    // Cloud shape 3
-    "M28,38 Q18,38 14,28 Q12,18 24,16 Q30,8 40,10 Q50,10 54,20 Q60,26 56,36 Q50,40 40,38 Q34,44 28,38 Z"
+    "M28,38 Q18,38 14,28 Q12,18 24,16 Q30,8 40,10 Q50,10 54,20 Q60,26 56,36 Q50,40 40,38 Q34,44 28,38 Z",
+    "M27,37 Q17,37 13,27 Q11,17 23,15 Q29,7 39,9 Q49,9 53,19 Q59,25 55,35 Q49,39 39,37 Q33,43 27,37 Z",
+    "M26,36 Q16,36 12,26 Q10,16 22,14 Q28,6 38,8 Q48,8 52,18 Q58,24 54,34 Q48,38 38,36 Q32,42 26,36 Z"
   ];
+
+  // Stagger animation duration slightly for each cloud for more organic feel
+  const animationDuration = 35 + cloudIndex * 2; // 35s, 37s, 39s
+
+  // Randomize horizontal movement range
+  const horizontalMovement = getRandomValue(questionText + 'cloudMove' + cloudIndex, -8, 12);
+  
+  // Randomize blur intensity variation
+  const maxBlur = getRandomValue(questionText + 'cloudBlur' + cloudIndex, 1.5, 3.5);
   
   return (
     <div 
@@ -816,14 +822,46 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
       style={{
         left: `${posX}%`,
         top: `${posY}%`,
-        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3})`
+        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3})`,
+        animation: `cloudFloat-${cloudIndex} ${animationDuration}s ease-in-out infinite`,
       }}
     >
+      <style>
+        {`
+          @keyframes cloudFloat-${cloudIndex} {
+            0%, 100% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(0px);
+              filter: blur(0px);
+            }
+            25% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement}px);
+              filter: blur(${maxBlur * 0.7}px);
+            }
+            50% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 1.5}px);
+              filter: blur(${maxBlur}px);
+            }
+            75% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 0.5}px);
+              filter: blur(${maxBlur * 0.4}px);
+            }
+          }
+        `}
+      </style>
       <svg width="80" height="50" viewBox="0 0 70 50">
         <path 
-          d={cloudShapes[shapeVariant]}
+          d={cloudShapes[0]}
           fill="#AFD2EE"
-        />
+        >
+          <animate
+            attributeName="d"
+            values={cloudShapes.join(';')}
+            dur={`${animationDuration}s`}
+            repeatCount="indefinite"
+            calcMode="spline"
+            keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
+          />
+        </path>
       </svg>
     </div>
   );
