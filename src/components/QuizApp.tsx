@@ -560,8 +560,11 @@ export function QuizApp() {
                   key={`shuffle-${qIndex}`}
                   className="absolute flex flex-col items-center justify-center"
                   onClick={(e) => {
+                    const isDesktop = window.innerWidth >= 768;
+                    
                     if (position === 1) {
                       // Click on next card - go next with animation
+                      e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeLeft(true);
@@ -573,6 +576,7 @@ export function QuizApp() {
                       }, 350);
                     } else if (position === -1) {
                       // Click on prev card - go prev with animation
+                      e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeRight(true);
@@ -582,13 +586,14 @@ export function QuizApp() {
                         setIsAnimating(false);
                         setDragDirection(null);
                       }, 350);
-                    } else if (isActive) {
-                      // Click on active card - check if left side clicked
+                    } else if (isActive && !isDesktop) {
+                      // Mobile only: Click on active card - check if left side clicked
                       const clickX = e.clientX;
                       const windowWidth = window.innerWidth;
                       
                       if (clickX < windowWidth * 0.3) {
                         // Left 30% of screen - go to prev
+                        e.stopPropagation();
                         setIsAnimating(true);
                         setDragDirection('horizontal');
                         setLogoSqueezeRight(true);
@@ -708,8 +713,11 @@ export function QuizApp() {
                   key={`category-${category}`}
                   className="absolute flex flex-col items-center justify-center"
                   onClick={(e) => {
+                    const isDesktop = window.innerWidth >= 768;
+                    
                     if (!isCategoryActive && catPosition === 1) {
                       // Click on next category with animation
+                      e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeLeft(true);
@@ -717,12 +725,15 @@ export function QuizApp() {
                       setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
                       setTimeout(() => {
                         setLogoSqueezeLeft(false);
+                      }, 300);
+                      setTimeout(() => {
                         setIsAnimating(false);
                         setDragDirection(null);
+                        setIsHorizontalSliding(false);
                       }, 350);
-                      setTimeout(() => setIsHorizontalSliding(false), 350);
                     } else if (!isCategoryActive && catPosition === -1) {
                       // Click on prev category with animation
+                      e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeRight(true);
@@ -730,17 +741,20 @@ export function QuizApp() {
                       setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                       setTimeout(() => {
                         setLogoSqueezeRight(false);
+                      }, 300);
+                      setTimeout(() => {
                         setIsAnimating(false);
                         setDragDirection(null);
+                        setIsHorizontalSliding(false);
                       }, 350);
-                      setTimeout(() => setIsHorizontalSliding(false), 350);
-                    } else if (isCategoryActive && catPosition === 0) {
-                      // Click on active category - check if left side clicked
+                    } else if (isCategoryActive && catPosition === 0 && !isDesktop) {
+                      // Mobile only: Click on active category - check if left side clicked
                       const clickX = e.clientX;
                       const windowWidth = window.innerWidth;
                       
                       if (clickX < windowWidth * 0.3) {
                         // Left 30% of screen - go to prev category
+                        e.stopPropagation();
                         setIsAnimating(true);
                         setDragDirection('horizontal');
                         setLogoSqueezeRight(true);
@@ -748,10 +762,12 @@ export function QuizApp() {
                         setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                         setTimeout(() => {
                           setLogoSqueezeRight(false);
+                        }, 300);
+                        setTimeout(() => {
                           setIsAnimating(false);
                           setDragDirection(null);
+                          setIsHorizontalSliding(false);
                         }, 350);
-                        setTimeout(() => setIsHorizontalSliding(false), 350);
                       }
                     }
                   }}
@@ -765,7 +781,7 @@ export function QuizApp() {
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
                     visibility: shouldHide ? 'hidden' : 'visible',
-                    cursor: !isCategoryActive && (catPosition === 1 || catPosition === -1) ? 'pointer' : 'default'
+                    cursor: !isCategoryActive && (catPosition === 1 || catPosition === -1) ? 'pointer' : (isCategoryActive ? 'default' : 'default')
                   }}
                 >
                   {/* Render 5 question cards vertically: 2 previous, current, 2 next */}
