@@ -513,11 +513,10 @@ export function QuizApp() {
               
               const isActive = position === 0;
               
-              // Calculate horizontal transform - exact same as category mode
+              // Calculate horizontal transform - 80vw width
               const baseCardSpacingPx = 32;
-              const maxCardWidthPx = 600;
-              const vwCardWidth = window.innerWidth * 0.8;
-              const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx);
+              const vwCardWidth = window.innerWidth * 0.8; // 80vw
+              const hCardWidth = vwCardWidth;
               const totalCardWidth = hCardWidth + baseCardSpacingPx;
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100;
               const baseTranslateX = position * cardSpacingVw;
@@ -545,8 +544,8 @@ export function QuizApp() {
                     style={{
                       position: 'absolute',
                       top: window.innerWidth >= 768 ? '64px' : '48px',
-                      left: window.innerWidth >= 768 ? '16px' : '16px',
-                      width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
+                      left: '10vw',
+                      width: '80vw',
                       height: '80vh'
                     }}
                   >
