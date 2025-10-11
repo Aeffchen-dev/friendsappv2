@@ -404,14 +404,15 @@ export function QuizApp() {
                 if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
                   scaleH = 0.8;
                 }
-              } else {
-                // Next/prev cards stay at scale 0.8 normally, scale to 1 during transition
-                scaleH = 0.8;
+              } else if (catPosition === -1 || catPosition === 1) {
+                // Next/prev cards visible at scale 0.95, scale to 1 during transition
+                scaleH = 0.95;
                 if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
-                  if (catPosition === -1 || catPosition === 1) {
-                    scaleH = 1;
-                  }
+                  scaleH = 1;
                 }
+              } else {
+                // Cards further away stay at 0.8
+                scaleH = 0.8;
               }
               
               // Horizontal rotation - rotate towards outside during transition
@@ -438,8 +439,8 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffsetH + dragGapOffsetH}px)) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
-                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 350ms ease-out' : 'none',
-                    animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-out' : 'none',
+                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 350ms ease-in-out' : 'none',
+                    animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
                   }}
@@ -465,14 +466,15 @@ export function QuizApp() {
                       if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
                         scale = 0.8;
                       }
-                    } else {
-                      // Next/prev cards stay at scale 0.8 normally, scale to 1 during transition
-                      scale = 0.8;
+                    } else if (qPosition === 1) {
+                      // Next card visible at scale 0.95, scales to 1 during transition
+                      scale = 0.95;
                       if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
-                        if (qPosition === -1 || qPosition === 1) {
-                          scale = 1;
-                        }
+                        scale = 1;
                       }
+                    } else {
+                      // Cards further away stay at 0.8
+                      scale = 0.8;
                     }
                     
                     return (
@@ -486,8 +488,8 @@ export function QuizApp() {
                           width: '80vw',
                           height: '80vh',
                           transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapOffsetV + dragGapOffsetV}px)) scale(${scale})`,
-                          transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 350ms ease-out' : 'none',
-                          animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-out' : 'none',
+                          transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 350ms ease-in-out' : 'none',
+                          animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
                           willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto'
                         }}
