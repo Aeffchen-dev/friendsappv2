@@ -661,7 +661,7 @@ export function QuizApp() {
                       width: '85vw',
                       maxWidth: '600px',
                       height: isMobile 
-                        ? 'calc(100svh - 48px - 46px - 20px)' // header + footer + spacing (12px higher total: 32px - 12px = 20px)
+                        ? 'calc(100svh - 48px - 46px - 8px)' // header + footer + minimal spacing
                         : 'calc(100svh - 64px - 46px - 4px)', // header + footer - 4px
                       transform: 'translateY(-50%)'
                     }}
