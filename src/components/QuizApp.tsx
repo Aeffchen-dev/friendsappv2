@@ -543,7 +543,7 @@ export function QuizApp() {
                   <div
                     style={{
                       position: 'absolute',
-                      top: window.innerWidth >= 768 ? '64px' : '48px',
+                      top: window.innerWidth >= 768 ? '64px' : '96px',
                       left: '10vw',
                       width: '80vw',
                       height: '80vh'
