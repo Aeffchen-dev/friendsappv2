@@ -697,8 +697,8 @@ export function QuizApp() {
         )}
       </div>
       
-      {/* Bottom Action Button - Visible in default mode */}
-      {!loading && !isShuffleMode && (
+      {/* Bottom Action Button - Always visible after load */}
+      {!loading && (
         <div className="app-footer flex-shrink-0 relative z-50" style={{paddingTop: '16px', paddingBottom: '16px', position: 'fixed', bottom: 0, left: 0, right: 0, pointerEvents: 'none'}}>
           <div className="flex justify-center items-center">
             <button 
@@ -706,22 +706,7 @@ export function QuizApp() {
               className={`${headerTextColor} font-normal text-xs transition-colors duration-500 pointer-events-auto`}
               style={{fontSize: '14px'}}
             >
-              Kategorien mischen
-            </button>
-          </div>
-        </div>
-      )}
-      
-      {/* Bottom Action Button in Shuffle Mode */}
-      {!loading && isShuffleMode && (
-        <div className="app-footer flex-shrink-0 relative z-50" style={{paddingTop: '16px', paddingBottom: '16px', position: 'fixed', bottom: 0, left: 0, right: 0, pointerEvents: 'none'}}>
-          <div className="flex justify-center items-center">
-            <button 
-              onClick={handleToggleMode}
-              className={`${headerTextColor} font-normal text-xs transition-colors duration-500 pointer-events-auto`}
-              style={{fontSize: '14px'}}
-            >
-              Kategorien wählen
+              {isShuffleMode ? 'Kategorien wählen' : 'Kategorien mischen'}
             </button>
           </div>
         </div>
