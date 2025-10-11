@@ -305,10 +305,7 @@ export function QuizApp() {
               // Calculate dynamic transform based on drag
               const baseTranslate = position * 100;
               const baseGap = position * 16;
-              // Clamp drag translate to max ±100% to prevent over-scrolling
-              const maxDragPercent = 100;
-              const rawDragTranslate = (dragOffset / window.innerWidth) * 100;
-              const dragTranslate = isDragging ? Math.max(-maxDragPercent, Math.min(maxDragPercent, rawDragTranslate)) : 0;
+              const dragTranslate = isDragging ? (dragOffset / window.innerWidth) * 100 : 0;
               
               // Dynamic scale based on drag progress
               const dragProgress = Math.abs(dragOffset) / window.innerWidth;
