@@ -122,127 +122,127 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         return {
           bg: 'bg-quiz-connection-bg',
           text: 'text-connection-900',
-          stripeBg: 'bg-connection-900',
-          stripeText: 'text-connection-500'
+          stripeBg: 'bg-connection-500',
+          stripeText: 'text-connection-900'
         };
       case 'fuck':
         return {
           bg: 'bg-quiz-fuck-bg',
           text: 'text-fuck-900',
-          stripeBg: 'bg-fuck-900',
-          stripeText: 'text-fuck-500'
+          stripeBg: 'bg-fuck-500',
+          stripeText: 'text-fuck-900'
         };
       case 'identity':
         return {
           bg: 'bg-quiz-identity-bg',
           text: 'text-identity-900',
-          stripeBg: 'bg-identity-900',
-          stripeText: 'text-identity-500'
+          stripeBg: 'bg-identity-500',
+          stripeText: 'text-identity-900'
         };
       case 'party':
         return {
           bg: 'bg-quiz-party-bg',
           text: 'text-party-900',
-          stripeBg: 'bg-party-900',
-          stripeText: 'text-party-500'
+          stripeBg: 'bg-party-500',
+          stripeText: 'text-party-900'
         };
       case 'wer aus der runde':
         return {
           bg: 'bg-quiz-wer-aus-der-runde-bg',
           text: 'text-wer-aus-der-runde-900',
-          stripeBg: 'bg-wer-aus-der-runde-900',
-          stripeText: 'text-wer-aus-der-runde-500'
+          stripeBg: 'bg-wer-aus-der-runde-500',
+          stripeText: 'text-wer-aus-der-runde-900'
         };
       case 'friends':
         return {
           bg: 'bg-quiz-friends-bg',
           text: 'text-friends-900',
-          stripeBg: 'bg-friends-900',
-          stripeText: 'text-friends-500'
+          stripeBg: 'bg-friends-500',
+          stripeText: 'text-friends-900'
         };
       case 'self reflection':
         return {
           bg: 'bg-quiz-self-reflection-bg',
           text: 'text-self-reflection-900',
-          stripeBg: 'bg-self-reflection-900',
-          stripeText: 'text-self-reflection-500'
+          stripeBg: 'bg-self-reflection-500',
+          stripeText: 'text-self-reflection-900'
         };
       case 'family':
         return {
           bg: 'bg-quiz-family-bg',
           text: 'text-family-900',
-          stripeBg: 'bg-family-900',
-          stripeText: 'text-family-500'
+          stripeBg: 'bg-family-500',
+          stripeText: 'text-family-900'
         };
       case 'career':
         return {
           bg: 'bg-quiz-career-bg',
           text: 'text-career-900',
-          stripeBg: 'bg-career-900',
-          stripeText: 'text-career-500'
+          stripeBg: 'bg-career-500',
+          stripeText: 'text-career-900'
         };
       case 'travel':
         return {
           bg: 'bg-quiz-travel-bg',
           text: 'text-travel-900',
-          stripeBg: 'bg-travel-900',
-          stripeText: 'text-travel-500'
+          stripeBg: 'bg-travel-500',
+          stripeText: 'text-travel-900'
         };
       case 'health':
         return {
           bg: 'bg-quiz-health-bg',
           text: 'text-health-900',
-          stripeBg: 'bg-health-900',
-          stripeText: 'text-health-500'
+          stripeBg: 'bg-health-500',
+          stripeText: 'text-health-900'
         };
       case 'money':
         return {
           bg: 'bg-quiz-money-bg',
           text: 'text-money-900',
-          stripeBg: 'bg-money-900',
-          stripeText: 'text-money-500'
+          stripeBg: 'bg-money-500',
+          stripeText: 'text-money-900'
         };
       case 'love':
         return {
           bg: 'bg-quiz-love-bg',
           text: 'text-love-900',
-          stripeBg: 'bg-love-900',
-          stripeText: 'text-love-500'
+          stripeBg: 'bg-love-500',
+          stripeText: 'text-love-900'
         };
       case 'hobby':
         return {
           bg: 'bg-quiz-hobby-bg',
           text: 'text-hobby-900',
-          stripeBg: 'bg-hobby-900',
-          stripeText: 'text-hobby-500'
+          stripeBg: 'bg-hobby-500',
+          stripeText: 'text-hobby-900'
         };
       case 'dreams':
         return {
           bg: 'bg-quiz-dreams-bg',
           text: 'text-dreams-900',
-          stripeBg: 'bg-dreams-900',
-          stripeText: 'text-dreams-500'
+          stripeBg: 'bg-dreams-500',
+          stripeText: 'text-dreams-900'
         };
       case 'fear':
         return {
           bg: 'bg-quiz-fear-bg',
           text: 'text-fear-900',
-          stripeBg: 'bg-fear-900',
-          stripeText: 'text-fear-500'
+          stripeBg: 'bg-fear-500',
+          stripeText: 'text-fear-900'
         };
       case 'wisdom':
         return {
           bg: 'bg-quiz-wisdom-bg',
           text: 'text-wisdom-900',
-          stripeBg: 'bg-wisdom-900',
-          stripeText: 'text-wisdom-500'
+          stripeBg: 'bg-wisdom-500',
+          stripeText: 'text-wisdom-900'
         };
       case 'future':
         return {
           bg: 'bg-quiz-future-bg',
           text: 'text-future-900',
-          stripeBg: 'bg-future-900',
-          stripeText: 'text-future-500'
+          stripeBg: 'bg-future-500',
+          stripeText: 'text-future-900'
         };
       default:
         return {
