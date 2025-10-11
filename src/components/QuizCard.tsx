@@ -435,11 +435,25 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           </h1>
         </div>
 
-        {/* Eyes in bottom 1/4 of card */}
-        <div ref={eyesRef} className="h-1/4 flex items-center justify-center gap-8 pb-8">
-          <Eye mousePosition={mousePosition} pupilDirection={pupilDirection} isBlinking={isBlinking} />
-          <Eye mousePosition={mousePosition} pupilDirection={pupilDirection} isBlinking={isBlinking} />
-        </div>
+        {/* Eyes in bottom 1/4 of card - only for "fuck" category */}
+        {question.category.toLowerCase() === 'fuck' && (
+          <div ref={eyesRef} className="h-1/4 flex items-center justify-center gap-12 pb-8">
+            <Eye 
+              mousePosition={mousePosition} 
+              pupilDirection={pupilDirection} 
+              isBlinking={isBlinking} 
+              questionText={question.question}
+              eyeIndex={0}
+            />
+            <Eye 
+              mousePosition={mousePosition} 
+              pupilDirection={pupilDirection} 
+              isBlinking={isBlinking} 
+              questionText={question.question}
+              eyeIndex={1}
+            />
+          </div>
+        )}
 
       </div>
 
@@ -447,22 +461,48 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
   );
 }
 
-// Eye component
+// Eye component with randomized shape and position
 interface EyeProps {
   mousePosition: { x: number; y: number };
   pupilDirection: 'left' | 'right' | null;
   isBlinking: boolean;
+  questionText: string;
+  eyeIndex: number;
 }
 
-function Eye({ mousePosition, pupilDirection, isBlinking }: EyeProps) {
+function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex }: EyeProps) {
   const eyeRef = useRef<HTMLDivElement>(null);
+  
+  // Generate consistent random values based on question text and eye index
+  const getRandomValue = (seed: string, min: number, max: number) => {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+      hash = hash & hash;
+    }
+    const normalized = Math.abs(hash % 1000) / 1000;
+    return min + normalized * (max - min);
+  };
+  
+  const seed = questionText + eyeIndex;
+  
+  // Randomize eye shape (width and height)
+  const eyeWidth = getRandomValue(seed + 'w', 50, 80);
+  const eyeHeight = getRandomValue(seed + 'h', 120, 160);
+  
+  // Randomize position offset
+  const offsetX = getRandomValue(seed + 'x', -20, 20);
+  const offsetY = getRandomValue(seed + 'y', -30, 30);
+  
+  // Randomize pupil size
+  const pupilSize = getRandomValue(seed + 'p', 20, 28);
 
   const getPupilPosition = () => {
     if (pupilDirection === 'left') {
-      return { x: -8, y: 0 };
+      return { x: -12, y: 0 };
     }
     if (pupilDirection === 'right') {
-      return { x: 8, y: 0 };
+      return { x: 12, y: 0 };
     }
 
     if (!eyeRef.current) return { x: 0, y: 0 };
@@ -472,8 +512,8 @@ function Eye({ mousePosition, pupilDirection, isBlinking }: EyeProps) {
     const eyeCenterY = eyeRect.top + eyeRect.height / 2;
 
     const angle = Math.atan2(mousePosition.y - eyeCenterY, mousePosition.x - eyeCenterX);
-    const distanceX = 12; // Max horizontal pupil movement
-    const distanceY = 6; // Max vertical pupil movement (reduced)
+    const distanceX = eyeWidth * 0.25; // Max horizontal pupil movement
+    const distanceY = eyeHeight * 0.15; // Max vertical pupil movement
 
     return {
       x: Math.cos(angle) * distanceX,
@@ -488,17 +528,19 @@ function Eye({ mousePosition, pupilDirection, isBlinking }: EyeProps) {
       ref={eyeRef}
       className="relative bg-white rounded-full transition-transform duration-150"
       style={{
-        width: '35px',
-        height: '100px',
+        width: `${eyeWidth}px`,
+        height: `${eyeHeight}px`,
         borderRadius: '50%',
         transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
+        marginLeft: `${offsetX}px`,
+        marginTop: `${offsetY}px`,
       }}
     >
       <div
         className="absolute bg-black rounded-full transition-all duration-75"
         style={{
-          width: '16px',
-          height: '16px',
+          width: `${pupilSize}px`,
+          height: `${pupilSize}px`,
           top: '50%',
           left: '50%',
           transform: `translate(calc(-50% + ${pupilPos.x}px), calc(-50% + ${pupilPos.y}px))`,
