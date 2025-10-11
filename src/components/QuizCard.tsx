@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { CrossPattern, CurvyLinesPattern, HalfMoonPattern, HugeEyesPattern } from './BackgroundPatterns';
+import { CurvyLinesPattern, CurvyLinesPattern2, CurvyLinesPattern3, CurvyLinesPattern4 } from './BackgroundPatterns';
 
 interface Question {
   question: string;
@@ -288,10 +288,10 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
 
   const categoryColors = getCategoryColors(question.category);
 
-  // Randomly select a pattern based on question hash
+  // Randomly select a curvy pattern variation based on question hash
   const patternType = useMemo(() => {
     const hash = question.question.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return hash % 4; // 0: cross, 1: curvy, 2: half-moon, 3: huge eyes
+    return hash % 4; // 0-3: different curvy variations
   }, [question.question]);
 
   // Notify parent about background color change and update iOS Safari theme color
@@ -392,18 +392,11 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       onMouseUp={disableSwipe ? undefined : onMouseUp}
       onMouseLeave={disableSwipe ? undefined : onMouseLeave}
     >
-      {/* Background Pattern */}
-      {patternType === 0 && <CrossPattern textColor={categoryColors.text} />}
-      {patternType === 1 && <CurvyLinesPattern textColor={categoryColors.text} />}
-      {patternType === 2 && <HalfMoonPattern textColor={categoryColors.text} />}
-      {patternType === 3 && (
-        <HugeEyesPattern 
-          textColor={categoryColors.text}
-          mousePosition={mousePosition}
-          pupilDirection={pupilDirection}
-          isBlinking={isBlinking}
-        />
-      )}
+      {/* Background Pattern - Always curvy lines with variations */}
+      {patternType === 0 && <CurvyLinesPattern textColor={categoryColors.text} />}
+      {patternType === 1 && <CurvyLinesPattern2 textColor={categoryColors.text} />}
+      {patternType === 2 && <CurvyLinesPattern3 textColor={categoryColors.text} />}
+      {patternType === 3 && <CurvyLinesPattern4 textColor={categoryColors.text} />}
 
       {/* Left/Right Click Areas - only when swipe enabled */}
       {!disableSwipe && (

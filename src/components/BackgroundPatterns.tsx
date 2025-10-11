@@ -59,7 +59,7 @@ export function CrossPattern({ textColor }: PatternProps) {
 
 export function CurvyLinesPattern({ textColor }: PatternProps) {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
       <svg 
         className="absolute" 
         style={{ 
@@ -71,45 +71,145 @@ export function CurvyLinesPattern({ textColor }: PatternProps) {
         viewBox="0 0 500 500"
         preserveAspectRatio="none"
       >
-        {/* Varied curvy horizontal waves with different amplitudes */}
+        {/* Organic blob-like curvy shapes */}
         <path 
-          d="M -50 60 Q 75 10, 150 60 Q 225 110, 300 60 Q 375 10, 450 60 Q 525 110, 600 60" 
+          d="M -50 100 Q 50 30, 120 90 Q 190 150, 120 210 Q 50 270, -50 200 Q -100 130, -50 100" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="50"
+          strokeWidth="55"
           strokeLinecap="round"
         />
         <path 
-          d="M -50 150 Q 50 110, 125 150 Q 200 190, 275 150 Q 350 110, 425 150 Q 500 190, 600 150" 
+          d="M 350 50 Q 420 20, 480 80 Q 540 140, 480 200 Q 420 260, 350 230 Q 300 170, 350 50" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="50"
+          strokeWidth="55"
           strokeLinecap="round"
         />
         <path 
-          d="M -50 240 Q 100 170, 175 240 Q 250 310, 325 240 Q 400 170, 475 240 Q 550 310, 600 240" 
+          d="M 150 350 Q 220 320, 280 380 Q 340 440, 280 500 Q 220 560, 150 530 Q 100 470, 150 350" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="50"
+          strokeWidth="55"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
+export function CurvyLinesPattern2({ textColor }: PatternProps) {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
+      <svg 
+        className="absolute" 
+        style={{ 
+          width: '220%', 
+          height: '220%',
+          left: '-40%',
+          top: '-40%'
+        }}
+        viewBox="0 0 500 500"
+        preserveAspectRatio="none"
+      >
+        {/* Wavy horizontal blobs */}
+        <path 
+          d="M -50 150 Q 100 80, 200 150 Q 300 220, 400 150 Q 500 80, 600 150" 
+          fill="none"
+          className={textColor}
+          stroke="currentColor"
+          strokeWidth="60"
           strokeLinecap="round"
         />
         <path 
-          d="M -50 320 Q 60 280, 140 320 Q 220 360, 300 320 Q 380 280, 460 320 Q 540 360, 600 320" 
+          d="M -50 350 Q 80 270, 180 350 Q 280 430, 380 350 Q 480 270, 600 350" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="50"
+          strokeWidth="60"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
+export function CurvyLinesPattern3({ textColor }: PatternProps) {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
+      <svg 
+        className="absolute" 
+        style={{ 
+          width: '200%', 
+          height: '200%',
+          left: '-35%',
+          top: '-35%'
+        }}
+        viewBox="0 0 500 500"
+        preserveAspectRatio="none"
+      >
+        {/* S-curve blobs */}
+        <path 
+          d="M 100 -50 Q 50 100, 100 200 Q 150 300, 100 400 Q 50 500, 100 600" 
+          fill="none"
+          className={textColor}
+          stroke="currentColor"
+          strokeWidth="58"
           strokeLinecap="round"
         />
         <path 
-          d="M -50 410 Q 90 340, 160 410 Q 230 480, 310 410 Q 390 340, 470 410 Q 550 480, 600 410" 
+          d="M 350 -50 Q 300 100, 350 200 Q 400 300, 350 400 Q 300 500, 350 600" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="50"
+          strokeWidth="58"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
+export function CurvyLinesPattern4({ textColor }: PatternProps) {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
+      <svg 
+        className="absolute" 
+        style={{ 
+          width: '210%', 
+          height: '210%',
+          left: '-30%',
+          top: '-30%'
+        }}
+        viewBox="0 0 500 500"
+        preserveAspectRatio="none"
+      >
+        {/* Circular organic blobs */}
+        <path 
+          d="M 250 50 Q 350 100, 350 200 Q 350 300, 250 350 Q 150 300, 150 200 Q 150 100, 250 50" 
+          fill="none"
+          className={textColor}
+          stroke="currentColor"
+          strokeWidth="62"
+          strokeLinecap="round"
+        />
+        <path 
+          d="M 80 80 Q 20 150, 80 220 Q 140 290, 80 360" 
+          fill="none"
+          className={textColor}
+          stroke="currentColor"
+          strokeWidth="62"
+          strokeLinecap="round"
+        />
+        <path 
+          d="M 420 80 Q 480 150, 420 220 Q 360 290, 420 360" 
+          fill="none"
+          className={textColor}
+          stroke="currentColor"
+          strokeWidth="62"
           strokeLinecap="round"
         />
       </svg>
