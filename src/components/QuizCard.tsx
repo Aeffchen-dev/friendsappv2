@@ -912,10 +912,10 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish with fully random positioning, size, and shape
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -10, 110);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -10, 110);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 15, 35);
+  // Create smooth starfish with positioning ensuring 60% visibility
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 15, 85);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 15, 85);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 15, 30);
   const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.15, 0.5);
   const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
   
