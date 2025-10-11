@@ -175,6 +175,13 @@ export function QuizApp() {
       return;
     }
     
+    // Check if click is on non-active horizontal card in default mode - don't start drag
+    const isDesktop = window.innerWidth >= 768;
+    const clickedCard = target.closest('[data-horizontal-card]');
+    if (isDesktop && !isShuffleMode && clickedCard && clickedCard.getAttribute('data-horizontal-card') !== 'active') {
+      return;
+    }
+    
     setIsDragging(true);
     setIsAnimating(false);
     setDragStartX(e.clientX);
@@ -712,11 +719,12 @@ export function QuizApp() {
                 <div 
                   key={`category-${category}`}
                   className="absolute flex flex-col items-center justify-center"
+                  data-horizontal-card={isCategoryActive ? 'active' : (catPosition === 1 ? 'next' : catPosition === -1 ? 'prev' : '')}
                   onClick={(e) => {
                     const isDesktop = window.innerWidth >= 768;
                     
-                    if (!isCategoryActive && catPosition === 1) {
-                      // Click on next category with animation
+                    if (!isCategoryActive && catPosition === 1 && isDesktop) {
+                      // Desktop: Click on next category card with animation
                       e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
@@ -731,8 +739,8 @@ export function QuizApp() {
                         setDragDirection(null);
                         setIsHorizontalSliding(false);
                       }, 350);
-                    } else if (!isCategoryActive && catPosition === -1) {
-                      // Click on prev category with animation
+                    } else if (!isCategoryActive && catPosition === -1 && isDesktop) {
+                      // Desktop: Click on prev category card with animation
                       e.stopPropagation();
                       setIsAnimating(true);
                       setDragDirection('horizontal');
@@ -777,11 +785,11 @@ export function QuizApp() {
                     transform: `translateX(${baseTranslateX + dragTranslateX}vw) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
                     transition: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? (isCategoryActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                     animation: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' && Math.abs(catPosition) <= 1 ? 'scaleTransition 350ms ease-in-out' : 'none',
-                    pointerEvents: isCategoryActive ? 'auto' : (!isCategoryActive && (catPosition === 1 || catPosition === -1) ? 'auto' : 'none'),
+                    pointerEvents: isCategoryActive || (!isCategoryActive && (catPosition === 1 || catPosition === -1)) ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
                     visibility: shouldHide ? 'hidden' : 'visible',
-                    cursor: !isCategoryActive && (catPosition === 1 || catPosition === -1) ? 'pointer' : (isCategoryActive ? 'default' : 'default')
+                    cursor: !isCategoryActive && (catPosition === 1 || catPosition === -1) ? 'pointer' : (isCategoryActive ? 'grab' : 'default')
                   }}
                 >
                   {/* Render 5 question cards vertically: 2 previous, current, 2 next */}
