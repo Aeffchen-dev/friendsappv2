@@ -57,10 +57,10 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
   // Synchronized pupil movement
   useEffect(() => {
     const moveInterval = setInterval(() => {
-      const randomX = (Math.random() - 0.5) * 8; // ±4px movement
-      const randomY = (Math.random() - 0.5) * 8; // ±4px movement
+      const randomX = (Math.random() - 0.5) * 24; // ±12px movement
+      const randomY = (Math.random() - 0.5) * 24; // ±12px movement
       setPupilOffset({ x: randomX, y: randomY });
-    }, 2000 + Math.random() * 3000); // Move every 2-5 seconds
+    }, 6000 + Math.random() * 8000); // Move every 6-14 seconds
 
     return () => clearInterval(moveInterval);
   }, []);
