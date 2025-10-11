@@ -513,6 +513,31 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
+      {/* X in background - only for "identity" category */}
+      {question.category.toLowerCase() === 'identity' && (() => {
+        const getRandomPos = (seed: string, min: number, max: number) => {
+          let hash = 0;
+          for (let i = 0; i < seed.length; i++) {
+            hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+            hash = hash & hash;
+          }
+          const normalized = Math.abs(hash % 1000) / 1000;
+          return min + normalized * (max - min);
+        };
+        
+        // Position X in lower area, allow cutoff
+        const posX = getRandomPos(question.question + 'xPosX', 0, 90);
+        const posY = getRandomPos(question.question + 'xPosY', 60, 95);
+        
+        return (
+          <XShape 
+            questionText={question.question}
+            posX={posX}
+            posY={posY}
+          />
+        );
+      })()}
+
       {/* Category Strip */}
       <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10`}>
         <div className="transform -rotate-90 whitespace-nowrap">
@@ -802,6 +827,61 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
           stroke="#21245B"
           strokeWidth="3"
           fill="none"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
+// X Shape component with randomized size and rotation
+interface XShapeProps {
+  questionText: string;
+  posX: number;
+  posY: number;
+}
+
+function XShape({ questionText, posX, posY }: XShapeProps) {
+  const getRandomValue = (seed: string, min: number, max: number) => {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+      hash = hash & hash;
+    }
+    const normalized = Math.abs(hash % 1000) / 1000;
+    return min + normalized * (max - min);
+  };
+  
+  const rotation = getRandomValue(questionText + 'xRot', -30, 30);
+  const scale = getRandomValue(questionText + 'xScale', 0.8, 1.8);
+  
+  return (
+    <div 
+      className="absolute z-0"
+      style={{
+        left: `${posX}%`,
+        top: `${posY}%`,
+        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`
+      }}
+    >
+      <svg width="300" height="300" viewBox="0 0 200 200">
+        {/* X shape - two lines crossing */}
+        <line 
+          x1="20" 
+          y1="20" 
+          x2="180" 
+          y2="180" 
+          stroke="#9FDCE3"
+          strokeWidth="100"
+          strokeLinecap="round"
+        />
+        <line 
+          x1="180" 
+          y1="20" 
+          x2="20" 
+          y2="180" 
+          stroke="#9FDCE3"
+          strokeWidth="100"
           strokeLinecap="round"
         />
       </svg>
