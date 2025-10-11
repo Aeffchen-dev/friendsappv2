@@ -604,7 +604,7 @@ export function QuizApp() {
                       top: isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : '50%',
                       left: '16px',
                       width: '85vw',
-                      maxWidth: '500px',
+                      maxWidth: '600px',
                       height: isMobile 
                         ? 'calc(100svh - 48px - 46px - 32px)' // header + footer + spacing
                         : 'calc(100svh - 64px - 46px - 4px)', // header + footer - 4px
