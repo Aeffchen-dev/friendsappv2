@@ -383,10 +383,26 @@ export function QuizApp() {
               const baseTranslateX = catPosition * 100;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               
-              // Horizontal rotation - active card leans towards exit direction
+              // Horizontal scale - transitions from 0.8 to 1
+              let scaleH = 1;
+              if (!isCategoryActive) {
+                scaleH = 0.8;
+              }
+              if (isDragging && dragDirection === 'horizontal') {
+                const dragProgress = Math.abs(dragOffsetX) / window.innerWidth;
+                if (isCategoryActive) {
+                  // Active card scales down when dragging away
+                  scaleH = Math.max(0.8, 1 - dragProgress * 0.2);
+                } else if ((catPosition === 1 && dragOffsetX < 0) || (catPosition === -1 && dragOffsetX > 0)) {
+                  // Next card scales up when dragging towards it
+                  scaleH = Math.min(1, 0.8 + dragProgress * 0.2);
+                }
+              }
+              
+              // Horizontal rotation - side cards rotate outward
               let rotationY = 0;
-              if (isDragging && dragDirection === 'horizontal' && isCategoryActive) {
-                rotationY = -(dragOffsetX / window.innerWidth) * 15; // Lean opposite to drag
+              if (!isCategoryActive) {
+                rotationY = catPosition * 15; // Left card: -15deg, Right card: +15deg (outward)
               }
               
               return (
@@ -396,7 +412,7 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw)) rotateY(${rotationY}deg)`,
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw)) scale(${scaleH}) rotateY(${rotationY}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none'
                   }}
