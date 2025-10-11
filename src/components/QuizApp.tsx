@@ -383,26 +383,26 @@ export function QuizApp() {
               const baseTranslateX = catPosition * 100;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               
-              // Horizontal scale - transitions from 0.8 to 1
+              // Horizontal scale - transitions from 0.6 to 1 for better visibility
               let scaleH = 1;
               if (!isCategoryActive) {
-                scaleH = 0.8;
+                scaleH = 0.6;
               }
               if (isDragging && dragDirection === 'horizontal') {
                 const dragProgress = Math.abs(dragOffsetX) / window.innerWidth;
                 if (isCategoryActive) {
                   // Active card scales down when dragging away
-                  scaleH = Math.max(0.8, 1 - dragProgress * 0.2);
+                  scaleH = Math.max(0.6, 1 - dragProgress * 0.4);
                 } else if ((catPosition === 1 && dragOffsetX < 0) || (catPosition === -1 && dragOffsetX > 0)) {
                   // Next card scales up when dragging towards it
-                  scaleH = Math.min(1, 0.8 + dragProgress * 0.2);
+                  scaleH = Math.min(1, 0.6 + dragProgress * 0.4);
                 }
               }
               
-              // Horizontal rotation - side cards rotate outward
+              // Horizontal rotation - side cards rotate outward (increased to 30deg for visibility)
               let rotationY = 0;
               if (!isCategoryActive) {
-                rotationY = catPosition * 15; // Left card: -15deg, Right card: +15deg (outward)
+                rotationY = catPosition * 30; // Left card: -30deg, Right card: +30deg (outward)
               }
               
               return (
