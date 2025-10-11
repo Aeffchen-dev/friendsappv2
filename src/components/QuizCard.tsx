@@ -934,22 +934,22 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate smooth S-curve paths with large waves - start positions off-screen left
+  // Generate smooth S-curve paths with large waves - start positions off-screen left with more vertical spacing
   const startOptions = [
-    { x: -100, y: 10 },
-    { x: -80, y: 50 },
-    { x: -90, y: 90 },
-    { x: -110, y: -20 },
-    { x: -70, y: 110 },
-    { x: -120, y: 70 }
+    { x: -100, y: 5 },
+    { x: -80, y: 35 },
+    { x: -90, y: 65 },
+    { x: -110, y: 95 },
+    { x: -70, y: 125 },
+    { x: -120, y: 155 }
   ];
   
   const startPos = startOptions[lineIndex % startOptions.length];
   const startX = startPos.x + getRandomValue(questionText + 'startOffset' + lineIndex, -20, 10);
-  const startY = startPos.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -15, 15);
+  const startY = startPos.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -5, 5);
   
   const direction = lineIndex % 2 === 0 ? 1 : -1;
-  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 25, 40);
+  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 15, 25);
   
   let pathData = `M ${startX},${startY}`;
   let currentX = startX;
