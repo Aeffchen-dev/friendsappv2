@@ -543,10 +543,10 @@ export function QuizApp() {
                   <div
                     style={{
                       position: 'absolute',
-                      top: window.innerWidth >= 768 ? '64px' : '64px',
+                      top: window.innerWidth >= 768 ? '64px' : '48px',
                       left: '10vw',
                       width: '80vw',
-                      height: window.innerWidth >= 768 ? 'calc(100vh - 64px - 16px)' : 'calc(100vh - 64px - 16px)'
+                      height: `calc(100svh - ${window.innerWidth >= 768 ? 64 : 48}px)`
                     }}
                   >
                     <QuizCard
@@ -556,6 +556,7 @@ export function QuizApp() {
                       animationClass=""
                       onBgColorChange={isActive ? handleBgColorChange : undefined}
                       disableSwipe={true}
+                      useContainerSize={true}
                     />
                   </div>
                 </div>

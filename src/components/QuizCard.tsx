@@ -13,9 +13,10 @@ interface QuizCardProps {
   animationClass?: string;
   onBgColorChange?: (bgClass: string) => void;
   disableSwipe?: boolean;
+  useContainerSize?: boolean;
 }
 
-export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '', onBgColorChange, disableSwipe = false }: QuizCardProps) {
+export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '', onBgColorChange, disableSwipe = false, useContainerSize = false }: QuizCardProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [mouseStart, setMouseStart] = useState<number | null>(null);
@@ -394,9 +395,9 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
     <div 
       className={`relative h-full ${categoryColors.bg} rounded-2xl overflow-hidden select-none border border-black ${animationClass}`}
       style={{
-        width: window.innerWidth >= 768 ? 'calc(100vw - 32px)' : 'calc(100vw - 16px)',
+        width: useContainerSize ? '100%' : (window.innerWidth >= 768 ? 'calc(100vw - 32px)' : 'calc(100vw - 16px)'),
         boxShadow: '0 0 12px 4px rgba(30, 30, 30, 0.1)',
-        height: window.innerWidth >= 768 ? '80vh' : '70vh',
+        height: useContainerSize ? '100%' : (window.innerWidth >= 768 ? '80vh' : '70vh'),
         transition: 'height 0.2s ease-out'
       }}
       onTouchStart={disableSwipe ? undefined : onTouchStart}
