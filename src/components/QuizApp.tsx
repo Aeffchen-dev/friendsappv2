@@ -397,19 +397,22 @@ export function QuizApp() {
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
               const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
               
-              // Horizontal scale
+              // Horizontal scale - smooth interpolation during drag
               let scaleH = 1;
+              const dragProgress = isDragging && dragDirection === 'horizontal' 
+                ? Math.min(1, Math.abs(dragOffsetX) / 100) // Normalize drag to 0-1
+                : 0;
+              
               if (isCategoryActive) {
-                // Active card stays at scale 1 normally, scales to 0.8 during transition
-                if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
-                  scaleH = 0.8;
-                }
+                // Active card: scale from 1 to 0.8
+                scaleH = isDragging && dragDirection === 'horizontal'
+                  ? 1 - (dragProgress * 0.2) // Interpolate 1 → 0.8
+                  : 1;
               } else if (catPosition === -1 || catPosition === 1) {
-                // Next/prev cards stay at 0.8, scale to 1 during transition
-                scaleH = 0.8;
-                if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
-                  scaleH = 1;
-                }
+                // Next/prev cards: scale from 0.8 to 1
+                scaleH = isDragging && dragDirection === 'horizontal'
+                  ? 0.8 + (dragProgress * 0.2) // Interpolate 0.8 → 1
+                  : 0.8;
               } else {
                 // Cards further away stay at 0.8
                 scaleH = 0.8;
@@ -439,7 +442,7 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffsetH + dragGapOffsetH}px)) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
-                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 350ms ease-in-out' : 'none',
+                    transition: isAnimating && dragDirection === 'horizontal' ? 'transform 350ms ease-in-out, scale 350ms ease-in-out' : 'none',
                     animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
