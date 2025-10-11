@@ -469,7 +469,8 @@ export function QuizApp() {
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                           animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
-                          willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto'
+                          willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto',
+                          zIndex: qPosition <= 0 ? 10 - qPosition : 10 - qPosition // Previous and current cards on top, next cards below
                         }}
                       >
                         <QuizCard
