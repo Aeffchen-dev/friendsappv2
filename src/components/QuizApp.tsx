@@ -381,7 +381,7 @@ export function QuizApp() {
             {/* Loading text removed - handled by static HTML */}
           </div>
         ) : categories.length > 0 ? (
-          <div className="relative w-full h-full flex justify-center items-center">
+          <div className="relative w-full h-full flex justify-center items-center" style={{ perspective: '2000px' }}>
             {/* Render 3 category columns: previous, current, next */}
             {[-1, 0, 1].map((catPosition) => {
               const catIndex = (currentCategoryIndex + catPosition + categories.length) % categories.length;
@@ -398,13 +398,16 @@ export function QuizApp() {
               // Horizontal scale - moving in: 0.95→1, moving out: 1→0.95
               let scaleH = isCategoryActive ? 1 : 0.95;
               
-              // Horizontal rotation - 2D skew effect (max ±5deg)
-              let skewX = 0;
+              // Horizontal rotation - 3D effect with outer edge moving outward and down
+              let rotateY = 0;
+              let rotateX = 0;
               if (!isCategoryActive) {
-                skewX = Math.max(-5, Math.min(5, -catPosition * 5)); // Max ±5deg
+                rotateY = catPosition * 20; // Left: -20deg, Right: +20deg
+                rotateX = -3; // Tilt top edge slightly down
               } else if (isDragging && dragDirection === 'horizontal') {
-                // Active card skews opposite to drag direction when moving out (max ±5deg)
-                skewX = Math.max(-5, Math.min(5, -(dragOffsetX / window.innerWidth) * 5));
+                // Active card rotates as it moves out
+                rotateY = -(dragOffsetX / window.innerWidth) * 20;
+                rotateX = Math.abs(dragOffsetX / window.innerWidth) * -3;
               }
               
               return (
@@ -414,7 +417,8 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) skewX(${skewX}deg)`,
+                    transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffset + dragGapOffset}px)) scale(${scaleH}) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`,
+                    transformStyle: 'preserve-3d',
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 1600ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
