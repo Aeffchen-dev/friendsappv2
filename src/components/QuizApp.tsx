@@ -389,9 +389,8 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              
-              // Calculate horizontal transform - next card adjacent to active card with 16px gap
-              const cardSpacing = 80; // 80vw spacing (cards are 80vw wide, so they're adjacent)
+              // Calculate horizontal transform - spacing so only category strip is visible
+              const cardSpacing = 95; // Increased spacing so only strip (~5vw) is visible
               const gapOffsetH = catPosition * 16; // 16px gap between cards
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
