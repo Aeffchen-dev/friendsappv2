@@ -266,12 +266,12 @@ export function CategorySelector({
           </div>
 
           {/* Footer */}
-          <div className="app-footer flex-shrink-0 h-5 pb-8 relative z-10">
+          <div className="app-footer flex-shrink-0 h-5 pb-8 relative z-50">
             <div className="flex justify-center items-center px-4 h-full">
               <a 
                 href="mailto:hello@relationshipbydesign.de?subject=Friends%20App%20Frage" 
-                className="text-white font-normal text-xs transition-colors duration-500"
-                style={{fontSize: '14px', lineHeight: '20px'}}
+                className="text-white font-normal text-xs transition-colors duration-500 relative z-50 cursor-pointer"
+                style={{fontSize: '14px', lineHeight: '20px', pointerEvents: 'auto'}}
               >
                 Frage einreichen
               </a>
