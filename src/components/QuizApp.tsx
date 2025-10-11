@@ -333,59 +333,38 @@ export function QuizApp() {
             {/* Loading text removed - handled by static HTML */}
           </div>
         ) : questions.length > 0 ? (
-          <div className="relative w-full h-full flex justify-center items-center">
-            {/* Render extended range of cards to keep them visible longer during transitions */}
-            {[currentIndex - 3, currentIndex - 2, currentIndex - 1, currentIndex, currentIndex + 1, currentIndex + 2, currentIndex + 3].map((rawIndex) => {
-              const index = (rawIndex + questions.length) % questions.length; // Handle wrap-around
-              if (questions.length === 0) return null;
-              
-              const position = rawIndex - currentIndex; // -1, 0, or 1
-              const isActive = position === 0;
-              
-              // Calculate dynamic transform based on drag
-              const baseTranslate = position * 100;
-              const baseGap = position * 16;
-              const dragTranslate = isDragging ? (dragOffset / window.innerWidth) * 100 : 0;
-              
-              // Dynamic scale based on drag progress
-              const dragProgress = Math.abs(dragOffset) / window.innerWidth;
-              let scale = isActive ? 1 : 0.8;
-              if (isDragging) {
-                if (isActive) {
-                  scale = Math.max(0.8, 1 - dragProgress * 0.2);
-                } else if ((position === 1 && dragOffset < 0) || (position === -1 && dragOffset > 0)) {
-                  // Next card scales up when dragging towards it
-                  scale = Math.min(1, 0.8 + dragProgress * 0.2);
-                }
-              }
-              
-              // Slight outward rotation for side cards
-              let rotation = 0;
-              if (!isActive) {
-                rotation = position * 3; // -3deg for left card, +3deg for right card
-              }
-              
-              return (
-                <div
-                  key={`${questions[index].question}-${position}`}
-                  className="absolute"
-                  style={{
-                    transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale}) rotateY(${rotation}deg)`,
-                    transition: isAnimating ? 'transform 500ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
-                    zIndex: isActive ? 10 : 5,
-                    pointerEvents: isActive ? 'auto' : 'none'
-                  }}
-                >
-                  <QuizCard
-                    question={questions[index]}
-                    onSwipeLeft={nextQuestion}
-                    onSwipeRight={prevQuestion}
-                    animationClass=""
-                    onBgColorChange={isActive ? handleBgColorChange : undefined}
-                  />
-                </div>
-              );
-            })}
+          <div className="relative w-full h-full flex justify-center items-center overflow-hidden">
+            {/* Horizontal row container that moves as a whole */}
+            <div
+              className="flex items-center gap-4"
+              style={{
+                transform: `translateX(calc(-${currentIndex * 100}% - ${currentIndex * 16}px + ${dragOffset}px))`,
+                transition: isDragging ? 'none' : 'transform 500ms cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            >
+              {questions.map((question, index) => {
+                const isActive = index === currentIndex;
+                
+                return (
+                  <div
+                    key={`${question.question}-${index}`}
+                    className="flex-shrink-0"
+                    style={{
+                      width: '100vw',
+                      pointerEvents: isActive ? 'auto' : 'none'
+                    }}
+                  >
+                    <QuizCard
+                      question={question}
+                      onSwipeLeft={nextQuestion}
+                      onSwipeRight={prevQuestion}
+                      animationClass=""
+                      onBgColorChange={isActive ? handleBgColorChange : undefined}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <div className="h-full flex items-center justify-center">
