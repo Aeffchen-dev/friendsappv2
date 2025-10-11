@@ -180,24 +180,39 @@ export function QuizApp() {
     const threshold = 80; // 80px drag threshold (user preference)
     
     setIsDragging(false);
+    setIsAnimating(true);
     
     // Simple logic: if dragged left, go next; if dragged right, go prev
     if (dragOffset < -threshold) {
       setLogoSqueezeLeft(true);
       setCurrentIndex(prev => (prev + 1) % questions.length);
-      setDragOffset(0);
-      setIsAnimating(false);
-      setTimeout(() => setLogoSqueezeLeft(false), 500);
+      setDragOffset(window.innerWidth);
+      
+      setTimeout(() => {
+        setDragOffset(0);
+        setTimeout(() => {
+          setIsAnimating(false);
+          setLogoSqueezeLeft(false);
+        }, 500);
+      }, 16);
     } else if (dragOffset > threshold) {
       setLogoSqueezeRight(true);
       setCurrentIndex(prev => (prev - 1 + questions.length) % questions.length);
-      setDragOffset(0);
-      setIsAnimating(false);
-      setTimeout(() => setLogoSqueezeRight(false), 500);
+      setDragOffset(-window.innerWidth);
+      
+      setTimeout(() => {
+        setDragOffset(0);
+        setTimeout(() => {
+          setIsAnimating(false);
+          setLogoSqueezeRight(false);
+        }, 500);
+      }, 16);
     } else {
       // Snap back to center
       setDragOffset(0);
-      setIsAnimating(false);
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 500);
     }
   };
 
