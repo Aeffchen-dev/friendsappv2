@@ -805,9 +805,9 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
   // Different happy mouth expressions - more variety
   const expressionType = Math.floor(getRandomValue(questionText + 'expression', 0, 6));
   
-  // Randomize mouth parameters for each expression
+  // Randomize mouth parameters for each expression - less curved
   const mouthWidth = getRandomValue(questionText + 'mouthWidth' + expressionType, 22, 40);
-  const mouthHeight = getRandomValue(questionText + 'mouthHeight' + expressionType, 12, 28);
+  const mouthHeight = getRandomValue(questionText + 'mouthHeight' + expressionType, 6, 14);
   const mouthYStart = getRandomValue(questionText + 'mouthY' + expressionType, 52, 58);
   
   let mouthPath = '';
