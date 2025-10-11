@@ -546,7 +546,7 @@ export function QuizApp() {
                       top: window.innerWidth >= 768 ? '64px' : '48px',
                       left: '10vw',
                       width: '80vw',
-                      height: window.innerWidth >= 768 ? 'calc(100svh - 64px - 32px)' : 'calc(100svh - 48px - 32px)'
+                      height: 'calc(100svh - 32px)'
                     }}
                   >
                     <QuizCard
