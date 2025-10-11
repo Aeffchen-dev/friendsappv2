@@ -417,14 +417,14 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Keep eyes within safe area to prevent cutoff
-        const posX = getRandomPos(question.question + 'posX', 25, 55);
-        const posY = getRandomPos(question.question + 'posY', 50, 70);
+        // Keep eyes well within card boundaries - conservative safe area
+        const posX = getRandomPos(question.question + 'posX', 35, 50);
+        const posY = getRandomPos(question.question + 'posY', 50, 65);
         
         return (
           <div 
-            ref={eyesRef} 
-            className="absolute flex items-center justify-center gap-12 z-0"
+            ref={eyesRef}
+            className="absolute flex items-center justify-center gap-8 z-0"
             style={{
               left: `${posX}%`,
               top: `${posY}%`,
