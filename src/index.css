@@ -63,7 +63,7 @@ All colors MUST be HSL.
     --fuck-200: 339 100% 90%;
     --fuck-300: 339 100% 85%;
     --fuck-400: 339 100% 80%;  /* card fill #FF96BA */
-    --fuck-500: 336 100% 75%;  /* category strip #FF82B5 */
+    --fuck-500: 18 87% 56%;  /* category strip #F06A30 */
     --fuck-600: 0 0% 100%;  /* card pattern #ffffff */
     --fuck-700: 4 60% 30%;
     --fuck-800: 4 60% 26%;
@@ -223,7 +223,7 @@ All colors MUST be HSL.
     
     /* Category strip colors (one shade darker = -500) */
     --quiz-connection-bg-dark: 336 82% 85%;  /* page background #F8BAD3 */
-    --quiz-fuck-bg-dark: 18 87% 56%;  /* fuck-500 #F06A30 */
+    --quiz-fuck-bg-dark: 4 60% 25%;  /* fuck page background #671F1A */
     --quiz-identity-bg-dark: 186 58% 76%;  /* identity-500 #9FDCE3 */
     --quiz-party-bg-dark: 243 96% 64%;  /* party page background #574DFB */
     --quiz-wer-aus-der-runde-bg-dark: 270 87% 85%;  /* wer-aus-der-runde-500 #D2B8FA */
