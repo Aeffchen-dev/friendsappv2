@@ -934,40 +934,54 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate random wavy path with large, smooth curves
-  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -30, 50);
-  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, 0, 100);
+  // Generate smooth S-curve paths like the reference
+  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -20, 30);
+  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, 10, 90);
   
-  // Generate fewer but larger wave segments for smoother curves
-  const numWaves = Math.floor(getRandomValue(questionText + 'numWaves' + lineIndex, 2, 4));
-  let pathData = `M ${startX} ${startY}`;
+  // Create flowing S-curve with multiple control points
+  const direction = getRandomValue(questionText + 'direction' + lineIndex, 0, 1) > 0.5 ? 1 : -1;
   
-  let currentX = startX;
-  let currentY = startY;
+  let pathData = `M ${startX},${startY}`;
   
-  for (let i = 0; i < numWaves; i++) {
-    const cpX1 = currentX + getRandomValue(questionText + 'cpX1' + lineIndex + i, 30, 80);
-    const cpY1 = currentY + getRandomValue(questionText + 'cpY1' + lineIndex + i, -60, 60);
-    const cpX2 = cpX1 + getRandomValue(questionText + 'cpX2' + lineIndex + i, 30, 80);
-    const cpY2 = cpY1 + getRandomValue(questionText + 'cpY2' + lineIndex + i, -60, 60);
-    const endX = cpX2 + getRandomValue(questionText + 'endX' + lineIndex + i, 30, 80);
-    const endY = cpY2 + getRandomValue(questionText + 'endY' + lineIndex + i, -60, 60);
-    
-    // Use cubic bezier for smoother curves
-    pathData += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${endX} ${endY}`;
-    currentX = endX;
-    currentY = endY;
-  }
+  // First big curve
+  const cp1X = startX + 40;
+  const cp1Y = startY + (direction * 30);
+  const cp2X = startX + 80;
+  const cp2Y = startY + (direction * 40);
+  const mid1X = startX + 100;
+  const mid1Y = startY + (direction * 20);
+  
+  pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${mid1X},${mid1Y}`;
+  
+  // Second curve (opposite direction)
+  const cp3X = mid1X + 40;
+  const cp3Y = mid1Y - (direction * 40);
+  const cp4X = mid1X + 80;
+  const cp4Y = mid1Y - (direction * 50);
+  const mid2X = mid1X + 100;
+  const mid2Y = mid1Y - (direction * 30);
+  
+  pathData += ` C ${cp3X},${cp3Y} ${cp4X},${cp4Y} ${mid2X},${mid2Y}`;
+  
+  // Third curve (back to original direction)
+  const cp5X = mid2X + 40;
+  const cp5Y = mid2Y + (direction * 50);
+  const cp6X = mid2X + 70;
+  const cp6Y = mid2Y + (direction * 40);
+  const endX = mid2X + 90;
+  const endY = mid2Y + (direction * 20);
+  
+  pathData += ` C ${cp5X},${cp5Y} ${cp6X},${cp6Y} ${endX},${endY}`;
   
   return (
     <div className="absolute inset-0 z-0 overflow-visible">
       <svg 
         className="absolute" 
-        width="150%" 
-        height="150%" 
-        viewBox="-25 -25 150 150"
+        width="200%" 
+        height="200%" 
+        viewBox="-50 -50 200 200"
         preserveAspectRatio="none"
-        style={{ overflow: 'visible', left: '-25%', top: '-25%' }}
+        style={{ overflow: 'visible', left: '-50%', top: '-50%' }}
       >
         <path 
           d={pathData}
