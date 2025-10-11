@@ -25,6 +25,9 @@ export function QuizApp() {
   const [bgColor, setBgColor] = useState('bg-background');
   const [prevBgColor, setPrevBgColor] = useState('bg-background');
   const [headerTextColor, setHeaderTextColor] = useState('text-white');
+  const [isShuffleMode, setIsShuffleMode] = useState(false);
+  const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
+  const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
   
   // Drag state
   const [isDragging, setIsDragging] = useState(false);
@@ -55,6 +58,16 @@ export function QuizApp() {
     }
     return categories;
   }, [categories, selectedCategories, availableCategories]);
+
+  // Create shuffled questions from selected categories
+  useEffect(() => {
+    if (isShuffleMode && questions.length > 0) {
+      const filtered = questions.filter(q => selectedCategories.includes(q.category));
+      const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+      setShuffledQuestions(shuffled);
+      setCurrentShuffleIndex(0);
+    }
+  }, [isShuffleMode, questions, selectedCategories]);
 
   useEffect(() => {
     // Start logo animation and data loading together
@@ -207,33 +220,46 @@ export function QuizApp() {
     setIsAnimating(true);
     
     if (dragDirection === 'horizontal') {
-      // Change category with wrapping
-      if (dragOffsetX < -threshold) {
-        console.log('Swipe left - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
-        setLogoSqueezeLeft(true);
-        setIsHorizontalSliding(true);
-        setCurrentCategoryIndex(prev => {
-          const next = (prev + 1) % displayCategories.length;
-          console.log('Moving from category', prev, 'to', next);
-          return next;
-        });
-        setTimeout(() => setLogoSqueezeLeft(false), 300);
-        setTimeout(() => setIsHorizontalSliding(false), 350);
-      } else if (dragOffsetX > threshold) {
-        console.log('Swipe right - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
-        setLogoSqueezeRight(true);
-        setIsHorizontalSliding(true);
-        setCurrentCategoryIndex(prev => {
-          const next = (prev - 1 + displayCategories.length) % displayCategories.length;
-          console.log('Moving from category', prev, 'to', next);
-          return next;
-        });
-        setTimeout(() => setLogoSqueezeRight(false), 300);
-        setTimeout(() => setIsHorizontalSliding(false), 350);
+      if (isShuffleMode) {
+        // In shuffle mode, navigate through shuffled questions
+        if (dragOffsetX < -threshold) {
+          setLogoSqueezeLeft(true);
+          setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
+          setTimeout(() => setLogoSqueezeLeft(false), 300);
+        } else if (dragOffsetX > threshold) {
+          setLogoSqueezeRight(true);
+          setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
+          setTimeout(() => setLogoSqueezeRight(false), 300);
+        }
+      } else {
+        // Normal category mode
+        if (dragOffsetX < -threshold) {
+          console.log('Swipe left - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
+          setLogoSqueezeLeft(true);
+          setIsHorizontalSliding(true);
+          setCurrentCategoryIndex(prev => {
+            const next = (prev + 1) % displayCategories.length;
+            console.log('Moving from category', prev, 'to', next);
+            return next;
+          });
+          setTimeout(() => setLogoSqueezeLeft(false), 300);
+          setTimeout(() => setIsHorizontalSliding(false), 350);
+        } else if (dragOffsetX > threshold) {
+          console.log('Swipe right - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
+          setLogoSqueezeRight(true);
+          setIsHorizontalSliding(true);
+          setCurrentCategoryIndex(prev => {
+            const next = (prev - 1 + displayCategories.length) % displayCategories.length;
+            console.log('Moving from category', prev, 'to', next);
+            return next;
+          });
+          setTimeout(() => setLogoSqueezeRight(false), 300);
+          setTimeout(() => setIsHorizontalSliding(false), 350);
+        }
       }
       setDragOffsetX(0);
-    } else if (dragDirection === 'vertical') {
-      // Change question within category with wrapping
+    } else if (dragDirection === 'vertical' && !isShuffleMode) {
+      // Vertical swipe only in normal mode
       const currentCategory = displayCategories[currentCategoryIndex];
       const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
       if (dragOffsetY < -threshold) {
@@ -342,6 +368,11 @@ export function QuizApp() {
     });
   };
 
+  const handleToggleMode = () => {
+    setIsShuffleMode(prev => !prev);
+    setCategorySelectorOpen(true);
+  };
+
   const handleModalClose = () => {
     setCategorySelectorOpen(false);
   };
@@ -422,11 +453,11 @@ export function QuizApp() {
             <path d="M3 20.0332C4.22067 19.6156 5.12769 19.3985 6.5249 19.1832C16.8259 17.5961 27.318 16.7384 37.7276 16.3157C45.2899 16.0086 52.8539 16.7693 60.4071 16.361C61.8418 16.2835 62.5665 15.8384 64 16.157" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
           </svg>
           <button 
-            onClick={() => setCategorySelectorOpen(true)}
+            onClick={handleToggleMode}
             className={`${headerTextColor} font-normal text-xs align-baseline transition-colors duration-500`}
             style={{fontSize: '14px'}}
           >
-            Kategorien wählen
+            {isShuffleMode ? 'Kategorien wählen' : 'Kategorien mischen'}
           </button>
         </div>
       </div>
@@ -462,6 +493,60 @@ export function QuizApp() {
                 fill="none"
               />
             </svg>
+          </div>
+        ) : isShuffleMode ? (
+          // Shuffle mode: show all questions horizontally with full height cards
+          <div className="relative w-full h-full flex justify-center items-center overflow-hidden">
+            {[-2, -1, 0, 1, 2].map((position) => {
+              const qIndex = (currentShuffleIndex + position + shuffledQuestions.length) % shuffledQuestions.length;
+              const question = shuffledQuestions[qIndex];
+              if (!question) return null;
+              
+              const isActive = position === 0;
+              
+              // Calculate horizontal transform
+              const baseCardSpacingPx = 32;
+              const maxCardWidthPx = 600;
+              const vwCardWidth = window.innerWidth * 0.8;
+              const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx);
+              const totalCardWidth = hCardWidth + baseCardSpacingPx;
+              const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100;
+              const baseTranslateX = position * cardSpacingVw;
+              const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
+              
+              const shouldHide = Math.abs(position) === 2 && (isDragging || isAnimating);
+              
+              return (
+                <div
+                  key={`shuffle-${qIndex}`}
+                  className="absolute flex items-center justify-center"
+                  style={{
+                    width: '100vw',
+                    height: '100%',
+                    transform: `translateX(${baseTranslateX + dragTranslateX}vw)`,
+                    transition: isAnimating ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    pointerEvents: isActive ? 'auto' : 'none',
+                    opacity: shouldHide ? 0 : 1,
+                    visibility: shouldHide ? 'hidden' : 'visible'
+                  }}
+                >
+                  <div style={{
+                    width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
+                    height: 'calc(100% - 112px)',
+                    marginTop: window.innerWidth >= 768 ? '64px' : '48px'
+                  }}>
+                    <QuizCard
+                      question={question}
+                      onSwipeLeft={() => {}}
+                      onSwipeRight={() => {}}
+                      animationClass=""
+                      onBgColorChange={isActive ? handleBgColorChange : undefined}
+                      disableSwipe={true}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ) : categories.length > 0 ? (
           <div className="relative w-full h-full flex justify-center items-center overflow-hidden">
