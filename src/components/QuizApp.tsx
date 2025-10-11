@@ -29,10 +29,9 @@ export function QuizApp() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
   const [dragStartX, setDragStartX] = useState(0);
+  const [dragStartY, setDragStartY] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [dragStartTime, setDragStartTime] = useState(0);
-  const [lastDragX, setLastDragX] = useState(0);
-  const [lastDragTime, setLastDragTime] = useState(0);
+  const [horizontalLock, setHorizontalLock] = useState(false);
 
   useEffect(() => {
     // Start logo animation and data loading together
@@ -137,24 +136,44 @@ export function QuizApp() {
     setIsDragging(true);
     setIsAnimating(false);
     setDragStartX(e.clientX);
+    setDragStartY(e.clientY);
     setDragOffset(0);
-    setDragStartTime(Date.now());
-    setLastDragX(e.clientX);
-    setLastDragTime(Date.now());
+    setHorizontalLock(false);
   };
 
   const handleDragMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
-    const offset = e.clientX - dragStartX;
-    setDragOffset(offset);
-    setLastDragX(e.clientX);
-    setLastDragTime(Date.now());
+    
+    const deltaX = e.clientX - dragStartX;
+    const deltaY = e.clientY - dragStartY;
+    
+    // Deadzone before determining intent (20px)
+    const deadzone = 20;
+    const totalDrag = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+    if (!horizontalLock && totalDrag > deadzone) {
+      // Lock to horizontal if horizontal movement is dominant
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        setHorizontalLock(true);
+      } else {
+        // Vertical scroll - cancel drag
+        setIsDragging(false);
+        return;
+      }
+    }
+    
+    if (horizontalLock) {
+      // Clamp offset to ±viewport width
+      const maxOffset = window.innerWidth;
+      const clampedOffset = Math.max(-maxOffset, Math.min(maxOffset, deltaX));
+      setDragOffset(clampedOffset);
+    }
   };
 
   const handleDragEnd = () => {
     if (!isDragging) return;
     
-    const threshold = 80; // 80px drag threshold
+    const threshold = 120; // Increased threshold for more deliberate swipes
     
     setIsDragging(false);
     setIsAnimating(true);
