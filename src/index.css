@@ -47,60 +47,60 @@ All colors MUST be HSL.
     --quiz-background: 0 0% 7%;
     --quiz-surface: 0 0% 12%;
     
-    /* Category Color Scales - connection: #FE97BB (400) */
-    --connection-100: 339 98% 95%;
-    --connection-200: 339 97% 88%;
-    --connection-300: 339 98% 81%;
-    --connection-400: 339 99% 85%;  /* Adjusted for contrast */
-    --connection-500: 339 99% 73%;
-    --connection-600: 339 88% 58%;
-    --connection-700: 339 78% 44%;
-    --connection-800: 339 68% 29%;
-    --connection-900: 339 58% 15%;
+    /* Category Color Scales - connection */
+    --connection-100: 339 82% 95%;
+    --connection-200: 339 82% 90%;
+    --connection-300: 339 82% 88%;
+    --connection-400: 20 100% 46%;  /* card fill #EA5200 */
+    --connection-500: 339 100% 76%;  /* category strip #FF82B5 */
+    --connection-600: 339 70% 80%;  /* card pattern #F1A8C6 */
+    --connection-700: 4 72% 22%;
+    --connection-800: 4 72% 18%;
+    --connection-900: 4 72% 22%;  /* text #611610 */
     
-    /* fuck: #FE6220 (400) */
-    --fuck-100: 18 99% 95%;
-    --fuck-200: 18 99% 88%;
-    --fuck-300: 18 99% 75%;
-    --fuck-400: 18 99% 68%;  /* Adjusted for contrast */
-    --fuck-500: 18 99% 48%;
-    --fuck-600: 18 89% 38%;
-    --fuck-700: 18 79% 29%;
-    --fuck-800: 18 69% 19%;
-    --fuck-900: 18 59% 10%;
+    /* fuck */
+    --fuck-100: 339 100% 95%;
+    --fuck-200: 339 100% 90%;
+    --fuck-300: 339 100% 85%;
+    --fuck-400: 339 100% 80%;  /* card fill #FF96BA */
+    --fuck-500: 18 87% 56%;  /* category strip #F06A30 */
+    --fuck-600: 0 0% 100%;  /* card pattern #ffffff */
+    --fuck-700: 4 60% 30%;
+    --fuck-800: 4 60% 26%;
+    --fuck-900: 4 60% 26%;  /* text #671F1A */
     
-    /* identity: #30AD69 (400) */
-    --identity-100: 150 57% 95%;
-    --identity-200: 150 57% 85%;
-    --identity-300: 150 57% 70%;
-    --identity-400: 150 57% 55%;  /* Adjusted for contrast */
-    --identity-500: 150 57% 35%;
-    --identity-600: 150 67% 28%;
-    --identity-700: 150 77% 21%;
-    --identity-800: 150 87% 14%;
-    --identity-900: 150 97% 7%;
+    /* identity */
+    --identity-100: 168 100% 90%;
+    --identity-200: 168 100% 80%;
+    --identity-300: 168 100% 70%;
+    --identity-400: 168 100% 14%;  /* card fill #004639 */
+    --identity-500: 186 58% 76%;  /* category strip #9FDCE3 */
+    --identity-600: 186 58% 76%;  /* card pattern #9FDCE3 */
+    --identity-700: 168 100% 12%;
+    --identity-800: 168 100% 10%;
+    --identity-900: 4 100% 96%;  /* text #FFECEB */
     
-    /* party: #FFF315 (400) */
-    --party-100: 58 100% 98%;
-    --party-200: 58 100% 95%;
-    --party-300: 58 100% 88%;
-    --party-400: 58 100% 75%;  /* Adjusted for contrast */
-    --party-500: 58 100% 46%;
-    --party-600: 58 90% 37%;
-    --party-700: 58 80% 28%;
-    --party-800: 58 70% 18%;
-    --party-900: 58 60% 9%;
+    /* party */
+    --party-100: 228 50% 95%;
+    --party-200: 228 50% 90%;
+    --party-300: 228 50% 85%;
+    --party-400: 228 50% 77%;  /* card fill #A7B4E0 */
+    --party-500: 237 90% 76%;  /* category strip #8A8FF8 */
+    --party-600: 65 100% 67%;  /* card pattern #EFFF5B */
+    --party-700: 237 47% 30%;
+    --party-800: 237 47% 26%;
+    --party-900: 237 47% 24%;  /* text #21245B */
     
-    /* wer aus der Runde: #048DCB (400) */
-    --wer-aus-der-runde-100: 199 97% 95%;
-    --wer-aus-der-runde-200: 199 97% 85%;
-    --wer-aus-der-runde-300: 199 97% 70%;
-    --wer-aus-der-runde-400: 199 97% 52%;  /* Adjusted for contrast */
-    --wer-aus-der-runde-500: 199 97% 32%;
-    --wer-aus-der-runde-600: 199 97% 26%;
-    --wer-aus-der-runde-700: 199 97% 19%;
-    --wer-aus-der-runde-800: 199 97% 13%;
-    --wer-aus-der-runde-900: 199 97% 6%;
+    /* wer aus der Runde */
+    --wer-aus-der-runde-100: 199 95% 90%;
+    --wer-aus-der-runde-200: 199 95% 80%;
+    --wer-aus-der-runde-300: 199 95% 70%;
+    --wer-aus-der-runde-400: 199 95% 43%;  /* card fill #068CD1 */
+    --wer-aus-der-runde-500: 270 87% 85%;  /* category strip #D2B8FA */
+    --wer-aus-der-runde-600: 199 69% 81%;  /* card pattern #AFD2EE */
+    --wer-aus-der-runde-700: 190 95% 17%;
+    --wer-aus-der-runde-800: 190 95% 15%;
+    --wer-aus-der-runde-900: 190 95% 13%;  /* text #043943 */
     
     /* friends (green) */
     --friends-400: 120 100% 65%;  /* Adjusted for contrast */
@@ -182,16 +182,16 @@ All colors MUST be HSL.
     
     /* Category-specific colors for card backgrounds and text */
     /* Using -400 for card bg, -500 for category strip (darker), -900 for text */
-    --quiz-connection-bg: 339 99% 85%;  /* connection-400 */
-    --quiz-connection-text: 339 58% 15%;  /* connection-900 */
-    --quiz-fuck-bg: 18 99% 68%;  /* fuck-400 */
-    --quiz-fuck-text: 18 59% 10%;  /* fuck-900 */
-    --quiz-identity-bg: 150 57% 55%;  /* identity-400 */
-    --quiz-identity-text: 150 97% 7%;  /* identity-900 */
-    --quiz-party-bg: 58 100% 75%;  /* party-400 */
-    --quiz-party-text: 58 60% 9%;  /* party-900 */
-    --quiz-wer-aus-der-runde-bg: 199 97% 52%;  /* wer-aus-der-runde-400 */
-    --quiz-wer-aus-der-runde-text: 199 97% 6%;  /* wer-aus-der-runde-900 */
+    --quiz-connection-bg: 20 100% 46%;  /* connection-400 #EA5200 */
+    --quiz-connection-text: 4 72% 22%;  /* connection-900 #611610 */
+    --quiz-fuck-bg: 339 100% 80%;  /* fuck-400 #FF96BA */
+    --quiz-fuck-text: 4 60% 26%;  /* fuck-900 #671F1A */
+    --quiz-identity-bg: 168 100% 14%;  /* identity-400 #004639 */
+    --quiz-identity-text: 4 100% 96%;  /* identity-900 #FFECEB */
+    --quiz-party-bg: 228 50% 77%;  /* party-400 #A7B4E0 */
+    --quiz-party-text: 237 47% 24%;  /* party-900 #21245B */
+    --quiz-wer-aus-der-runde-bg: 199 95% 43%;  /* wer-aus-der-runde-400 #068CD1 */
+    --quiz-wer-aus-der-runde-text: 190 95% 13%;  /* wer-aus-der-runde-900 #043943 */
     
     /* Additional categories */
     --quiz-friends-bg: 120 100% 65%;  /* friends-400 */
@@ -222,11 +222,11 @@ All colors MUST be HSL.
     --quiz-future-text: 199 89% 10%;  /* future-900 */
     
     /* Category strip colors (one shade darker = -500) */
-    --quiz-connection-bg-dark: 339 99% 73%;  /* connection-500 */
-    --quiz-fuck-bg-dark: 18 99% 48%;  /* fuck-500 */
-    --quiz-identity-bg-dark: 150 57% 35%;  /* identity-500 */
-    --quiz-party-bg-dark: 58 100% 46%;  /* party-500 */
-    --quiz-wer-aus-der-runde-bg-dark: 199 97% 32%;  /* wer-aus-der-runde-500 */
+    --quiz-connection-bg-dark: 339 100% 76%;  /* connection-500 #FF82B5 */
+    --quiz-fuck-bg-dark: 18 87% 56%;  /* fuck-500 #F06A30 */
+    --quiz-identity-bg-dark: 186 58% 76%;  /* identity-500 #9FDCE3 */
+    --quiz-party-bg-dark: 237 90% 76%;  /* party-500 #8A8FF8 */
+    --quiz-wer-aus-der-runde-bg-dark: 270 87% 85%;  /* wer-aus-der-runde-500 #D2B8FA */
     --quiz-friends-bg-dark: 120 100% 42%;  /* friends-500 */
     --quiz-self-reflection-bg-dark: 195 100% 42%;  /* self-reflection-500 */
     --quiz-family-bg-dark: 30 100% 60%;  /* family-500 */
