@@ -545,4 +545,11 @@ All colors MUST be HSL.
   .animate-spin-ease {
     animation: spin-ease 0.6s ease-in-out infinite;
   }
+  
+  /* Strip bounce for category color expansion */
+  @keyframes strip-bounce {
+    0% { transform: scaleX(0.06); }
+    70% { transform: scaleX(1.06); }
+    100% { transform: scaleX(1); }
+  }
 }

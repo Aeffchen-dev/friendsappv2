@@ -208,13 +208,13 @@ export function CategorySelector({
                     className={`absolute inset-y-0 left-0 ${isSelected ? 'w-full' : 'w-2'}`}
                     style={{ 
                       backgroundColor: colors.cardBg,
-                      borderTopLeftRadius: isSelected ? '4px' : '4px',
-                      borderBottomLeftRadius: isSelected ? '4px' : '4px',
+                      borderTopLeftRadius: '4px',
+                      borderBottomLeftRadius: '4px',
                       borderTopRightRadius: isSelected ? '999px' : '4px',
                       borderBottomRightRadius: isSelected ? '999px' : '4px',
-                      transition: isSelected 
-                        ? 'all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6)'
-                        : 'all 0.15s ease-out'
+                      transformOrigin: 'left',
+                      willChange: 'transform',
+                      animation: isSelected ? 'strip-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1) both' : undefined
                     }} 
                   />
                   
