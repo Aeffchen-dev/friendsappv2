@@ -333,7 +333,7 @@ export function QuizApp() {
       className="h-[100svh] overflow-hidden flex flex-col relative"
       style={{
         background: getColorFromBgClass(prevBgColor),
-        transition: 'background 350ms ease-in-out'
+        transition: 'background 350ms ease-out'
       }}
     >
       {/* Overlay that fades in with new color */}
@@ -342,7 +342,7 @@ export function QuizApp() {
         style={{
           background: getColorFromBgClass(bgColor),
           opacity: bgColor === prevBgColor ? 0 : 1,
-          transition: 'opacity 350ms ease-in-out'
+          transition: 'opacity 350ms ease-out'
         }}
       />
       {/* App Header - Always visible */}
@@ -419,19 +419,14 @@ export function QuizApp() {
               let rotateZ = 0;
               if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
                 if (isCategoryActive) {
-                  // Active card rotates smoothly based on drag or animation state
-                  if (isDragging) {
-                    const dragProgress = dragOffsetX / window.innerWidth;
-                    rotateZ = dragProgress * 5; // Max ±5deg based on drag
-                  } else if (isAnimating) {
-                    // During animation, rotate based on direction
-                    rotateZ = 0; // Will animate back to 0
-                  }
+                  // Active card rotates in direction of swipe
+                  const dragProgress = isDragging ? dragOffsetX / window.innerWidth : 0;
+                  rotateZ = dragProgress * 5; // Max ±5deg based on drag
                 } else if (catPosition === -1) {
-                  // Prev card rotates counter-clockwise during transition
+                  // Prev card rotates counter-clockwise
                   rotateZ = -5;
                 } else if (catPosition === 1) {
-                  // Next card rotates clockwise during transition
+                  // Next card rotates clockwise
                   rotateZ = 5;
                 }
               }
@@ -445,6 +440,7 @@ export function QuizApp() {
                     height: '100vh',
                     transform: `translateX(calc(${baseTranslateX + dragTranslateX}vw + ${gapOffsetH + dragGapOffsetH}px)) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? 'transform 350ms ease-in-out' : 'none',
+                    animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
                   }}
@@ -493,6 +489,7 @@ export function QuizApp() {
                           height: '80vh',
                           transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapOffsetV + dragGapOffsetV}px)) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 350ms ease-in-out' : 'none',
+                          animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
                           willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto'
                         }}
