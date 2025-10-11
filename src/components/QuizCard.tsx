@@ -934,18 +934,18 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate smooth S-curve paths with large waves - start positions spread out
+  // Generate smooth S-curve paths with large waves - start positions off-screen left
   const startOptions = [
-    { x: -40, y: 10 },
-    { x: -20, y: 50 },
-    { x: -30, y: 90 },
-    { x: 10, y: -20 },
-    { x: 40, y: 110 },
-    { x: -50, y: 70 }
+    { x: -100, y: 10 },
+    { x: -80, y: 50 },
+    { x: -90, y: 90 },
+    { x: -110, y: -20 },
+    { x: -70, y: 110 },
+    { x: -120, y: 70 }
   ];
   
   const startPos = startOptions[lineIndex % startOptions.length];
-  const startX = startPos.x + getRandomValue(questionText + 'startOffset' + lineIndex, -10, 10);
+  const startX = startPos.x + getRandomValue(questionText + 'startOffset' + lineIndex, -20, 10);
   const startY = startPos.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -15, 15);
   
   const direction = lineIndex % 2 === 0 ? 1 : -1;
@@ -955,8 +955,8 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   let currentX = startX;
   let currentY = startY;
   
-  // Generate 2-3 tight S-curves
-  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 2, 4));
+  // Generate 4-6 tight S-curves to extend beyond viewport
+  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 5, 8));
   
   for (let i = 0; i < numCurves; i++) {
     const curveDirection = i % 2 === 0 ? direction : -direction;
