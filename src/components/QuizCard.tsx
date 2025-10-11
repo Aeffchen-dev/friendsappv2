@@ -142,7 +142,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       case 'identity':
         return {
           bg: 'bg-quiz-identity-bg',
-          text: 'text-identity-900',
+          text: 'text-[#FFECEB]',
           stripeBg: 'bg-identity-500',
           stripeText: 'text-identity-900',
           bgDark: 'bg-quiz-identity-bg-dark'
