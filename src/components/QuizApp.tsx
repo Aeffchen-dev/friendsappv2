@@ -394,8 +394,11 @@ export function QuizApp() {
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
               
-              // Horizontal scale - moving in: 0.95→1, moving out: 1→0.95
-              let scaleH = isCategoryActive ? 1 : 0.95;
+              // Horizontal scale - only during animation/drag
+              let scaleH = 1;
+              if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
+                scaleH = isCategoryActive ? 0.95 : 1;
+              }
               
               // Horizontal rotation - 2D Y-axis rotation (max ±5deg)
               let rotateY = 0;
@@ -431,19 +434,13 @@ export function QuizApp() {
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     const gapYPx = qPosition * 16;
                     
-                    // Vertical scale - transitions from 0.95 to 1
+                    // Vertical scale - only during animation/drag
                     let scale = 1;
-                    if (!isActive) {
-                      scale = 0.95;
-                    }
-                    if (isDragging && dragDirection === 'vertical' && isCategoryActive) {
-                      const dragProgress = Math.abs(dragOffsetY) / window.innerHeight;
+                    if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
                       if (isActive) {
-                        // Active card scales down when dragging away
-                        scale = Math.max(0.95, 1 - dragProgress * 0.05);
-                      } else if ((qPosition === 1 && dragOffsetY < 0) || (qPosition === -1 && dragOffsetY > 0)) {
-                        // Next card scales up when dragging towards it
-                        scale = Math.min(1, 0.95 + dragProgress * 0.05);
+                        scale = 0.95; // Active card scales down during transition
+                      } else {
+                        scale = 1; // Incoming card at full scale
                       }
                     }
                     
