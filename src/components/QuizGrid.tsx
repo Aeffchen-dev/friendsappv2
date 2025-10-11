@@ -15,8 +15,10 @@ interface QuizGridProps {
 export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: QuizGridProps) {
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
   const [currentQuestionIndices, setCurrentQuestionIndices] = useState<{[key: string]: number}>({});
-  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
-  const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null);
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
+  const [dragX, setDragX] = useState(0);
+  const [dragY, setDragY] = useState(0);
+  const [axis, setAxis] = useState<'x' | 'y' | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Organize questions by category
@@ -46,62 +48,73 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
 
   const minSwipeDistance = 50;
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart({ 
-      x: e.targetTouches[0].clientX, 
-      y: e.targetTouches[0].clientY 
-    });
+  const onPointerDown = (e: React.PointerEvent) => {
+    const point = { x: e.clientX, y: e.clientY };
+    setDragStart(point);
+    setDragX(0);
+    setDragY(0);
+    setAxis(null);
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd({ 
-      x: e.targetTouches[0].clientX, 
-      y: e.targetTouches[0].clientY 
-    });
-  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragStart) return;
+    const dx = e.clientX - dragStart.x;
+    const dy = e.clientY - dragStart.y;
 
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    const distanceX = touchStart.x - touchEnd.x;
-    const distanceY = touchStart.y - touchEnd.y;
-    const absDistanceX = Math.abs(distanceX);
-    const absDistanceY = Math.abs(distanceY);
-    
-    // Determine if it's horizontal or vertical based on which distance is greater
-    const isHorizontalSwipe = absDistanceX > absDistanceY;
-
-    if (isHorizontalSwipe) {
-      // Horizontal swipe - change category
-      if (absDistanceX > minSwipeDistance) {
-        if (distanceX > 0 && currentCategoryIndex < selectedCategories.length - 1) {
-          setCurrentCategoryIndex(prev => prev + 1);
-        } else if (distanceX < 0 && currentCategoryIndex > 0) {
-          setCurrentCategoryIndex(prev => prev - 1);
-        }
+    if (!axis) {
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+        setAxis(Math.abs(dx) > Math.abs(dy) ? 'x' : 'y');
+      } else {
+        return;
       }
-    } else {
-      // Vertical swipe - change question within category
-      if (absDistanceY > minSwipeDistance) {
+    }
+
+    if (axis === 'x') {
+      setDragX(dx);
+      setDragY(0);
+    } else if (axis === 'y') {
+      setDragY(dy);
+      setDragX(0);
+    }
+    e.preventDefault();
+  };
+
+  const onPointerUp = () => {
+    if (dragStart) {
+      const dx = dragX;
+      const dy = dragY;
+      const absX = Math.abs(dx);
+      const absY = Math.abs(dy);
+      const thresholdPx = Math.min(window.innerWidth, window.innerHeight) * 0.12; // 12% viewport
+
+      if (axis === 'x' && absX > thresholdPx) {
+        if (dx < 0 && currentCategoryIndex < selectedCategories.length - 1) {
+          setCurrentCategoryIndex((i) => i + 1);
+        } else if (dx > 0 && currentCategoryIndex > 0) {
+          setCurrentCategoryIndex((i) => i - 1);
+        }
+      } else if (axis === 'y' && absY > thresholdPx) {
         const currentQIndex = currentQuestionIndices[currentCategory] || 0;
         const maxIndex = (questionsByCategory[currentCategory]?.length || 1) - 1;
-        
-        if (distanceY > 0 && currentQIndex < maxIndex) {
-          // Swipe up - next question
-          setCurrentQuestionIndices(prev => ({
+
+        if (dy < 0 && currentQIndex < maxIndex) {
+          setCurrentQuestionIndices((prev) => ({
             ...prev,
             [currentCategory]: currentQIndex + 1
           }));
-        } else if (distanceY < 0 && currentQIndex > 0) {
-          // Swipe down - previous question
-          setCurrentQuestionIndices(prev => ({
+        } else if (dy > 0 && currentQIndex > 0) {
+          setCurrentQuestionIndices((prev) => ({
             ...prev,
             [currentCategory]: currentQIndex - 1
           }));
         }
       }
     }
+    setDragStart(null);
+    setDragX(0);
+    setDragY(0);
+    setAxis(null);
   };
 
   const handleEdgeTap = (direction: 'left' | 'right' | 'top' | 'bottom') => {
@@ -152,16 +165,17 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
     <div 
       ref={containerRef}
       className="w-screen h-screen overflow-hidden"
-      style={{ width: '100vw', height: '100vh' }}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      style={{ width: '100vw', height: '100vh', touchAction: 'none' }}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
     >
       {/* Grid container that slides to show active card centered */}
       <div 
         className="absolute transition-transform duration-500 ease-out"
         style={{
-          transform: `translate(calc(50vw - ${cardWidth / 2}vw - ${horizontalOffset}vw), calc(50vh - ${cardHeight / 2}vh - ${verticalOffset}vh))`,
+          transform: `translate(calc(50vw - ${cardWidth / 2}vw - ${horizontalOffset}vw + ${(dragX / window.innerWidth) * 100}vw), calc(50vh - ${cardHeight / 2}vh - ${verticalOffset}vh + ${(dragY / window.innerHeight) * 100}vh))`,
           left: 0,
           top: 0
         }}
