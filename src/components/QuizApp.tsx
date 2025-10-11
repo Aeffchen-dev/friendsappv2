@@ -402,8 +402,8 @@ export function QuizApp() {
           </div>
         ) : categories.length > 0 ? (
           <div className="relative w-full h-full flex justify-center items-center">
-            {/* Render 3 category columns: 1 previous, current, 1 next */}
-            {[-1, 0, 1].map((catPosition) => {
+            {/* Render 5 category columns: 2 previous, current, 2 next */}
+            {[-2, -1, 0, 1, 2].map((catPosition) => {
               const catIndex = (currentCategoryIndex + catPosition + categories.length) % categories.length;
               const category = categories[catIndex];
               const categoryQuestions = questionsByCategory[category] || [];
