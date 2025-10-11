@@ -488,6 +488,30 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
+      {/* Smiley in background - only for "party" category */}
+      {question.category.toLowerCase() === 'party' && (() => {
+        const getRandomPos = (seed: string, min: number, max: number) => {
+          let hash = 0;
+          for (let i = 0; i < seed.length; i++) {
+            hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+            hash = hash & hash;
+          }
+          const normalized = Math.abs(hash % 1000) / 1000;
+          return min + normalized * (max - min);
+        };
+        
+        const posX = getRandomPos(question.question + 'smileyX', 30, 70);
+        const posY = getRandomPos(question.question + 'smileyY', 35, 65);
+        
+        return (
+          <Smiley 
+            questionText={question.question}
+            posX={posX}
+            posY={posY}
+          />
+        );
+      })()}
+
       {/* Category Strip */}
       <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10`}>
         <div className="transform -rotate-90 whitespace-nowrap">
@@ -681,6 +705,73 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
         <path 
           d={cloudShapes[shapeVariant]}
           fill="#AFD2EE"
+        />
+      </svg>
+    </div>
+  );
+}
+
+// Smiley component with randomized size and rotation
+interface SmileyProps {
+  questionText: string;
+  posX: number;
+  posY: number;
+}
+
+function Smiley({ questionText, posX, posY }: SmileyProps) {
+  const getRandomValue = (seed: string, min: number, max: number) => {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+      hash = hash & hash;
+    }
+    const normalized = Math.abs(hash % 1000) / 1000;
+    return min + normalized * (max - min);
+  };
+  
+  const rotation = getRandomValue(questionText + 'smileyRot', -10, 10);
+  const scale = getRandomValue(questionText + 'smileyScale', 0.9, 1.1);
+  const mouthWidth = getRandomValue(questionText + 'mouthWidth', 25, 35);
+  const mouthHeight = getRandomValue(questionText + 'mouthHeight', 15, 22);
+  
+  return (
+    <div 
+      className="absolute z-0"
+      style={{
+        left: `${posX}%`,
+        top: `${posY}%`,
+        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`
+      }}
+    >
+      <svg width="200" height="200" viewBox="0 0 100 100">
+        {/* Face circle */}
+        <circle 
+          cx="50" 
+          cy="50" 
+          r="45" 
+          fill="#EFFF5B"
+        />
+        {/* Left eye */}
+        <circle 
+          cx="35" 
+          cy="40" 
+          r="3" 
+          fill="#21245B"
+        />
+        {/* Right eye */}
+        <circle 
+          cx="65" 
+          cy="40" 
+          r="3" 
+          fill="#21245B"
+        />
+        {/* Happy mouth */}
+        <path 
+          d={`M ${50 - mouthWidth/2},55 Q 50,${55 + mouthHeight} ${50 + mouthWidth/2},55`}
+          stroke="#21245B"
+          strokeWidth="3"
+          fill="none"
+          strokeLinecap="round"
         />
       </svg>
     </div>
