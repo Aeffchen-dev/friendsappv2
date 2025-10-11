@@ -23,7 +23,7 @@ export default {
 		extend: {
 			fontFamily: {
 				'bricolage': ['Arial', 'Helvetica', 'sans-serif'],
-				'offbit': ['Arial', 'Helvetica', 'sans-serif'],
+				'offbit': ['Space Grotesk', 'Arial', 'Helvetica', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
