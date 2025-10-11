@@ -500,9 +500,9 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Position smiley in upper area to stay above/beside text
-        const posX = getRandomPos(question.question + 'smileyX', 15, 75);
-        const posY = getRandomPos(question.question + 'smileyY', 15, 45);
+        // Position smiley in lower area to stay below the text, small overlap OK
+        const posX = getRandomPos(question.question + 'smileyX', 15, 85);
+        const posY = getRandomPos(question.question + 'smileyY', 60, 85);
         
         return (
           <Smiley 
