@@ -612,6 +612,8 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         data-clickable="true"
         onClick={(e) => {
           if (onCategoryStripClick) {
+            e.preventDefault();
+            e.stopPropagation();
             triggerHaptic();
             onCategoryStripClick();
           }
