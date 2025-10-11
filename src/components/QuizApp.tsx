@@ -433,6 +433,9 @@ export function QuizApp() {
                 }
               }
               
+              // Hide cards at extreme positions during animation to prevent visible wraparound
+              const shouldHide = Math.abs(catPosition) === 2 && (isDragging || isAnimating) && dragDirection === 'horizontal';
+              
               return (
                 <div 
                   key={`cat-${catIndex}`}
@@ -444,7 +447,9 @@ export function QuizApp() {
                     transition: isAnimating && dragDirection === 'horizontal' ? (isCategoryActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                     animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
-                    willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto'
+                    willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
+                    opacity: shouldHide ? 0 : 1,
+                    visibility: shouldHide ? 'hidden' : 'visible'
                   }}
                 >
                   {/* Render 5 question cards vertically: 2 previous, current, 2 next */}
