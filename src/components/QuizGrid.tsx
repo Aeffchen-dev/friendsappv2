@@ -38,9 +38,11 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
   const currentQuestions = questionsByCategory[currentCategory] || [];
   const currentQuestionIndex = currentQuestionIndices[currentCategory] || 0;
 
-  // Card dimensions with peek
-  const cardWidth = 90; // 90vw, shows 5% of next category on each side
-  const cardHeight = 80; // 80vh, shows 10% of next question
+  // Card dimensions with peek - cards are smaller than viewport to show neighbors
+  const cardWidth = 90; // vw
+  const cardHeight = 80; // vh
+  const cardGapH = 2.5; // horizontal gap between cards (vw)
+  const cardGapV = 5; // vertical gap between cards (vh)
 
   const minSwipeDistance = 50;
 
@@ -128,67 +130,77 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
     );
   }
 
+  // Calculate offset to center current card
+  const horizontalOffset = currentCategoryIndex * (cardWidth + cardGapH);
+  const verticalOffset = currentQuestionIndex * (cardHeight + cardGapV);
+
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-full overflow-hidden"
+      className="w-screen h-screen overflow-hidden"
+      style={{ width: '100vw', height: '100vh' }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Render grid of all categories and questions */}
+      {/* Grid container that slides to show active card centered */}
       <div 
-        className="absolute inset-0 flex transition-transform duration-500 ease-out"
+        className="absolute transition-transform duration-500 ease-out"
         style={{
-          transform: `translateX(calc(-${currentCategoryIndex} * ${cardWidth}vw + ${(100 - cardWidth) / 2}vw))`
+          transform: `translate(calc(50vw - ${cardWidth / 2}vw - ${horizontalOffset}vw), calc(50vh - ${cardHeight / 2}vh - ${verticalOffset}vh))`,
+          left: 0,
+          top: 0
         }}
       >
+        {/* Horizontal layout of categories */}
         {selectedCategories.map((category, catIndex) => (
           <div
             key={category}
-            className="flex-shrink-0 relative"
-            style={{ width: `${cardWidth}vw`, marginRight: `${(100 - cardWidth) / selectedCategories.length}vw` }}
+            className="absolute"
+            style={{
+              left: `${catIndex * (cardWidth + cardGapH)}vw`,
+              top: 0
+            }}
           >
-            <div 
-              className="absolute inset-0 flex flex-col transition-transform duration-500 ease-out"
-              style={{
-                transform: `translateY(calc(-${currentQuestionIndices[category] || 0} * ${cardHeight}vh + ${(100 - cardHeight) / 2}vh))`
-              }}
-            >
-              {questionsByCategory[category]?.map((question, qIndex) => (
-                <div
-                  key={`${category}-${qIndex}`}
-                  className="flex-shrink-0 relative"
-                  style={{ height: `${cardHeight}vh`, marginBottom: `${(100 - cardHeight) / 10}vh` }}
-                >
-                  {/* Edge tap zones */}
-                  <div 
-                    className="absolute left-0 top-0 w-16 h-full z-20 cursor-pointer"
-                    onClick={() => handleEdgeTap('left')}
-                  />
-                  <div 
-                    className="absolute right-0 top-0 w-16 h-full z-20 cursor-pointer"
-                    onClick={() => handleEdgeTap('right')}
-                  />
-                  <div 
-                    className="absolute top-0 left-0 right-0 h-16 z-20 cursor-pointer"
-                    onClick={() => handleEdgeTap('top')}
-                  />
-                  <div 
-                    className="absolute bottom-0 left-0 right-0 h-16 z-20 cursor-pointer"
-                    onClick={() => handleEdgeTap('bottom')}
-                  />
+            {/* Vertical layout of questions within category */}
+            {questionsByCategory[category]?.map((question, qIndex) => (
+              <div
+                key={`${category}-${qIndex}`}
+                className="absolute"
+                style={{
+                  width: `${cardWidth}vw`,
+                  height: `${cardHeight}vh`,
+                  top: `${qIndex * (cardHeight + cardGapV)}vh`,
+                  left: 0
+                }}
+              >
+                {/* Edge tap zones */}
+                <div 
+                  className="absolute left-0 top-0 w-16 h-full z-20 cursor-pointer"
+                  onClick={() => handleEdgeTap('left')}
+                />
+                <div 
+                  className="absolute right-0 top-0 w-16 h-full z-20 cursor-pointer"
+                  onClick={() => handleEdgeTap('right')}
+                />
+                <div 
+                  className="absolute top-0 left-0 right-0 h-16 z-20 cursor-pointer"
+                  onClick={() => handleEdgeTap('top')}
+                />
+                <div 
+                  className="absolute bottom-0 left-0 right-0 h-16 z-20 cursor-pointer"
+                  onClick={() => handleEdgeTap('bottom')}
+                />
 
-                  <QuizCard
-                    question={question}
-                    onSwipeLeft={() => {}}
-                    onSwipeRight={() => {}}
-                    animationClass=""
-                    onBgColorChange={onBgColorChange}
-                  />
-                </div>
-              ))}
-            </div>
+                <QuizCard
+                  question={question}
+                  onSwipeLeft={() => {}}
+                  onSwipeRight={() => {}}
+                  animationClass=""
+                  onBgColorChange={onBgColorChange}
+                />
+              </div>
+            ))}
           </div>
         ))}
       </div>
