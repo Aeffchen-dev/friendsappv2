@@ -513,6 +513,30 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
+      {/* X shape in background - only for "identity" category */}
+      {question.category.toLowerCase() === 'identity' && (() => {
+        const getRandomPos = (seed: string, min: number, max: number) => {
+          let hash = 0;
+          for (let i = 0; i < seed.length; i++) {
+            hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+            hash = hash & hash;
+          }
+          const normalized = Math.abs(hash % 1000) / 1000;
+          return min + normalized * (max - min);
+        };
+        
+        // Position X in lower area, allow cutoff
+        const posX = getRandomPos(question.question + 'xPosX', 0, 90);
+        const posY = getRandomPos(question.question + 'xPosY', 60, 95);
+        
+        return (
+          <XShape 
+            questionText={question.question}
+            posX={posX}
+            posY={posY}
+          />
+        );
+      })()}
 
       {/* Wavy lines in background - only for "connection" category */}
       {question.category.toLowerCase() === 'connection' && (() => {
@@ -842,10 +866,11 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
 // X Shape component with randomized size and rotation
 interface XShapeProps {
   questionText: string;
-  shapeIndex: number;
+  posX: number;
+  posY: number;
 }
 
-function XShape({ questionText, shapeIndex }: XShapeProps) {
+function XShape({ questionText, posX, posY }: XShapeProps) {
   const getRandomValue = (seed: string, min: number, max: number) => {
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
@@ -856,10 +881,8 @@ function XShape({ questionText, shapeIndex }: XShapeProps) {
     return min + normalized * (max - min);
   };
   
-  const posX = getRandomValue(questionText + 'xPosX' + shapeIndex, -20, 120);
-  const posY = getRandomValue(questionText + 'xPosY' + shapeIndex, -20, 120);
-  const rotation = getRandomValue(questionText + 'xRot' + shapeIndex, -30, 30);
-  const scale = getRandomValue(questionText + 'xScale' + shapeIndex, 0.3, 0.8);
+  const rotation = getRandomValue(questionText + 'xRot', -30, 30);
+  const scale = getRandomValue(questionText + 'xScale', 0.4, 1.0);
   
   return (
     <div 
