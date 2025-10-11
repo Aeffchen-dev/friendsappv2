@@ -535,7 +535,7 @@ export function QuizApp() {
                 // position 2 has no rotation
               }
               
-              const shouldHide = position === -2 && (isDragging || isAnimating);
+              const shouldHide = Math.abs(position) === 2 && (isDragging || isAnimating);
               
               return (
                 <div
@@ -544,8 +544,9 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(${translateXPx + dragTranslateXPx}px)`,
+                    transform: `translateX(${translateXPx + dragTranslateXPx}px) rotateZ(${rotateZ}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
+                    animation: 'none',
                     pointerEvents: isActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
@@ -554,35 +555,25 @@ export function QuizApp() {
                 >
                   <div
                     style={{
-                      transform: `rotateZ(${rotateZ}deg)`,
-                      transition:
-                        (isAnimating && dragDirection === 'horizontal' && (position === -2 || position === -1 || position === 0 || position === 1))
-                          ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)')
-                          : 'none'
+                      position: 'absolute',
+                      top: isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : '50%',
+                      left: '16px',
+                      width: '85vw',
+                      height: isMobile 
+                        ? 'calc(100svh - 48px - 46px - 32px)' // header + footer + spacing
+                        : 'calc(100svh - 64px - 46px)', // header + footer
+                      transform: 'translateY(-50%)'
                     }}
                   >
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : '50%',
-                        left: '16px',
-                        width: '85vw',
-                        height: isMobile 
-                          ? 'calc(100svh - 48px - 46px - 32px)' // header + footer + spacing
-                          : 'calc(100svh - 64px - 46px)', // header + footer
-                        transform: 'translateY(-50%)'
-                      }}
-                    >
-                      <QuizCard
-                        question={question}
-                        onSwipeLeft={() => {}}
-                        onSwipeRight={() => {}}
-                        animationClass=""
-                        onBgColorChange={isActive ? handleBgColorChange : undefined}
-                        disableSwipe={true}
-                        useContainerSize={true}
-                      />
-                    </div>
+                    <QuizCard
+                      question={question}
+                      onSwipeLeft={() => {}}
+                      onSwipeRight={() => {}}
+                      animationClass=""
+                      onBgColorChange={isActive ? handleBgColorChange : undefined}
+                      disableSwipe={true}
+                      useContainerSize={true}
+                    />
                   </div>
                 </div>
               );
