@@ -550,12 +550,12 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 2-3 wavy lines per card
-        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 2, 4));
+        // Generate 3 starfish shapes per card
+        const numShapes = 3;
         
         return (
           <>
-            {Array.from({ length: numLines }).map((_, index) => (
+            {Array.from({ length: numShapes }).map((_, index) => (
               <WavyLine 
                 key={index}
                 questionText={question.question}
@@ -934,11 +934,11 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish-shaped circle outline
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 20, 80);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 20, 80);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 12, 20);
-  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.5, 0.7);
+  // Create smooth starfish-shaped circle outline - with more amplitude
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -10, 110);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -10, 110);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 15, 25);
+  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.35, 0.5);
   const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 5, 6));
   
   let pathData = '';
@@ -989,7 +989,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
         <path 
           d={pathData}
           stroke="#F1A8C6"
-          strokeWidth="3"
+          strokeWidth="5"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
