@@ -374,13 +374,19 @@ export function QuizApp() {
                 }
               }
               
+              // Slight outward rotation for side cards
+              let rotation = 0;
+              if (!isActive) {
+                rotation = position * 3; // -3deg for left card, +3deg for right card
+              }
+              
               return (
                 <div
                   key={`${questions[index].question}-${position}`}
                   className="absolute"
                   style={{
-                    transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale})`,
-                    transition: isAnimating ? 'transform 300ms cubic-bezier(0.33, 1, 0.68, 1)' : 'none',
+                    transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale}) rotateY(${rotation}deg)`,
+                    transition: isAnimating ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     zIndex: isActive ? 10 : 5,
                     pointerEvents: isActive ? 'auto' : 'none'
                   }}
