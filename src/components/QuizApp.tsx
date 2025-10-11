@@ -389,9 +389,9 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform - spacing so only category strip of next card is visible
-              const cardSpacing = 98; // Card spacing so only strip (~2vw) of next card shows
-              const gapOffsetH = catPosition * 8; // Reduced gap
+              // Calculate horizontal transform - spacing so category strip of next card is visible
+              const cardSpacing = 92; // Spacing so ~8vw of next card (category strip) shows
+              const gapOffsetH = catPosition * 8; // Gap between cards
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
               const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 8 : 0;
