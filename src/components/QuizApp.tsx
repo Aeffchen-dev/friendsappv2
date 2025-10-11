@@ -222,7 +222,7 @@ export function QuizApp() {
       className="h-[100svh] overflow-hidden flex flex-col relative"
       style={{
         background: getColorFromBgClass(prevBgColor),
-        transition: 'background 4000ms cubic-bezier(0.33, 1, 0.68, 1)'
+        transition: 'background 2000ms cubic-bezier(0.33, 1, 0.68, 1)'
       }}
     >
       {/* Overlay that fades in with new color */}
@@ -231,7 +231,7 @@ export function QuizApp() {
         style={{
           background: getColorFromBgClass(bgColor),
           opacity: bgColor === prevBgColor ? 0 : 1,
-          transition: 'opacity 4000ms cubic-bezier(0.33, 1, 0.68, 1)'
+          transition: 'opacity 2000ms cubic-bezier(0.33, 1, 0.68, 1)'
         }}
       />
       {/* App Header - Always visible */}
