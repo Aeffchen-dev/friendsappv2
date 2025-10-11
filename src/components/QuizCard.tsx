@@ -934,97 +934,75 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Different pattern types for variety
-  const patternType = Math.floor(getRandomValue(questionText + 'pattern' + lineIndex, 0, 4));
+  // Create coral-like organic branching forms
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 25, 75);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 30, 70);
   
   let pathData = '';
   
-  if (patternType === 0) {
-    // Circular/spiral pattern - already closed
-    const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 20, 80);
-    const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 20, 80);
-    const radius = getRandomValue(questionText + 'radius' + lineIndex, 8, 15);
-    const numLoops = getRandomValue(questionText + 'loops' + lineIndex, 1.5, 3);
+  // Create multiple branches from center
+  const numBranches = Math.floor(getRandomValue(questionText + 'branches' + lineIndex, 3, 6));
+  
+  for (let b = 0; b < numBranches; b++) {
+    const branchAngle = (360 / numBranches) * b + getRandomValue(questionText + 'angle' + lineIndex + b, -30, 30);
+    const branchLength = getRandomValue(questionText + 'length' + lineIndex + b, 15, 25);
+    const rad = (branchAngle * Math.PI) / 180;
     
-    pathData = `M ${centerX + radius},${centerY}`;
-    for (let angle = 0; angle <= 360 * numLoops; angle += 20) {
-      const rad = (angle * Math.PI) / 180;
-      const r = radius + (angle / 360) * 2;
-      const x = centerX + r * Math.cos(rad);
-      const y = centerY + r * Math.sin(rad);
-      pathData += ` L ${x},${y}`;
-    }
-    pathData += ' Z'; // Close the path
-  } else {
-    // S-curve patterns with varied directions
-    const startOptions = [
-      { x: 20, y: 20, direction: 'horizontal' },
-      { x: 60, y: 15, direction: 'vertical' },
-      { x: 30, y: 10, direction: 'diagonal' },
-      { x: 15, y: 50, direction: 'horizontal' },
-      { x: 50, y: 70, direction: 'diagonal' },
-      { x: 70, y: 40, direction: 'vertical' }
-    ];
+    // Start from center
+    let currentX = centerX;
+    let currentY = centerY;
+    pathData += `M ${currentX},${currentY}`;
     
-    const startConfig = startOptions[lineIndex % startOptions.length];
-    const startX = startConfig.x + getRandomValue(questionText + 'startOffset' + lineIndex, -5, 5);
-    const startY = startConfig.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -5, 5);
+    // Create 2-3 segments per branch with organic curves
+    const segments = Math.floor(getRandomValue(questionText + 'seg' + lineIndex + b, 2, 4));
     
-    const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 8, 12);
-    const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 3, 5));
-    
-    pathData = `M ${startX},${startY}`;
-    let currentX = startX;
-    let currentY = startY;
-    
-    for (let i = 0; i < numCurves; i++) {
-      const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 20, 30);
-      const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.6, amplitude * 0.9);
+    for (let s = 0; s < segments; s++) {
+      const segLength = branchLength / segments;
+      const curve = getRandomValue(questionText + 'curve' + lineIndex + b + s, -5, 5);
       
-      if (startConfig.direction === 'vertical') {
-        // Vertical wavy line
-        const curveDirection = i % 2 === 0 ? 1 : -1;
-        const cp1X = currentX + (curveDirection * curveAmp * 1.2);
-        const cp1Y = currentY + segmentLength * 0.4;
-        const cp2X = currentX + (curveDirection * curveAmp * 1.2);
-        const cp2Y = currentY + segmentLength * 0.6;
-        const endX = currentX + (curveDirection * curveAmp * 0.1);
-        const endY = currentY + segmentLength;
-        
-        pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
-        currentX = endX;
-        currentY = endY;
-      } else if (startConfig.direction === 'diagonal') {
-        // Diagonal wavy line
-        const curveDirection = i % 2 === 0 ? 1 : -1;
-        const cp1X = currentX + segmentLength * 0.3;
-        const cp1Y = currentY + segmentLength * 0.3 + (curveDirection * curveAmp);
-        const cp2X = currentX + segmentLength * 0.6;
-        const cp2Y = currentY + segmentLength * 0.6 + (curveDirection * curveAmp);
-        const endX = currentX + segmentLength * 0.8;
-        const endY = currentY + segmentLength * 0.8;
-        
-        pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
-        currentX = endX;
-        currentY = endY;
-      } else {
-        // Horizontal wavy line (default)
-        const curveDirection = i % 2 === 0 ? 1 : -1;
-        const cp1X = currentX + segmentLength * 0.4;
-        const cp1Y = currentY + (curveDirection * curveAmp * 1.2);
-        const cp2X = currentX + segmentLength * 0.6;
-        const cp2Y = currentY + (curveDirection * curveAmp * 1.2);
-        const endX = currentX + segmentLength;
-        const endY = currentY + (curveDirection * curveAmp * 0.1);
-        
-        pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
-        currentX = endX;
-        currentY = endY;
+      const targetX = currentX + Math.cos(rad + (s * 0.3)) * segLength;
+      const targetY = currentY + Math.sin(rad + (s * 0.3)) * segLength;
+      
+      const cp1X = currentX + (targetX - currentX) * 0.4 + curve;
+      const cp1Y = currentY + (targetY - currentY) * 0.4 + curve;
+      const cp2X = currentX + (targetX - currentX) * 0.7 - curve;
+      const cp2Y = currentY + (targetY - currentY) * 0.7 - curve;
+      
+      pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${targetX},${targetY}`;
+      
+      currentX = targetX;
+      currentY = targetY;
+      
+      // Add small bulb at end of branch
+      if (s === segments - 1) {
+        const bulbRadius = getRandomValue(questionText + 'bulb' + lineIndex + b, 2, 4);
+        pathData += ` m ${bulbRadius},0 a ${bulbRadius},${bulbRadius} 0 1,0 -${bulbRadius * 2},0 a ${bulbRadius},${bulbRadius} 0 1,0 ${bulbRadius * 2},0`;
       }
     }
     
-    // Close the path back to start
-    pathData += ' Z';
+    // Occasionally add sub-branches
+    if (getRandomValue(questionText + 'subbranch' + lineIndex + b, 0, 1) > 0.5) {
+      const subAngle = branchAngle + getRandomValue(questionText + 'subangle' + lineIndex + b, 30, 90);
+      const subRad = (subAngle * Math.PI) / 180;
+      const subLength = branchLength * 0.6;
+      
+      const midX = centerX + Math.cos(rad) * (branchLength * 0.5);
+      const midY = centerY + Math.sin(rad) * (branchLength * 0.5);
+      
+      pathData += ` M ${midX},${midY}`;
+      
+      const subTargetX = midX + Math.cos(subRad) * subLength;
+      const subTargetY = midY + Math.sin(subRad) * subLength;
+      
+      const cpX = midX + (subTargetX - midX) * 0.5 + getRandomValue(questionText + 'subcurve' + lineIndex + b, -3, 3);
+      const cpY = midY + (subTargetY - midY) * 0.5 + getRandomValue(questionText + 'subcurve2' + lineIndex + b, -3, 3);
+      
+      pathData += ` Q ${cpX},${cpY} ${subTargetX},${subTargetY}`;
+      
+      // Small bulb at sub-branch end
+      const subBulbRadius = getRandomValue(questionText + 'subbulb' + lineIndex + b, 1.5, 3);
+      pathData += ` m ${subBulbRadius},0 a ${subBulbRadius},${subBulbRadius} 0 1,0 -${subBulbRadius * 2},0 a ${subBulbRadius},${subBulbRadius} 0 1,0 ${subBulbRadius * 2},0`;
+    }
   }
   
   return (
