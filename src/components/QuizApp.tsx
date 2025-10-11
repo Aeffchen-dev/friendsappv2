@@ -24,6 +24,11 @@ export function QuizApp() {
   const [bgColor, setBgColor] = useState('bg-background');
   const [prevBgColor, setPrevBgColor] = useState('bg-background');
   const [headerTextColor, setHeaderTextColor] = useState('text-white');
+  
+  // Drag state
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [dragStartX, setDragStartX] = useState(0);
 
   useEffect(() => {
     // Start logo animation and data loading together
@@ -124,33 +129,52 @@ export function QuizApp() {
     return result;
   };
 
+  const handleDragStart = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    setDragStartX(e.clientX);
+    setDragOffset(0);
+  };
+
+  const handleDragMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    const offset = e.clientX - dragStartX;
+    setDragOffset(offset);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    
+    const threshold = window.innerWidth * 0.15; // 15% width threshold
+    
+    if (dragOffset < -threshold && currentIndex < questions.length - 1) {
+      // Swiped left - next question
+      nextQuestion();
+    } else if (dragOffset > threshold && currentIndex > 0) {
+      // Swiped right - previous question
+      prevQuestion();
+    }
+    
+    setIsDragging(false);
+    setDragOffset(0);
+  };
+
   const nextQuestion = () => {
     if (currentIndex < questions.length - 1) {
       setLogoSqueezeLeft(true);
-      setAnimationClass('animate-slide-out-left');
+      setCurrentIndex(prev => prev + 1);
       setTimeout(() => {
-        setCurrentIndex(prev => prev + 1);
-        setAnimationClass('animate-slide-in-right');
-        setTimeout(() => {
-          setAnimationClass('');
-          setLogoSqueezeLeft(false);
-        }, 300);
-      }, 150);
+        setLogoSqueezeLeft(false);
+      }, 300);
     }
   };
 
   const prevQuestion = () => {
     if (currentIndex > 0) {
       setLogoSqueezeRight(true);
-      setAnimationClass('animate-slide-out-right');
+      setCurrentIndex(prev => prev - 1);
       setTimeout(() => {
-        setCurrentIndex(prev => prev - 1);
-        setAnimationClass('animate-slide-in-left');
-        setTimeout(() => {
-          setAnimationClass('');
-          setLogoSqueezeRight(false);
-        }, 300);
-      }, 150);
+        setLogoSqueezeRight(false);
+      }, 300);
     }
   };
 
@@ -257,7 +281,14 @@ export function QuizApp() {
       </div>
 
       {/* Main Quiz Container */}
-      <div className="flex-1 flex justify-center items-center overflow-hidden relative z-10" style={{ width: '100vw', height: '100vh' }}>
+      <div 
+        className="flex-1 flex justify-center items-center overflow-hidden relative z-10" 
+        style={{ width: '100vw', height: '100vh' }}
+        onPointerDown={handleDragStart}
+        onPointerMove={handleDragMove}
+        onPointerUp={handleDragEnd}
+        onPointerCancel={handleDragEnd}
+      >
         {loading ? (
           <div className="h-full flex items-center justify-center">
             {/* Loading text removed - handled by static HTML */}
@@ -271,13 +302,30 @@ export function QuizApp() {
               const position = index - currentIndex; // -1, 0, or 1
               const isActive = position === 0;
               
+              // Calculate dynamic transform based on drag
+              const baseTranslate = position * 100;
+              const baseGap = position * 16;
+              const dragTranslate = isDragging ? (dragOffset / window.innerWidth) * 100 : 0;
+              
+              // Dynamic scale based on drag progress
+              const dragProgress = Math.abs(dragOffset) / window.innerWidth;
+              let scale = isActive ? 1 : 0.8;
+              if (isDragging) {
+                if (isActive) {
+                  scale = Math.max(0.8, 1 - dragProgress * 0.2);
+                } else if ((position === 1 && dragOffset < 0) || (position === -1 && dragOffset > 0)) {
+                  // Next card scales up when dragging towards it
+                  scale = Math.min(1, 0.8 + dragProgress * 0.2);
+                }
+              }
+              
               return (
                 <div
                   key={`card-${index}`}
                   className="absolute"
                   style={{
-                    transform: `translateX(calc(${position * 100}% + ${position * 16}px)) scale(${isActive ? 1 : 0.8})`,
-                    transition: animationClass ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale})`,
+                    transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)',
                     zIndex: isActive ? 10 : 5,
                     pointerEvents: isActive ? 'auto' : 'none'
                   }}
