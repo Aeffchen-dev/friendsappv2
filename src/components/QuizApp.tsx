@@ -480,8 +480,8 @@ export function QuizApp() {
                       // Move previous card completely out of viewport to the top
                       baseTranslateY = -110; // Moves card fully above viewport
                     } else if (qPosition === 1 && isPortraitMobile) {
-                      // Show exactly 10vh of the next card (top offset 10vh + translate 80vh = 90vh)
-                      baseTranslateY = 80;
+                      // Show exactly 10vh of the next card (top offset 10vh + translate 90vh = 100vh)
+                      baseTranslateY = 90;
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
                     }
@@ -499,10 +499,11 @@ export function QuizApp() {
                         style={{
                           position: 'absolute',
                           top: '10vh',
-                          left: '16px',
+                          left: '50%',
+                          transform: `translateX(-50%) translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           width: '80vw',
+                          maxWidth: '570px',
                           height: '80vh',
-                          transform: `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                           animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
