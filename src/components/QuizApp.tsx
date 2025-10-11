@@ -528,10 +528,11 @@ export function QuizApp() {
                 } else if (position === -1 || position === -2) {
                   // Prev cards rotate counter-clockwise
                   rotateZ = -3;
-                } else if (position === 1 || position === 2) {
-                  // Next cards rotate clockwise
+                } else if (position === 1) {
+                  // Next card rotates clockwise
                   rotateZ = 3;
                 }
+                // position 2 has no rotation
               }
               
               const shouldHide = Math.abs(position) === 2 && (isDragging || isAnimating);
