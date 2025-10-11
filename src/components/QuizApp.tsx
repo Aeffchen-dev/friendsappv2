@@ -438,6 +438,9 @@ export function QuizApp() {
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 16 : 0;
                     
+                    // Adjust sign for upward movement: negative qPosition cards move up (out top)
+                    const translateYSign = qPosition < 0 ? -1 : 1;
+                    
                     // Vertical scale - only during animation/drag
                     let scale = 1;
                     if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
@@ -458,7 +461,7 @@ export function QuizApp() {
                           left: '16px',
                           width: '80vw',
                           height: '80vh',
-                          transform: `translateY(calc(${baseTranslateY + dragTranslateY}vh + ${gapOffsetV + dragGapOffsetV}px)) scale(${scale})`,
+                          transform: `translateY(calc(${(baseTranslateY + dragTranslateY) * translateYSign}vh + ${gapOffsetV + dragGapOffsetV}px)) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform 350ms ease-in-out' : 'none',
                           animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
