@@ -41,10 +41,10 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
   const currentQuestionIndex = currentQuestionIndices[currentCategory] || 0;
 
   // Card dimensions with peek - cards are smaller than viewport to show neighbors
-  const cardWidth = 90; // vw
-  const cardHeight = 80; // vh
+  const cardWidth = 80; // vw - shows 10% peek on each side
+  const cardHeight = 80; // vh - shows 10% peek top/bottom
   const cardGapH = 2.5; // horizontal gap between cards (vw)
-  const cardGapV = 5; // vertical gap between cards (vh)
+  const cardGapV = 2.5; // vertical gap between cards (vh)
 
   const minSwipeDistance = 50;
 
@@ -173,11 +173,12 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
     >
       {/* Grid container that slides to show active card centered */}
       <div 
-        className="absolute transition-transform duration-500 ease-out"
+        className="absolute"
         style={{
           transform: `translate(calc(50vw - ${cardWidth / 2}vw - ${horizontalOffset}vw + ${(dragX / window.innerWidth) * 100}vw), calc(50vh - ${cardHeight / 2}vh - ${verticalOffset}vh + ${(dragY / window.innerHeight) * 100}vh))`,
           left: 0,
-          top: 0
+          top: 0,
+          transition: dragStart ? 'none' : 'transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94)'
         }}
       >
         {/* Horizontal layout of categories */}
