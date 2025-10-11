@@ -49,100 +49,104 @@ All colors MUST be HSL.
     
     /* Color palette - All colors in HSL */
     /* Pink */
-    --pink: 339 100% 80%;  /* #f1a8c6 */
+    --pink: 346 86% 87%;  /* #F9C3D6 */
     /* Orange */
-    --orange: 21 100% 46%;  /* #eb5200 */
-    /* Bordeaux */
-    --bordeaux: 348 55% 27%;  /* #671f2a */
-    /* Neon Yellow */
-    --neon-yellow: 58 100% 54%;  /* #fffc15 */
+    --orange: 26 94% 57%;  /* #F78D2C */
+    /* Red */
+    --red: 8 71% 57%;  /* #E15E42 */
+    /* Wine Red */
+    --wine-red: 351 82% 65%;  /* #EB546F */
+    /* Yellow */
+    --yellow: 47 100% 50%;  /* #FFC700 */
+    /* Beige */
+    --beige: 26 78% 85%;  /* #F5D4C0 */
     /* Light Purple */
-    --light-purple: 270 100% 85%;  /* #d4b3ff */
+    --light-purple: 270 69% 78%;  /* #BF9FF1 */
     /* Dark Purple */
     --dark-purple: 270 60% 30%;  /* #4d1f7a */
+    /* Blue */
+    --blue: 227 78% 70%;  /* #7193ED */
+    /* Light Blue */
+    --light-blue: 201 71% 68%;  /* #73BDE7 */
     /* Turquoise */
-    --turquoise: 180 70% 50%;  /* #26cccc */
-    /* Sand Beige */
-    --sand-beige: 40 45% 75%;  /* #d4c4a8 */
-    /* Neon Green */
-    --neon-green: 120 100% 50%;  /* #00ff00 */
-    /* Dark Shiny Olive Green */
-    --olive-green: 75 40% 30%;  /* #5c6b33 */
-    /* Light Neon Blue */
-    --neon-blue: 195 100% 60%;  /* #33d4ff */
+    --turquoise: 177 52% 62%;  /* #68D0CA */
+    /* Light Green */
+    --light-green: 100 59% 59%;  /* #82D25D */
+    /* Green */
+    --green: 159 77% 38%;  /* #15AD70 */
     
     /* Category Color Scales */
     /* connection */
-    --connection-500: 339 100% 80%;  /* pink - lines/strip */
-    --connection-900: 348 55% 27%;  /* bordeaux - text */
+    --connection-500: 346 86% 87%;  /* pink - lines/strip */
+    --connection-900: 270 60% 30%;  /* dark purple - text */
     
     /* fuck */
-    --fuck-500: 58 100% 54%;  /* neon yellow - lines/strip */
-    --fuck-900: 21 100% 46%;  /* orange - text */
+    --fuck-500: 47 100% 50%;  /* yellow - lines/strip */
+    --fuck-900: 26 94% 57%;  /* orange - text */
     
     /* identity */
-    --identity-500: 270 100% 85%;  /* light purple - lines/strip */
+    --identity-500: 270 69% 78%;  /* light purple - lines/strip */
     --identity-900: 270 60% 30%;  /* dark purple - text */
     
     /* party */
-    --party-500: 339 100% 80%;  /* pink - lines/strip */
-    --party-900: 58 100% 54%;  /* neon yellow - text */
+    --party-500: 346 86% 87%;  /* pink - lines/strip */
+    --party-900: 47 100% 50%;  /* yellow - text */
     
     /* wer aus der runde */
-    --wer-aus-der-runde-500: 180 70% 50%;  /* turquoise - lines/strip */
+    --wer-aus-der-runde-500: 177 52% 62%;  /* turquoise - lines/strip */
     --wer-aus-der-runde-900: 270 60% 30%;  /* dark purple - text */
     
     /* friends */
-    --friends-500: 120 100% 50%;  /* neon green - lines/strip */
-    --friends-900: 75 40% 30%;  /* olive green - text */
+    --friends-500: 100 59% 59%;  /* light green - lines/strip */
+    --friends-900: 159 77% 38%;  /* green - text */
     
     /* self reflection */
-    --self-reflection-500: 40 45% 75%;  /* sand beige - lines/strip */
-    --self-reflection-900: 348 55% 27%;  /* bordeaux - text */
+    --self-reflection-500: 26 78% 85%;  /* beige - lines/strip */
+    --self-reflection-900: 8 71% 57%;  /* red - text */
     
     /* family */
-    --family-500: 21 100% 46%;  /* orange - lines/strip */
+    --family-500: 26 94% 57%;  /* orange - lines/strip */
     --family-900: 270 60% 30%;  /* dark purple - text */
     
     /* career */
-    --career-500: 195 100% 60%;  /* neon blue - lines/strip */
-    --career-900: 21 100% 46%;  /* orange - text */
+    --career-500: 201 71% 68%;  /* light blue - lines/strip */
+    --career-900: 26 94% 57%;  /* orange - text */
     
     /* travel */
-    --travel-500: 58 100% 54%;  /* neon yellow - lines/strip */
-    --travel-900: 180 70% 50%;  /* turquoise - text */
+    --travel-500: 47 100% 50%;  /* yellow - lines/strip */
+    --travel-900: 177 52% 62%;  /* turquoise - text */
     
     /* health */
-    --health-500: 339 100% 80%;  /* pink - lines/strip */
-    --health-900: 75 40% 30%;  /* olive green - text */
+    --health-500: 346 86% 87%;  /* pink - lines/strip */
+    --health-900: 159 77% 38%;  /* green - text */
     
     /* money */
-    --money-500: 120 100% 50%;  /* neon green - lines/strip */
-    --money-900: 348 55% 27%;  /* bordeaux - text */
+    --money-500: 100 59% 59%;  /* light green - lines/strip */
+    --money-900: 351 82% 65%;  /* wine red - text */
     
     /* love */
-    --love-500: 270 100% 85%;  /* light purple - lines/strip */
-    --love-900: 21 100% 46%;  /* orange - text */
+    --love-500: 270 69% 78%;  /* light purple - lines/strip */
+    --love-900: 26 94% 57%;  /* orange - text */
     
     /* hobby */
-    --hobby-500: 180 70% 50%;  /* turquoise - lines/strip */
-    --hobby-900: 58 100% 54%;  /* neon yellow - text */
+    --hobby-500: 177 52% 62%;  /* turquoise - lines/strip */
+    --hobby-900: 47 100% 50%;  /* yellow - text */
     
     /* dreams */
-    --dreams-500: 195 100% 60%;  /* neon blue - lines/strip */
+    --dreams-500: 227 78% 70%;  /* blue - lines/strip */
     --dreams-900: 270 60% 30%;  /* dark purple - text */
     
     /* fear */
-    --fear-500: 75 40% 30%;  /* olive green - lines/strip */
-    --fear-900: 339 100% 80%;  /* pink - text */
+    --fear-500: 159 77% 38%;  /* green - lines/strip */
+    --fear-900: 346 86% 87%;  /* pink - text */
     
     /* wisdom */
-    --wisdom-500: 21 100% 46%;  /* orange - lines/strip */
-    --wisdom-900: 195 100% 60%;  /* neon blue - text */
+    --wisdom-500: 26 94% 57%;  /* orange - lines/strip */
+    --wisdom-900: 227 78% 70%;  /* blue - text */
     
     /* future */
     --future-500: 270 60% 30%;  /* dark purple - lines/strip */
-    --future-900: 120 100% 50%;  /* neon green - text */
+    --future-900: 100 59% 59%;  /* light green - text */
     
     /* Category-specific colors for card backgrounds */
     /* Each category uses a 3-color system:
@@ -151,75 +155,75 @@ All colors MUST be HSL.
        - Text color for category text, question text (900)
     */
     
-    /* connection: orange bg, pink lines, bordeaux text */
-    --quiz-connection-bg: 21 100% 46%;
-    --quiz-connection-bg-dark: 21 100% 46%;
+    /* connection: orange bg, pink lines, dark purple text */
+    --quiz-connection-bg: 26 94% 57%;
+    --quiz-connection-bg-dark: 26 94% 57%;
     
-    /* fuck: neon yellow bg, neon yellow lines, orange text */
-    --quiz-fuck-bg: 58 100% 54%;
-    --quiz-fuck-bg-dark: 58 100% 54%;
+    /* fuck: yellow bg, yellow lines, orange text */
+    --quiz-fuck-bg: 47 100% 50%;
+    --quiz-fuck-bg-dark: 47 100% 50%;
     
     /* identity: light purple bg, light purple lines, dark purple text */
-    --quiz-identity-bg: 270 100% 85%;
-    --quiz-identity-bg-dark: 270 100% 85%;
+    --quiz-identity-bg: 270 69% 78%;
+    --quiz-identity-bg-dark: 270 69% 78%;
     
-    /* party: neon yellow bg, pink lines, neon yellow text */
-    --quiz-party-bg: 58 100% 54%;
-    --quiz-party-bg-dark: 58 100% 54%;
+    /* party: yellow bg, pink lines, yellow text */
+    --quiz-party-bg: 47 100% 50%;
+    --quiz-party-bg-dark: 47 100% 50%;
     
     /* wer aus der runde: turquoise bg, turquoise lines, dark purple text */
-    --quiz-wer-aus-der-runde-bg: 180 70% 50%;
-    --quiz-wer-aus-der-runde-bg-dark: 180 70% 50%;
+    --quiz-wer-aus-der-runde-bg: 177 52% 62%;
+    --quiz-wer-aus-der-runde-bg-dark: 177 52% 62%;
     
-    /* friends: neon green bg, neon green lines, olive green text */
-    --quiz-friends-bg: 120 100% 50%;
-    --quiz-friends-bg-dark: 120 100% 50%;
+    /* friends: light green bg, light green lines, green text */
+    --quiz-friends-bg: 100 59% 59%;
+    --quiz-friends-bg-dark: 100 59% 59%;
     
-    /* self reflection: sand beige bg, sand beige lines, bordeaux text */
-    --quiz-self-reflection-bg: 40 45% 75%;
-    --quiz-self-reflection-bg-dark: 40 45% 75%;
+    /* self reflection: beige bg, beige lines, red text */
+    --quiz-self-reflection-bg: 26 78% 85%;
+    --quiz-self-reflection-bg-dark: 26 78% 85%;
     
     /* family: orange bg, orange lines, dark purple text */
-    --quiz-family-bg: 21 100% 46%;
-    --quiz-family-bg-dark: 21 100% 46%;
+    --quiz-family-bg: 26 94% 57%;
+    --quiz-family-bg-dark: 26 94% 57%;
     
-    /* career: neon blue bg, neon blue lines, orange text */
-    --quiz-career-bg: 195 100% 60%;
-    --quiz-career-bg-dark: 195 100% 60%;
+    /* career: light blue bg, light blue lines, orange text */
+    --quiz-career-bg: 201 71% 68%;
+    --quiz-career-bg-dark: 201 71% 68%;
     
-    /* travel: turquoise bg, neon yellow lines, turquoise text */
-    --quiz-travel-bg: 180 70% 50%;
-    --quiz-travel-bg-dark: 180 70% 50%;
+    /* travel: turquoise bg, yellow lines, turquoise text */
+    --quiz-travel-bg: 177 52% 62%;
+    --quiz-travel-bg-dark: 177 52% 62%;
     
-    /* health: pink bg, pink lines, olive green text */
-    --quiz-health-bg: 339 100% 80%;
-    --quiz-health-bg-dark: 339 100% 80%;
+    /* health: pink bg, pink lines, green text */
+    --quiz-health-bg: 346 86% 87%;
+    --quiz-health-bg-dark: 346 86% 87%;
     
-    /* money: bordeaux bg, neon green lines, bordeaux text */
-    --quiz-money-bg: 348 55% 27%;
-    --quiz-money-bg-dark: 348 55% 27%;
+    /* money: wine red bg, light green lines, wine red text */
+    --quiz-money-bg: 351 82% 65%;
+    --quiz-money-bg-dark: 351 82% 65%;
     
     /* love: light purple bg, light purple lines, orange text */
-    --quiz-love-bg: 270 100% 85%;
-    --quiz-love-bg-dark: 270 100% 85%;
+    --quiz-love-bg: 270 69% 78%;
+    --quiz-love-bg-dark: 270 69% 78%;
     
-    /* hobby: neon yellow bg, turquoise lines, neon yellow text */
-    --quiz-hobby-bg: 58 100% 54%;
-    --quiz-hobby-bg-dark: 58 100% 54%;
+    /* hobby: yellow bg, turquoise lines, yellow text */
+    --quiz-hobby-bg: 47 100% 50%;
+    --quiz-hobby-bg-dark: 47 100% 50%;
     
-    /* dreams: dark purple bg, neon blue lines, dark purple text */
+    /* dreams: dark purple bg, blue lines, dark purple text */
     --quiz-dreams-bg: 270 60% 30%;
     --quiz-dreams-bg-dark: 270 60% 30%;
     
-    /* fear: olive green bg, olive green lines, pink text */
-    --quiz-fear-bg: 75 40% 30%;
-    --quiz-fear-bg-dark: 75 40% 30%;
+    /* fear: green bg, green lines, pink text */
+    --quiz-fear-bg: 159 77% 38%;
+    --quiz-fear-bg-dark: 159 77% 38%;
     
-    /* wisdom: orange bg, orange lines, neon blue text */
-    --quiz-wisdom-bg: 21 100% 46%;
-    --quiz-wisdom-bg-dark: 21 100% 46%;
+    /* wisdom: orange bg, orange lines, blue text */
+    --quiz-wisdom-bg: 26 94% 57%;
+    --quiz-wisdom-bg-dark: 26 94% 57%;
     
-    /* future: dark purple bg, dark purple lines, neon green text */
+    /* future: dark purple bg, dark purple lines, light green text */
     --quiz-future-bg: 270 60% 30%;
     --quiz-future-bg-dark: 270 60% 30%;
     
