@@ -210,9 +210,14 @@ export function QuizApp() {
   };
 
   return (
-    <div className={`h-[100svh] ${bgColor} overflow-hidden flex flex-col transition-colors duration-[2500ms] ease-out`}>
+    <div className={`h-[100svh] ${prevBgColor} overflow-hidden flex flex-col relative`}>
+      {/* Crossfade overlay for smooth color transitions */}
+      <div 
+        className={`absolute inset-0 ${bgColor} transition-opacity duration-[2500ms] ease-out`}
+        style={{ opacity: bgColor === prevBgColor ? 0 : 1 }}
+      />
       {/* App Header - Always visible */}
-      <div className="app-header flex-shrink-0" style={{position: 'sticky', top: 0, zIndex: 50}}>
+      <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50}}>
         <div className="flex justify-between items-baseline px-4 py-4">
           <img 
             src="/assets/logo.png" 
@@ -234,7 +239,7 @@ export function QuizApp() {
       </div>
 
       {/* Main Quiz Container */}
-      <div className="flex-1 flex justify-center items-center mx-4 overflow-hidden" style={{ padding: '16px 0', paddingTop: '48px' }}>
+      <div className="flex-1 flex justify-center items-center mx-4 overflow-hidden relative z-10" style={{ padding: '16px 0', paddingTop: '48px' }}>
         <div className="w-full h-full flex justify-center items-center">
           {loading ? (
             <div className="h-full flex items-center justify-center min-h-[calc(100svh-120px)]">
@@ -257,7 +262,7 @@ export function QuizApp() {
       </div>
         
       {/* Bottom Link - Always visible */}
-      <div className="app-footer flex-shrink-0 h-5">
+      <div className="app-footer flex-shrink-0 h-5 relative z-10">
         <div className="flex justify-center items-center px-4 h-full">
           <a 
             href="mailto:hello@relationshipbydesign.de?subject=Friends%20App%20Frage" 
