@@ -612,7 +612,7 @@ export function QuizApp() {
                     style={{
                       position: 'absolute',
                       top: isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : 'calc(50% + 8px)',
-                      left: isMobile ? '16px' : '32px',
+                      left: '16px',
                       width: '85vw',
                       maxWidth: '600px',
                       height: isMobile 
