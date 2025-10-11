@@ -455,8 +455,8 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform - same as horizontal spacing
-                    const cardHeight = 88; // 88vh card (matches horizontal spacing)
+                    // Calculate vertical transform - 4px gap to match horizontal spacing
+                    const cardHeight = 80; // 80vh card
                     const gapOffsetV = qPosition * 4; // 4px gap between cards (matches horizontal)
                     // Move previous slide further up to be completely out of viewport
                     // Position 2 (second next) moves together with position 1 (next)
