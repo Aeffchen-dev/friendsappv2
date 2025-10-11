@@ -180,39 +180,24 @@ export function QuizApp() {
     const threshold = 80; // 80px drag threshold (user preference)
     
     setIsDragging(false);
-    setIsAnimating(true);
     
     // Simple logic: if dragged left, go next; if dragged right, go prev
     if (dragOffset < -threshold) {
       setLogoSqueezeLeft(true);
       setCurrentIndex(prev => (prev + 1) % questions.length);
-      setDragOffset(window.innerWidth);
-      
-      setTimeout(() => {
-        setDragOffset(0);
-        setTimeout(() => {
-          setIsAnimating(false);
-          setLogoSqueezeLeft(false);
-        }, 800);
-      }, 16);
+      setDragOffset(0);
+      setIsAnimating(false);
+      setTimeout(() => setLogoSqueezeLeft(false), 500);
     } else if (dragOffset > threshold) {
       setLogoSqueezeRight(true);
       setCurrentIndex(prev => (prev - 1 + questions.length) % questions.length);
-      setDragOffset(-window.innerWidth);
-      
-      setTimeout(() => {
-        setDragOffset(0);
-        setTimeout(() => {
-          setIsAnimating(false);
-          setLogoSqueezeRight(false);
-        }, 800);
-      }, 16);
+      setDragOffset(0);
+      setIsAnimating(false);
+      setTimeout(() => setLogoSqueezeRight(false), 500);
     } else {
       // Snap back to center
       setDragOffset(0);
-      setTimeout(() => {
-        setIsAnimating(false);
-      }, 800);
+      setIsAnimating(false);
     }
   };
 
@@ -386,7 +371,7 @@ export function QuizApp() {
                   className="absolute"
                   style={{
                     transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale}) rotateY(${rotation}deg)`,
-                    transition: isAnimating ? 'transform 800ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+                    transition: isAnimating ? 'transform 500ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
                     zIndex: isActive ? 10 : 5,
                     pointerEvents: isActive ? 'auto' : 'none'
                   }}
