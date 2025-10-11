@@ -934,24 +934,27 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate random wavy path using quadratic curves
-  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -50, 100);
-  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, -20, 120);
+  // Generate random wavy path with large, smooth curves
+  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -30, 50);
+  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, 0, 100);
   
-  // Generate multiple wave segments
-  const numWaves = Math.floor(getRandomValue(questionText + 'numWaves' + lineIndex, 3, 6));
+  // Generate fewer but larger wave segments for smoother curves
+  const numWaves = Math.floor(getRandomValue(questionText + 'numWaves' + lineIndex, 2, 4));
   let pathData = `M ${startX} ${startY}`;
   
   let currentX = startX;
   let currentY = startY;
   
   for (let i = 0; i < numWaves; i++) {
-    const cpX = currentX + getRandomValue(questionText + 'cpX' + lineIndex + i, 20, 60);
-    const cpY = currentY + getRandomValue(questionText + 'cpY' + lineIndex + i, -40, 40);
-    const endX = cpX + getRandomValue(questionText + 'endX' + lineIndex + i, 20, 60);
-    const endY = cpY + getRandomValue(questionText + 'endY' + lineIndex + i, -40, 40);
+    const cpX1 = currentX + getRandomValue(questionText + 'cpX1' + lineIndex + i, 30, 80);
+    const cpY1 = currentY + getRandomValue(questionText + 'cpY1' + lineIndex + i, -60, 60);
+    const cpX2 = cpX1 + getRandomValue(questionText + 'cpX2' + lineIndex + i, 30, 80);
+    const cpY2 = cpY1 + getRandomValue(questionText + 'cpY2' + lineIndex + i, -60, 60);
+    const endX = cpX2 + getRandomValue(questionText + 'endX' + lineIndex + i, 30, 80);
+    const endY = cpY2 + getRandomValue(questionText + 'endY' + lineIndex + i, -60, 60);
     
-    pathData += ` Q ${cpX} ${cpY}, ${endX} ${endY}`;
+    // Use cubic bezier for smoother curves
+    pathData += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${endX} ${endY}`;
     currentX = endX;
     currentY = endY;
   }
@@ -959,17 +962,17 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   return (
     <div className="absolute inset-0 z-0 overflow-visible">
       <svg 
-        className="absolute inset-0" 
-        width="100%" 
-        height="100%" 
-        viewBox="0 0 100 100"
+        className="absolute" 
+        width="150%" 
+        height="150%" 
+        viewBox="-25 -25 150 150"
         preserveAspectRatio="none"
-        style={{ overflow: 'visible' }}
+        style={{ overflow: 'visible', left: '-25%', top: '-25%' }}
       >
         <path 
           d={pathData}
           stroke="#F1A8C6"
-          strokeWidth="8"
+          strokeWidth="32"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
