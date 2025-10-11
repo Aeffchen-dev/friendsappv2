@@ -389,8 +389,8 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform - next card should be 10vw visible (starts at 90vw)
-              const cardSpacing = 90; // 90vw spacing (card at 16px + 80vw width + gap = next card at ~90vw showing 10vw)
+              // Calculate horizontal transform - 10% of next card visible (10% of 80vw = 8vw)
+              const cardSpacing = 92; // 92vw spacing (100vw - 8vw = next card shows 8vw)
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
               
