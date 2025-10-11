@@ -383,16 +383,16 @@ export function QuizApp() {
           </div>
         ) : categories.length > 0 ? (
           <div className="relative w-full h-full flex justify-center items-center">
-            {/* Render 5 category columns: 2 previous, current, 2 next */}
-            {[-2, -1, 0, 1, 2].map((catPosition) => {
+            {/* Render 3 category columns: 1 previous, current, 1 next */}
+            {[-1, 0, 1].map((catPosition) => {
               const catIndex = (currentCategoryIndex + catPosition + categories.length) % categories.length;
               const category = categories[catIndex];
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
               // Calculate horizontal transform - spacing so category strip of next card is visible
-              const cardSpacing = 88; // Reduced spacing for closer cards
-              const gapOffsetH = catPosition * 4; // Reduced gap between cards
+              const cardSpacing = 88;
+              const gapOffsetH = catPosition * 4;
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
               const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 4 : 0;
