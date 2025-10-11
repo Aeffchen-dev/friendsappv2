@@ -503,8 +503,8 @@ export function QuizApp() {
                 }
               }
               
-              // Hide cards at extreme positions during animation to prevent visible wraparound
-              const shouldHide = Math.abs(catPosition) === 2 && (isDragging || isAnimating) && dragDirection === 'horizontal';
+              // Hide cards outside viewport - positions -2 and 2 are never visible
+              const shouldHideHorizontal = Math.abs(catPosition) === 2;
               
               return (
                 <div 
@@ -518,8 +518,8 @@ export function QuizApp() {
                     animation: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
-                    opacity: shouldHide ? 0 : 1,
-                    visibility: shouldHide ? 'hidden' : 'visible'
+                    opacity: shouldHideHorizontal ? 0 : 1,
+                    visibility: shouldHideHorizontal ? 'hidden' : 'visible'
                   }}
                 >
                   {/* Render 5 question cards vertically: 2 previous, current, 2 next */}
@@ -559,6 +559,9 @@ export function QuizApp() {
                     // Vertical scale - all cards at scale 1
                     const scale = 1;
                     
+                    // Hide cards outside viewport - positions -2 and 2 are never visible
+                    const shouldHideVertical = Math.abs(qPosition) === 2;
+                    
                     return (
                       <div
                         key={`${category}-${question.question}`}
@@ -574,7 +577,9 @@ export function QuizApp() {
                           animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : 'none',
                           willChange: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'transform' : 'auto',
-                          zIndex: qPosition <= 0 ? 10 - qPosition : 10 - qPosition // Previous and current cards on top, next cards below
+                          zIndex: qPosition <= 0 ? 10 - qPosition : 10 - qPosition, // Previous and current cards on top, next cards below
+                          opacity: shouldHideVertical ? 0 : 1,
+                          visibility: shouldHideVertical ? 'hidden' : 'visible'
                         }}
                       >
                         <QuizCard
