@@ -486,16 +486,32 @@ function Eye({ mousePosition, pupilDirection, isBlinking, questionText, eyeIndex
   
   const seed = questionText + eyeIndex;
   
-  // Randomize eye shape (width and height)
-  const eyeWidth = getRandomValue(seed + 'w', 50, 80);
-  const eyeHeight = getRandomValue(seed + 'h', 120, 160);
+  // Determine if this should be a circle or ellipse
+  const shapeType = getRandomValue(seed + 'shape', 0, 1);
+  
+  // Randomize eye shape - can be circle or various ellipses
+  let eyeWidth, eyeHeight;
+  if (shapeType < 0.3) {
+    // Circle (30% chance)
+    const circleSize = getRandomValue(seed + 'circle', 60, 100);
+    eyeWidth = circleSize;
+    eyeHeight = circleSize;
+  } else if (shapeType < 0.65) {
+    // Vertical ellipse (35% chance)
+    eyeWidth = getRandomValue(seed + 'w', 50, 80);
+    eyeHeight = getRandomValue(seed + 'h', 120, 180);
+  } else {
+    // Horizontal ellipse (35% chance)
+    eyeWidth = getRandomValue(seed + 'w', 100, 140);
+    eyeHeight = getRandomValue(seed + 'h', 60, 100);
+  }
   
   // Randomize position offset
   const offsetX = getRandomValue(seed + 'x', -20, 20);
   const offsetY = getRandomValue(seed + 'y', -30, 30);
   
-  // Randomize pupil size
-  const pupilSize = getRandomValue(seed + 'p', 20, 28);
+  // Randomize pupil size relative to eye size
+  const pupilSize = Math.min(eyeWidth, eyeHeight) * getRandomValue(seed + 'p', 0.25, 0.4);
 
   const getPupilPosition = () => {
     if (pupilDirection === 'left') {
