@@ -934,11 +934,11 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish-shaped circle outline - with more amplitude
+  // Create smooth starfish-shaped circle outline - with more amplitude and rounded tips
   const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -10, 110);
   const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -10, 110);
   const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 15, 25);
-  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.35, 0.5);
+  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.25, 0.4);
   const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 5, 6));
   
   let pathData = '';
@@ -961,19 +961,23 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   // Start the path
   pathData = `M ${points[0].x},${points[0].y}`;
   
-  // Create smooth curves between all points
+  // Create smooth curves between all points with rounded transitions
   for (let i = 0; i < points.length; i++) {
-    const current = points[i];
     const next = points[(i + 1) % points.length];
+    const nextNext = points[(i + 2) % points.length];
     
-    // Use quadratic curve for smooth transitions
-    const midX = (current.x + next.x) / 2;
-    const midY = (current.y + next.y) / 2;
+    // Use cubic bezier for smoother, rounder curves
+    const cp1X = next.x;
+    const cp1Y = next.y;
+    const cp2X = next.x;
+    const cp2Y = next.y;
+    const endX = (next.x + nextNext.x) / 2;
+    const endY = (next.y + nextNext.y) / 2;
     
-    pathData += ` Q ${current.x},${current.y} ${midX},${midY}`;
+    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
   }
   
-  // Close the path smoothly back to start
+  // Close the path
   pathData += ' Z';
   
   return (
