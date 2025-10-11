@@ -439,9 +439,12 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Keep eyes well within card boundaries - conservative safe area
+        // Check if text is long and adjust eye position accordingly
+        const isLongText = question.question.length > 80;
         const posX = getRandomPos(question.question + 'posX', 35, 50);
-        const posY = getRandomPos(question.question + 'posY', 50, 65);
+        const posY = isLongText 
+          ? getRandomPos(question.question + 'posY', 70, 85)  // Bottom part for long text
+          : getRandomPos(question.question + 'posY', 50, 65);  // Middle for short text
         
         return (
           <div 
