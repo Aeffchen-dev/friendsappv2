@@ -472,12 +472,12 @@ export function QuizApp() {
                     const totalCardHeight = vCardHeight + vCardSpacingPx; // Total height including spacing
                     const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
                     
-                    // Calculate position - move previous card out of viewport
+                    // Calculate position - show 10vh of previous card
                     let baseTranslateY;
                     
                     if (qPosition === -1) {
-                      // Move previous card completely out of viewport to the top
-                      baseTranslateY = -110; // Moves card fully above viewport
+                      // Show 10vh of previous card at the top
+                      baseTranslateY = -(cardSpacingVh - 10); // Position to show 10vh
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
                     }
