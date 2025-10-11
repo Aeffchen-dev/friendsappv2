@@ -470,6 +470,7 @@ export function QuizApp() {
                           onSwipeRight={prevCategory}
                           animationClass=""
                           onBgColorChange={isActive ? handleBgColorChange : undefined}
+                          disableSwipe={true}
                         />
                       </div>
                     );

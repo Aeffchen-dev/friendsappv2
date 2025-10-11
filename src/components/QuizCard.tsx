@@ -12,9 +12,10 @@ interface QuizCardProps {
   onSwipeRight: () => void;
   animationClass?: string;
   onBgColorChange?: (bgClass: string) => void;
+  disableSwipe?: boolean;
 }
 
-export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '', onBgColorChange }: QuizCardProps) {
+export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '', onBgColorChange, disableSwipe = false }: QuizCardProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [mouseStart, setMouseStart] = useState<number | null>(null);
@@ -376,31 +377,33 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         maxHeight: '100%',
         transition: 'height 0.2s ease-out'
       }}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-      onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseLeave}
+      onTouchStart={disableSwipe ? undefined : onTouchStart}
+      onTouchMove={disableSwipe ? undefined : onTouchMove}
+      onTouchEnd={disableSwipe ? undefined : onTouchEnd}
+      onMouseDown={disableSwipe ? undefined : onMouseDown}
+      onMouseMove={disableSwipe ? undefined : onMouseMove}
+      onMouseUp={disableSwipe ? undefined : onMouseUp}
+      onMouseLeave={disableSwipe ? undefined : onMouseLeave}
     >
-      {/* Left Click Area - Previous */}
-      <div 
-        className="absolute left-0 top-0 w-20 h-full z-10 cursor-pointer"
-        onClick={() => {
-          triggerHaptic();
-          onSwipeRight();
-        }}
-      />
-
-      {/* Right Click Area - Next */}
-      <div 
-        className="absolute right-0 top-0 w-20 h-full z-10 cursor-pointer"
-        onClick={() => {
-          triggerHaptic();
-          onSwipeLeft();
-        }}
-      />
+      {/* Left/Right Click Areas - only when swipe enabled */}
+      {!disableSwipe && (
+        <>
+          <div 
+            className="absolute left-0 top-0 w-20 h-full z-10 cursor-pointer"
+            onClick={() => {
+              triggerHaptic();
+              onSwipeRight();
+            }}
+          />
+          <div 
+            className="absolute right-0 top-0 w-20 h-full z-10 cursor-pointer"
+            onClick={() => {
+              triggerHaptic();
+              onSwipeLeft();
+            }}
+          />
+        </>
+      )}
 
       {/* Category Strip */}
       <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black`}>
