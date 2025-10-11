@@ -401,10 +401,13 @@ export function QuizApp() {
                 }
               }
               
-              // Horizontal rotation - 2D skew effect simulating Y-axis rotation
+              // Horizontal rotation - 2D skew effect
               let skewX = 0;
               if (!isCategoryActive) {
-                skewX = catPosition * 5; // Left card: -5deg, Right card: +5deg
+                skewX = -catPosition * 5; // Left card: +5deg, Right card: -5deg (reversed)
+              } else if (isDragging && dragDirection === 'horizontal') {
+                // Active card skews opposite to drag direction when moving out
+                skewX = -(dragOffsetX / window.innerWidth) * 5; // Mirror direction
               }
               
               return (
