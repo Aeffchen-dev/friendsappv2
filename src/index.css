@@ -182,15 +182,15 @@ All colors MUST be HSL.
     
     /* Category-specific colors for card backgrounds and text */
     --quiz-connection-bg: 21 100% 46%;  /* #eb5200 */
-    --quiz-connection-text: 0 0% 98%;
+    --quiz-connection-text: 335 71% 80%;  /* #f1a8c6 - page color */
     --quiz-fuck-bg: 6 100% 96%;  /* #ffecea */
-    --quiz-fuck-text: 0 0% 0%;
+    --quiz-fuck-text: 21 100% 46%;  /* #eb5200 - page color */
     --quiz-identity-bg: 229 100% 88%;  /* #c2cdff */
-    --quiz-identity-text: 0 0% 0%;
+    --quiz-identity-text: 6 100% 96%;  /* #ffecea - page color */
     --quiz-party-bg: 236 37% 41%;  /* #424790 */
-    --quiz-party-text: 0 0% 98%;
+    --quiz-party-text: 6 100% 96%;  /* #ffecea - page color */
     --quiz-wer-aus-der-runde-bg: 21 100% 46%;  /* #eb5200 */
-    --quiz-wer-aus-der-runde-text: 0 0% 98%;
+    --quiz-wer-aus-der-runde-text: 229 100% 88%;  /* #c2cdff - page color */
     
     /* Additional categories with proper colors */
     --quiz-friends-bg: 120 100% 50%;
