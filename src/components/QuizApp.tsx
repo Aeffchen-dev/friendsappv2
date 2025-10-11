@@ -213,7 +213,7 @@ export function QuizApp() {
     <div className={`h-[100svh] ${prevBgColor} overflow-hidden flex flex-col relative`}>
       {/* Crossfade overlay for smooth color transitions */}
       <div 
-        className={`absolute inset-0 ${bgColor} transition-opacity duration-[2500ms] ease-out`}
+        className={`absolute inset-0 ${bgColor} transition-opacity duration-[3500ms] ease-out`}
         style={{ opacity: bgColor === prevBgColor ? 0 : 1 }}
       />
       {/* App Header - Always visible */}
