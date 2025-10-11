@@ -369,12 +369,21 @@ export function QuizApp() {
   };
 
   const handleToggleMode = () => {
-    setIsShuffleMode(prev => !prev);
-    setCategorySelectorOpen(true);
+    if (isShuffleMode) {
+      // Switching from shuffle to category mode - open modal
+      setCategorySelectorOpen(true);
+    } else {
+      // Switching to shuffle mode - just toggle
+      setIsShuffleMode(true);
+    }
   };
 
   const handleModalClose = () => {
     setCategorySelectorOpen(false);
+    // When closing modal from shuffle mode button, switch back to category mode
+    if (isShuffleMode) {
+      setIsShuffleMode(false);
+    }
   };
 
   // Get header color for each category
