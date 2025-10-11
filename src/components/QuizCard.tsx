@@ -797,20 +797,19 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
+  // Each cloud gets a specific shape based on its index
+  const shapeVariant = cloudIndex % 3;
   
-  // All available cloud shapes for smooth morphing
+  // Different cloud shapes using SVG paths
   const cloudShapes = [
+    // Cloud shape 1
     "M25,35 Q15,35 10,25 Q10,15 20,15 Q25,5 35,10 Q45,10 50,20 Q60,25 55,35 Q50,40 40,38 Q35,45 25,35 Z",
+    // Cloud shape 2
     "M30,40 Q20,40 15,30 Q12,20 22,18 Q28,10 38,12 Q48,12 52,22 Q58,28 54,38 Q48,42 38,40 Q32,45 30,40 Z",
-    "M28,38 Q18,38 14,28 Q12,18 24,16 Q30,8 40,10 Q50,10 54,20 Q60,26 56,36 Q50,40 40,38 Q34,44 28,38 Z",
-    "M27,36 Q17,36 13,26 Q11,16 23,14 Q29,6 39,8 Q49,8 53,18 Q59,24 55,34 Q49,38 39,36 Q33,42 27,36 Z",
-    "M26,37 Q16,37 12,27 Q10,17 22,15 Q28,7 38,9 Q48,9 52,19 Q58,25 54,35 Q48,39 38,37 Q32,43 26,37 Z"
+    // Cloud shape 3
+    "M28,38 Q18,38 14,28 Q12,18 24,16 Q30,8 40,10 Q50,10 54,20 Q60,26 56,36 Q50,40 40,38 Q34,44 28,38 Z"
   ];
-
-  // Create smooth animation sequence
-  const allShapes = cloudShapes.join(';');
-  const animationDuration = (10 + cloudIndex * 2).toString(); // Stagger animations
-
+  
   return (
     <div 
       className="absolute z-0"
@@ -822,18 +821,9 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
     >
       <svg width="80" height="50" viewBox="0 0 70 50">
         <path 
+          d={cloudShapes[shapeVariant]}
           fill="#AFD2EE"
-        >
-          <animate
-            attributeName="d"
-            dur={`${animationDuration}s`}
-            repeatCount="indefinite"
-            values={allShapes}
-            calcMode="spline"
-            keyTimes="0;0.2;0.4;0.6;0.8;1"
-            keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
-          />
-        </path>
+        />
       </svg>
     </div>
   );
