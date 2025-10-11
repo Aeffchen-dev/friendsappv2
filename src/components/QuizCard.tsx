@@ -460,11 +460,11 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Define distinct position ranges for each cloud to avoid overlap
+        // Define distinct position ranges for each cloud - more vertical stacking
         const cloudPositions = [
-          { xMin: 15, xMax: 35, yMin: 15, yMax: 35 },  // Top-left area
-          { xMin: 50, xMax: 75, yMin: 20, yMax: 45 },  // Top-right area
-          { xMin: 25, xMax: 50, yMin: 55, yMax: 75 }   // Bottom-center area
+          { xMin: 30, xMax: 60, yMin: 15, yMax: 30 },  // Top area
+          { xMin: 25, xMax: 65, yMin: 40, yMax: 55 },  // Middle area
+          { xMin: 30, xMax: 60, yMin: 65, yMax: 80 }   // Bottom area
         ];
         
         return (
