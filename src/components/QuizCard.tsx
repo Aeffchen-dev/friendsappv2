@@ -940,7 +940,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   let pathData = '';
   
   if (patternType === 0) {
-    // Circular/spiral pattern
+    // Circular/spiral pattern - already closed
     const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 20, 80);
     const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 20, 80);
     const radius = getRandomValue(questionText + 'radius' + lineIndex, 8, 15);
@@ -954,15 +954,16 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
       const y = centerY + r * Math.sin(rad);
       pathData += ` L ${x},${y}`;
     }
+    pathData += ' Z'; // Close the path
   } else {
     // S-curve patterns with varied directions
     const startOptions = [
-      { x: -20, y: 20, direction: 'horizontal' },
-      { x: 80, y: 15, direction: 'vertical' },
-      { x: 15, y: -10, direction: 'diagonal' },
-      { x: -15, y: 50, direction: 'horizontal' },
-      { x: 50, y: 110, direction: 'diagonal' },
-      { x: 90, y: 70, direction: 'vertical' }
+      { x: 20, y: 20, direction: 'horizontal' },
+      { x: 60, y: 15, direction: 'vertical' },
+      { x: 30, y: 10, direction: 'diagonal' },
+      { x: 15, y: 50, direction: 'horizontal' },
+      { x: 50, y: 70, direction: 'diagonal' },
+      { x: 70, y: 40, direction: 'vertical' }
     ];
     
     const startConfig = startOptions[lineIndex % startOptions.length];
@@ -970,7 +971,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     const startY = startConfig.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -5, 5);
     
     const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 8, 12);
-    const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 4, 7));
+    const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 3, 5));
     
     pathData = `M ${startX},${startY}`;
     let currentX = startX;
@@ -1021,6 +1022,9 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
         currentY = endY;
       }
     }
+    
+    // Close the path back to start
+    pathData += ' Z';
   }
   
   return (
