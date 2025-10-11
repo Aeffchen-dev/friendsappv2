@@ -452,6 +452,10 @@ export function QuizApp() {
               // Hide cards at extreme positions during animation to prevent visible wraparound
               const shouldHide = Math.abs(catPosition) === 2 && (isDragging || isAnimating) && dragDirection === 'horizontal';
               
+              // Hide cards from unselected categories when filters are applied
+              const isCategorySelected = selectedCategories.includes(category);
+              const shouldHideFiltered = selectedCategories.length < availableCategories.length && !isCategorySelected;
+              
               return (
                 <div 
                   key={`cat-${catIndex}`}
@@ -464,8 +468,8 @@ export function QuizApp() {
                     animation: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
-                    opacity: shouldHide ? 0 : 1,
-                    visibility: shouldHide ? 'hidden' : 'visible'
+                    opacity: shouldHide || shouldHideFiltered ? 0 : 1,
+                    visibility: shouldHide || shouldHideFiltered ? 'hidden' : 'visible'
                   }}
                 >
                   {/* Render 5 question cards vertically: 2 previous, current, 2 next */}
