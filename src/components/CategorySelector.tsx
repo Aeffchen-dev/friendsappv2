@@ -40,7 +40,7 @@ export function CategorySelector({
         return { 
           stripeBg: 'hsl(var(--fuck-500))', 
           cardBg: 'hsl(var(--quiz-fuck-bg))',
-          text: '#DBCFBE'
+          text: '#611610'
         };
       case 'identity':
         return { 
