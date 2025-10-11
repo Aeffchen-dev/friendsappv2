@@ -934,45 +934,93 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate smooth S-curve paths - positioned to be visible on card
-  const startOptions = [
-    { x: -20, y: 15 },
-    { x: -15, y: 35 },
-    { x: -25, y: 55 },
-    { x: -10, y: 75 },
-    { x: -30, y: 95 },
-    { x: -18, y: 115 }
-  ];
+  // Different pattern types for variety
+  const patternType = Math.floor(getRandomValue(questionText + 'pattern' + lineIndex, 0, 4));
   
-  const startPos = startOptions[lineIndex % startOptions.length];
-  const startX = startPos.x + getRandomValue(questionText + 'startOffset' + lineIndex, -5, 5);
-  const startY = startPos.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -3, 3);
+  let pathData = '';
   
-  const direction = lineIndex % 2 === 0 ? 1 : -1;
-  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 8, 12);
-  
-  let pathData = `M ${startX},${startY}`;
-  let currentX = startX;
-  let currentY = startY;
-  
-  // Generate curves to extend across visible card area
-  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 6, 10));
-  
-  for (let i = 0; i < numCurves; i++) {
-    const curveDirection = i % 2 === 0 ? direction : -direction;
-    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 20, 30);
-    const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.6, amplitude * 0.9);
+  if (patternType === 0) {
+    // Circular/spiral pattern
+    const centerX = getRandomValue(questionText + 'centerX' + lineIndex, 20, 80);
+    const centerY = getRandomValue(questionText + 'centerY' + lineIndex, 20, 80);
+    const radius = getRandomValue(questionText + 'radius' + lineIndex, 8, 15);
+    const numLoops = getRandomValue(questionText + 'loops' + lineIndex, 1.5, 3);
     
-    const cp1X = currentX + segmentLength * 0.4;
-    const cp1Y = currentY + (curveDirection * curveAmp * 1.2);
-    const cp2X = currentX + segmentLength * 0.6;
-    const cp2Y = currentY + (curveDirection * curveAmp * 1.2);
-    const endX = currentX + segmentLength;
-    const endY = currentY + (curveDirection * curveAmp * 0.1);
+    pathData = `M ${centerX + radius},${centerY}`;
+    for (let angle = 0; angle <= 360 * numLoops; angle += 20) {
+      const rad = (angle * Math.PI) / 180;
+      const r = radius + (angle / 360) * 2;
+      const x = centerX + r * Math.cos(rad);
+      const y = centerY + r * Math.sin(rad);
+      pathData += ` L ${x},${y}`;
+    }
+  } else {
+    // S-curve patterns with varied directions
+    const startOptions = [
+      { x: -20, y: 20, direction: 'horizontal' },
+      { x: 80, y: 15, direction: 'vertical' },
+      { x: 15, y: -10, direction: 'diagonal' },
+      { x: -15, y: 50, direction: 'horizontal' },
+      { x: 50, y: 110, direction: 'diagonal' },
+      { x: 90, y: 70, direction: 'vertical' }
+    ];
     
-    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
-    currentX = endX;
-    currentY = endY;
+    const startConfig = startOptions[lineIndex % startOptions.length];
+    const startX = startConfig.x + getRandomValue(questionText + 'startOffset' + lineIndex, -5, 5);
+    const startY = startConfig.y + getRandomValue(questionText + 'startOffsetY' + lineIndex, -5, 5);
+    
+    const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 8, 12);
+    const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 4, 7));
+    
+    pathData = `M ${startX},${startY}`;
+    let currentX = startX;
+    let currentY = startY;
+    
+    for (let i = 0; i < numCurves; i++) {
+      const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 20, 30);
+      const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.6, amplitude * 0.9);
+      
+      if (startConfig.direction === 'vertical') {
+        // Vertical wavy line
+        const curveDirection = i % 2 === 0 ? 1 : -1;
+        const cp1X = currentX + (curveDirection * curveAmp * 1.2);
+        const cp1Y = currentY + segmentLength * 0.4;
+        const cp2X = currentX + (curveDirection * curveAmp * 1.2);
+        const cp2Y = currentY + segmentLength * 0.6;
+        const endX = currentX + (curveDirection * curveAmp * 0.1);
+        const endY = currentY + segmentLength;
+        
+        pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
+        currentX = endX;
+        currentY = endY;
+      } else if (startConfig.direction === 'diagonal') {
+        // Diagonal wavy line
+        const curveDirection = i % 2 === 0 ? 1 : -1;
+        const cp1X = currentX + segmentLength * 0.3;
+        const cp1Y = currentY + segmentLength * 0.3 + (curveDirection * curveAmp);
+        const cp2X = currentX + segmentLength * 0.6;
+        const cp2Y = currentY + segmentLength * 0.6 + (curveDirection * curveAmp);
+        const endX = currentX + segmentLength * 0.8;
+        const endY = currentY + segmentLength * 0.8;
+        
+        pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
+        currentX = endX;
+        currentY = endY;
+      } else {
+        // Horizontal wavy line (default)
+        const curveDirection = i % 2 === 0 ? 1 : -1;
+        const cp1X = currentX + segmentLength * 0.4;
+        const cp1Y = currentY + (curveDirection * curveAmp * 1.2);
+        const cp2X = currentX + segmentLength * 0.6;
+        const cp2Y = currentY + (curveDirection * curveAmp * 1.2);
+        const endX = currentX + segmentLength;
+        const endY = currentY + (curveDirection * curveAmp * 0.1);
+        
+        pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
+        currentX = endX;
+        currentY = endY;
+      }
+    }
   }
   
   return (
