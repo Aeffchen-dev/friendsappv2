@@ -405,8 +405,51 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         </>
       )}
 
+      {/* Eyes in background - only for "fuck" category with randomized position */}
+      {question.category.toLowerCase() === 'fuck' && (() => {
+        const getRandomPos = (seed: string, min: number, max: number) => {
+          let hash = 0;
+          for (let i = 0; i < seed.length; i++) {
+            hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+            hash = hash & hash;
+          }
+          const normalized = Math.abs(hash % 1000) / 1000;
+          return min + normalized * (max - min);
+        };
+        
+        const posX = getRandomPos(question.question + 'posX', 15, 60);
+        const posY = getRandomPos(question.question + 'posY', 45, 75);
+        
+        return (
+          <div 
+            ref={eyesRef} 
+            className="absolute flex items-center justify-center gap-12 z-0"
+            style={{
+              left: `${posX}%`,
+              top: `${posY}%`,
+              transform: 'translate(-50%, -50%)'
+            }}
+          >
+            <Eye 
+              mousePosition={mousePosition} 
+              pupilDirection={pupilDirection} 
+              isBlinking={isBlinking} 
+              questionText={question.question}
+              eyeIndex={0}
+            />
+            <Eye 
+              mousePosition={mousePosition} 
+              pupilDirection={pupilDirection} 
+              isBlinking={isBlinking} 
+              questionText={question.question}
+              eyeIndex={1}
+            />
+          </div>
+        );
+      })()}
+
       {/* Category Strip */}
-      <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black`}>
+      <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10`}>
         <div className="transform -rotate-90 whitespace-nowrap">
           {Array(20).fill(question.category).map((cat, index) => (
             <span 
@@ -423,7 +466,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       </div>
 
       {/* Main Content */}
-      <div className="ml-8 lg:ml-10 h-full flex flex-col justify-center px-8 lg:pr-10">
+      <div className="ml-8 lg:ml-10 h-full flex flex-col justify-center px-8 lg:pr-10 relative z-10">
 
         <div ref={containerRef} className="flex-1 flex items-start justify-start text-left w-full pt-16">
           <h1 
@@ -434,50 +477,6 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
             {processedText.length > 0 ? processedText : question.question}
           </h1>
         </div>
-
-        {/* Eyes - only for "fuck" category with randomized position */}
-        {question.category.toLowerCase() === 'fuck' && (() => {
-          // Generate consistent random position based on question text
-          const getRandomPos = (seed: string, min: number, max: number) => {
-            let hash = 0;
-            for (let i = 0; i < seed.length; i++) {
-              hash = ((hash << 5) - hash) + seed.charCodeAt(i);
-              hash = hash & hash;
-            }
-            const normalized = Math.abs(hash % 1000) / 1000;
-            return min + normalized * (max - min);
-          };
-          
-          const posX = getRandomPos(question.question + 'posX', 15, 60); // 15% to 60% from left
-          const posY = getRandomPos(question.question + 'posY', 45, 75); // 45% to 75% from top
-          
-          return (
-            <div 
-              ref={eyesRef} 
-              className="absolute flex items-center justify-center gap-12"
-              style={{
-                left: `${posX}%`,
-                top: `${posY}%`,
-                transform: 'translate(-50%, -50%)'
-              }}
-            >
-              <Eye 
-                mousePosition={mousePosition} 
-                pupilDirection={pupilDirection} 
-                isBlinking={isBlinking} 
-                questionText={question.question}
-                eyeIndex={0}
-              />
-              <Eye 
-                mousePosition={mousePosition} 
-                pupilDirection={pupilDirection} 
-                isBlinking={isBlinking} 
-                questionText={question.question}
-                eyeIndex={1}
-              />
-            </div>
-          );
-        })()}
 
       </div>
 
