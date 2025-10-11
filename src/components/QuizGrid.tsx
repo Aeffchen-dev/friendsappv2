@@ -14,11 +14,11 @@ interface QuizGridProps {
 
 export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: QuizGridProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [dragStart, setDragStart] = useState<number | null>(null);
-  const [dragOffset, setDragOffset] = useState(0);
+  const [dragStartX, setDragStartX] = useState<number | null>(null);
+  const [currentDragX, setCurrentDragX] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Organize questions by category
+  // Flatten all questions from selected categories
   const allCards = selectedCategories.flatMap(category => 
     allQuestions
       .filter(q => q.category === category)
@@ -27,43 +27,40 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
 
   const totalCards = allCards.length;
 
-  const onPointerDown = (e: React.PointerEvent) => {
-    setDragStart(e.clientX);
-    setDragOffset(0);
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setDragStartX(e.clientX);
+    setCurrentDragX(0);
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
   };
 
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (dragStart === null) return;
-    const dx = e.clientX - dragStart;
-    setDragOffset(dx);
-    e.preventDefault();
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (dragStartX === null) return;
+    const deltaX = e.clientX - dragStartX;
+    setCurrentDragX(deltaX);
   };
 
-  const onPointerUp = () => {
-    if (dragStart !== null) {
-      const threshold = window.innerWidth * 0.15;
-      const absOffset = Math.abs(dragOffset);
+  const handlePointerUp = () => {
+    if (dragStartX !== null) {
+      const swipeThreshold = 50;
       
-      if (absOffset > threshold) {
-        if (dragOffset < 0 && currentIndex < totalCards - 1) {
-          setCurrentIndex(i => i + 1);
-        } else if (dragOffset > 0 && currentIndex > 0) {
-          setCurrentIndex(i => i - 1);
-        }
+      if (currentDragX < -swipeThreshold && currentIndex < totalCards - 1) {
+        setCurrentIndex(prev => prev + 1);
+      } else if (currentDragX > swipeThreshold && currentIndex > 0) {
+        setCurrentIndex(prev => prev - 1);
       }
     }
-    setDragStart(null);
-    setDragOffset(0);
+    
+    setDragStartX(null);
+    setCurrentDragX(0);
   };
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' && currentIndex > 0) {
-        setCurrentIndex(i => i - 1);
-      } else if (e.key === 'ArrowRight' && currentIndex < totalCards - 1) {
-        setCurrentIndex(i => i + 1);
+      if (e.key === 'ArrowRight' && currentIndex < totalCards - 1) {
+        setCurrentIndex(prev => prev + 1);
+      } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        setCurrentIndex(prev => prev - 1);
       }
     };
 
@@ -79,77 +76,98 @@ export function QuizGrid({ allQuestions, selectedCategories, onBgColorChange }: 
     );
   }
 
-  const getCardStyle = (index: number) => {
-    const diff = index - currentIndex;
-    const dragFactor = dragStart !== null ? dragOffset / window.innerWidth : 0;
+  const getCardTransform = (cardIndex: number) => {
+    const position = cardIndex - currentIndex;
+    const isDragging = dragStartX !== null;
     
-    let x = 0;
+    let translateX = 0;
     let scale = 1;
     let zIndex = 1;
     let pointerEvents: 'auto' | 'none' = 'none';
-    
-    if (diff === 0) {
-      // Current card
-      x = dragFactor * 100;
+
+    if (position === 0) {
+      // Active card
+      translateX = isDragging ? currentDragX : 0;
       scale = 1;
       zIndex = 3;
       pointerEvents = 'auto';
-    } else if (diff === 1) {
+    } else if (position === 1) {
       // Next card (right)
-      x = 100 + 16 / window.innerWidth * 100 + dragFactor * 100;
+      translateX = isDragging ? currentDragX : 0;
       scale = 0.8;
       zIndex = 1;
-    } else if (diff === -1) {
+    } else if (position === -1) {
       // Previous card (left)
-      x = -100 - 16 / window.innerWidth * 100 + dragFactor * 100;
+      translateX = isDragging ? currentDragX : 0;
       scale = 0.8;
       zIndex = 1;
-    } else if (diff > 1) {
-      // Cards further right
-      x = 100 + 16 / window.innerWidth * 100;
+    } else if (position > 1) {
+      // Cards further to the right
+      translateX = 0;
       scale = 0.8;
       zIndex = 0;
     } else {
-      // Cards further left
-      x = -100 - 16 / window.innerWidth * 100;
+      // Cards further to the left
+      translateX = 0;
       scale = 0.8;
       zIndex = 0;
     }
 
+    // Calculate the base offset for positioning
+    let baseOffset = 'calc(100% + 16px)';
+    if (position === 0) {
+      baseOffset = '0px';
+    } else if (position === 1) {
+      baseOffset = 'calc(100% + 16px)';
+    } else if (position === -1) {
+      baseOffset = 'calc(-100% - 16px)';
+    } else if (position > 1) {
+      baseOffset = 'calc(100% + 16px)';
+    } else {
+      baseOffset = 'calc(-100% - 16px)';
+    }
+
     return {
-      transform: `translateX(${x}%) scale(${scale})`,
+      transform: `translateX(${baseOffset}) translateX(${translateX}px) scale(${scale})`,
       zIndex,
       pointerEvents,
-      transition: dragStart !== null ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+      transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
     };
   };
 
   return (
     <div 
-      ref={containerRef}
       className="flex-1 flex items-stretch justify-center min-h-0 relative"
       style={{ overflow: 'visible' }}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerCancel={onPointerUp}
     >
-      <div className="relative w-full h-full flex items-center justify-center" style={{ touchAction: 'pan-y' }}>
-        {allCards.map((question, index) => (
-          <div
-            key={`${question.category}-${index}`}
-            className="absolute inset-0 w-full h-full"
-            style={getCardStyle(index)}
-          >
-            <QuizCard
-              question={question}
-              onSwipeLeft={() => {}}
-              onSwipeRight={() => {}}
-              animationClass=""
-              onBgColorChange={onBgColorChange}
-            />
-          </div>
-        ))}
+      <div 
+        ref={containerRef}
+        className="relative w-full h-full flex items-center justify-center"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        style={{ touchAction: 'pan-y' }}
+      >
+        {allCards.map((question, index) => {
+          const cardStyle = getCardTransform(index);
+          
+          return (
+            <div
+              key={`${question.category}-${index}`}
+              className="absolute inset-0 w-full h-full"
+              style={cardStyle}
+            >
+              <QuizCard
+                question={question}
+                onSwipeLeft={() => {}}
+                onSwipeRight={() => {}}
+                animationClass=""
+                onBgColorChange={onBgColorChange}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
