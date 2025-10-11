@@ -17,13 +17,9 @@ export default {
 				'2xl': '1400px'
 			}
 		},
-		fontFamily: {
-			sans: ['Arial', 'Helvetica', 'sans-serif'],
-		},
 		extend: {
 			fontFamily: {
-				'bricolage': ['Arial', 'Helvetica', 'sans-serif'],
-				'offbit': ['Nunito', 'Space Grotesk', 'Arial', 'Helvetica', 'sans-serif'],
+				'bricolage': ['Bricolage Grotesque', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
