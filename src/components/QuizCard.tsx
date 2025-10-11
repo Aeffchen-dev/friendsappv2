@@ -399,7 +399,7 @@ function Eye({ mousePosition, pupilDirection, isBlinking }: EyeProps) {
       ref={eyeRef}
       className="relative bg-white rounded-full transition-transform duration-150"
       style={{
-        width: '32px',
+        width: '38px',
         height: '100px',
         borderRadius: '50%',
         transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
