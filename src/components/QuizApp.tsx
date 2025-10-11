@@ -483,7 +483,7 @@ export function QuizApp() {
               
               return (
                 <div 
-                  key={`cat-${catIndex}`}
+                  key={`category-${category}`}
                   className="absolute flex flex-col items-center justify-center"
                   style={{
                     width: '100vw',
@@ -535,7 +535,7 @@ export function QuizApp() {
                     
                     return (
                       <div
-                        key={`cat-${catIndex}-q-${qIndex}`}
+                        key={`${category}-${question.question}`}
                         className="absolute flex items-center justify-center"
                         style={{
                           position: 'absolute',
