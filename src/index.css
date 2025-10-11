@@ -76,77 +76,77 @@ All colors MUST be HSL.
     --green: 159 77% 38%;  /* #15AD70 */
     
     /* Category Color Scales */
-    /* connection */
+    /* connection - light pink bg with dark purple text */
     --connection-500: 346 86% 87%;  /* pink - lines/strip */
     --connection-900: 270 60% 30%;  /* dark purple - text */
     
-    /* fuck */
+    /* fuck - yellow bg with green text */
     --fuck-500: 47 100% 50%;  /* yellow - lines/strip */
-    --fuck-900: 26 94% 57%;  /* orange - text */
+    --fuck-900: 159 77% 38%;  /* green - text */
     
-    /* identity */
+    /* identity - light purple bg with dark purple text */
     --identity-500: 270 69% 78%;  /* light purple - lines/strip */
     --identity-900: 270 60% 30%;  /* dark purple - text */
     
-    /* party */
-    --party-500: 346 86% 87%;  /* pink - lines/strip */
-    --party-900: 47 100% 50%;  /* yellow - text */
+    /* party - yellow bg with wine red text */
+    --party-500: 47 100% 50%;  /* yellow - lines/strip */
+    --party-900: 351 82% 45%;  /* wine red darker - text */
     
-    /* wer aus der runde */
+    /* wer aus der runde - turquoise bg with dark purple text */
     --wer-aus-der-runde-500: 177 52% 62%;  /* turquoise - lines/strip */
     --wer-aus-der-runde-900: 270 60% 30%;  /* dark purple - text */
     
-    /* friends */
+    /* friends - light green bg with green text */
     --friends-500: 100 59% 59%;  /* light green - lines/strip */
-    --friends-900: 159 77% 38%;  /* green - text */
+    --friends-900: 159 77% 25%;  /* green darker - text */
     
-    /* self reflection */
+    /* self reflection - beige bg with wine red text */
     --self-reflection-500: 26 78% 85%;  /* beige - lines/strip */
-    --self-reflection-900: 8 71% 57%;  /* red - text */
+    --self-reflection-900: 351 82% 45%;  /* wine red darker - text */
     
-    /* family */
+    /* family - orange bg with dark purple text */
     --family-500: 26 94% 57%;  /* orange - lines/strip */
-    --family-900: 270 60% 30%;  /* dark purple - text */
+    --family-900: 270 60% 25%;  /* dark purple darker - text */
     
-    /* career */
+    /* career - light blue bg with dark purple text */
     --career-500: 201 71% 68%;  /* light blue - lines/strip */
-    --career-900: 26 94% 57%;  /* orange - text */
+    --career-900: 270 60% 30%;  /* dark purple - text */
     
-    /* travel */
-    --travel-500: 47 100% 50%;  /* yellow - lines/strip */
-    --travel-900: 177 52% 62%;  /* turquoise - text */
+    /* travel - beige bg with green text */
+    --travel-500: 26 78% 85%;  /* beige - lines/strip */
+    --travel-900: 159 77% 25%;  /* green darker - text */
     
-    /* health */
+    /* health - pink bg with green text */
     --health-500: 346 86% 87%;  /* pink - lines/strip */
-    --health-900: 159 77% 38%;  /* green - text */
+    --health-900: 159 77% 25%;  /* green darker - text */
     
-    /* money */
-    --money-500: 100 59% 59%;  /* light green - lines/strip */
-    --money-900: 351 82% 65%;  /* wine red - text */
+    /* money - dark purple bg with light green text */
+    --money-500: 270 60% 30%;  /* dark purple - lines/strip */
+    --money-900: 100 59% 80%;  /* light green lighter - text */
     
-    /* love */
+    /* love - light purple bg with wine red text */
     --love-500: 270 69% 78%;  /* light purple - lines/strip */
-    --love-900: 26 94% 57%;  /* orange - text */
+    --love-900: 351 82% 45%;  /* wine red darker - text */
     
-    /* hobby */
+    /* hobby - turquoise bg with dark purple text */
     --hobby-500: 177 52% 62%;  /* turquoise - lines/strip */
-    --hobby-900: 47 100% 50%;  /* yellow - text */
+    --hobby-900: 270 60% 25%;  /* dark purple darker - text */
     
-    /* dreams */
-    --dreams-500: 227 78% 70%;  /* blue - lines/strip */
-    --dreams-900: 270 60% 30%;  /* dark purple - text */
+    /* dreams - dark purple bg with pink text */
+    --dreams-500: 270 60% 30%;  /* dark purple - lines/strip */
+    --dreams-900: 346 86% 87%;  /* pink - text */
     
-    /* fear */
+    /* fear - green bg with beige text */
     --fear-500: 159 77% 38%;  /* green - lines/strip */
-    --fear-900: 346 86% 87%;  /* pink - text */
+    --fear-900: 26 78% 92%;  /* beige lighter - text */
     
-    /* wisdom */
+    /* wisdom - orange bg with dark purple text */
     --wisdom-500: 26 94% 57%;  /* orange - lines/strip */
-    --wisdom-900: 227 78% 70%;  /* blue - text */
+    --wisdom-900: 270 60% 25%;  /* dark purple darker - text */
     
-    /* future */
+    /* future - dark purple bg with yellow text */
     --future-500: 270 60% 30%;  /* dark purple - lines/strip */
-    --future-900: 100 59% 59%;  /* light green - text */
+    --future-900: 47 100% 65%;  /* yellow lighter - text */
     
     /* Category-specific colors for card backgrounds */
     /* Each category uses a 3-color system:
@@ -155,11 +155,11 @@ All colors MUST be HSL.
        - Text color for category text, question text (900)
     */
     
-    /* connection: orange bg, pink lines, dark purple text */
-    --quiz-connection-bg: 26 94% 57%;
-    --quiz-connection-bg-dark: 26 94% 57%;
+    /* connection: light pink bg, pink lines, dark purple text */
+    --quiz-connection-bg: 346 86% 87%;
+    --quiz-connection-bg-dark: 346 86% 87%;
     
-    /* fuck: yellow bg, yellow lines, orange text */
+    /* fuck: yellow bg, yellow lines, green text */
     --quiz-fuck-bg: 47 100% 50%;
     --quiz-fuck-bg-dark: 47 100% 50%;
     
@@ -167,7 +167,7 @@ All colors MUST be HSL.
     --quiz-identity-bg: 270 69% 78%;
     --quiz-identity-bg-dark: 270 69% 78%;
     
-    /* party: yellow bg, pink lines, yellow text */
+    /* party: yellow bg, yellow lines, wine red text */
     --quiz-party-bg: 47 100% 50%;
     --quiz-party-bg-dark: 47 100% 50%;
     
@@ -179,7 +179,7 @@ All colors MUST be HSL.
     --quiz-friends-bg: 100 59% 59%;
     --quiz-friends-bg-dark: 100 59% 59%;
     
-    /* self reflection: beige bg, beige lines, red text */
+    /* self reflection: beige bg, beige lines, wine red text */
     --quiz-self-reflection-bg: 26 78% 85%;
     --quiz-self-reflection-bg-dark: 26 78% 85%;
     
@@ -187,43 +187,43 @@ All colors MUST be HSL.
     --quiz-family-bg: 26 94% 57%;
     --quiz-family-bg-dark: 26 94% 57%;
     
-    /* career: light blue bg, light blue lines, orange text */
+    /* career: light blue bg, light blue lines, dark purple text */
     --quiz-career-bg: 201 71% 68%;
     --quiz-career-bg-dark: 201 71% 68%;
     
-    /* travel: turquoise bg, yellow lines, turquoise text */
-    --quiz-travel-bg: 177 52% 62%;
-    --quiz-travel-bg-dark: 177 52% 62%;
+    /* travel: beige bg, beige lines, green text */
+    --quiz-travel-bg: 26 78% 85%;
+    --quiz-travel-bg-dark: 26 78% 85%;
     
     /* health: pink bg, pink lines, green text */
     --quiz-health-bg: 346 86% 87%;
     --quiz-health-bg-dark: 346 86% 87%;
     
-    /* money: wine red bg, light green lines, wine red text */
-    --quiz-money-bg: 351 82% 65%;
-    --quiz-money-bg-dark: 351 82% 65%;
+    /* money: dark purple bg, dark purple lines, light green text */
+    --quiz-money-bg: 270 60% 30%;
+    --quiz-money-bg-dark: 270 60% 30%;
     
-    /* love: light purple bg, light purple lines, orange text */
+    /* love: light purple bg, light purple lines, wine red text */
     --quiz-love-bg: 270 69% 78%;
     --quiz-love-bg-dark: 270 69% 78%;
     
-    /* hobby: yellow bg, turquoise lines, yellow text */
-    --quiz-hobby-bg: 47 100% 50%;
-    --quiz-hobby-bg-dark: 47 100% 50%;
+    /* hobby: turquoise bg, turquoise lines, dark purple text */
+    --quiz-hobby-bg: 177 52% 62%;
+    --quiz-hobby-bg-dark: 177 52% 62%;
     
-    /* dreams: dark purple bg, blue lines, dark purple text */
+    /* dreams: dark purple bg, dark purple lines, pink text */
     --quiz-dreams-bg: 270 60% 30%;
     --quiz-dreams-bg-dark: 270 60% 30%;
     
-    /* fear: green bg, green lines, pink text */
+    /* fear: green bg, green lines, beige text */
     --quiz-fear-bg: 159 77% 38%;
     --quiz-fear-bg-dark: 159 77% 38%;
     
-    /* wisdom: orange bg, orange lines, blue text */
+    /* wisdom: orange bg, orange lines, dark purple text */
     --quiz-wisdom-bg: 26 94% 57%;
     --quiz-wisdom-bg-dark: 26 94% 57%;
     
-    /* future: dark purple bg, dark purple lines, light green text */
+    /* future: dark purple bg, dark purple lines, yellow text */
     --quiz-future-bg: 270 60% 30%;
     --quiz-future-bg-dark: 270 60% 30%;
     
