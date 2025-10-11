@@ -512,7 +512,7 @@ export function QuizApp() {
               
               // Calculate horizontal transform with proper spacing
               const baseCardSpacingPx = isMobile ? 16 : 32;
-              const cardWidthPx = window.innerWidth * 0.8; // 80vw in pixels
+              const cardWidthPx = window.innerWidth * 0.85; // 85vw in pixels
               const totalCardWidth = cardWidthPx + baseCardSpacingPx;
               const translateXPx = position * totalCardWidth;
               const dragTranslateXPx = isDragging && dragDirection === 'horizontal' ? dragOffsetX : 0;
@@ -540,7 +540,7 @@ export function QuizApp() {
                       position: 'absolute',
                       top: '50%',
                       left: '16px',
-                      width: '80vw',
+                      width: '85vw',
                       height: isMobile 
                         ? 'calc(100svh - 48px - 46px - 16px)' // header + footer + extra spacing
                         : 'calc(100svh - 64px - 46px)', // header + footer
