@@ -37,13 +37,13 @@ export function QuizApp() {
 
   const fetchQuestions = async () => {
     try {
-      // Call edge function to fetch from Google Sheets
-      const response = await fetch(
-        `https://knojozolqaumqtvoojef.supabase.co/functions/v1/fetch-questions`
-      );
+      // Google Sheets CSV export URL
+      const sheetId = '1-5NpzNwUiAsl_BPruHygyUbpO3LHkWr8E08fqkypOcU';
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
       
+      const response = await fetch(csvUrl);
       if (!response.ok) {
-        throw new Error('Failed to fetch questions');
+        throw new Error('Failed to fetch data from Google Sheets');
       }
       
       const csvText = await response.text();
@@ -52,27 +52,17 @@ export function QuizApp() {
       const lines = csvText.split('\n');
       const parsedQuestions: Question[] = [];
       
-      // Parse header to find column indices
-      const headerLine = lines[0].trim();
-      const headers = parseCSVLine(headerLine);
-      const questionColumnIndex = headers.findIndex(h => h.toLowerCase().includes('frage'));
-      const categoryColumnIndex = headers.findIndex(h => h.toLowerCase().includes('fahrer'));
-      
-      // Fallback to first two columns if headers not found
-      const qIndex = questionColumnIndex >= 0 ? questionColumnIndex : 0;
-      const cIndex = categoryColumnIndex >= 0 ? categoryColumnIndex : 1;
-      
-      for (let i = 1; i < lines.length; i++) { // Start from 1 to skip header
+      for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
         if (!line) continue; // Skip empty lines
         
         // Simple CSV parsing - handles quotes and commas
         const columns = parseCSVLine(line);
         
-        if (columns.length > Math.max(qIndex, cIndex) && columns[qIndex] && columns[cIndex]) {
+        if (columns.length >= 2 && columns[0] && columns[1]) {
           parsedQuestions.push({
-            question: columns[qIndex].trim(),
-            category: columns[cIndex].trim()
+            question: columns[0].trim(),
+            category: columns[1].trim()
           });
         }
       }
@@ -89,7 +79,7 @@ export function QuizApp() {
         setSelectedCategories(categories); // Start with all categories selected
       }
     } catch (error) {
-      console.error('Error fetching questions:', error);
+      console.error('Error fetching questions from Google Sheets:', error);
     } finally {
       // Ensure animation plays for minimum 2.5s from start
       const elapsed = Date.now() - loadStartTime;
