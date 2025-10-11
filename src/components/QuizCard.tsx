@@ -460,11 +460,11 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Define distinct position ranges for each cloud - more vertical stacking
+        // Define distinct position ranges for each cloud - more vertical stacking with horizontal offset
         const cloudPositions = [
-          { xMin: 30, xMax: 60, yMin: 15, yMax: 30 },  // Top area
-          { xMin: 25, xMax: 65, yMin: 40, yMax: 55 },  // Middle area
-          { xMin: 30, xMax: 60, yMin: 65, yMax: 80 }   // Bottom area
+          { xMin: 15, xMax: 45, yMin: 15, yMax: 30 },  // Top area - left side
+          { xMin: 45, xMax: 75, yMin: 40, yMax: 55 },  // Middle area - right side
+          { xMin: 20, xMax: 50, yMin: 65, yMax: 80 }   // Bottom area - left-center
         ];
         
         return (
@@ -655,7 +655,8 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
-  const shapeVariant = Math.floor(getRandomValue(questionText + 'cloudShape' + cloudIndex, 0, 3));
+  // Each cloud gets a specific shape based on its index
+  const shapeVariant = cloudIndex % 3;
   
   // Different cloud shapes using SVG paths
   const cloudShapes = [
