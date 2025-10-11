@@ -19,6 +19,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
+				'sans': ['Arial', 'Helvetica', 'sans-serif'],
 				'bricolage': ['Bricolage Grotesque', 'sans-serif'],
 			},
 			colors: {
