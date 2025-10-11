@@ -550,15 +550,15 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 3 starfish shapes per card
-        const numStarfish = 3;
+        // Generate 4-6 organic wavy lines per card to cover ~30%
+        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 4, 7));
         
         return (
           <>
-            {/* Starfish shapes */}
-            {Array.from({ length: numStarfish }).map((_, index) => (
+            {/* Organic wavy lines */}
+            {Array.from({ length: numLines }).map((_, index) => (
               <WavyLine 
-                key={`star-${index}`}
+                key={`wavy-${index}`}
                 questionText={question.question}
                 lineIndex={index}
               />
@@ -918,7 +918,7 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
   );
 }
 
-// Wavy Line component with random organic paths
+// Wavy Line component with thick organic flowing curves
 interface WavyLineProps {
   questionText: string;
   lineIndex: number;
@@ -935,66 +935,54 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish with positioning ensuring 60% visibility - unique per index
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex + 'unique', 15, 85);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex + 'unique', 15, 85);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex + 'unique', 15, 30);
-  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex + 'unique', 0.15, 0.5);
-  const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
+  // Random starting position - can start from anywhere including edges
+  const startX = getRandomValue(questionText + 'startX' + lineIndex, -20, 120);
+  const startY = getRandomValue(questionText + 'startY' + lineIndex, -20, 120);
   
-  let pathData = '';
+  // Thickness of the line
+  const thickness = getRandomValue(questionText + 'thickness' + lineIndex, 20, 45);
   
-  // Calculate all points around the starfish
-  const points = [];
+  // Number of curves in the path (3-5 curves for nice organic flow)
+  const numCurves = Math.floor(getRandomValue(questionText + 'curves' + lineIndex, 3, 6));
   
-  for (let i = 0; i < numArms * 2; i++) {
-    const angle = (360 / (numArms * 2)) * i;
-    const rad = (angle * Math.PI) / 180;
-    const isOuter = i % 2 === 0;
-    const radius = isOuter ? outerRadius : innerRadius;
+  let pathData = `M ${startX},${startY}`;
+  let currentX = startX;
+  let currentY = startY;
+  
+  // Create smooth flowing curves
+  for (let i = 0; i < numCurves; i++) {
+    // Control point 1 - determines the curve direction
+    const cp1X = currentX + getRandomValue(questionText + 'cp1x' + lineIndex + i, 15, 40);
+    const cp1Y = currentY + getRandomValue(questionText + 'cp1y' + lineIndex + i, -30, 30);
     
-    const x = centerX + Math.cos(rad) * radius;
-    const y = centerY + Math.sin(rad) * radius;
+    // Control point 2 - creates the S-curve effect
+    const cp2X = cp1X + getRandomValue(questionText + 'cp2x' + lineIndex + i, 10, 35);
+    const cp2Y = cp1Y + getRandomValue(questionText + 'cp2y' + lineIndex + i, -25, 25);
     
-    points.push({ x, y, isOuter });
-  }
-  
-  // Start the path
-  pathData = `M ${points[0].x},${points[0].y}`;
-  
-  // Create smooth curves between all points with rounded transitions
-  for (let i = 0; i < points.length; i++) {
-    const next = points[(i + 1) % points.length];
-    const nextNext = points[(i + 2) % points.length];
-    
-    // Use cubic bezier for smoother, rounder curves
-    const cp1X = next.x;
-    const cp1Y = next.y;
-    const cp2X = next.x;
-    const cp2Y = next.y;
-    const endX = (next.x + nextNext.x) / 2;
-    const endY = (next.y + nextNext.y) / 2;
+    // End point - continues the flow
+    const endX = cp2X + getRandomValue(questionText + 'endx' + lineIndex + i, 15, 35);
+    const endY = cp2Y + getRandomValue(questionText + 'endy' + lineIndex + i, -20, 20);
     
     pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
+    
+    currentX = endX;
+    currentY = endY;
   }
   
-  // Close the path
-  pathData += ' Z';
-  
   return (
-    <div className="absolute inset-0 z-0 overflow-visible">
+    <div className="absolute inset-0 z-0 overflow-visible pointer-events-none">
       <svg 
         className="absolute" 
-        width="250%" 
-        height="250%" 
-        viewBox="-75 -75 250 250"
+        width="200%" 
+        height="200%" 
+        viewBox="-50 -50 200 200"
         preserveAspectRatio="none"
-        style={{ overflow: 'visible', left: '-75%', top: '-75%' }}
+        style={{ overflow: 'visible', left: '-50%', top: '-50%' }}
       >
         <path 
           d={pathData}
           stroke="#F1A8C6"
-          strokeWidth="5"
+          strokeWidth={thickness}
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
