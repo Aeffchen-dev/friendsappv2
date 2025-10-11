@@ -568,6 +568,10 @@ export function QuizApp() {
               const category = displayCategories[catIndex];
               
               const categoryQuestions = questionsByCategory[category] || [];
+              
+              // Skip if no questions in category
+              if (categoryQuestions.length === 0) return null;
+              
               const isCategoryActive = catPosition === 0;
               
               // Calculate horizontal transform - equal spacing between all cards (32px, 64px during slide)
@@ -624,6 +628,10 @@ export function QuizApp() {
                     const currentQuestionIndex = questionIndicesByCategory[category] || 0;
                     const qIndex = (currentQuestionIndex + qPosition + categoryQuestions.length) % categoryQuestions.length;
                     const question = categoryQuestions[qIndex];
+                    
+                    // Safety check: skip if question doesn't exist
+                    if (!question) return null;
+                    
                     const isActive = isCategoryActive && qPosition === 0;
                     
                     // Calculate vertical transform - fixed spacing between cards (32px)
