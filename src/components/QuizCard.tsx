@@ -774,6 +774,8 @@ interface SmileyProps {
 }
 
 function Smiley({ questionText, posX, posY }: SmileyProps) {
+  const [isWinking, setIsWinking] = useState(false);
+  
   const getRandomValue = (seed: string, min: number, max: number) => {
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
@@ -783,6 +785,16 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
     const normalized = Math.abs(hash % 1000) / 1000;
     return min + normalized * (max - min);
   };
+  
+  // Random winking effect
+  useEffect(() => {
+    const winkInterval = setInterval(() => {
+      setIsWinking(true);
+      setTimeout(() => setIsWinking(false), 200);
+    }, 8000 + Math.random() * 12000); // Wink every 8-20 seconds
+
+    return () => clearInterval(winkInterval);
+  }, []);
   
   const rotation = getRandomValue(questionText + 'smileyRot', -15, 15);
   const scale = getRandomValue(questionText + 'smileyScale', 0.5, 1.6);
@@ -836,13 +848,25 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
           r="45" 
           fill="#EFFF5B"
         />
-        {/* Left eye */}
-        <circle 
-          cx={50 - eyeDistance} 
-          cy={eyeYPos}
-          r={eyeSize}
-          fill="#21245B"
-        />
+        {/* Left eye - winking */}
+        {isWinking ? (
+          <line 
+            x1={50 - eyeDistance - eyeSize} 
+            y1={eyeYPos}
+            x2={50 - eyeDistance + eyeSize}
+            y2={eyeYPos}
+            stroke="#21245B"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        ) : (
+          <circle 
+            cx={50 - eyeDistance} 
+            cy={eyeYPos}
+            r={eyeSize}
+            fill="#21245B"
+          />
+        )}
         {/* Right eye */}
         <circle 
           cx={50 + eyeDistance}
