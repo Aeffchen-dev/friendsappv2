@@ -407,7 +407,7 @@ function Eye({ mousePosition, pupilDirection, isBlinking }: EyeProps) {
       }}
     >
       <div
-        className="absolute bg-black rounded-full transition-all duration-200"
+        className="absolute bg-black rounded-full transition-all duration-75"
         style={{
           width: '16px',
           height: '16px',
