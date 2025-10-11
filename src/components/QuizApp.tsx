@@ -376,7 +376,7 @@ export function QuizApp() {
               
               return (
                 <div
-                  key={`card-${index}`}
+                  key={`${questions[index].question}-${position}`}
                   className="absolute"
                   style={{
                     transform: `translateX(calc(${baseTranslate + dragTranslate}% + ${baseGap}px)) scale(${scale})`,
