@@ -349,8 +349,8 @@ export function QuizApp() {
           </div>
         ) : questions.length > 0 ? (
           <div className="relative w-full h-full flex justify-center items-center">
-            {/* Render previous, current, and next cards with looping */}
-            {[currentIndex - 1, currentIndex, currentIndex + 1].map((rawIndex) => {
+            {/* Render more cards to keep them visible during transitions */}
+            {[currentIndex - 2, currentIndex - 1, currentIndex, currentIndex + 1, currentIndex + 2].map((rawIndex) => {
               const index = (rawIndex + questions.length) % questions.length; // Handle wrap-around
               if (questions.length === 0) return null;
               
