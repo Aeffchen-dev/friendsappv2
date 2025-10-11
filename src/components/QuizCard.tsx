@@ -14,9 +14,10 @@ interface QuizCardProps {
   onBgColorChange?: (bgClass: string) => void;
   disableSwipe?: boolean;
   useContainerSize?: boolean;
+  onPrevSlide?: () => void;
 }
 
-export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '', onBgColorChange, disableSwipe = false, useContainerSize = false }: QuizCardProps) {
+export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass = '', onBgColorChange, disableSwipe = false, useContainerSize = false, onPrevSlide }: QuizCardProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [mouseStart, setMouseStart] = useState<number | null>(null);
@@ -604,9 +605,17 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
-      {/* Category Strip */}
-      <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10`}>
-        <div className="transform -rotate-90 whitespace-nowrap">
+      {/* Category Strip - clickable to go to prev slide */}
+      <div 
+        className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black z-10 ${onPrevSlide ? 'cursor-pointer' : ''}`}
+        onClick={() => {
+          if (onPrevSlide) {
+            triggerHaptic();
+            onPrevSlide();
+          }
+        }}
+      >
+        <div className="transform -rotate-90 whitespace-nowrap pointer-events-none">
           {Array(20).fill(question.category).map((cat, index) => (
             <span 
               key={`${cat}-${index}`} 

@@ -760,9 +760,9 @@ export function QuizApp() {
                     let baseTranslateY;
                     
                     if (qPosition === -1) {
-                      // Move previous card up by 70vh + header offset + 48px
+                      // Move previous card up by 70vh + header offset + 48px mobile, 64px desktop
                       const isMobile = window.innerWidth < 768;
-                      const offsetPx = isMobile ? 112 : 128; // 64+16+16+16 or 80+16+16+16
+                      const offsetPx = isMobile ? 112 : 144; // 64+16+16+16 or 80+16+16+16+16
                       const offsetVh = (offsetPx / window.innerHeight) * 100;
                       baseTranslateY = -(70 + offsetVh);
                     } else if (qPosition === 1) {
@@ -862,6 +862,21 @@ export function QuizApp() {
                           animationClass=""
                           onBgColorChange={isActive ? handleBgColorChange : undefined}
                           disableSwipe={true}
+                          onPrevSlide={isActive ? () => {
+                            // Click on category strip - go to prev question
+                            const currentCategory = displayCategories[currentCategoryIndex];
+                            const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
+                            setIsAnimating(true);
+                            setDragDirection('vertical');
+                            setQuestionIndicesByCategory(prev => ({
+                              ...prev,
+                              [currentCategory]: ((prev[currentCategory] || 0) - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length
+                            }));
+                            setTimeout(() => {
+                              setIsAnimating(false);
+                              setDragDirection(null);
+                            }, 350);
+                          } : undefined}
                         />
                       </div>
                     );
