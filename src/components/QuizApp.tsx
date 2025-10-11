@@ -456,7 +456,7 @@ export function QuizApp() {
                     const isActive = isCategoryActive && qPosition === 0;
                     
                     // Calculate vertical transform - fixed spacing between cards
-                    const cardSpacingPx = 16; // 16px gap between cards
+                    const cardSpacingPx = 8; // 8px gap between cards
                     
                     // Move previous slide further up to be completely out of viewport
                     // Position 2 (second next) moves together with position 1 (next)
