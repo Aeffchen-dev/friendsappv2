@@ -542,7 +542,7 @@ export function QuizApp() {
                       left: '16px',
                       width: '85vw',
                       height: isMobile 
-                        ? 'calc(100svh - 48px - 46px - 16px)' // header + footer + extra spacing
+                        ? 'calc(100svh - 48px - 46px - 32px)' // header + footer + spacing
                         : 'calc(100svh - 64px - 46px)', // header + footer
                       transform: 'translateY(-50%)'
                     }}
