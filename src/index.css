@@ -181,64 +181,65 @@ All colors MUST be HSL.
     --future-900: 199 89% 10%;
     
     /* Category-specific colors for card backgrounds and text */
-    --quiz-connection-bg: 21 100% 46%;  /* #eb5200 */
-    --quiz-connection-text: 0 0% 98%;
-    --quiz-fuck-bg: 6 100% 96%;  /* #ffecea */
-    --quiz-fuck-text: 0 0% 0%;
-    --quiz-identity-bg: 229 100% 88%;  /* #c2cdff */
-    --quiz-identity-text: 0 0% 0%;
-    --quiz-party-bg: 236 37% 41%;  /* #424790 */
-    --quiz-party-text: 0 0% 98%;
-    --quiz-wer-aus-der-runde-bg: 21 100% 46%;  /* #eb5200 */
-    --quiz-wer-aus-der-runde-text: 0 0% 98%;
+    /* Using -400 for card bg, -500 for category strip (darker), -900 for text */
+    --quiz-connection-bg: 339 99% 85%;  /* connection-400 */
+    --quiz-connection-text: 339 58% 15%;  /* connection-900 */
+    --quiz-fuck-bg: 18 99% 68%;  /* fuck-400 */
+    --quiz-fuck-text: 18 59% 10%;  /* fuck-900 */
+    --quiz-identity-bg: 150 57% 55%;  /* identity-400 */
+    --quiz-identity-text: 150 97% 7%;  /* identity-900 */
+    --quiz-party-bg: 58 100% 75%;  /* party-400 */
+    --quiz-party-text: 58 60% 9%;  /* party-900 */
+    --quiz-wer-aus-der-runde-bg: 199 97% 52%;  /* wer-aus-der-runde-400 */
+    --quiz-wer-aus-der-runde-text: 199 97% 6%;  /* wer-aus-der-runde-900 */
     
-    /* Additional categories with proper colors */
-    --quiz-friends-bg: 120 100% 50%;
-    --quiz-friends-text: 0 0% 0%;
-    --quiz-self-reflection-bg: 195 100% 50%;
-    --quiz-self-reflection-text: 0 0% 0%;
-    --quiz-family-bg: 30 100% 70%;
-    --quiz-family-text: 0 0% 0%;
-    --quiz-career-bg: 35 100% 62%;
-    --quiz-career-text: 0 0% 0%;
-    --quiz-travel-bg: 92 100% 83%;
-    --quiz-travel-text: 0 0% 0%;
-    --quiz-health-bg: 330 84% 67%;
-    --quiz-health-text: 0 0% 98%;
-    --quiz-money-bg: 45 95% 55%;
-    --quiz-money-text: 0 0% 0%;
-    --quiz-love-bg: 350 85% 60%;
-    --quiz-love-text: 0 0% 98%;
-    --quiz-hobby-bg: 25 60% 45%;
-    --quiz-hobby-text: 0 0% 98%;
-    --quiz-dreams-bg: 270 75% 65%;
-    --quiz-dreams-text: 0 0% 98%;
-    --quiz-fear-bg: 210 10% 40%;
-    --quiz-fear-text: 0 0% 98%;
-    --quiz-wisdom-bg: 239 84% 67%;
-    --quiz-wisdom-text: 0 0% 98%;
-    --quiz-future-bg: 199 89% 48%;
-    --quiz-future-text: 0 0% 98%;
+    /* Additional categories */
+    --quiz-friends-bg: 120 100% 65%;  /* friends-400 */
+    --quiz-friends-text: 120 100% 10%;  /* friends-900 */
+    --quiz-self-reflection-bg: 195 100% 65%;  /* self-reflection-400 */
+    --quiz-self-reflection-text: 195 100% 10%;  /* self-reflection-900 */
+    --quiz-family-bg: 30 100% 80%;  /* family-400 */
+    --quiz-family-text: 30 100% 15%;  /* family-900 */
+    --quiz-career-bg: 35 100% 75%;  /* career-400 */
+    --quiz-career-text: 35 100% 12%;  /* career-900 */
+    --quiz-travel-bg: 92 100% 88%;  /* travel-400 */
+    --quiz-travel-text: 92 100% 18%;  /* travel-900 */
+    --quiz-health-bg: 330 84% 78%;  /* health-400 */
+    --quiz-health-text: 330 84% 15%;  /* health-900 */
+    --quiz-money-bg: 45 95% 70%;  /* money-400 */
+    --quiz-money-text: 45 95% 12%;  /* money-900 */
+    --quiz-love-bg: 350 85% 72%;  /* love-400 */
+    --quiz-love-text: 350 85% 13%;  /* love-900 */
+    --quiz-hobby-bg: 25 60% 60%;  /* hobby-400 */
+    --quiz-hobby-text: 25 60% 9%;  /* hobby-900 */
+    --quiz-dreams-bg: 270 75% 78%;  /* dreams-400 */
+    --quiz-dreams-text: 270 75% 14%;  /* dreams-900 */
+    --quiz-fear-bg: 210 10% 55%;  /* fear-400 */
+    --quiz-fear-text: 210 10% 8%;  /* fear-900 */
+    --quiz-wisdom-bg: 239 84% 78%;  /* wisdom-400 */
+    --quiz-wisdom-text: 239 84% 15%;  /* wisdom-900 */
+    --quiz-future-bg: 199 89% 60%;  /* future-400 */
+    --quiz-future-text: 199 89% 10%;  /* future-900 */
     
-    /* Darker background colors (5% darker than card background) */
-    --quiz-connection-bg-dark: 335 71% 80%;  /* #f1a8c6 */
-    --quiz-fuck-bg-dark: 21 100% 46%;  /* #eb5200 */
-    --quiz-identity-bg-dark: 6 100% 96%;  /* #ffecea */
-    --quiz-party-bg-dark: 6 100% 96%;  /* #ffecea */
-    --quiz-wer-aus-der-runde-bg-dark: 229 100% 88%;  /* #c2cdff */
-    --quiz-friends-bg-dark: 120 100% 45%;
-    --quiz-self-reflection-bg-dark: 195 100% 45%;
-    --quiz-family-bg-dark: 30 100% 65%;
-    --quiz-career-bg-dark: 35 100% 57%;
-    --quiz-travel-bg-dark: 92 100% 78%;
-    --quiz-health-bg-dark: 330 84% 62%;
-    --quiz-money-bg-dark: 45 95% 50%;
-    --quiz-love-bg-dark: 350 85% 55%;
-    --quiz-hobby-bg-dark: 25 60% 40%;
-    --quiz-dreams-bg-dark: 270 75% 60%;
-    --quiz-fear-bg-dark: 210 10% 35%;
-    --quiz-wisdom-bg-dark: 239 84% 62%;
-    --quiz-future-bg-dark: 199 89% 43%;
+    /* Category strip colors (one shade darker = -500) */
+    --quiz-connection-bg-dark: 339 99% 73%;  /* connection-500 */
+    --quiz-fuck-bg-dark: 18 99% 48%;  /* fuck-500 */
+    --quiz-identity-bg-dark: 150 57% 35%;  /* identity-500 */
+    --quiz-party-bg-dark: 58 100% 46%;  /* party-500 */
+    --quiz-wer-aus-der-runde-bg-dark: 199 97% 32%;  /* wer-aus-der-runde-500 */
+    --quiz-friends-bg-dark: 120 100% 42%;  /* friends-500 */
+    --quiz-self-reflection-bg-dark: 195 100% 42%;  /* self-reflection-500 */
+    --quiz-family-bg-dark: 30 100% 60%;  /* family-500 */
+    --quiz-career-bg-dark: 35 100% 54%;  /* career-500 */
+    --quiz-travel-bg-dark: 92 100% 72%;  /* travel-500 */
+    --quiz-health-bg-dark: 330 84% 58%;  /* health-500 */
+    --quiz-money-bg-dark: 45 95% 47%;  /* money-500 */
+    --quiz-love-bg-dark: 350 85% 52%;  /* love-500 */
+    --quiz-hobby-bg-dark: 25 60% 38%;  /* hobby-500 */
+    --quiz-dreams-bg-dark: 270 75% 56%;  /* dreams-500 */
+    --quiz-fear-bg-dark: 210 10% 34%;  /* fear-500 */
+    --quiz-wisdom-bg-dark: 239 84% 58%;  /* wisdom-500 */
+    --quiz-future-bg-dark: 199 89% 41%;  /* future-500 */
     --quiz-category-bg-dark: 290 100% 80%;
     
     /* Gradients */
