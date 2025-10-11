@@ -174,25 +174,33 @@ export function QuizApp() {
     setIsAnimating(true);
     
     if (shouldGoNext) {
-      // Animate to complete the left swipe
-      setDragOffset(-window.innerWidth);
+      // Update index immediately and compensate with offset
+      setLogoSqueezeLeft(true);
+      setCurrentIndex(prev => (prev + 1) % questions.length);
+      setDragOffset(window.innerWidth); // Start new card from right
+      
+      // Animate to center
       setTimeout(() => {
-        setLogoSqueezeLeft(true);
-        setCurrentIndex(prev => (prev + 1) % questions.length); // Loop to first
         setDragOffset(0);
-        setIsAnimating(false);
-        setTimeout(() => setLogoSqueezeLeft(false), 300);
-      }, 300);
+        setTimeout(() => {
+          setIsAnimating(false);
+          setLogoSqueezeLeft(false);
+        }, 300);
+      }, 16);
     } else if (shouldGoPrev) {
-      // Animate to complete the right swipe
-      setDragOffset(window.innerWidth);
+      // Update index immediately and compensate with offset
+      setLogoSqueezeRight(true);
+      setCurrentIndex(prev => (prev - 1 + questions.length) % questions.length);
+      setDragOffset(-window.innerWidth); // Start new card from left
+      
+      // Animate to center
       setTimeout(() => {
-        setLogoSqueezeRight(true);
-        setCurrentIndex(prev => (prev - 1 + questions.length) % questions.length); // Loop to last
         setDragOffset(0);
-        setIsAnimating(false);
-        setTimeout(() => setLogoSqueezeRight(false), 300);
-      }, 300);
+        setTimeout(() => {
+          setIsAnimating(false);
+          setLogoSqueezeRight(false);
+        }, 300);
+      }, 16);
     } else {
       // Snap back with momentum
       const momentumOffset = velocity * 100;
