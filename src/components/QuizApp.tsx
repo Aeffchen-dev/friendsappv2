@@ -472,15 +472,17 @@ export function QuizApp() {
                     const totalCardHeight = cardHeight + vCardSpacingPx; // Total height including spacing
                     const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
                     
-                    // Calculate position - show next card's top at 90vh (10vh visible)
+                    // Calculate position - show next card with 32px margin
                     let baseTranslateY;
                     
                     if (qPosition === -1) {
                       // Move previous card completely out of viewport to the top
                       baseTranslateY = -110; // Moves card fully above viewport
                     } else if (qPosition === 1) {
-                      // Next card's top at 90vh (since top offset is 10vh, translate by 80vh)
-                      baseTranslateY = 80;
+                      // Next card positioned with exactly 32px gap after active card
+                      // Active card height (80vh) + 32px gap
+                      const gapVh = (32 / window.innerHeight) * 100;
+                      baseTranslateY = 80 + gapVh;
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
                     }
@@ -497,7 +499,7 @@ export function QuizApp() {
                         className="absolute flex items-center justify-center"
                         style={{
                           position: 'absolute',
-                          top: '16px',
+                          top: 'calc(64px + 16px)',
                           left: '16px',
                           width: '80vw',
                           height: '80vh',
