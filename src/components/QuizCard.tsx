@@ -126,41 +126,41 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       case 'connection':
         return {
           bg: 'bg-quiz-connection-bg',
-          text: 'text-connection-900',
-          stripeBg: 'bg-connection-500',
-          stripeText: 'text-connection-900',
+          text: 'text-quiz-connection-text',
+          stripeBg: 'bg-quiz-connection-bg',
+          stripeText: 'text-quiz-connection-text',
           bgDark: 'bg-quiz-connection-bg-dark'
         };
       case 'fuck':
         return {
           bg: 'bg-quiz-fuck-bg',
-          text: 'text-fuck-900',
-          stripeBg: 'bg-fuck-500',
-          stripeText: 'text-fuck-900',
+          text: 'text-quiz-fuck-text',
+          stripeBg: 'bg-quiz-fuck-bg',
+          stripeText: 'text-quiz-fuck-text',
           bgDark: 'bg-quiz-fuck-bg-dark'
         };
       case 'identity':
         return {
           bg: 'bg-quiz-identity-bg',
-          text: 'text-identity-900',
-          stripeBg: 'bg-identity-500',
-          stripeText: 'text-identity-900',
+          text: 'text-quiz-identity-text',
+          stripeBg: 'bg-quiz-identity-bg',
+          stripeText: 'text-quiz-identity-text',
           bgDark: 'bg-quiz-identity-bg-dark'
         };
       case 'party':
         return {
           bg: 'bg-quiz-party-bg',
-          text: 'text-party-900',
-          stripeBg: 'bg-party-500',
-          stripeText: 'text-party-900',
+          text: 'text-quiz-party-text',
+          stripeBg: 'bg-quiz-party-bg',
+          stripeText: 'text-quiz-party-text',
           bgDark: 'bg-quiz-party-bg-dark'
         };
       case 'wer aus der runde':
         return {
           bg: 'bg-quiz-wer-aus-der-runde-bg',
-          text: 'text-wer-aus-der-runde-900',
-          stripeBg: 'bg-wer-aus-der-runde-500',
-          stripeText: 'text-wer-aus-der-runde-900',
+          text: 'text-quiz-wer-aus-der-runde-text',
+          stripeBg: 'bg-quiz-wer-aus-der-runde-bg',
+          stripeText: 'text-quiz-wer-aus-der-runde-text',
           bgDark: 'bg-quiz-wer-aus-der-runde-bg-dark'
         };
       case 'friends':
@@ -369,10 +369,11 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
 
   return (
     <div 
-      className={`relative h-full ${categoryColors.bg} rounded-2xl overflow-hidden select-none border border-black ${animationClass}`}
+      className={`relative h-full ${categoryColors.bg} rounded-none overflow-hidden select-none ${animationClass}`}
       style={{
         width: 'calc(100vw - 32px)',
-        boxShadow: '0 0 12px 4px rgba(30, 30, 30, 0.1)',
+        border: '6px solid #000',
+        boxShadow: '12px 12px 0 0 rgba(0, 0, 0, 0.8)',
         height: 'calc(100svh - 64px - 20px - 16px - 32px)',
         maxHeight: '100%',
         transition: 'height 0.2s ease-out'
@@ -406,12 +407,12 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       )}
 
       {/* Category Strip */}
-      <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r border-black`}>
+      <div className={`absolute left-0 top-0 h-full w-8 ${categoryColors.stripeBg} flex items-center justify-center border-r-4 border-black`}>
         <div className="transform -rotate-90 whitespace-nowrap">
           {Array(20).fill(question.category).map((cat, index) => (
             <span 
               key={`${cat}-${index}`} 
-              className={`${categoryColors.stripeText} font-medium text-sm tracking-wide uppercase`} 
+              className={`${categoryColors.stripeText} font-bold text-sm tracking-wider uppercase`} 
               style={{ 
                 marginRight: index < 19 ? '8px' : '0'
               }}
@@ -428,8 +429,13 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         <div ref={containerRef} className="flex-1 flex items-start justify-start text-left w-full pt-16">
           <h1 
             ref={textRef}
-            className={`text-3xl md:text-4xl lg:text-[2.625rem] font-bricolage font-bold ${categoryColors.text} leading-[1.2] lg:leading-[1.1] w-full max-w-full`}
-            style={{ hyphens: 'manual', overflowWrap: 'normal', wordBreak: 'normal' }}
+            className={`text-4xl md:text-5xl lg:text-[3rem] font-bricolage font-black ${categoryColors.text} leading-[1.1] lg:leading-[1] w-full max-w-full tracking-tight`}
+            style={{ 
+              hyphens: 'manual', 
+              overflowWrap: 'normal', 
+              wordBreak: 'normal',
+              textTransform: 'uppercase'
+            }}
           >
             {processedText.length > 0 ? processedText : question.question}
           </h1>
