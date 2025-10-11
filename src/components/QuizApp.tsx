@@ -480,8 +480,8 @@ export function QuizApp() {
                       // Move previous card completely out of viewport to the top
                       baseTranslateY = -110; // Moves card fully above viewport
                     } else if (qPosition === 1 && isPortraitMobile) {
-                      // Show exactly 10vh of the next card (top offset 10vh + translate 90vh = 100vh)
-                      baseTranslateY = 90;
+                      // Show 10vh of the next card (top 10vh + translate 80vh = top at 90vh)
+                      baseTranslateY = 80;
                     } else {
                       baseTranslateY = qPosition * cardSpacingVh;
                     }
@@ -491,6 +491,7 @@ export function QuizApp() {
 
                     // Vertical scale - all cards at scale 1
                     const scale = 1;
+                    const isDesktop = window.innerWidth >= 1024;
                     
                     return (
                       <div
@@ -499,8 +500,8 @@ export function QuizApp() {
                         style={{
                           position: 'absolute',
                           top: '10vh',
-                          left: '50%',
-                          transform: `translateX(-50%) translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
+                          left: isDesktop && isActive ? '16px' : '50%',
+                          transform: `${(isDesktop && isActive) ? '' : 'translateX(-50%) '}translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           width: '80vw',
                           maxWidth: '570px',
                           height: '80vh',
