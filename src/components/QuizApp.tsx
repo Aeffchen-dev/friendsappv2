@@ -464,9 +464,9 @@ export function QuizApp() {
                     if (qPosition === -1) {
                       baseTranslateY = -120;
                     } else if (qPosition === 1) {
-                      baseTranslateY = 70; // Closer to active card
+                      baseTranslateY = 55; // Much closer to active card
                     } else if (qPosition === 2) {
-                      baseTranslateY = 70 + 4; // Same offset as position 1 plus small gap
+                      baseTranslateY = 55 + 4; // Same offset as position 1 plus small gap
                     } else {
                       baseTranslateY = qPosition * cardHeight;
                     }
