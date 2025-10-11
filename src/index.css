@@ -369,12 +369,12 @@ All colors MUST be HSL.
   }
   
   .logo-squeeze-left {
-    animation: logo-squeeze-left 350ms ease-in-out;
+    animation: logo-squeeze-left 400ms ease-in-out;
     transform-origin: right;
   }
   
   .logo-squeeze-right {
-    animation: logo-squeeze-right 350ms ease-in-out;
+    animation: logo-squeeze-right 400ms ease-in-out;
     transform-origin: left;
   }
   
