@@ -670,7 +670,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   
   return (
     <div 
-      className="absolute z-0 opacity-30"
+      className="absolute z-0"
       style={{
         left: `${posX}%`,
         top: `${posY}%`,
