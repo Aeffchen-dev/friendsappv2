@@ -168,8 +168,8 @@ All colors MUST be HSL.
     height: 100vh;
     height: 100svh;
     background-color: #000000;
-    font-family: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-weight: 500;
+    font-family: Arial, sans-serif;
+    font-weight: 400;
   }
 }
 
