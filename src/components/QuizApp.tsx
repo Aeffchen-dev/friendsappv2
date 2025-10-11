@@ -517,6 +517,22 @@ export function QuizApp() {
               const translateXPx = position * totalCardWidth;
               const dragTranslateXPx = isDragging && dragDirection === 'horizontal' ? dragOffsetX : 0;
               
+              // Rotation - rotate towards outside during transition
+              let rotateZ = 0;
+              if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
+                if (isActive) {
+                  // Active card rotates in direction of swipe
+                  const dragProgress = isDragging ? dragOffsetX / window.innerWidth : 0;
+                  rotateZ = dragProgress * 3; // Max ±3deg based on drag
+                } else if (position === -1) {
+                  // Prev card rotates counter-clockwise
+                  rotateZ = -3;
+                } else if (position === 1) {
+                  // Next card rotates clockwise
+                  rotateZ = 3;
+                }
+              }
+              
               const shouldHide = Math.abs(position) === 2 && (isDragging || isAnimating);
               
               return (
@@ -526,7 +542,7 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(${translateXPx + dragTranslateXPx}px)`,
+                    transform: `translateX(${translateXPx + dragTranslateXPx}px) rotateZ(${rotateZ}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                     animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isActive ? 'auto' : 'none',
