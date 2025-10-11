@@ -120,7 +120,7 @@ export function CategorySelector({
               return (
                 <div 
                   key={category}
-                  className="flex items-center justify-between py-3 pr-3 pl-6 bg-[#161616] cursor-pointer relative overflow-hidden"
+                  className="flex items-center justify-between py-3 pr-3 pl-8 bg-[#161616] cursor-pointer relative overflow-hidden"
                   style={{ borderRadius: '4px 999px 999px 4px' }}
                   onClick={() => handleCategoryToggle(category)}
                 >
