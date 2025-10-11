@@ -394,7 +394,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
     <div 
       className={`relative h-full ${categoryColors.bg} rounded-2xl overflow-hidden select-none border border-black ${animationClass}`}
       style={{
-        width: 'calc(100vw - 32px)',
+        width: window.innerWidth >= 768 ? 'calc(100vw - 32px)' : 'calc(100vw - 16px)',
         boxShadow: '0 0 12px 4px rgba(30, 30, 30, 0.1)',
         height: 'calc(100svh - 64px - 20px - 16px - 64px)',
         maxHeight: '100%',

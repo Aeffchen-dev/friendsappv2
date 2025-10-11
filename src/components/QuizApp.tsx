@@ -502,8 +502,8 @@ export function QuizApp() {
                         style={{
                           position: 'absolute',
                           top: '64px',
-                          left: '16px',
-                          width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : '80vw',
+                          left: window.innerWidth >= 768 ? '16px' : '8px',
+                          width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
                           height: '80vh',
                           transform: `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
