@@ -404,18 +404,18 @@ export function QuizApp() {
                 : 0;
               
               if (isCategoryActive) {
-                // Active card: scale from 1 to 0.8
+                // Active card: scale from 1 to 0.9
                 scaleH = isDragging && dragDirection === 'horizontal'
-                  ? 1 - (dragProgress * 0.2) // Interpolate 1 → 0.8
+                  ? 1 - (dragProgress * 0.1) // Interpolate 1 → 0.9
                   : 1;
               } else if (catPosition === -1 || catPosition === 1) {
-                // Next/prev cards: scale from 0.8 to 1
+                // Next/prev cards: scale from 0.9 to 1
                 scaleH = isDragging && dragDirection === 'horizontal'
-                  ? 0.8 + (dragProgress * 0.2) // Interpolate 0.8 → 1
-                  : 0.8;
+                  ? 0.9 + (dragProgress * 0.1) // Interpolate 0.9 → 1
+                  : 0.9;
               } else {
-                // Cards further away stay at 0.8
-                scaleH = 0.8;
+                // Cards further away stay at 0.9
+                scaleH = 0.9;
               }
               
               // Horizontal rotation - rotate towards outside during transition
@@ -465,19 +465,19 @@ export function QuizApp() {
                     // Vertical scale
                     let scale = 1;
                     if (isActive) {
-                      // Active card stays at scale 1 normally, scales to 0.8 during transition
+                      // Active card stays at scale 1 normally, scales to 0.9 during transition
                       if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
-                        scale = 0.8;
+                        scale = 0.9;
                       }
                     } else if (qPosition === 1) {
-                      // Next card stays at 0.8, scales to 1 during transition
-                      scale = 0.8;
+                      // Next card stays at 0.9, scales to 1 during transition
+                      scale = 0.9;
                       if ((isDragging && dragDirection === 'vertical' && isCategoryActive) || (isAnimating && dragDirection === 'vertical' && isCategoryActive)) {
                         scale = 1;
                       }
                     } else {
-                      // Cards further away stay at 0.8
-                      scale = 0.8;
+                      // Cards further away stay at 0.9
+                      scale = 0.9;
                     }
                     
                     return (
