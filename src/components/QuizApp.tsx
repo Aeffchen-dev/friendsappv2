@@ -455,21 +455,21 @@ export function QuizApp() {
                     const question = categoryQuestions[qIndex];
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Calculate vertical transform - 10% of next card visible + 8px gap
-                    const cardHeight = 80; // 80vh card
-                    const gapOffsetV = qPosition * 8; // 8px gap between cards
+                    // Calculate vertical transform - same as horizontal spacing
+                    const cardHeight = 88; // 88vh card (matches horizontal spacing)
+                    const gapOffsetV = qPosition * 4; // 4px gap between cards (matches horizontal)
                     // Move previous slide further up to be completely out of viewport
                     // Position 2 (second next) moves together with position 1 (next)
                     let baseTranslateY;
                     if (qPosition === -1) {
                       baseTranslateY = -120;
                     } else if (qPosition === 2) {
-                      baseTranslateY = cardHeight + 8; // Same offset as position 1 plus small gap
+                      baseTranslateY = cardHeight + 4; // Same offset as position 1 plus small gap
                     } else {
                       baseTranslateY = qPosition * cardHeight;
                     }
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
-                    const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 8 : 0;
+                    const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 4 : 0;
                     
                     // Vertical scale - all cards at scale 1
                     const scale = 1;
