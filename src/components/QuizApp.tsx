@@ -389,12 +389,12 @@ export function QuizApp() {
               const categoryQuestions = questionsByCategory[category] || [];
               const isCategoryActive = catPosition === 0;
               
-              // Calculate horizontal transform - spacing so only category strip is visible
-              const cardSpacing = 95; // Increased spacing so only strip (~5vw) is visible
-              const gapOffsetH = catPosition * 16; // 16px gap between cards
+              // Calculate horizontal transform - spacing so only category strip of next card is visible
+              const cardSpacing = 98; // Card spacing so only strip (~2vw) of next card shows
+              const gapOffsetH = catPosition * 8; // Reduced gap
               const baseTranslateX = catPosition * cardSpacing;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * cardSpacing : 0;
-              const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 16 : 0;
+              const dragGapOffsetH = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 8 : 0;
               
               // Horizontal scale - all cards at scale 1
               const scaleH = 1;
