@@ -126,13 +126,15 @@ export function CategorySelector({
                 >
                   {/* Color strip - 8px when unselected, full width when selected */}
                   <div 
-                    className={`absolute inset-y-0 left-0 transition-all duration-500 ease-out ${isSelected ? 'w-full' : 'w-2'}`}
+                    className={`absolute inset-y-0 left-0 transition-all ${isSelected ? 'w-full' : 'w-2'}`}
                     style={{ 
                       backgroundColor: colors.bg,
                       borderTopLeftRadius: isSelected ? '4px' : '4px',
                       borderBottomLeftRadius: isSelected ? '4px' : '4px',
                       borderTopRightRadius: isSelected ? '999px' : '4px',
-                      borderBottomRightRadius: isSelected ? '999px' : '4px'
+                      borderBottomRightRadius: isSelected ? '999px' : '4px',
+                      transitionDuration: isSelected ? '600ms' : '300ms',
+                      transitionTimingFunction: isSelected ? 'cubic-bezier(0.68, -0.55, 0.265, 1.55)' : 'cubic-bezier(0.4, 0, 0.2, 1)'
                     }} 
                   />
                   
