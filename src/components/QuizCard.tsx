@@ -526,8 +526,8 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 11 starfish shapes per card
-        const numStarfish = 11;
+        // Generate 3 starfish shapes per card
+        const numStarfish = 3;
         
         return (
           <>
@@ -912,21 +912,11 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish with grid-based positioning to avoid overlap
-  // Divide card into grid cells and place one shape per cell
-  const gridCols = 4;
-  const gridRows = 3;
-  const cellWidth = 100 / gridCols;
-  const cellHeight = 100 / gridRows;
-  
-  const cellIndex = lineIndex % (gridCols * gridRows);
-  const col = cellIndex % gridCols;
-  const row = Math.floor(cellIndex / gridCols);
-  
-  const centerX = (col * cellWidth) + (cellWidth / 2) + getRandomValue(questionText + 'offsetX' + lineIndex, -cellWidth * 0.3, cellWidth * 0.3);
-  const centerY = (row * cellHeight) + (cellHeight / 2) + getRandomValue(questionText + 'offsetY' + lineIndex, -cellHeight * 0.3, cellHeight * 0.3);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 8, 15);
-  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.2, 0.45);
+  // Create smooth starfish with fully random positioning, size, and shape
+  const centerX = getRandomValue(questionText + 'centerX' + lineIndex, -10, 110);
+  const centerY = getRandomValue(questionText + 'centerY' + lineIndex, -10, 110);
+  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex, 15, 35);
+  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex, 0.15, 0.5);
   const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
   
   let pathData = '';
