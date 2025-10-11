@@ -551,7 +551,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         };
         
         // Generate 2-3 wavy lines per card
-        const numLines = Math.floor(getRandomValue(question.question + 'numLines', 2, 3.99));
+        const numLines = 3;
         
         return (
           <>
@@ -934,54 +934,47 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate smooth S-curve paths like the reference
-  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -20, 30);
-  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, 10, 90);
+  // Generate smooth S-curve paths with more waves
+  const startX = getRandomValue(questionText + 'waveStartX' + lineIndex, -30, 20);
+  const startY = getRandomValue(questionText + 'waveStartY' + lineIndex, 0, 100);
   
-  // Create flowing S-curve with multiple control points
+  // Create flowing path with multiple curves
   const direction = getRandomValue(questionText + 'direction' + lineIndex, 0, 1) > 0.5 ? 1 : -1;
+  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 35, 55);
   
   let pathData = `M ${startX},${startY}`;
+  let currentX = startX;
+  let currentY = startY;
   
-  // First big curve
-  const cp1X = startX + 40;
-  const cp1Y = startY + (direction * 30);
-  const cp2X = startX + 80;
-  const cp2Y = startY + (direction * 40);
-  const mid1X = startX + 100;
-  const mid1Y = startY + (direction * 20);
+  // Generate 4-6 curves for each line
+  const numCurves = Math.floor(getRandomValue(questionText + 'numCurves' + lineIndex, 4, 7));
   
-  pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${mid1X},${mid1Y}`;
-  
-  // Second curve (opposite direction)
-  const cp3X = mid1X + 40;
-  const cp3Y = mid1Y - (direction * 40);
-  const cp4X = mid1X + 80;
-  const cp4Y = mid1Y - (direction * 50);
-  const mid2X = mid1X + 100;
-  const mid2Y = mid1Y - (direction * 30);
-  
-  pathData += ` C ${cp3X},${cp3Y} ${cp4X},${cp4Y} ${mid2X},${mid2Y}`;
-  
-  // Third curve (back to original direction)
-  const cp5X = mid2X + 40;
-  const cp5Y = mid2Y + (direction * 50);
-  const cp6X = mid2X + 70;
-  const cp6Y = mid2Y + (direction * 40);
-  const endX = mid2X + 90;
-  const endY = mid2Y + (direction * 20);
-  
-  pathData += ` C ${cp5X},${cp5Y} ${cp6X},${cp6Y} ${endX},${endY}`;
+  for (let i = 0; i < numCurves; i++) {
+    const curveDirection = i % 2 === 0 ? direction : -direction;
+    const segmentLength = getRandomValue(questionText + 'segLen' + lineIndex + i, 60, 100);
+    const curveAmp = getRandomValue(questionText + 'curveAmp' + lineIndex + i, amplitude * 0.8, amplitude * 1.2);
+    
+    const cp1X = currentX + segmentLength * 0.3;
+    const cp1Y = currentY + (curveDirection * curveAmp * 0.7);
+    const cp2X = currentX + segmentLength * 0.7;
+    const cp2Y = currentY + (curveDirection * curveAmp);
+    const endX = currentX + segmentLength;
+    const endY = currentY + (curveDirection * curveAmp * 0.3);
+    
+    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
+    currentX = endX;
+    currentY = endY;
+  }
   
   return (
     <div className="absolute inset-0 z-0 overflow-visible">
       <svg 
         className="absolute" 
-        width="200%" 
-        height="200%" 
-        viewBox="-50 -50 200 200"
+        width="250%" 
+        height="250%" 
+        viewBox="-75 -75 250 250"
         preserveAspectRatio="none"
-        style={{ overflow: 'visible', left: '-50%', top: '-50%' }}
+        style={{ overflow: 'visible', left: '-75%', top: '-75%' }}
       >
         <path 
           d={pathData}
