@@ -37,8 +37,11 @@ export function QuizApp() {
 
   const fetchQuestions = async () => {
     try {
-      // Load from local CSV file
-      const response = await fetch('/quiz_questions.csv');
+      // Call edge function to fetch from Google Sheets
+      const response = await fetch(
+        `https://knojozolqaumqtvoojef.supabase.co/functions/v1/fetch-questions`
+      );
+      
       if (!response.ok) {
         throw new Error('Failed to fetch questions');
       }
