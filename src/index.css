@@ -47,43 +47,100 @@ All colors MUST be HSL.
     --quiz-background: 0 0% 7%;
     --quiz-surface: 0 0% 12%;
     
-    /* Category-specific colors */
-    --quiz-fuck-bg: 0 100% 50%;           /* Red #FF0000 */
-    --quiz-fuck-text: 0 0% 98%;           /* White text on red */
-    --quiz-connection-bg: 240 100% 50%;   /* Blue #0000FF */
-    --quiz-connection-text: 0 0% 100%;    /* White text on blue */
-    --quiz-identity-bg: 266 100% 51%;     /* Purple #7004FF */
-    --quiz-identity-text: 0 0% 98%;       /* White text on purple */
-    --quiz-party-bg: 60 100% 71%;         /* Yellow #FFFE6F */
-    --quiz-party-text: 0 0% 0%;           /* Black text on yellow */
+    /* Category Color Scales - connection: #FE97BB (400) */
+    --connection-100: 339 98% 95%;
+    --connection-200: 339 97% 88%;
+    --connection-300: 339 98% 81%;
+    --connection-400: 339 99% 80%;  /* Base #FE97BB */
+    --connection-500: 339 99% 73%;
+    --connection-600: 339 88% 58%;
+    --connection-700: 339 78% 44%;
+    --connection-800: 339 68% 29%;
+    --connection-900: 339 58% 15%;
+    
+    /* fuck: #FE6220 (400) */
+    --fuck-100: 18 99% 95%;
+    --fuck-200: 18 99% 88%;
+    --fuck-300: 18 99% 75%;
+    --fuck-400: 18 99% 56%;  /* Base #FE6220 */
+    --fuck-500: 18 99% 48%;
+    --fuck-600: 18 89% 38%;
+    --fuck-700: 18 79% 29%;
+    --fuck-800: 18 69% 19%;
+    --fuck-900: 18 59% 10%;
+    
+    /* identity: #30AD69 (400) */
+    --identity-100: 150 57% 95%;
+    --identity-200: 150 57% 85%;
+    --identity-300: 150 57% 70%;
+    --identity-400: 150 57% 43%;  /* Base #30AD69 */
+    --identity-500: 150 57% 35%;
+    --identity-600: 150 67% 28%;
+    --identity-700: 150 77% 21%;
+    --identity-800: 150 87% 14%;
+    --identity-900: 150 97% 7%;
+    
+    /* party: #FFF315 (400) */
+    --party-100: 58 100% 98%;
+    --party-200: 58 100% 95%;
+    --party-300: 58 100% 88%;
+    --party-400: 58 100% 54%;  /* Base #FFF315 */
+    --party-500: 58 100% 46%;
+    --party-600: 58 90% 37%;
+    --party-700: 58 80% 28%;
+    --party-800: 58 70% 18%;
+    --party-900: 58 60% 9%;
+    
+    /* wer aus der Runde: #048DCB (400) */
+    --wer-aus-der-runde-100: 199 97% 95%;
+    --wer-aus-der-runde-200: 199 97% 85%;
+    --wer-aus-der-runde-300: 199 97% 70%;
+    --wer-aus-der-runde-400: 199 97% 40%;  /* Base #048DCB */
+    --wer-aus-der-runde-500: 199 97% 32%;
+    --wer-aus-der-runde-600: 199 97% 26%;
+    --wer-aus-der-runde-700: 199 97% 19%;
+    --wer-aus-der-runde-800: 199 97% 13%;
+    --wer-aus-der-runde-900: 199 97% 6%;
+    
+    /* Category-specific colors for card backgrounds and text */
+    --quiz-connection-bg: 339 99% 80%;
+    --quiz-connection-text: 0 0% 0%;
+    --quiz-fuck-bg: 18 99% 56%;
+    --quiz-fuck-text: 0 0% 98%;
+    --quiz-identity-bg: 150 57% 43%;
+    --quiz-identity-text: 0 0% 98%;
+    --quiz-party-bg: 58 100% 54%;
+    --quiz-party-text: 0 0% 0%;
+    --quiz-wer-aus-der-runde-bg: 199 97% 40%;
+    --quiz-wer-aus-der-runde-text: 0 0% 98%;
     
     /* Additional categories with proper colors */
-    --quiz-friends-bg: 120 100% 50%;      /* Green #00FF00 */
-    --quiz-friends-text: 0 0% 0%;         /* Black text on green */
-    --quiz-self-reflection-bg: 195 100% 50%; /* Light blue #00BFFF */
-    --quiz-self-reflection-text: 0 0% 0%; /* Black text on light blue */
-    --quiz-family-bg: 30 100% 70%;        /* Orange #FFCC66 */
-    --quiz-family-text: 0 0% 0%;          /* Black text on orange */
-    --quiz-career-bg: 35 100% 62%;        /* Orange #FFB23E */
-    --quiz-career-text: 0 0% 0%;          /* Black text on orange */
-    --quiz-travel-bg: 92 100% 83%;        /* Light green #CCFFAC */
-    --quiz-travel-text: 0 0% 0%;          /* Black text on light green */
-    --quiz-health-bg: 330 84% 67%;        /* Pink */
-    --quiz-health-text: 0 0% 98%;         /* White text on pink */
-    --quiz-money-bg: 45 95% 55%;          /* Gold */
-    --quiz-money-text: 0 0% 0%;           /* Black text on gold */
-    --quiz-love-bg: 350 85% 60%;          /* Red */
-    --quiz-love-text: 0 0% 98%;           /* White text on red */
-    --quiz-hobby-bg: 25 60% 45%;          /* Brown */
-    --quiz-hobby-text: 0 0% 98%;          /* White text on brown */
-    --quiz-dreams-bg: 270 75% 65%;        /* Purple */
-    --quiz-dreams-text: 0 0% 98%;         /* White text on purple */
-    --quiz-fear-bg: 210 10% 40%;          /* Gray */
-    --quiz-fear-text: 0 0% 98%;           /* White text on gray */
-    --quiz-wisdom-bg: 239 84% 67%;        /* Indigo */
-    --quiz-wisdom-text: 0 0% 98%;         /* White text on indigo */
-    --quiz-future-bg: 199 89% 48%;        /* Sky blue */
-    --quiz-future-text: 0 0% 98%;         /* White text on sky blue */
+    --quiz-friends-bg: 120 100% 50%;
+    --quiz-friends-text: 0 0% 0%;
+    --quiz-self-reflection-bg: 195 100% 50%;
+    --quiz-self-reflection-text: 0 0% 0%;
+    --quiz-family-bg: 30 100% 70%;
+    --quiz-family-text: 0 0% 0%;
+    --quiz-career-bg: 35 100% 62%;
+    --quiz-career-text: 0 0% 0%;
+    --quiz-travel-bg: 92 100% 83%;
+    --quiz-travel-text: 0 0% 0%;
+    --quiz-health-bg: 330 84% 67%;
+    --quiz-health-text: 0 0% 98%;
+    --quiz-money-bg: 45 95% 55%;
+    --quiz-money-text: 0 0% 0%;
+    --quiz-love-bg: 350 85% 60%;
+    --quiz-love-text: 0 0% 98%;
+    --quiz-hobby-bg: 25 60% 45%;
+    --quiz-hobby-text: 0 0% 98%;
+    --quiz-dreams-bg: 270 75% 65%;
+    --quiz-dreams-text: 0 0% 98%;
+    --quiz-fear-bg: 210 10% 40%;
+    --quiz-fear-text: 0 0% 98%;
+    --quiz-wisdom-bg: 239 84% 67%;
+    --quiz-wisdom-text: 0 0% 98%;
+    --quiz-future-bg: 199 89% 48%;
+    --quiz-future-text: 0 0% 98%;
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(280 100% 70%), hsl(290 100% 80%));
