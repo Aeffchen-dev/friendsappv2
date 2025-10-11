@@ -63,44 +63,45 @@ export function CurvyLinesPattern({ textColor }: PatternProps) {
       <svg 
         className="absolute" 
         style={{ 
-          width: '250%', 
-          height: '250%',
-          left: '-50%',
-          top: '-50%'
+          width: '200%', 
+          height: '200%',
+          left: '-30%',
+          top: '-30%'
         }}
-        viewBox="0 0 400 400"
+        viewBox="0 0 500 500"
         preserveAspectRatio="none"
       >
+        {/* More curvy horizontal waves */}
         <path 
-          d="M -50 100 Q 50 50, 150 100 T 350 100 T 550 100" 
+          d="M -50 80 Q 75 20, 150 80 Q 225 140, 300 80 Q 375 20, 450 80 Q 525 140, 600 80" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="45"
+          strokeWidth="70"
           strokeLinecap="round"
         />
         <path 
-          d="M -50 250 Q 50 200, 150 250 T 350 250 T 550 250" 
+          d="M -50 200 Q 75 140, 150 200 Q 225 260, 300 200 Q 375 140, 450 200 Q 525 260, 600 200" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="45"
+          strokeWidth="70"
           strokeLinecap="round"
         />
         <path 
-          d="M 100 -50 Q 50 50, 100 150 T 100 350 T 100 550" 
+          d="M -50 320 Q 75 260, 150 320 Q 225 380, 300 320 Q 375 260, 450 320 Q 525 380, 600 320" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="45"
+          strokeWidth="70"
           strokeLinecap="round"
         />
         <path 
-          d="M 300 -50 Q 250 50, 300 150 T 300 350 T 300 550" 
+          d="M -50 440 Q 75 380, 150 440 Q 225 500, 300 440 Q 375 380, 450 440 Q 525 500, 600 440" 
           fill="none"
           className={textColor}
           stroke="currentColor"
-          strokeWidth="45"
+          strokeWidth="70"
           strokeLinecap="round"
         />
       </svg>
