@@ -123,55 +123,81 @@ export default {
 				},
 				friends: {
 					400: 'hsl(var(--friends-400))',
-					600: 'hsl(var(--friends-600))'
+					500: 'hsl(var(--friends-500))',
+					600: 'hsl(var(--friends-600))',
+					900: 'hsl(var(--friends-900))'
 				},
 				'self-reflection': {
 					400: 'hsl(var(--self-reflection-400))',
-					600: 'hsl(var(--self-reflection-600))'
+					500: 'hsl(var(--self-reflection-500))',
+					600: 'hsl(var(--self-reflection-600))',
+					900: 'hsl(var(--self-reflection-900))'
 				},
 				family: {
 					400: 'hsl(var(--family-400))',
-					600: 'hsl(var(--family-600))'
+					500: 'hsl(var(--family-500))',
+					600: 'hsl(var(--family-600))',
+					900: 'hsl(var(--family-900))'
 				},
 				career: {
 					400: 'hsl(var(--career-400))',
-					600: 'hsl(var(--career-600))'
+					500: 'hsl(var(--career-500))',
+					600: 'hsl(var(--career-600))',
+					900: 'hsl(var(--career-900))'
 				},
 				travel: {
 					400: 'hsl(var(--travel-400))',
-					600: 'hsl(var(--travel-600))'
+					500: 'hsl(var(--travel-500))',
+					600: 'hsl(var(--travel-600))',
+					900: 'hsl(var(--travel-900))'
 				},
 				health: {
 					400: 'hsl(var(--health-400))',
-					600: 'hsl(var(--health-600))'
+					500: 'hsl(var(--health-500))',
+					600: 'hsl(var(--health-600))',
+					900: 'hsl(var(--health-900))'
 				},
 				money: {
 					400: 'hsl(var(--money-400))',
-					600: 'hsl(var(--money-600))'
+					500: 'hsl(var(--money-500))',
+					600: 'hsl(var(--money-600))',
+					900: 'hsl(var(--money-900))'
 				},
 				love: {
 					400: 'hsl(var(--love-400))',
-					600: 'hsl(var(--love-600))'
+					500: 'hsl(var(--love-500))',
+					600: 'hsl(var(--love-600))',
+					900: 'hsl(var(--love-900))'
 				},
 				hobby: {
 					400: 'hsl(var(--hobby-400))',
-					600: 'hsl(var(--hobby-600))'
+					500: 'hsl(var(--hobby-500))',
+					600: 'hsl(var(--hobby-600))',
+					900: 'hsl(var(--hobby-900))'
 				},
 				dreams: {
 					400: 'hsl(var(--dreams-400))',
-					600: 'hsl(var(--dreams-600))'
+					500: 'hsl(var(--dreams-500))',
+					600: 'hsl(var(--dreams-600))',
+					900: 'hsl(var(--dreams-900))'
 				},
 				fear: {
 					400: 'hsl(var(--fear-400))',
-					600: 'hsl(var(--fear-600))'
+					500: 'hsl(var(--fear-500))',
+					600: 'hsl(var(--fear-600))',
+					900: 'hsl(var(--fear-900))'
 				},
 				wisdom: {
 					400: 'hsl(var(--wisdom-400))',
-					600: 'hsl(var(--wisdom-600))'
+					500: 'hsl(var(--wisdom-500))',
+					600: 'hsl(var(--wisdom-600))',
+					900: 'hsl(var(--wisdom-900))'
 				},
 				future: {
 					400: 'hsl(var(--future-400))',
-					600: 'hsl(var(--future-600))'
+					500: 'hsl(var(--future-500))',
+					600: 'hsl(var(--future-600))',
+					900: 'hsl(var(--future-900))'
 				},
 				quiz: {
 					primary: 'hsl(var(--quiz-primary))',

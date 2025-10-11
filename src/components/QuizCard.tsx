@@ -121,127 +121,127 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       case 'connection':
         return {
           bg: 'bg-quiz-connection-bg',
-          text: 'text-quiz-connection-text',
-          stripeBg: 'bg-connection-600',
+          text: 'text-connection-900',
+          stripeBg: 'bg-connection-500',
           stripeText: 'text-white'
         };
       case 'fuck':
         return {
           bg: 'bg-quiz-fuck-bg',
-          text: 'text-quiz-fuck-text',
-          stripeBg: 'bg-fuck-600',
+          text: 'text-fuck-900',
+          stripeBg: 'bg-fuck-500',
           stripeText: 'text-white'
         };
       case 'identity':
         return {
           bg: 'bg-quiz-identity-bg',
-          text: 'text-quiz-identity-text',
-          stripeBg: 'bg-identity-600',
+          text: 'text-identity-900',
+          stripeBg: 'bg-identity-500',
           stripeText: 'text-white'
         };
       case 'party':
         return {
           bg: 'bg-quiz-party-bg',
-          text: 'text-quiz-party-text',
-          stripeBg: 'bg-party-600',
+          text: 'text-party-900',
+          stripeBg: 'bg-party-500',
           stripeText: 'text-black'
         };
       case 'wer aus der runde':
         return {
           bg: 'bg-quiz-wer-aus-der-runde-bg',
-          text: 'text-quiz-wer-aus-der-runde-text',
-          stripeBg: 'bg-wer-aus-der-runde-600',
+          text: 'text-wer-aus-der-runde-900',
+          stripeBg: 'bg-wer-aus-der-runde-500',
           stripeText: 'text-white'
         };
       case 'friends':
         return {
           bg: 'bg-quiz-friends-bg',
-          text: 'text-quiz-friends-text',
-          stripeBg: 'bg-friends-600',
+          text: 'text-friends-900',
+          stripeBg: 'bg-friends-500',
           stripeText: 'text-white'
         };
       case 'self reflection':
         return {
           bg: 'bg-quiz-self-reflection-bg',
-          text: 'text-quiz-self-reflection-text',
-          stripeBg: 'bg-self-reflection-600',
+          text: 'text-self-reflection-900',
+          stripeBg: 'bg-self-reflection-500',
           stripeText: 'text-white'
         };
       case 'family':
         return {
           bg: 'bg-quiz-family-bg',
-          text: 'text-quiz-family-text',
-          stripeBg: 'bg-family-600',
+          text: 'text-family-900',
+          stripeBg: 'bg-family-500',
           stripeText: 'text-black'
         };
       case 'career':
         return {
           bg: 'bg-quiz-career-bg',
-          text: 'text-quiz-career-text',
-          stripeBg: 'bg-career-600',
+          text: 'text-career-900',
+          stripeBg: 'bg-career-500',
           stripeText: 'text-white'
         };
       case 'travel':
         return {
           bg: 'bg-quiz-travel-bg',
-          text: 'text-quiz-travel-text',
-          stripeBg: 'bg-travel-600',
+          text: 'text-travel-900',
+          stripeBg: 'bg-travel-500',
           stripeText: 'text-black'
         };
       case 'health':
         return {
           bg: 'bg-quiz-health-bg',
-          text: 'text-quiz-health-text',
-          stripeBg: 'bg-health-600',
+          text: 'text-health-900',
+          stripeBg: 'bg-health-500',
           stripeText: 'text-white'
         };
       case 'money':
         return {
           bg: 'bg-quiz-money-bg',
-          text: 'text-quiz-money-text',
-          stripeBg: 'bg-money-600',
+          text: 'text-money-900',
+          stripeBg: 'bg-money-500',
           stripeText: 'text-black'
         };
       case 'love':
         return {
           bg: 'bg-quiz-love-bg',
-          text: 'text-quiz-love-text',
-          stripeBg: 'bg-love-600',
+          text: 'text-love-900',
+          stripeBg: 'bg-love-500',
           stripeText: 'text-white'
         };
       case 'hobby':
         return {
           bg: 'bg-quiz-hobby-bg',
-          text: 'text-quiz-hobby-text',
-          stripeBg: 'bg-hobby-600',
+          text: 'text-hobby-900',
+          stripeBg: 'bg-hobby-500',
           stripeText: 'text-white'
         };
       case 'dreams':
         return {
           bg: 'bg-quiz-dreams-bg',
-          text: 'text-quiz-dreams-text',
-          stripeBg: 'bg-dreams-600',
+          text: 'text-dreams-900',
+          stripeBg: 'bg-dreams-500',
           stripeText: 'text-white'
         };
       case 'fear':
         return {
           bg: 'bg-quiz-fear-bg',
-          text: 'text-quiz-fear-text',
-          stripeBg: 'bg-fear-600',
+          text: 'text-fear-900',
+          stripeBg: 'bg-fear-500',
           stripeText: 'text-white'
         };
       case 'wisdom':
         return {
           bg: 'bg-quiz-wisdom-bg',
-          text: 'text-quiz-wisdom-text',
-          stripeBg: 'bg-wisdom-600',
+          text: 'text-wisdom-900',
+          stripeBg: 'bg-wisdom-500',
           stripeText: 'text-white'
         };
       case 'future':
         return {
           bg: 'bg-quiz-future-bg',
-          text: 'text-quiz-future-text',
-          stripeBg: 'bg-future-600',
+          text: 'text-future-900',
+          stripeBg: 'bg-future-500',
           stripeText: 'text-white'
         };
       default:
@@ -386,7 +386,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         <div ref={containerRef} className="flex-1 flex items-start justify-start text-left w-full pt-16">
           <h1 
             ref={textRef}
-            className="text-3xl md:text-4xl lg:text-4xl font-bricolage text-foreground leading-[1.241] w-full max-w-full"
+            className={`text-3xl md:text-4xl lg:text-4xl font-bricolage ${categoryColors.text} leading-[1.241] w-full max-w-full`}
           >
             {processedText.length > 0 ? processedText : question.question}
           </h1>

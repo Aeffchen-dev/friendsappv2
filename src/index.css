@@ -104,55 +104,81 @@ All colors MUST be HSL.
     
     /* friends (green) */
     --friends-400: 120 100% 50%;
+    --friends-500: 120 100% 42%;
     --friends-600: 120 100% 35%;
+    --friends-900: 120 100% 10%;
     
     /* self-reflection (light blue) */
     --self-reflection-400: 195 100% 50%;
+    --self-reflection-500: 195 100% 42%;
     --self-reflection-600: 195 100% 35%;
+    --self-reflection-900: 195 100% 10%;
     
     /* family (orange) */
     --family-400: 30 100% 70%;
+    --family-500: 30 100% 60%;
     --family-600: 30 100% 50%;
+    --family-900: 30 100% 15%;
     
     /* career (orange) */
     --career-400: 35 100% 62%;
+    --career-500: 35 100% 54%;
     --career-600: 35 100% 45%;
+    --career-900: 35 100% 12%;
     
     /* travel (light green) */
     --travel-400: 92 100% 83%;
+    --travel-500: 92 100% 72%;
     --travel-600: 92 100% 60%;
+    --travel-900: 92 100% 18%;
     
     /* health (pink) */
     --health-400: 330 84% 67%;
+    --health-500: 330 84% 58%;
     --health-600: 330 84% 50%;
+    --health-900: 330 84% 15%;
     
     /* money (gold) */
     --money-400: 45 95% 55%;
+    --money-500: 45 95% 47%;
     --money-600: 45 95% 40%;
+    --money-900: 45 95% 12%;
     
     /* love (red) */
     --love-400: 350 85% 60%;
+    --love-500: 350 85% 52%;
     --love-600: 350 85% 45%;
+    --love-900: 350 85% 13%;
     
     /* hobby (brown) */
     --hobby-400: 25 60% 45%;
+    --hobby-500: 25 60% 38%;
     --hobby-600: 25 60% 30%;
+    --hobby-900: 25 60% 9%;
     
     /* dreams (purple) */
     --dreams-400: 270 75% 65%;
+    --dreams-500: 270 75% 56%;
     --dreams-600: 270 75% 48%;
+    --dreams-900: 270 75% 14%;
     
     /* fear (gray) */
     --fear-400: 210 10% 40%;
+    --fear-500: 210 10% 34%;
     --fear-600: 210 10% 28%;
+    --fear-900: 210 10% 8%;
     
     /* wisdom (indigo) */
     --wisdom-400: 239 84% 67%;
+    --wisdom-500: 239 84% 58%;
     --wisdom-600: 239 84% 50%;
+    --wisdom-900: 239 84% 15%;
     
     /* future (sky blue) */
     --future-400: 199 89% 48%;
+    --future-500: 199 89% 41%;
     --future-600: 199 89% 35%;
+    --future-900: 199 89% 10%;
     
     /* Category-specific colors for card backgrounds and text */
     --quiz-connection-bg: 339 99% 80%;
