@@ -396,7 +396,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
       style={{
         width: window.innerWidth >= 768 ? 'calc(100vw - 32px)' : 'calc(100vw - 16px)',
         boxShadow: '0 0 12px 4px rgba(30, 30, 30, 0.1)',
-        height: 'calc(100svh - 64px - 20px - 16px - 64px)',
+        height: window.innerWidth >= 768 ? '80vh' : '70vh',
         transition: 'height 0.2s ease-out'
       }}
       onTouchStart={disableSwipe ? undefined : onTouchStart}
