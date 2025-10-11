@@ -500,8 +500,9 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        const posX = getRandomPos(question.question + 'smileyX', 30, 70);
-        const posY = getRandomPos(question.question + 'smileyY', 35, 65);
+        // Position smiley more towards edges to avoid text overlap
+        const posX = getRandomPos(question.question + 'smileyX', 15, 75);
+        const posY = getRandomPos(question.question + 'smileyY', 20, 75);
         
         return (
           <Smiley 
@@ -729,10 +730,14 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
     return min + normalized * (max - min);
   };
   
-  const rotation = getRandomValue(questionText + 'smileyRot', -10, 10);
-  const scale = getRandomValue(questionText + 'smileyScale', 0.9, 1.1);
-  const mouthWidth = getRandomValue(questionText + 'mouthWidth', 25, 35);
-  const mouthHeight = getRandomValue(questionText + 'mouthHeight', 15, 22);
+  const rotation = getRandomValue(questionText + 'smileyRot', -15, 15);
+  const scale = getRandomValue(questionText + 'smileyScale', 0.5, 1.6);
+  const mouthWidth = getRandomValue(questionText + 'mouthWidth', 22, 38);
+  const mouthHeight = getRandomValue(questionText + 'mouthHeight', 12, 28);
+  const eyeDistance = getRandomValue(questionText + 'eyeDistance', 12, 18);
+  const eyeSize = getRandomValue(questionText + 'eyeSize', 2.5, 4);
+  const eyeYPos = getRandomValue(questionText + 'eyeY', 38, 43);
+  const mouthYStart = getRandomValue(questionText + 'mouthY', 52, 58);
   
   return (
     <div 
@@ -753,21 +758,21 @@ function Smiley({ questionText, posX, posY }: SmileyProps) {
         />
         {/* Left eye */}
         <circle 
-          cx="35" 
-          cy="40" 
-          r="3" 
+          cx={50 - eyeDistance} 
+          cy={eyeYPos}
+          r={eyeSize}
           fill="#21245B"
         />
         {/* Right eye */}
         <circle 
-          cx="65" 
-          cy="40" 
-          r="3" 
+          cx={50 + eyeDistance}
+          cy={eyeYPos}
+          r={eyeSize}
           fill="#21245B"
         />
         {/* Happy mouth */}
         <path 
-          d={`M ${50 - mouthWidth/2},55 Q 50,${55 + mouthHeight} ${50 + mouthWidth/2},55`}
+          d={`M ${50 - mouthWidth/2},${mouthYStart} Q 50,${mouthYStart + mouthHeight} ${50 + mouthWidth/2},${mouthYStart}`}
           stroke="#21245B"
           strokeWidth="3"
           fill="none"
