@@ -537,7 +537,7 @@ export function QuizApp() {
                 }
               }
               
-              const shouldHide = Math.abs(position) === 2 && (isDragging || isAnimating);
+              const shouldHide = Math.abs(position) === 2 && (isDragging || isAnimating) && dragDirection === 'horizontal';
               
               return (
                 <div
