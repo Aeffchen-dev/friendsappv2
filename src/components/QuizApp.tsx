@@ -170,23 +170,32 @@ export function QuizApp() {
     const shouldGoNext = (dragOffset < -threshold || (isFlick && dragOffset < 0)) && currentIndex < questions.length - 1;
     const shouldGoPrev = (dragOffset > threshold || (isFlick && dragOffset > 0)) && currentIndex > 0;
     
+    setIsDragging(false);
+    setIsAnimating(true);
+    
     if (shouldGoNext) {
-      // Swiped left - next question
-      nextQuestion();
-      setIsDragging(false);
-      setDragOffset(0);
+      // Animate to complete the left swipe
+      setDragOffset(-window.innerWidth);
+      setTimeout(() => {
+        setLogoSqueezeLeft(true);
+        setCurrentIndex(prev => prev + 1);
+        setDragOffset(0);
+        setIsAnimating(false);
+        setTimeout(() => setLogoSqueezeLeft(false), 300);
+      }, 300);
     } else if (shouldGoPrev) {
-      // Swiped right - previous question
-      prevQuestion();
-      setIsDragging(false);
-      setDragOffset(0);
+      // Animate to complete the right swipe
+      setDragOffset(window.innerWidth);
+      setTimeout(() => {
+        setLogoSqueezeRight(true);
+        setCurrentIndex(prev => prev - 1);
+        setDragOffset(0);
+        setIsAnimating(false);
+        setTimeout(() => setLogoSqueezeRight(false), 300);
+      }, 300);
     } else {
       // Snap back with momentum
-      setIsDragging(false);
-      setIsAnimating(true);
-      
-      // Apply momentum to snap back
-      const momentumOffset = velocity * 100; // Scale velocity for visual effect
+      const momentumOffset = velocity * 100;
       const finalOffset = dragOffset + (dragOffset < 0 ? -momentumOffset : momentumOffset);
       
       // Animate back to center
