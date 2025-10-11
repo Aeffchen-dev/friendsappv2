@@ -369,7 +369,7 @@ export function QuizApp() {
       <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50}}>
         <div className="flex justify-between items-center px-4 py-4">
           <img 
-            src="/assets/logo.png" 
+            src="/assets/Logo.svg" 
             alt="Logo" 
             className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''} ${headerTextColor} transition-all duration-500`}
             onClick={handleLogoClick}
