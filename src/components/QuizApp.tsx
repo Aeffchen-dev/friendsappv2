@@ -459,7 +459,7 @@ export function QuizApp() {
           </svg>
           <button 
             onClick={handleToggleMode}
-            className={`${headerTextColor} font-normal text-xs align-baseline transition-colors duration-500 cursor-pointer`}
+            className={`${headerTextColor} font-normal text-xs align-baseline transition-colors duration-500 cursor-pointer opacity-100`}
             style={{fontSize: '14px'}}
           >
             {isShuffleMode ? 'Kategorien sortieren' : 'Kategorien mischen'}
@@ -711,7 +711,7 @@ export function QuizApp() {
           <div className="flex justify-center items-center">
             <button 
               onClick={() => setCategorySelectorOpen(true)}
-              className={`${headerTextColor} font-normal text-xs transition-colors duration-500 pointer-events-auto`}
+              className={`${headerTextColor} font-normal text-xs transition-colors duration-500 pointer-events-auto opacity-100`}
               style={{fontSize: '14px'}}
             >
               Kategorien wählen
