@@ -434,7 +434,9 @@ export function QuizApp() {
                     // Calculate vertical transform - 10% of next card visible + 16px gap
                     const cardHeight = 80; // 80vh card
                     const gapOffsetV = qPosition * 16; // 16px gap between cards
-                    const baseTranslateY = qPosition * cardHeight;
+                    // For vertical movement: current card (qPosition === 0) moves up, next card (qPosition === 1) comes from below
+                    const translateYSign = qPosition === 0 ? -1 : 1;
+                    const baseTranslateY = qPosition * cardHeight * translateYSign;
                     const dragTranslateY = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * cardHeight : 0;
                     const dragGapOffsetV = isDragging && dragDirection === 'vertical' && isCategoryActive ? (dragOffsetY / window.innerHeight) * 16 : 0;
                     
