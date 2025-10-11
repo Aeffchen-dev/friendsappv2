@@ -531,6 +531,9 @@ export function QuizApp() {
                 } else if (position === 1) {
                   // Next card rotates clockwise
                   rotateZ = 3;
+                } else if (position === 2) {
+                  // Card after next also rotates clockwise
+                  rotateZ = 3;
                 }
               }
               
@@ -545,7 +548,7 @@ export function QuizApp() {
                     height: '100vh',
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) rotateZ(${rotateZ}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
-                    animation: isAnimating && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
+                    animation: isAnimating && dragDirection === 'horizontal' && Math.abs(position) <= 1 ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
@@ -619,6 +622,9 @@ export function QuizApp() {
                 } else if (catPosition === 1) {
                   // Next card rotates clockwise
                   rotateZ = 3;
+                } else if (catPosition === 2) {
+                  // Card after next also rotates clockwise
+                  rotateZ = 3;
                 }
               }
               
@@ -634,7 +640,7 @@ export function QuizApp() {
                     height: '100vh',
                     transform: `translateX(${baseTranslateX + dragTranslateX}vw) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
                     transition: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? (isCategoryActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
-                    animation: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? 'scaleTransition 350ms ease-in-out' : 'none',
+                    animation: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' && Math.abs(catPosition) <= 1 ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive ? 'auto' : 'none',
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
