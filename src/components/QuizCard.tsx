@@ -816,11 +816,19 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 28, 45);
   const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 40, 65);
 
-  // Randomize horizontal movement range
-  const horizontalMovement = getRandomValue(questionText + 'cloudMove' + cloudIndex, -8, 12);
+  // Randomize horizontal movement range AND direction for each cloud
+  const movementDirection = getRandomValue(questionText + 'cloudDir' + cloudIndex, 0, 1) > 0.5 ? 1 : -1;
+  const horizontalMovement = getRandomValue(questionText + 'cloudMove' + cloudIndex, 8, 15) * movementDirection;
   
-  // Reduced blur intensity
+  // Reduced blur intensity - different for each cloud
   const maxBlur = getRandomValue(questionText + 'cloudBlur' + cloudIndex, 0.3, 0.8);
+  
+  // Random animation delay to desynchronize clouds
+  const animationDelay = getRandomValue(questionText + 'cloudDelay' + cloudIndex, 0, floatDuration * 0.8);
+  
+  // Randomize blur timing for each cloud (different keyframe percentages)
+  const blurPeak1 = getRandomValue(questionText + 'blurPeak1' + cloudIndex, 20, 35);
+  const blurPeak2 = getRandomValue(questionText + 'blurPeak2' + cloudIndex, 55, 70);
   
   // Create seamless loop: add first shape at the end
   const morphValues = [...cloudShapes, cloudShapes[0]].join(';');
@@ -833,6 +841,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
         top: `${posY}%`,
         transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3})`,
         animation: `cloudFloat-${cloudIndex} ${floatDuration}s ease-in-out infinite`,
+        animationDelay: `-${animationDelay}s`, // Negative delay to start at different points
       }}
     >
       <style>
@@ -842,17 +851,17 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
               transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(0px);
               filter: blur(0px);
             }
-            25% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement}px);
-              filter: blur(${maxBlur * 0.6}px);
+            ${blurPeak1}% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 0.6}px);
+              filter: blur(${maxBlur * 0.7}px);
             }
             50% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 1.5}px);
-              filter: blur(${maxBlur}px);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement}px);
+              filter: blur(0px);
             }
-            75% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 0.5}px);
-              filter: blur(${maxBlur * 0.3}px);
+            ${blurPeak2}% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * 0.4}px);
+              filter: blur(${maxBlur}px);
             }
           }
         `}
