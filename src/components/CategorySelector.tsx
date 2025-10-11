@@ -34,109 +34,109 @@ export function CategorySelector({
         return { 
           stripeBg: 'hsl(var(--connection-500))', 
           cardBg: 'hsl(var(--quiz-connection-bg))',
-          text: 'hsl(var(--connection-900))' 
+          text: '#611610'
         };
       case 'fuck':
         return { 
           stripeBg: 'hsl(var(--fuck-500))', 
           cardBg: 'hsl(var(--quiz-fuck-bg))',
-          text: 'hsl(var(--fuck-900))' 
+          text: '#6F5A48'
         };
       case 'identity':
         return { 
           stripeBg: 'hsl(var(--identity-500))', 
           cardBg: 'hsl(var(--quiz-identity-bg))',
-          text: 'hsl(var(--identity-900))' 
+          text: '#FFECEB'
         };
       case 'party':
         return { 
           stripeBg: 'hsl(var(--party-500))', 
           cardBg: 'hsl(var(--quiz-party-bg))',
-          text: 'hsl(var(--party-900))' 
+          text: '#282C3D'
         };
       case 'wer aus der runde':
         return { 
           stripeBg: 'hsl(var(--wer-aus-der-runde-500))', 
           cardBg: 'hsl(var(--quiz-wer-aus-der-runde-bg))',
-          text: 'hsl(var(--wer-aus-der-runde-900))' 
+          text: '#053053'
         };
       case 'friends':
         return { 
           stripeBg: 'hsl(var(--friends-500))', 
           cardBg: 'hsl(var(--quiz-friends-bg))',
-          text: 'hsl(var(--friends-900))' 
+          text: 'hsl(var(--friends-900))'
         };
       case 'self reflection':
         return { 
           stripeBg: 'hsl(var(--self-reflection-500))', 
           cardBg: 'hsl(var(--quiz-self-reflection-bg))',
-          text: 'hsl(var(--self-reflection-900))' 
+          text: 'hsl(var(--self-reflection-900))'
         };
       case 'family':
         return { 
           stripeBg: 'hsl(var(--family-500))', 
           cardBg: 'hsl(var(--quiz-family-bg))',
-          text: 'hsl(var(--family-900))' 
+          text: 'hsl(var(--family-900))'
         };
       case 'career':
         return { 
           stripeBg: 'hsl(var(--career-500))', 
           cardBg: 'hsl(var(--quiz-career-bg))',
-          text: 'hsl(var(--career-900))' 
+          text: 'hsl(var(--career-900))'
         };
       case 'travel':
         return { 
           stripeBg: 'hsl(var(--travel-500))', 
           cardBg: 'hsl(var(--quiz-travel-bg))',
-          text: 'hsl(var(--travel-900))' 
+          text: 'hsl(var(--travel-900))'
         };
       case 'health':
         return { 
           stripeBg: 'hsl(var(--health-500))', 
           cardBg: 'hsl(var(--quiz-health-bg))',
-          text: 'hsl(var(--health-900))' 
+          text: 'hsl(var(--health-900))'
         };
       case 'money':
         return { 
           stripeBg: 'hsl(var(--money-500))', 
           cardBg: 'hsl(var(--quiz-money-bg))',
-          text: 'hsl(var(--money-900))' 
+          text: 'hsl(var(--money-900))'
         };
       case 'love':
         return { 
           stripeBg: 'hsl(var(--love-500))', 
           cardBg: 'hsl(var(--quiz-love-bg))',
-          text: 'hsl(var(--love-900))' 
+          text: 'hsl(var(--love-900))'
         };
       case 'hobby':
         return { 
           stripeBg: 'hsl(var(--hobby-500))', 
           cardBg: 'hsl(var(--quiz-hobby-bg))',
-          text: 'hsl(var(--hobby-900))' 
+          text: 'hsl(var(--hobby-900))'
         };
       case 'dreams':
         return { 
           stripeBg: 'hsl(var(--dreams-500))', 
           cardBg: 'hsl(var(--quiz-dreams-bg))',
-          text: 'hsl(var(--dreams-900))' 
+          text: 'hsl(var(--dreams-900))'
         };
       case 'fear':
         return { 
           stripeBg: 'hsl(var(--fear-500))', 
           cardBg: 'hsl(var(--quiz-fear-bg))',
-          text: 'hsl(var(--fear-900))' 
+          text: 'hsl(var(--fear-900))'
         };
       case 'wisdom':
         return { 
           stripeBg: 'hsl(var(--wisdom-500))', 
           cardBg: 'hsl(var(--quiz-wisdom-bg))',
-          text: 'hsl(var(--wisdom-900))' 
+          text: 'hsl(var(--wisdom-900))'
         };
       case 'future':
         return { 
           stripeBg: 'hsl(var(--future-500))', 
           cardBg: 'hsl(var(--quiz-future-bg))',
-          text: 'hsl(var(--future-900))' 
+          text: 'hsl(var(--future-900))'
         };
       default:
         return { 
@@ -216,7 +216,7 @@ export function CategorySelector({
                   />
                   
                   <span className="font-bold text-sm uppercase tracking-wide relative z-10 transition-colors duration-300" 
-                    style={{ color: isSelected ? colors.text : 'white' }}>
+                    style={{ color: colors.text }}>
                     {category}
                   </span>
                   <div onClick={(e) => e.stopPropagation()}>
