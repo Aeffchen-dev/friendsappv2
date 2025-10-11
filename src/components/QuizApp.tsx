@@ -914,7 +914,7 @@ export function QuizApp() {
                           onBgColorChange={isActive ? handleBgColorChange : undefined}
                           disableSwipe={true}
                           onCategoryStripClick={isActive ? () => {
-                            // Click on category strip - go to prev horizontal slide (category) with animation
+                            // Active card: Click on category strip - go to prev horizontal slide (category) with animation
                             setIsAnimating(true);
                             setDragDirection('horizontal');
                             setLogoSqueezeRight(true);
@@ -923,6 +923,54 @@ export function QuizApp() {
                             setTimeout(() => {
                               setLogoSqueezeRight(false);
                             }, 300);
+                            setTimeout(() => {
+                              setIsAnimating(false);
+                              setDragDirection(null);
+                              setIsHorizontalSliding(false);
+                            }, 350);
+                          } : (isCategoryActive && catPosition === 0 && (qPosition === 1 || qPosition === -1)) ? () => {
+                            // Mobile: Non-active vertical card's category strip in active horizontal category - trigger horizontal slide
+                            const isMobile = window.innerWidth < 768;
+                            if (!isMobile) return;
+                            
+                            setIsAnimating(true);
+                            setDragDirection('horizontal');
+                            setLogoSqueezeRight(true);
+                            setIsHorizontalSliding(true);
+                            setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
+                            setTimeout(() => {
+                              setLogoSqueezeRight(false);
+                            }, 300);
+                            setTimeout(() => {
+                              setIsAnimating(false);
+                              setDragDirection(null);
+                              setIsHorizontalSliding(false);
+                            }, 350);
+                          } : (!isCategoryActive && (catPosition === 1 || catPosition === -1)) ? () => {
+                            // Mobile: Category strip on non-active horizontal slide - navigate to that category
+                            const isMobile = window.innerWidth < 768;
+                            if (!isMobile) return;
+                            
+                            setIsAnimating(true);
+                            setDragDirection('horizontal');
+                            setIsHorizontalSliding(true);
+                            
+                            if (catPosition === 1) {
+                              // Next category
+                              setLogoSqueezeLeft(true);
+                              setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
+                              setTimeout(() => {
+                                setLogoSqueezeLeft(false);
+                              }, 300);
+                            } else {
+                              // Prev category
+                              setLogoSqueezeRight(true);
+                              setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
+                              setTimeout(() => {
+                                setLogoSqueezeRight(false);
+                              }, 300);
+                            }
+                            
                             setTimeout(() => {
                               setIsAnimating(false);
                               setDragDirection(null);
