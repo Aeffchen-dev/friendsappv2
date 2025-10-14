@@ -554,14 +554,19 @@ export function QuizApp() {
               const isMobile = window.innerWidth < 768;
               
               // Calculate horizontal transform with proper spacing
-              const baseCardSpacingPx = 0; // No gap between cards
+              const baseCardSpacingPx = isMobile ? 16 : 32;
               const cardWidthVw = window.innerWidth * 0.85; // 85vw in pixels
               const maxCardWidthPx = 600;
               const actualCardWidth = isMobile ? cardWidthVw : Math.min(cardWidthVw, maxCardWidthPx);
               
-              // Position cards right next to each other
-              const totalCardWidth = actualCardWidth + baseCardSpacingPx;
-              const translateXPx = position * totalCardWidth;
+              // For desktop, position -1 (prev card) at activeCardWidth + 16px + 24px + 16px
+              let translateXPx;
+              if (!isMobile && position === -1) {
+                translateXPx = -(actualCardWidth + 56); // 16px + 24px + 16px = 56px
+              } else {
+                const totalCardWidth = actualCardWidth + baseCardSpacingPx;
+                translateXPx = position * totalCardWidth;
+              }
               
               const dragTranslateXPx = isDragging && dragDirection === 'horizontal' ? dragOffsetX : 0;
               
@@ -640,7 +645,7 @@ export function QuizApp() {
                     height: '100vh',
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) rotateZ(${rotateZ}deg)`,
                     transition: isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
-                    animation: isActive && (currentShuffleIndex === 0 || currentShuffleIndex === 1) ? 'swipeHint 0.4s ease-in-out 1s 1' : (position === 1 && (currentShuffleIndex === 0 || currentShuffleIndex === 1) ? 'swipeHint 0.4s ease-in-out 1s 1' : 'none'),
+                    animation: isActive && !hasInteracted && currentShuffleIndex === 0 ? 'swipeHint 0.4s ease-in-out 1s 1' : 'none',
                     pointerEvents: !isActive && (position === 1 || position === -1) ? 'auto' : (isActive ? 'auto' : 'none'),
                     willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
