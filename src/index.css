@@ -276,13 +276,10 @@ All colors MUST be HSL.
 
   @keyframes swipeHint {
     0%, 100% {
-      transform: translateX(0) rotateZ(0deg);
+      transform: translateX(0);
     }
-    25% {
-      transform: translateX(-12px) rotateZ(-0.5deg);
-    }
-    75% {
-      transform: translateX(12px) rotateZ(0.5deg);
+    50% {
+      transform: translateX(-60px);
     }
   }
 
