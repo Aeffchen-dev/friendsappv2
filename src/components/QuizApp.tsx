@@ -564,7 +564,8 @@ export function QuizApp() {
       return getColorFromTextClass(headerTextColor);
     }
     
-    const dragProgress = Math.min(Math.abs(dragOffsetX) / window.innerWidth, 1);
+    // Header reaches final color at 50% of screen width (faster than background)
+    const dragProgress = Math.min(Math.abs(dragOffsetX) / (window.innerWidth * 0.5), 1);
     const currentColor = getColorFromTextClass(headerTextColor);
     const targetColor = dragOffsetX < 0 
       ? getColorFromTextClass(nextCardHeaderTextColor) 
