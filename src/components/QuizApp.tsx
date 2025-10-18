@@ -586,15 +586,22 @@ export function QuizApp() {
     return { h: 0, s: 0, l: 0 };
   };
 
-  // Interpolate between two HSL colors (hue only)
+  // Interpolate between two HSL colors
   const interpolateHSL = (color1: string, color2: string, progress: number): string => {
     const hsl1 = parseHSL(color1);
     const hsl2 = parseHSL(color2);
     
-    // Interpolate only hue, use target color's saturation and lightness
-    const h = hsl1.h + (hsl2.h - hsl1.h) * progress;
+    // Find shortest path around the color wheel for hue
+    let hueDiff = hsl2.h - hsl1.h;
+    if (hueDiff > 180) hueDiff -= 360;
+    if (hueDiff < -180) hueDiff += 360;
     
-    return `hsl(${h}, ${hsl2.s}%, ${hsl2.l}%)`;
+    // Interpolate all channels
+    const h = (hsl1.h + hueDiff * progress + 360) % 360;
+    const s = hsl1.s + (hsl2.s - hsl1.s) * progress;
+    const l = hsl1.l + (hsl2.l - hsl1.l) * progress;
+    
+    return `hsl(${h}, ${s}%, ${l}%)`;
   };
 
   // Get background color based on drag state
