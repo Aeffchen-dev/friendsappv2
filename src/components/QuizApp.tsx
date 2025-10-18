@@ -286,6 +286,7 @@ export function QuizApp() {
           console.log('Swipe left - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
           setLogoSqueezeLeft(true);
           setIsHorizontalSliding(true);
+          setPrevCategoryIndex(currentCategoryIndex);
           setCurrentCategoryIndex(prev => {
             const next = (prev + 1) % displayCategories.length;
             console.log('Moving from category', prev, 'to', next);
@@ -297,6 +298,7 @@ export function QuizApp() {
           console.log('Swipe right - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
           setLogoSqueezeRight(true);
           setIsHorizontalSliding(true);
+          setPrevCategoryIndex(currentCategoryIndex);
           setCurrentCategoryIndex(prev => {
             const next = (prev - 1 + displayCategories.length) % displayCategories.length;
             console.log('Moving from category', prev, 'to', next);
@@ -626,7 +628,9 @@ export function QuizApp() {
                   rotateZ = 5;
                 }
               } else if (isAnimating && dragDirection === 'horizontal') {
-                if (isActive) {
+                if (isEnteringActive) {
+                  rotateZ = 0; // New active animates to 0°
+                } else if (isActive) {
                   // Exiting card rotates 5° in exit direction
                   rotateZ = dragOffsetX > 0 ? 5 : -5;
                 } else if (position === -1 || position === -2) {
@@ -762,6 +766,8 @@ export function QuizApp() {
               if (categoryQuestions.length === 0) return null;
               
               const isCategoryActive = catPosition === 0;
+              const isEnteringCategoryActive = (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' && isCategoryActive && prevCategoryIndex !== currentCategoryIndex;
+
               
               // Calculate horizontal transform - equal spacing between all cards (32px, 64px during slide)
               const baseCardSpacingPx = 32; // Base 32px spacing
@@ -788,10 +794,12 @@ export function QuizApp() {
                 }
               } else if ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') {
                 // During transition animation
-                if (isCategoryActive) {
-                  scaleH = 0.8; // Exiting card at 80%
+                if (isEnteringCategoryActive) {
+                  scaleH = 1; // New active animates up to 100%
+                } else if (isCategoryActive) {
+                  scaleH = 0.8; // Exiting card stays at 80%
                 } else if (catPosition === 1 || catPosition === -1) {
-                  scaleH = 0.8; // Entering card starts at 80%, will animate to 100%
+                  scaleH = 0.8; // Entering card starts at 80%
                 } else {
                   scaleH = 0.8; // Off-screen cards at 80%
                 }
@@ -820,7 +828,9 @@ export function QuizApp() {
                   rotateZ = 5;
                 }
               } else if ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') {
-                if (isCategoryActive) {
+                if (isEnteringCategoryActive) {
+                  rotateZ = 0; // New active animates to 0°
+                } else if (isCategoryActive) {
                   // Exiting card rotates 5° in exit direction
                   const lastDragDirection = dragOffsetX > 0 ? 1 : -1;
                   rotateZ = lastDragDirection * 5;
@@ -854,6 +864,7 @@ export function QuizApp() {
                       setDragDirection('horizontal');
                       setLogoSqueezeLeft(true);
                       setIsHorizontalSliding(true);
+                      setPrevCategoryIndex(currentCategoryIndex);
                       setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
                       setTimeout(() => {
                         setLogoSqueezeLeft(false);
@@ -869,6 +880,7 @@ export function QuizApp() {
                       setDragDirection('horizontal');
                       setLogoSqueezeRight(true);
                       setIsHorizontalSliding(true);
+                      setPrevCategoryIndex(currentCategoryIndex);
                       setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                       setTimeout(() => {
                         setLogoSqueezeRight(false);
@@ -889,6 +901,7 @@ export function QuizApp() {
                         setDragDirection('horizontal');
                         setLogoSqueezeRight(true);
                         setIsHorizontalSliding(true);
+                        setPrevCategoryIndex(currentCategoryIndex);
                         setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                         setTimeout(() => {
                           setLogoSqueezeRight(false);
@@ -1047,6 +1060,7 @@ export function QuizApp() {
                             setDragDirection('horizontal');
                             setLogoSqueezeRight(true);
                             setIsHorizontalSliding(true);
+                            setPrevCategoryIndex(currentCategoryIndex);
                             setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                             setTimeout(() => {
                               setLogoSqueezeRight(false);
@@ -1086,6 +1100,7 @@ export function QuizApp() {
                             if (catPosition === 1) {
                               // Next category
                               setLogoSqueezeLeft(true);
+                              setPrevCategoryIndex(currentCategoryIndex);
                               setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
                               setTimeout(() => {
                                 setLogoSqueezeLeft(false);
@@ -1093,6 +1108,7 @@ export function QuizApp() {
                             } else {
                               // Prev category
                               setLogoSqueezeRight(true);
+                              setPrevCategoryIndex(currentCategoryIndex);
                               setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                               setTimeout(() => {
                                 setLogoSqueezeRight(false);
