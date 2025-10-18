@@ -199,7 +199,11 @@ export function CategorySelector({
                   className="flex items-center justify-between py-3 pr-3 pl-8 cursor-pointer relative overflow-hidden"
                   style={{ 
                     borderRadius: '4px 999px 999px 4px',
-                    backgroundColor: 'hsl(0 0% 10%)'
+                    backgroundColor: 'hsl(0 0% 10%)',
+                    transformOrigin: 'left',
+                    animation: isSelected 
+                      ? 'filter-item-bounce 0.4s cubic-bezier(0.22, 1, 0.36, 1) both' 
+                      : undefined
                   }}
                   onClick={() => handleCategoryToggle(category)}
                 >

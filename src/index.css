@@ -464,6 +464,22 @@ All colors MUST be HSL.
       border-bottom-right-radius: 4px;
     }
   }
+
+  /* Filter item bounce animations */
+  @keyframes filter-item-bounce {
+    0% { 
+      transform: scaleX(1);
+    }
+    70% {
+      transform: scaleX(1);
+    }
+    85% { 
+      transform: scaleX(0.99);
+    }
+    100% { 
+      transform: scaleX(1);
+    }
+  }
   
   /* Ensure header and footer are always visible */
   .app-header {
