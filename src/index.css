@@ -279,10 +279,22 @@ All colors MUST be HSL.
       transform: translateX(0);
     }
     40% {
-      transform: translateX(-35px);
+      transform: translateX(-40px);
     }
     100% {
       transform: translateX(0);
+    }
+  }
+
+  @keyframes swipeHintNext {
+    0% {
+      transform: translateX(100%);
+    }
+    40% {
+      transform: translateX(calc(100% - 40px));
+    }
+    100% {
+      transform: translateX(100%);
     }
   }
 
