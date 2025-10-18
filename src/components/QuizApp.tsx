@@ -977,34 +977,35 @@ export function QuizApp() {
                     // Hide all previous vertical slides of next horizontal cards
                     const shouldHideVerticalPrev = (qPosition < 0 && catPosition === 1);
                     
-                    // Calculate vertical transform - fixed spacing between cards (32px)
-                    const vCardSpacingPx = 32; // 32px gap between cards
-                    const cardHeight = window.innerHeight * 0.8; // Card height (80vh)
-                    const totalCardHeight = cardHeight + vCardSpacingPx; // Total height including spacing
-                    const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
-                    
-                    // Calculate position - show next card with 32px margin
+                    // Calculate vertical transform
                     let baseTranslateY;
                     
                     if (qPosition === -1) {
-                      // Move previous card up by 70vh + header offset + 48px mobile, 64px desktop
-                      const isMobile = window.innerWidth < 768;
-                      const offsetPx = isMobile ? 112 : 144; // 64+16+16+16 or 80+16+16+16+16
-                      const offsetVh = (offsetPx / window.innerHeight) * 100;
-                      baseTranslateY = -(70 + offsetVh);
+                      // Move previous card completely out of viewport at top
+                      baseTranslateY = -120; // Fully off-screen
                     } else if (qPosition === 1) {
                       // Next card positioned with gap after active card
-                      // Mobile: 70vh + 16px, Desktop: 80vh + 32px
                       const isMobile = window.innerWidth < 768;
                       const activeCardHeight = isMobile ? 70 : 80;
                       const gapPx = isMobile ? 16 : 32;
                       const gapVh = (gapPx / window.innerHeight) * 100;
                       baseTranslateY = activeCardHeight + gapVh;
+                    } else if (qPosition === 0 && catPosition === 1) {
+                      // Next horizontal category's active card - vertically centered to current active
+                      baseTranslateY = 0;
                     } else {
-                      baseTranslateY = qPosition * cardSpacingVh;
+                      // Default stacking for other positions
+                      const cardHeight = window.innerHeight * 0.8;
+                      const gapPx = 32;
+                      const totalHeight = cardHeight + gapPx;
+                      baseTranslateY = qPosition * ((totalHeight / window.innerHeight) * 100);
                     }
                     
                     // Only apply vertical drag to the active category
+                    const cardHeight = window.innerHeight * 0.8;
+                    const gapPx = 32;
+                    const totalHeight = cardHeight + gapPx;
+                    const cardSpacingVh = (totalHeight / window.innerHeight) * 100;
                     const dragTranslateY = (isCategoryActive && isDragging && dragDirection === 'vertical') ? (dragOffsetY / window.innerHeight) * cardSpacingVh : 0;
 
                     // Vertical scale - all cards at scale 1
