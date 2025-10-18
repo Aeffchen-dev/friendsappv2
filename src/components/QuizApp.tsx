@@ -510,10 +510,10 @@ export function QuizApp() {
             style={{
               transform: isDragging && dragDirection === 'horizontal' 
                 ? `scaleX(${1 + (logoSqueezeProgress * 0.08)})` 
-                : (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal'
-                ? `scaleX(${1 + (0.08 * (logoSqueezeLeft || logoSqueezeRight ? 1 : 0))})`
+                : (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' && (logoSqueezeLeft || logoSqueezeRight)
+                ? `scaleX(1.08)`
                 : 'scaleX(1)',
-              transformOrigin: dragOffsetX < 0 || logoSqueezeLeft ? 'right' : 'left',
+              transformOrigin: (isDragging && dragOffsetX < 0) || logoSqueezeLeft ? 'right' : 'left',
               transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           >
