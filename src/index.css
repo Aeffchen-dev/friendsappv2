@@ -436,7 +436,7 @@ All colors MUST be HSL.
       width: 8px;
     }
     65% {
-      width: 103%;
+      width: 101.5%;
     }
     100% {
       width: 100%;
@@ -449,7 +449,7 @@ All colors MUST be HSL.
       transform: scaleX(1);
     }
     65% {
-      transform: scaleX(1.03);
+      transform: scaleX(1.015);
     }
     100% {
       transform: scaleX(1);
