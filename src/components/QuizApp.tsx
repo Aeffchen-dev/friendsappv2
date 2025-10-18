@@ -1211,7 +1211,7 @@ export function QuizApp() {
                           onBgColorChange={
                             isActive 
                               ? handleBgColorChange 
-                              : (!isCategoryActive && (catPosition === 1 || catPosition === -1)) 
+                              : (!isCategoryActive && qPosition === 0 && (catPosition === 1 || catPosition === -1)) 
                                 ? (bgClass) => handleBgColorChange(bgClass, catPosition) 
                                 : undefined
                           }
