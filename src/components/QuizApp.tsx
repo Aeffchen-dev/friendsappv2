@@ -569,14 +569,9 @@ export function QuizApp() {
               const maxCardWidthPx = 600;
               const actualCardWidth = isMobile ? cardWidthVw : Math.min(cardWidthVw, maxCardWidthPx);
               
-              // For desktop, position -1 (prev card) at activeCardWidth + 16px + 24px + 16px
-              let translateXPx;
-              if (!isMobile && position === -1) {
-                translateXPx = -(actualCardWidth + 56); // 16px + 24px + 16px = 56px
-              } else {
-                const totalCardWidth = actualCardWidth + baseCardSpacingPx;
-                translateXPx = position * totalCardWidth;
-              }
+              // Calculate horizontal position for all cards
+              const totalCardWidth = actualCardWidth + baseCardSpacingPx;
+              let translateXPx = position * totalCardWidth;
               
               const dragTranslateXPx = isDragging && dragDirection === 'horizontal' ? dragOffsetX : 0;
               
@@ -769,13 +764,12 @@ export function QuizApp() {
               const isEnteringCategoryActive = (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' && isCategoryActive && prevCategoryIndex !== currentCategoryIndex;
 
               
-              // Calculate horizontal transform - equal spacing between all cards (32px, 64px during slide)
+              // Calculate horizontal transform - equal spacing between all cards
               const baseCardSpacingPx = 32; // Base 32px spacing
-              const hCardSpacingPx = isHorizontalSliding ? baseCardSpacingPx * 2 : baseCardSpacingPx; // Double during slide
               const maxCardWidthPx = 600; // Max width for desktop
               const vwCardWidth = window.innerWidth * 0.8; // 80vw
               const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx); // Card width (80vw or 600px max)
-              const totalCardWidth = hCardWidth + hCardSpacingPx; // Total width including spacing
+              const totalCardWidth = hCardWidth + baseCardSpacingPx; // Total width including spacing
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
               const baseTranslateX = catPosition * cardSpacingVw;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
