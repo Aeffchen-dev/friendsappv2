@@ -334,7 +334,7 @@ export function QuizApp() {
     setTimeout(() => {
       setIsAnimating(false);
       setDragDirection(null);
-    }, 350);
+    }, 300);
   };
 
   const nextCategory = () => {
@@ -667,7 +667,7 @@ export function QuizApp() {
                         setLogoSqueezeLeft(false);
                         setIsAnimating(false);
                         setDragDirection(null);
-                      }, 350);
+                      }, 300);
                     } else if (position === -1) {
                       // Click on prev card - go prev with animation
                       setIsAnimating(true);
@@ -679,7 +679,7 @@ export function QuizApp() {
                         setLogoSqueezeRight(false);
                         setIsAnimating(false);
                         setDragDirection(null);
-                      }, 350);
+                      }, 300);
                     } else if (isActive && !isDesktop) {
                       // Mobile only: Click on active card - check if left side clicked
                       const clickX = e.clientX;
@@ -696,7 +696,7 @@ export function QuizApp() {
                           setLogoSqueezeRight(false);
                           setIsAnimating(false);
                           setDragDirection(null);
-                        }, 350);
+                        }, 300);
                       }
                     }
                   }}
@@ -704,7 +704,7 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) scale(${scale}) rotateZ(${rotateZ}deg)`,
-                    transition: isDragging ? 'none' : ((isAnimating && dragDirection === 'horizontal') || (!isAnimating && !isDragging && position === 0 && scale < 1)) ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: isDragging ? 'none' : ((isAnimating && dragDirection === 'horizontal') || (!isAnimating && !isDragging && position === 0 && scale < 1)) ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
                     animation: (isActive || position === 1) && !hasInteracted && currentShuffleIndex === 0 ? 'swipeHint 0.4s ease-in-out 1s 1' : 'none',
                     pointerEvents: !isActive && (position === 1 || position === -1) ? 'auto' : (isActive ? 'auto' : 'none'),
                     willChange: (isDragging || (isAnimating && dragDirection === 'horizontal')) ? 'transform' : 'auto',
@@ -745,7 +745,7 @@ export function QuizApp() {
                           setLogoSqueezeRight(false);
                           setIsAnimating(false);
                           setDragDirection(null);
-                        }, 350);
+                        }, 300);
                       } : undefined}
                     />
                   </div>
@@ -873,7 +873,7 @@ export function QuizApp() {
                         setIsAnimating(false);
                         setDragDirection(null);
                         setIsHorizontalSliding(false);
-                      }, 350);
+                      }, 300);
                     } else if (!isCategoryActive && catPosition === -1) {
                       // Mobile & Desktop: Click on prev category card with animation
                       setIsAnimating(true);
@@ -889,7 +889,7 @@ export function QuizApp() {
                         setIsAnimating(false);
                         setDragDirection(null);
                         setIsHorizontalSliding(false);
-                      }, 350);
+                      }, 300);
                     } else if (isCategoryActive && catPosition === 0 && !isDesktop) {
                       // Mobile only: Click on active category - check if left side clicked
                       const clickX = e.clientX;
@@ -910,7 +910,7 @@ export function QuizApp() {
                           setIsAnimating(false);
                           setDragDirection(null);
                           setIsHorizontalSliding(false);
-                        }, 350);
+                        }, 300);
                       }
                     }
                   }}
@@ -918,7 +918,7 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${baseTranslateX + dragTranslateX}vw) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
-                    transition: isDragging ? 'none' : (((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') || (!isAnimating && !isDragging && isCategoryActive && scaleH < 1)) ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: isDragging ? 'none' : (((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') || (!isAnimating && !isDragging && isCategoryActive && scaleH < 1)) ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
                     animation: 'none',
                     pointerEvents: isCategoryActive || (!isCategoryActive && (catPosition === 1 || catPosition === -1)) ? 'auto' : 'none',
                     willChange: (isDragging || ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal')) ? 'transform' : 'auto',
@@ -995,7 +995,7 @@ export function QuizApp() {
                               setTimeout(() => {
                                 setIsAnimating(false);
                                 setDragDirection(null);
-                              }, 350);
+                              }, 300);
                             } else if (qPosition === -1) {
                               // Click on prev question with animation
                               setIsAnimating(true);
@@ -1007,7 +1007,7 @@ export function QuizApp() {
                               setTimeout(() => {
                                 setIsAnimating(false);
                                 setDragDirection(null);
-                              }, 350);
+                              }, 300);
                             }
                           } else if (isActive) {
                             const clickY = e.clientY;
@@ -1026,7 +1026,7 @@ export function QuizApp() {
                               setTimeout(() => {
                                 setIsAnimating(false);
                                 setDragDirection(null);
-                              }, 350);
+                              }, 300);
                             }
                           }
                         }}
@@ -1069,7 +1069,7 @@ export function QuizApp() {
                               setIsAnimating(false);
                               setDragDirection(null);
                               setIsHorizontalSliding(false);
-                            }, 350);
+                            }, 300);
                           } : (isCategoryActive && catPosition === 0 && (qPosition === 1 || qPosition === -1)) ? () => {
                             // Mobile: Non-active vertical card's category strip in active horizontal category - trigger horizontal slide
                             const isMobile = window.innerWidth < 768;
@@ -1087,7 +1087,7 @@ export function QuizApp() {
                               setIsAnimating(false);
                               setDragDirection(null);
                               setIsHorizontalSliding(false);
-                            }, 350);
+                            }, 300);
                           } : (!isCategoryActive && (catPosition === 1 || catPosition === -1)) ? () => {
                             // Mobile: Category strip on non-active horizontal slide - navigate to that category
                             const isMobile = window.innerWidth < 768;
@@ -1119,7 +1119,7 @@ export function QuizApp() {
                               setIsAnimating(false);
                               setDragDirection(null);
                               setIsHorizontalSliding(false);
-                            }, 350);
+                            }, 300);
                           } : undefined}
                           onTopClick={isActive ? () => {
                             // Click on top area - go to prev vertical slide (question) - default mode only
@@ -1134,7 +1134,7 @@ export function QuizApp() {
                             setTimeout(() => {
                               setIsAnimating(false);
                               setDragDirection(null);
-                            }, 350);
+                            }, 300);
                           } : undefined}
                         />
                       </div>
