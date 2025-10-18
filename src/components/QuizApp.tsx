@@ -558,7 +558,7 @@ export function QuizApp() {
     return computed || 'rgb(255, 255, 255)';
   };
 
-  // Calculate blended header text color during drag
+  // Calculate blended header text color during drag using color-mix()
   const getBlendedHeaderColor = () => {
     if (!isDragging || dragDirection !== 'horizontal') {
       return getColorFromTextClass(headerTextColor);
@@ -570,7 +570,16 @@ export function QuizApp() {
       ? getColorFromTextClass(nextCardHeaderTextColor) 
       : getColorFromTextClass(prevCardHeaderTextColor);
     
-    return interpolateColor(currentColor, targetColor, dragProgress);
+    const percentage = (dragProgress * 100).toFixed(1);
+    
+    // Create temporary element to compute color-mix
+    const tempEl = document.createElement('div');
+    tempEl.style.color = `color-mix(in oklab, ${targetColor} ${percentage}%, ${currentColor})`;
+    document.body.appendChild(tempEl);
+    const computed = window.getComputedStyle(tempEl).color;
+    document.body.removeChild(tempEl);
+    
+    return computed || currentColor;
   };
 
   // Get background gradient based on drag state
@@ -589,22 +598,16 @@ export function QuizApp() {
       };
     }
 
-    // During horizontal drag - gradient transition
+    // During horizontal drag - use color-mix() for smooth blending
     const targetColor = dragOffsetX < 0 
       ? getColorFromBgClass(nextCardBgColor)
       : getColorFromBgClass(prevCardBgColor);
     
     const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-    const easedProgress = dragProgress * dragProgress; // Quadratic easing
-    
-    // Calculate gradient position (0% to 100%)
-    const gradientPosition = easedProgress * 100;
-    
-    // Gradient shifts from left to right (or right to left)
-    const direction = dragOffsetX < 0 ? 'to right' : 'to left';
+    const percentage = (dragProgress * 100).toFixed(1);
     
     return {
-      background: `linear-gradient(${direction}, ${currentColor} ${100 - gradientPosition}%, ${targetColor} 100%)`,
+      background: `color-mix(in oklab, ${targetColor} ${percentage}%, ${currentColor})`,
       transition: 'none'
     };
   };
