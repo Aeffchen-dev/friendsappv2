@@ -83,49 +83,70 @@ export function QuizApp() {
         byCategory[cat] = [...byCategory[cat]].sort(() => Math.random() - 0.5);
       });
       
-      // Mix categories optimally to avoid consecutive same categories
+      // Mix categories with balanced distribution (avoid clusters and ensure wrap-around diversity)
       const shuffled: Question[] = [];
       const categoryKeys = Object.keys(byCategory);
-      let lastCategory = '';
-      let firstCategory = '';
-      
-      while (Object.values(byCategory).some(arr => arr.length > 0)) {
-        // Get available categories (excluding the last used one if possible)
-        let availableCategories = categoryKeys.filter(cat => 
-          byCategory[cat].length > 0 && cat !== lastCategory
-        );
-        
-        // If no other categories available, use any remaining category
-        if (availableCategories.length === 0) {
-          availableCategories = categoryKeys.filter(cat => byCategory[cat].length > 0);
+
+      // Track remaining counts per category
+      const remaining: Record<string, number> = {};
+      categoryKeys.forEach((cat) => (remaining[cat] = byCategory[cat].length));
+
+      // Helper to pick next category: highest remaining count, not equal to last category
+      const pickNextCategory = (last: string | ''): string | null => {
+        const candidates = categoryKeys.filter((cat) => remaining[cat] > 0 && cat !== last);
+        if (candidates.length === 0) {
+          // Only last remains or nothing left
+          const fallback = categoryKeys.find((cat) => remaining[cat] > 0) || null;
+          return fallback;
         }
-        
-        if (availableCategories.length === 0) break;
-        
-        // Pick a random category from available ones
-        const randomCategory = availableCategories[Math.floor(Math.random() * availableCategories.length)];
-        const question = byCategory[randomCategory].shift();
-        
-        if (question) {
-          shuffled.push(question);
-          if (firstCategory === '') firstCategory = randomCategory;
-          lastCategory = randomCategory;
+        // Choose among categories with max remaining (tie-break randomly)
+        let maxRemain = Math.max(...candidates.map((c) => remaining[c]));
+        const top = candidates.filter((c) => remaining[c] === maxRemain);
+        return top[Math.floor(Math.random() * top.length)];
+      };
+
+      // Start with the category that has the most items for better spread
+      let lastCategory = '' as string | '';
+      let firstCategory = '';
+      let startCat = categoryKeys.reduce((a, b) => (remaining[a] >= remaining[b] ? a : b));
+      if (remaining[startCat] > 0) {
+        const q = byCategory[startCat].shift();
+        if (q) {
+          shuffled.push(q);
+          remaining[startCat]--;
+          firstCategory = startCat;
+          lastCategory = startCat;
         }
       }
-      
-      // Fix wrap-around: if last and first categories are the same, try to swap the last question
-      if (shuffled.length > 2 && firstCategory === lastCategory) {
-        // Find a question from a different category near the end to swap with
-        for (let i = shuffled.length - 2; i >= Math.max(0, shuffled.length - 10); i--) {
-          if (shuffled[i].category !== lastCategory && shuffled[i].category !== shuffled[shuffled.length - 2]?.category) {
-            // Swap
-            const temp = shuffled[shuffled.length - 1];
+
+      while (Object.values(remaining).some((n) => n > 0)) {
+        const nextCat = pickNextCategory(lastCategory);
+        if (!nextCat) break;
+        const q = byCategory[nextCat].shift();
+        if (!q) {
+          remaining[nextCat] = 0;
+          continue;
+        }
+        shuffled.push(q);
+        remaining[nextCat]--;
+        lastCategory = nextCat;
+      }
+
+      // Fix wrap-around: ensure last and first categories differ
+      if (shuffled.length > 1 && firstCategory === lastCategory) {
+        for (let i = shuffled.length - 2; i >= 0; i--) {
+          if (shuffled[i].category !== lastCategory) {
+            const tmp = shuffled[shuffled.length - 1];
             shuffled[shuffled.length - 1] = shuffled[i];
-            shuffled[i] = temp;
+            shuffled[i] = tmp;
+            lastCategory = shuffled[shuffled.length - 1].category;
             break;
           }
         }
       }
+
+      // Debug: visualize category distribution
+      console.info('Shuffled categories:', shuffled.map((q) => q.category));
       
       setShuffledQuestions(shuffled);
       setPrevShuffleIndex(0);
