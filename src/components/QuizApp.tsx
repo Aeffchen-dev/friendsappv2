@@ -28,6 +28,8 @@ export function QuizApp() {
   const [isShuffleMode, setIsShuffleMode] = useState(true);
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
+  const [prevShuffleIndex, setPrevShuffleIndex] = useState(0);
+  const [prevCategoryIndex, setPrevCategoryIndex] = useState(0);
   const [hasInteracted, setHasInteracted] = useState(false);
   
   // Drag state
@@ -106,6 +108,7 @@ export function QuizApp() {
       }
       
       setShuffledQuestions(shuffled);
+      setPrevShuffleIndex(0);
       setCurrentShuffleIndex(0);
     }
   }, [isShuffleMode, questions, selectedCategories]);
@@ -268,10 +271,12 @@ export function QuizApp() {
         // In shuffle mode, navigate through shuffled questions
         if (dragOffsetX < -threshold) {
           setLogoSqueezeLeft(true);
+          setPrevShuffleIndex(currentShuffleIndex);
           setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
           setTimeout(() => setLogoSqueezeLeft(false), 300);
         } else if (dragOffsetX > threshold) {
           setLogoSqueezeRight(true);
+          setPrevShuffleIndex(currentShuffleIndex);
           setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
           setTimeout(() => setLogoSqueezeRight(false), 300);
         }
@@ -553,6 +558,7 @@ export function QuizApp() {
               if (!question) return null;
               
               const isActive = position === 0;
+              const isEnteringActive = isAnimating && dragDirection === 'horizontal' && isActive && prevShuffleIndex !== currentShuffleIndex;
               const isMobile = window.innerWidth < 768;
               
               // Calculate horizontal transform with proper spacing
@@ -586,10 +592,12 @@ export function QuizApp() {
                 }
               } else if (isAnimating && dragDirection === 'horizontal') {
                 // During transition animation
-                if (isActive) {
-                  scale = 0.8; // Exiting card at 80%
+                if (isEnteringActive) {
+                  scale = 1; // New active animates up to 100%
+                } else if (isActive) {
+                  scale = 0.8; // Exiting card stays at 80%
                 } else if (position === 1 || position === -1) {
-                  scale = 0.8; // Entering card starts at 80%, will animate to 100%
+                  scale = 0.8; // Entering card starts at 80%
                 } else {
                   scale = 0.8; // Off-screen cards at 80%
                 }
@@ -649,6 +657,7 @@ export function QuizApp() {
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeLeft(true);
+                      setPrevShuffleIndex(currentShuffleIndex);
                       setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
                       setTimeout(() => {
                         setLogoSqueezeLeft(false);
@@ -660,6 +669,7 @@ export function QuizApp() {
                       setIsAnimating(true);
                       setDragDirection('horizontal');
                       setLogoSqueezeRight(true);
+                      setPrevShuffleIndex(currentShuffleIndex);
                       setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
                       setTimeout(() => {
                         setLogoSqueezeRight(false);
@@ -676,6 +686,7 @@ export function QuizApp() {
                         setIsAnimating(true);
                         setDragDirection('horizontal');
                         setLogoSqueezeRight(true);
+                        setPrevShuffleIndex(currentShuffleIndex);
                         setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
                         setTimeout(() => {
                           setLogoSqueezeRight(false);
@@ -724,6 +735,7 @@ export function QuizApp() {
                         setIsAnimating(true);
                         setDragDirection('horizontal');
                         setLogoSqueezeRight(true);
+                        setPrevShuffleIndex(currentShuffleIndex);
                         setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
                         setTimeout(() => {
                           setLogoSqueezeRight(false);
