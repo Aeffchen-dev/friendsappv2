@@ -573,38 +573,7 @@ export function QuizApp() {
     return interpolateColor(currentColor, targetColor, dragProgress);
   };
 
-  // Parse HSL color string to individual values
-  const parseHSL = (hslString: string): { h: number; s: number; l: number } => {
-    const match = hslString.match(/hsl\((\d+\.?\d*),\s*(\d+\.?\d*)%,\s*(\d+\.?\d*)%\)/);
-    if (match) {
-      return {
-        h: parseFloat(match[1]),
-        s: parseFloat(match[2]),
-        l: parseFloat(match[3])
-      };
-    }
-    return { h: 0, s: 0, l: 0 };
-  };
-
-  // Interpolate between two HSL colors
-  const interpolateHSL = (color1: string, color2: string, progress: number): string => {
-    const hsl1 = parseHSL(color1);
-    const hsl2 = parseHSL(color2);
-    
-    // Find shortest path around the color wheel for hue
-    let hueDiff = hsl2.h - hsl1.h;
-    if (hueDiff > 180) hueDiff -= 360;
-    if (hueDiff < -180) hueDiff += 360;
-    
-    // Interpolate all channels
-    const h = (hsl1.h + hueDiff * progress + 360) % 360;
-    const s = hsl1.s + (hsl2.s - hsl1.s) * progress;
-    const l = hsl1.l + (hsl2.l - hsl1.l) * progress;
-    
-    return `hsl(${h}, ${s}%, ${l}%)`;
-  };
-
-  // Get background color based on drag state
+  // Get background gradient based on drag state
   const getBackgroundStyle = () => {
     if (loading) {
       return { background: getColorFromBgClass(bgColor) };
@@ -620,24 +589,22 @@ export function QuizApp() {
       };
     }
 
-    // During horizontal drag - HSL interpolation
+    // During horizontal drag - gradient transition
     const targetColor = dragOffsetX < 0 
       ? getColorFromBgClass(nextCardBgColor)
       : getColorFromBgClass(prevCardBgColor);
     
     const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+    const easedProgress = dragProgress * dragProgress; // Quadratic easing
     
-    // Apply easing for smoother, more natural transition
-    // Using cubic ease-in-out: starts slow, speeds up, then slows down
-    const easedProgress = dragProgress < 0.5
-      ? 4 * dragProgress * dragProgress * dragProgress
-      : 1 - Math.pow(-2 * dragProgress + 2, 3) / 2;
+    // Calculate gradient position (0% to 100%)
+    const gradientPosition = easedProgress * 100;
     
-    // Interpolate between current and target color
-    const interpolatedColor = interpolateHSL(currentColor, targetColor, easedProgress);
+    // Gradient shifts from left to right (or right to left)
+    const direction = dragOffsetX < 0 ? 'to right' : 'to left';
     
     return {
-      background: interpolatedColor,
+      background: `linear-gradient(${direction}, ${currentColor} ${100 - gradientPosition}%, ${targetColor} 100%)`,
       transition: 'none'
     };
   };
