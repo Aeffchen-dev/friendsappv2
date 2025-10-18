@@ -19,7 +19,7 @@ export function CategorySelector({
   onCategoriesChange 
 }: CategorySelectorProps) {
   const [tempSelection, setTempSelection] = useState<string[]>(selectedCategories);
-  const [strokeAnimations, setStrokeAnimations] = useState<{[key: string]: boolean}>({});
+  const [animatingItems, setAnimatingItems] = useState<{[key: string]: boolean}>({});
 
   // Update temp selection when selectedCategories prop changes
   useEffect(() => {
@@ -149,6 +149,12 @@ export function CategorySelector({
 
 
   const handleCategoryToggle = (category: string) => {
+    // Trigger item bounce animation
+    setAnimatingItems(prev => ({ ...prev, [category]: true }));
+    setTimeout(() => {
+      setAnimatingItems(prev => ({ ...prev, [category]: false }));
+    }, 320);
+    
     setTempSelection(prev => 
       prev.includes(category) 
         ? prev.filter(c => c !== category)
@@ -199,12 +205,14 @@ export function CategorySelector({
                   className="flex items-center justify-between py-3 pr-3 pl-8 cursor-pointer relative overflow-hidden"
                   style={{ 
                     borderRadius: '4px 999px 999px 4px',
-                    backgroundColor: 'hsl(0 0% 10%)'
+                    backgroundColor: 'hsl(0 0% 10%)',
+                    animation: animatingItems[category] ? 'item-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined
                   }}
                   onClick={() => handleCategoryToggle(category)}
                 >
                   {/* Color strip - 8px when unselected, full width when selected */}
                   <div 
+                    key={`strip-${category}-${isSelected}`}
                     className={`absolute inset-y-0 left-0 ${isSelected ? 'w-full' : 'w-2'}`}
                     style={{ 
                       backgroundColor: colors.cardBg,
@@ -233,7 +241,7 @@ export function CategorySelector({
                        }}
                     >
                        <div
-                        className={`w-8 h-8 border border-white flex items-center justify-center transition-all ease-out ${isSelected ? 'bg-white duration-200 delay-150' : 'bg-transparent duration-100 hover:bg-white/10'}`}
+                        className={`w-8 h-8 border border-white flex items-center justify-center transition-all ease-out ${isSelected ? 'bg-white duration-150 delay-150' : 'bg-transparent duration-100 hover:bg-white/10'}`}
                          style={{ 
                            width: '32px', 
                            height: '32px', 
