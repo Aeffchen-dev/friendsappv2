@@ -586,13 +586,13 @@ export function QuizApp() {
     if (loading) return 0;
     const targetColor = getTargetBgColor();
     
-    // During horizontal drag, blend based on drag progress
+    // During horizontal drag, blend based on drag progress (max 90%)
     if (isDragging && dragDirection === 'horizontal') {
       const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-      return dragProgress;
+      return dragProgress * 0.9;
     }
     
-    // During animation, keep opacity at 1 if we're transitioning to new color
+    // During animation, smoothly transition to 100% over the animation duration
     if (isAnimating && dragDirection === 'horizontal' && targetColor !== bgColor) {
       return 1;
     }

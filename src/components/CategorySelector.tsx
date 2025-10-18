@@ -149,12 +149,6 @@ export function CategorySelector({
 
 
   const handleCategoryToggle = (category: string) => {
-    // Trigger item bounce animation
-    setAnimatingItems(prev => ({ ...prev, [category]: true }));
-    setTimeout(() => {
-      setAnimatingItems(prev => ({ ...prev, [category]: false }));
-    }, 320);
-    
     setTempSelection(prev => 
       prev.includes(category) 
         ? prev.filter(c => c !== category)
@@ -205,8 +199,7 @@ export function CategorySelector({
                   className="flex items-center justify-between py-3 pr-3 pl-8 cursor-pointer relative overflow-hidden"
                   style={{ 
                     borderRadius: '4px 999px 999px 4px',
-                    backgroundColor: 'hsl(0 0% 10%)',
-                    animation: animatingItems[category] ? 'item-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined
+                    backgroundColor: 'hsl(0 0% 10%)'
                   }}
                   onClick={() => handleCategoryToggle(category)}
                 >
@@ -222,7 +215,9 @@ export function CategorySelector({
                       borderBottomRightRadius: isSelected ? '999px' : '4px',
                       transformOrigin: 'left',
                       willChange: 'transform',
-                      animation: isSelected ? 'strip-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1) both' : undefined
+                      animation: isSelected 
+                        ? 'strip-bounce 380ms cubic-bezier(0.22, 1, 0.36, 1) both' 
+                        : 'strip-contract 200ms cubic-bezier(0.4, 0, 0.2, 1) both'
                     }} 
                   />
                   
