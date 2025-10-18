@@ -942,11 +942,9 @@ export function QuizApp() {
                     
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Hide previous vertical slide of active and next horizontal slides during transition
-                    const shouldHideVerticalPrev = qPosition === -1 && 
-                      (isDragging || isAnimating || isHorizontalSliding) && 
-                      dragDirection === 'horizontal' && 
-                      (isCategoryActive || catPosition === 1);
+                    // Hide previous vertical slide on desktop during horizontal slide
+                    const isDesktop = window.innerWidth >= 768;
+                    const shouldHideVerticalPrev = isDesktop && isHorizontalSliding && qPosition === -1;
                     
                     // Calculate vertical transform - fixed spacing between cards (32px)
                     const vCardSpacingPx = 32; // 32px gap between cards
