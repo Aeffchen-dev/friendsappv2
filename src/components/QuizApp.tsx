@@ -27,6 +27,7 @@ export function QuizApp() {
   const [prevBgColor, setPrevBgColor] = useState('bg-background');
   const [nextBgColor, setNextBgColor] = useState('bg-background');
   const [headerTextColor, setHeaderTextColor] = useState('text-white');
+  const [nextHeaderTextColor, setNextHeaderTextColor] = useState('text-white');
   const [isShuffleMode, setIsShuffleMode] = useState(true);
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
@@ -480,6 +481,12 @@ export function QuizApp() {
   const handleBgColorChange = (newBgClass: string, isNextCard: boolean = false) => {
     if (isNextCard) {
       setNextBgColor(newBgClass);
+      // Also set next header text color
+      const colorMatch = newBgClass.match(/bg-quiz-(\w+(-\w+)*)-bg-dark/);
+      if (colorMatch) {
+        const category = colorMatch[1];
+        setNextHeaderTextColor(getHeaderColorForCategory(category));
+      }
     } else {
       setPrevBgColor(bgColor);
       setBgColor(newBgClass);
@@ -499,6 +506,31 @@ export function QuizApp() {
     if (!match) return 'hsl(0 0% 0%)';
     const varName = match[1];
     return `hsl(var(--${varName}))`;
+  };
+
+  // Get color value from text class
+  const getColorFromTextClass = (textClass: string): string => {
+    // Extract color value from text class
+    if (textClass.startsWith('text-[')) {
+      const match = textClass.match(/text-\[([^\]]+)\]/);
+      return match ? match[1] : 'rgb(255, 255, 255)';
+    }
+    const match = textClass.match(/text-(.+)/);
+    if (!match) return 'rgb(255, 255, 255)';
+    const varName = match[1];
+    return `hsl(var(--${varName}))`;
+  };
+
+  // Calculate blended header text color during drag
+  const getBlendedHeaderColor = () => {
+    if (!isDragging || dragDirection !== 'horizontal') {
+      return getColorFromTextClass(headerTextColor);
+    }
+    
+    const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+    const targetColor = dragOffsetX < 0 ? nextHeaderTextColor : headerTextColor;
+    
+    return getColorFromTextClass(targetColor);
   };
 
   // Calculate background opacity and target color based on drag progress
@@ -563,15 +595,19 @@ export function QuizApp() {
               transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           >
-            <path d="M24.1808 3.79373C17.2269 3.79372 15.558 5.76916 13.3328 14.7997C11.1076 23.8302 9.80953 27.9692 9.43866 28.9099" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
-            <path d="M38.6502 3.79373C31.6964 3.79372 30.0274 5.76916 27.8022 14.7997C25.577 23.8302 24.279 27.9692 23.9081 28.9099" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
-            <path d="M53.1193 3.79373C46.1655 3.79372 44.4966 5.76916 42.2713 14.7997C40.0461 23.8302 38.7481 27.9692 38.3772 28.9099" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
-            <path d="M3 20.0332C4.22067 19.6156 5.12769 19.3985 6.5249 19.1832C16.8259 17.5961 27.318 16.7384 37.7276 16.3157C45.2899 16.0086 52.8539 16.7693 60.4071 16.361C61.8418 16.2835 62.5665 15.8384 64 16.157" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
+            <path d="M24.1808 3.79373C17.2269 3.79372 15.558 5.76916 13.3328 14.7997C11.1076 23.8302 9.80953 27.9692 9.43866 28.9099" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)'}}/>
+            <path d="M38.6502 3.79373C31.6964 3.79372 30.0274 5.76916 27.8022 14.7997C25.577 23.8302 24.279 27.9692 23.9081 28.9099" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)'}}/>
+            <path d="M53.1193 3.79373C46.1655 3.79372 44.4966 5.76916 42.2713 14.7997C40.0461 23.8302 38.7481 27.9692 38.3772 28.9099" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)'}}/>
+            <path d="M3 20.0332C4.22067 19.6156 5.12769 19.3985 6.5249 19.1832C16.8259 17.5961 27.318 16.7384 37.7276 16.3157C45.2899 16.0086 52.8539 16.7693 60.4071 16.361C61.8418 16.2835 62.5665 15.8384 64 16.157" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)'}}/>
           </svg>
           <button 
             onClick={handleToggleMode}
-            className={`${headerTextColor} font-normal text-xs align-baseline transition-colors duration-500 cursor-pointer opacity-100`}
-            style={{fontSize: '14px'}}
+            style={{
+              fontSize: '14px',
+              color: getBlendedHeaderColor(),
+              transition: isDragging ? 'none' : 'color 600ms cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+            className="font-normal text-xs align-baseline cursor-pointer opacity-100"
           >
             {isShuffleMode ? 'Kategorien sortieren' : 'Kategorien mischen'}
           </button>
