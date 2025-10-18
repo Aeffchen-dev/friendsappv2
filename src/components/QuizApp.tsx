@@ -978,15 +978,27 @@ export function QuizApp() {
                     const shouldHideVerticalPrev = (qPosition < 0 && catPosition === 1);
                     
                     // Calculate vertical transform
-                    // Active card and all vertical stacks start at same Y (16px below logo)
                     let baseTranslateY;
                     
                     if (qPosition === -1) {
                       // Move previous card completely out of viewport at top
                       baseTranslateY = -120; // Fully off-screen
-                    } else {
-                      // All cards (active and next vertical stack) at same Y position
+                    } else if (qPosition === 1) {
+                      // Next card positioned with gap after active card
+                      const isMobile = window.innerWidth < 768;
+                      const activeCardHeight = isMobile ? 70 : 80;
+                      const gapPx = isMobile ? 16 : 32;
+                      const gapVh = (gapPx / window.innerHeight) * 100;
+                      baseTranslateY = activeCardHeight + gapVh;
+                    } else if (qPosition === 0 && catPosition === 1) {
+                      // Next horizontal category's active card - vertically centered to current active
                       baseTranslateY = 0;
+                    } else {
+                      // Default stacking for other positions
+                      const cardHeight = window.innerHeight * 0.8;
+                      const gapPx = 32;
+                      const totalHeight = cardHeight + gapPx;
+                      baseTranslateY = qPosition * ((totalHeight / window.innerHeight) * 100);
                     }
                     
                     // Only apply vertical drag to the active category
