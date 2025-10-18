@@ -558,33 +558,28 @@ export function QuizApp() {
     return computed || 'rgb(255, 255, 255)';
   };
 
-  // Calculate blended header text color during drag using RGB interpolation
+  // Calculate blended header text color during drag (same as background)
   const getBlendedHeaderColor = () => {
     if (!isDragging || dragDirection !== 'horizontal') {
       return getColorFromTextClass(headerTextColor);
     }
     
-    // Header reaches final color at 50% of screen width (faster than background)
-    const dragProgress = Math.min(Math.abs(dragOffsetX) / (window.innerWidth * 0.5), 1);
+    const dragProgress = Math.min(Math.abs(dragOffsetX) / window.innerWidth, 1);
     const currentColor = getColorFromTextClass(headerTextColor);
     const targetColor = dragOffsetX < 0 
       ? getColorFromTextClass(nextCardHeaderTextColor) 
       : getColorFromTextClass(prevCardHeaderTextColor);
     
-    // Parse RGB values
-    const parseRGB = (color: string) => {
-      const match = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-      return match ? [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])] : [255, 255, 255];
-    };
+    const percentage = (dragProgress * 100).toFixed(1);
     
-    const [r1, g1, b1] = parseRGB(currentColor);
-    const [r2, g2, b2] = parseRGB(targetColor);
+    // Create temporary element to compute color-mix (same as background)
+    const tempEl = document.createElement('div');
+    tempEl.style.color = `color-mix(in oklab, ${targetColor} ${percentage}%, ${currentColor})`;
+    document.body.appendChild(tempEl);
+    const computed = window.getComputedStyle(tempEl).color;
+    document.body.removeChild(tempEl);
     
-    const r = Math.round(r1 + (r2 - r1) * dragProgress);
-    const g = Math.round(g1 + (g2 - g1) * dragProgress);
-    const b = Math.round(b1 + (b2 - b1) * dragProgress);
-    
-    return `rgb(${r}, ${g}, ${b})`;
+    return computed || currentColor;
   };
 
   // Get background gradient based on drag state
