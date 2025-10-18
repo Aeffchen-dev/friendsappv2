@@ -508,6 +508,35 @@ export function QuizApp() {
     return `hsl(var(--${varName}))`;
   };
 
+  // Parse color string to RGB values
+  const parseColor = (colorStr: string): [number, number, number] => {
+    if (colorStr.startsWith('#')) {
+      const hex = colorStr.replace('#', '');
+      return [
+        parseInt(hex.substr(0, 2), 16),
+        parseInt(hex.substr(2, 2), 16),
+        parseInt(hex.substr(4, 2), 16)
+      ];
+    }
+    const match = colorStr.match(/rgba?\((\d+),?\s*(\d+),?\s*(\d+)/);
+    if (match) {
+      return [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
+    }
+    return [255, 255, 255];
+  };
+
+  // Interpolate between two colors
+  const interpolateColor = (color1: string, color2: string, progress: number): string => {
+    const [r1, g1, b1] = parseColor(color1);
+    const [r2, g2, b2] = parseColor(color2);
+    
+    const r = Math.round(r1 + (r2 - r1) * progress);
+    const g = Math.round(g1 + (g2 - g1) * progress);
+    const b = Math.round(b1 + (b2 - b1) * progress);
+    
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+
   // Get color value from text class
   const getColorFromTextClass = (textClass: string): string => {
     // Extract color value from text class
@@ -518,7 +547,15 @@ export function QuizApp() {
     const match = textClass.match(/text-(.+)/);
     if (!match) return 'rgb(255, 255, 255)';
     const varName = match[1];
-    return `hsl(var(--${varName}))`;
+    
+    // Get computed color from CSS variable
+    const tempEl = document.createElement('div');
+    tempEl.style.color = `hsl(var(--${varName}))`;
+    document.body.appendChild(tempEl);
+    const computed = window.getComputedStyle(tempEl).color;
+    document.body.removeChild(tempEl);
+    
+    return computed || 'rgb(255, 255, 255)';
   };
 
   // Calculate blended header text color during drag
@@ -528,9 +565,12 @@ export function QuizApp() {
     }
     
     const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-    const targetColor = dragOffsetX < 0 ? nextHeaderTextColor : headerTextColor;
+    const currentColor = getColorFromTextClass(headerTextColor);
+    const targetColor = dragOffsetX < 0 
+      ? getColorFromTextClass(nextHeaderTextColor) 
+      : getColorFromTextClass(headerTextColor);
     
-    return getColorFromTextClass(targetColor);
+    return interpolateColor(currentColor, targetColor, dragProgress);
   };
 
   // Calculate background opacity and target color based on drag progress
