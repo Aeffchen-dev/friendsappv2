@@ -443,7 +443,7 @@ All colors MUST be HSL.
   
   /* Strip bounce animation for category selection */
   @keyframes strip-bounce {
-    0% { transform: scaleX(0.12); }
+    0% { transform: scaleX(0.24); }
     50% { transform: scaleX(1.02); }
     100% { transform: scaleX(1); }
   }
@@ -451,7 +451,7 @@ All colors MUST be HSL.
   @keyframes strip-collapse {
     0% { transform: scaleX(1); }
     50% { transform: scaleX(1.02); }
-    100% { transform: scaleX(0.12); }
+    100% { transform: scaleX(0.24); }
   }
   
   .color-stroke-expand {
