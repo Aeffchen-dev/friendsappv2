@@ -589,7 +589,7 @@ export function QuizApp() {
                 if (isActive) {
                   scale = 0.8; // Exiting card at 80%
                 } else if (position === 1 || position === -1) {
-                  scale = 1; // Entering card at 100%
+                  scale = 0.8; // Entering card starts at 80%, will animate to 100%
                 } else {
                   scale = 0.8; // Off-screen cards at 80%
                 }
@@ -622,9 +622,15 @@ export function QuizApp() {
                   // Exiting card rotates 5° in exit direction
                   rotateZ = dragOffsetX > 0 ? 5 : -5;
                 } else if (position === -1 || position === -2) {
-                  rotateZ = -5;
+                  rotateZ = -5; // Keep prev cards rotated
                 } else if (position === 1 || position === 2) {
-                  rotateZ = 5;
+                  rotateZ = 5; // Keep next cards rotated during transition
+                }
+              } else {
+                // After animation completes, only active card has 0 rotation
+                if (!isActive) {
+                  if (position === -1 || position === -2) rotateZ = -5;
+                  else if (position === 1 || position === 2) rotateZ = 5;
                 }
               }
               
@@ -773,7 +779,7 @@ export function QuizApp() {
                 if (isCategoryActive) {
                   scaleH = 0.8; // Exiting card at 80%
                 } else if (catPosition === 1 || catPosition === -1) {
-                  scaleH = 1; // Entering card at 100%
+                  scaleH = 0.8; // Entering card starts at 80%, will animate to 100%
                 } else {
                   scaleH = 0.8; // Off-screen cards at 80%
                 }
@@ -807,9 +813,15 @@ export function QuizApp() {
                   const lastDragDirection = dragOffsetX > 0 ? 1 : -1;
                   rotateZ = lastDragDirection * 5;
                 } else if (catPosition === -1 || catPosition === -2) {
-                  rotateZ = -5;
+                  rotateZ = -5; // Keep prev cards rotated
                 } else if (catPosition === 1 || catPosition === 2) {
-                  rotateZ = 5;
+                  rotateZ = 5; // Keep next cards rotated during transition
+                }
+              } else {
+                // After animation completes, only active card has 0 rotation
+                if (!isCategoryActive) {
+                  if (catPosition === -1 || catPosition === -2) rotateZ = -5;
+                  else if (catPosition === 1 || catPosition === 2) rotateZ = 5;
                 }
               }
               
