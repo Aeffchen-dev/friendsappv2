@@ -443,7 +443,7 @@ All colors MUST be HSL.
       border-bottom-right-radius: 999px;
     }
     75% { 
-      width: calc(100% - 12px);
+      width: calc(100% - 20px);
     }
     100% { 
       width: 100%;
@@ -474,7 +474,7 @@ All colors MUST be HSL.
       transform: scaleX(1);
     }
     75% { 
-      transform: scaleX(0.985);
+      transform: scaleX(0.975);
     }
     100% { 
       transform: scaleX(1);
