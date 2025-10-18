@@ -214,9 +214,7 @@ export function CategorySelector({
                       borderBottomRightRadius: isSelected ? '999px' : '4px',
                       transformOrigin: 'left',
                       willChange: 'transform',
-                      animation: isSelected 
-                        ? 'strip-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1) both' 
-                        : 'strip-collapse 320ms cubic-bezier(0.22, 1, 0.36, 1) both'
+                      animation: isSelected ? 'strip-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1) both' : undefined
                     }} 
                   />
                   
