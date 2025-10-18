@@ -87,6 +87,7 @@ export function QuizApp() {
       const shuffled: Question[] = [];
       const categoryKeys = Object.keys(byCategory);
       let lastCategory = '';
+      let firstCategory = '';
       
       while (Object.values(byCategory).some(arr => arr.length > 0)) {
         // Get available categories (excluding the last used one if possible)
@@ -107,7 +108,22 @@ export function QuizApp() {
         
         if (question) {
           shuffled.push(question);
+          if (firstCategory === '') firstCategory = randomCategory;
           lastCategory = randomCategory;
+        }
+      }
+      
+      // Fix wrap-around: if last and first categories are the same, try to swap the last question
+      if (shuffled.length > 2 && firstCategory === lastCategory) {
+        // Find a question from a different category near the end to swap with
+        for (let i = shuffled.length - 2; i >= Math.max(0, shuffled.length - 10); i--) {
+          if (shuffled[i].category !== lastCategory && shuffled[i].category !== shuffled[shuffled.length - 2]?.category) {
+            // Swap
+            const temp = shuffled[shuffled.length - 1];
+            shuffled[shuffled.length - 1] = shuffled[i];
+            shuffled[i] = temp;
+            break;
+          }
         }
       }
       
