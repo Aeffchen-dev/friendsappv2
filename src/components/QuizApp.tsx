@@ -666,7 +666,7 @@ export function QuizApp() {
                   // Prev card rotates as active card is dragged right
                   const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
                   if (dragOffsetX > 0) {
-                    rotateZ = dragProgress * 5; // Rotate up to 5deg
+                    rotateZ = -dragProgress * 5; // Rotate up to -5deg
                   }
                 }
               } else if (isAnimating && dragDirection === 'horizontal') {
@@ -675,6 +675,9 @@ export function QuizApp() {
                 } else if (isActive) {
                   // Exiting card rotates 5° in exit direction
                   rotateZ = dragOffsetX > 0 ? 5 : -5;
+                } else if (position === -1) {
+                  // Previous card rotates -5° during horizontal prev transition
+                  rotateZ = -5;
                 }
               }
               // Default: all cards at 0° rotation
