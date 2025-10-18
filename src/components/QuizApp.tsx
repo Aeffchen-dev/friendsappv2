@@ -877,8 +877,12 @@ export function QuizApp() {
                   rotateZ = 0; // New active animates to 0°
                 } else if (isCategoryActive) {
                   // Exiting card rotates 5° in exit direction
-                  const lastDragDirection = dragOffsetX > 0 ? 1 : -1;
-                  rotateZ = lastDragDirection * 5;
+                  const isMovingToPrev = prevCategoryIndex < currentCategoryIndex || 
+                                        (prevCategoryIndex === displayCategories.length - 1 && currentCategoryIndex === 0);
+                  rotateZ = isMovingToPrev ? -5 : 5; // Rotate in opposite direction when going to previous
+                } else if (catPosition === -1) {
+                  // Previous card entering - rotate in opposite direction
+                  rotateZ = -5;
                 }
               }
               // Default: all cards at 0° rotation
