@@ -569,9 +569,14 @@ export function QuizApp() {
               const maxCardWidthPx = 600;
               const actualCardWidth = isMobile ? cardWidthVw : Math.min(cardWidthVw, maxCardWidthPx);
               
-              // Calculate horizontal position for all cards
-              const totalCardWidth = actualCardWidth + baseCardSpacingPx;
-              let translateXPx = position * totalCardWidth;
+              // For desktop, position -1 (prev card) at activeCardWidth + 16px + 24px + 16px
+              let translateXPx;
+              if (!isMobile && position === -1) {
+                translateXPx = -(actualCardWidth + 56); // 16px + 24px + 16px = 56px
+              } else {
+                const totalCardWidth = actualCardWidth + baseCardSpacingPx;
+                translateXPx = position * totalCardWidth;
+              }
               
               const dragTranslateXPx = isDragging && dragDirection === 'horizontal' ? dragOffsetX : 0;
               
