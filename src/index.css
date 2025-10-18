@@ -561,4 +561,11 @@ All colors MUST be HSL.
     70% { transform: scaleX(1.06); }
     100% { transform: scaleX(1); }
   }
+  
+  /* Strip collapse for category color shrink */
+  @keyframes strip-collapse {
+    0% { transform: scaleX(1); }
+    30% { transform: scaleX(0.04); }
+    100% { transform: scaleX(0.06); }
+  }
 }
