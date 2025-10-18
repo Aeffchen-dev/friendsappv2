@@ -573,54 +573,47 @@ export function QuizApp() {
     return interpolateColor(currentColor, targetColor, dragProgress);
   };
 
-  // Calculate background opacity and target color based on drag progress
-  const getTargetBgColor = () => {
-    if (isDragging && dragDirection === 'horizontal') {
-      // Return next card color when dragging left, prev card color when dragging right
-      return dragOffsetX < 0 ? nextCardBgColor : prevCardBgColor;
+  // Get background gradient based on drag state
+  const getBackgroundStyle = () => {
+    if (loading) {
+      return { background: getColorFromBgClass(bgColor) };
     }
-    return bgColor;
-  };
-  
-  const getBgOpacity = () => {
-    if (loading) return 0;
-    const targetColor = getTargetBgColor();
+
+    const currentColor = getColorFromBgClass(bgColor);
     
-    // During horizontal drag, blend based on drag progress with slower easing
-    if (isDragging && dragDirection === 'horizontal') {
-      const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-      // Use quadratic easing to make color fade more gradual
-      const easedProgress = dragProgress * dragProgress;
-      return easedProgress * 0.85; // Max 85% during drag
+    // No drag - solid color
+    if (!isDragging || dragDirection !== 'horizontal') {
+      return {
+        background: currentColor,
+        transition: 'background 600ms cubic-bezier(0.4, 0, 0.2, 1)'
+      };
     }
+
+    // During horizontal drag - gradient transition
+    const targetColor = dragOffsetX < 0 
+      ? getColorFromBgClass(nextCardBgColor)
+      : getColorFromBgClass(prevCardBgColor);
     
-    // During animation, keep opacity at 1 if we're transitioning to new color
-    if (isAnimating && dragDirection === 'horizontal' && targetColor !== bgColor) {
-      return 1;
-    }
+    const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+    const easedProgress = dragProgress * dragProgress; // Quadratic easing
     
-    return 0;
+    // Calculate gradient position (0% to 100%)
+    const gradientPosition = easedProgress * 100;
+    
+    // Gradient shifts from left to right (or right to left)
+    const direction = dragOffsetX < 0 ? 'to right' : 'to left';
+    
+    return {
+      background: `linear-gradient(${direction}, ${currentColor} ${100 - gradientPosition}%, ${targetColor} 100%)`,
+      transition: 'none'
+    };
   };
 
   return (
     <div 
       className="h-[100svh] overflow-hidden flex flex-col relative"
-      style={{
-        background: getColorFromBgClass(bgColor),
-        transition: 'none'
-      }}
+      style={getBackgroundStyle()}
     >
-      {/* Overlay that fades in with new color */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: getColorFromBgClass(getTargetBgColor()),
-          opacity: getBgOpacity(),
-          transition: loading ? 'none' : (isDragging ? 'none' : 'opacity 600ms cubic-bezier(0.4, 0, 0.2, 1)'),
-          willChange: isDragging || isAnimating ? 'opacity' : 'auto'
-        }}
-      />
-      {/* App Header - Hidden during loading */}
       {!loading && (
       <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50, opacity: 1}}>
         <div className="flex justify-between items-center px-4 py-4" style={{opacity: 1}}>
