@@ -625,10 +625,10 @@ export function QuizApp() {
                   const direction = dragOffsetX > 0 ? 1 : -1;
                   rotateZ = direction * dragProgress * 5; // Max ±5deg
                 } else if (position === 1) {
-                  // Next card rotates as active card is dragged left
+                  // Next card rotates opposite to active card when dragged left
                   const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
                   if (dragOffsetX < 0) {
-                    rotateZ = -dragProgress * 5; // Rotate up to -5deg
+                    rotateZ = dragProgress * 5; // Rotate up to +5deg (opposite direction)
                   }
                 } else if (position === -1) {
                   // Prev card rotates as active card is dragged right
@@ -828,10 +828,10 @@ export function QuizApp() {
                   const direction = dragOffsetX > 0 ? 1 : -1;
                   rotateZ = direction * dragProgress * 5; // Max ±5deg
                 } else if (catPosition === 1) {
-                  // Next card rotates as active card is dragged left
+                  // Next card rotates opposite to active card when dragged left
                   const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
                   if (dragOffsetX < 0) {
-                    rotateZ = -dragProgress * 5; // Rotate up to -5deg
+                    rotateZ = dragProgress * 5; // Rotate up to +5deg (opposite direction)
                   }
                 } else if (catPosition === -1) {
                   // Prev card rotates as active card is dragged right
