@@ -55,7 +55,7 @@ export function CategorySelector({
         return { 
           stripeBg: 'hsl(var(--connection-500))', 
           cardBg: 'hsl(var(--quiz-connection-bg))',
-          text: '#611610'
+          text: '#3d0e0a'
         };
       case 'fuck':
         return { 
