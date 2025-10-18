@@ -886,7 +886,6 @@ export function QuizApp() {
                     height: '100vh',
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) scale(${scale}) rotateZ(${rotateZ}deg)`,
                     transition: isDragging ? 'none' : ((isAnimating && dragDirection === 'horizontal') || (!isAnimating && !isDragging && position === 0 && scale < 1)) ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
-                    animation: (isActive || position === 1) && !hasInteracted && currentShuffleIndex === 0 ? 'swipeHint 0.4s ease-in-out 1s 1' : 'none',
                     pointerEvents: !isActive && (position === 1 || position === -1) ? 'auto' : (isActive ? 'auto' : 'none'),
                     willChange: (isDragging || (isAnimating && dragDirection === 'horizontal')) ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
@@ -904,7 +903,8 @@ export function QuizApp() {
                       height: isMobile 
                         ? 'calc(100svh - 48px - 46px - 8px)' // header + footer + minimal spacing
                         : 'calc(100svh - 64px - 46px - 4px)', // header + footer - 4px
-                      transform: 'translateY(-50%)'
+                      transform: 'translateY(-50%)',
+                      animation: isActive && !hasInteracted && currentShuffleIndex === 0 ? 'swipeHint 0.4s ease-in-out 1s 1' : 'none'
                     }}
                   >
                     <QuizCard
