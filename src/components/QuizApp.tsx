@@ -585,7 +585,6 @@ export function QuizApp() {
   const getBgOpacity = () => {
     if (loading) return 0;
     const targetColor = getTargetBgColor();
-    if (targetColor === bgColor && bgColor === prevBgColor) return 0;
     
     // During horizontal drag, blend based on drag progress
     if (isDragging && dragDirection === 'horizontal') {
@@ -593,7 +592,12 @@ export function QuizApp() {
       return dragProgress;
     }
     
-    return targetColor === bgColor ? 1 : 0;
+    // During animation, keep opacity at 1 if we're transitioning to new color
+    if (isAnimating && dragDirection === 'horizontal' && targetColor !== prevBgColor) {
+      return 1;
+    }
+    
+    return 0;
   };
 
   return (
@@ -601,7 +605,7 @@ export function QuizApp() {
       className="h-[100svh] overflow-hidden flex flex-col relative"
       style={{
         background: getColorFromBgClass(bgColor),
-        transition: loading ? 'none' : 'background 600ms cubic-bezier(0.4, 0, 0.2, 1)'
+        transition: 'none'
       }}
     >
       {/* Overlay that fades in with new color */}
@@ -610,7 +614,8 @@ export function QuizApp() {
         style={{
           background: getColorFromBgClass(getTargetBgColor()),
           opacity: getBgOpacity(),
-          transition: loading ? 'none' : (isDragging ? 'none' : 'opacity 600ms cubic-bezier(0.4, 0, 0.2, 1)')
+          transition: loading ? 'none' : (isDragging ? 'none' : 'opacity 600ms cubic-bezier(0.4, 0, 0.2, 1)'),
+          willChange: isDragging || isAnimating ? 'opacity' : 'auto'
         }}
       />
       {/* App Header - Hidden during loading */}
