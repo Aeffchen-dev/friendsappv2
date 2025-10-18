@@ -25,11 +25,9 @@ export function QuizApp() {
   const [logoSqueezeProgress, setLogoSqueezeProgress] = useState(0);
   const [bgColor, setBgColor] = useState('bg-background');
   const [prevBgColor, setPrevBgColor] = useState('bg-background');
-  const [nextCardBgColor, setNextCardBgColor] = useState('bg-background');
-  const [prevCardBgColor, setPrevCardBgColor] = useState('bg-background');
+  const [nextBgColor, setNextBgColor] = useState('bg-background');
   const [headerTextColor, setHeaderTextColor] = useState('text-white');
   const [nextHeaderTextColor, setNextHeaderTextColor] = useState('text-white');
-  const [prevHeaderTextColor, setPrevHeaderTextColor] = useState('text-white');
   const [isShuffleMode, setIsShuffleMode] = useState(true);
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
@@ -480,24 +478,25 @@ export function QuizApp() {
     }
   };
 
-  const handleBgColorChange = (newBgClass: string, position: number = 0) => {
-    const colorMatch = newBgClass.match(/bg-quiz-(\w+(-\w+)*)-bg-dark/);
-    const category = colorMatch ? colorMatch[1] : '';
-    const textColor = category ? getHeaderColorForCategory(category) : 'text-white';
-    
-    if (position === 1) {
-      // Next card
-      setNextCardBgColor(newBgClass);
-      setNextHeaderTextColor(textColor);
-    } else if (position === -1) {
-      // Previous card
-      setPrevCardBgColor(newBgClass);
-      setPrevHeaderTextColor(textColor);
+  const handleBgColorChange = (newBgClass: string, isNextCard: boolean = false) => {
+    if (isNextCard) {
+      setNextBgColor(newBgClass);
+      // Also set next header text color
+      const colorMatch = newBgClass.match(/bg-quiz-(\w+(-\w+)*)-bg-dark/);
+      if (colorMatch) {
+        const category = colorMatch[1];
+        setNextHeaderTextColor(getHeaderColorForCategory(category));
+      }
     } else {
-      // Current active card
       setPrevBgColor(bgColor);
       setBgColor(newBgClass);
-      setHeaderTextColor(textColor);
+      
+      // Extract category from background class
+      const colorMatch = newBgClass.match(/bg-quiz-(\w+(-\w+)*)-bg-dark/);
+      if (colorMatch) {
+        const category = colorMatch[1];
+        setHeaderTextColor(getHeaderColorForCategory(category));
+      }
     }
   };
 
@@ -569,7 +568,7 @@ export function QuizApp() {
     const currentColor = getColorFromTextClass(headerTextColor);
     const targetColor = dragOffsetX < 0 
       ? getColorFromTextClass(nextHeaderTextColor) 
-      : getColorFromTextClass(prevHeaderTextColor);
+      : getColorFromTextClass(headerTextColor);
     
     return interpolateColor(currentColor, targetColor, dragProgress);
   };
@@ -577,8 +576,8 @@ export function QuizApp() {
   // Calculate background opacity and target color based on drag progress
   const getTargetBgColor = () => {
     if (isDragging && dragDirection === 'horizontal') {
-      // Return next card color when dragging left, prev card color when dragging right
-      return dragOffsetX < 0 ? nextCardBgColor : prevCardBgColor;
+      // Return next card color when dragging left, prev when dragging right
+      return dragOffsetX < 0 ? nextBgColor : prevBgColor;
     }
     return bgColor;
   };
@@ -876,7 +875,7 @@ export function QuizApp() {
                       onSwipeLeft={() => {}}
                       onSwipeRight={() => {}}
                       animationClass=""
-                      onBgColorChange={(bgClass) => handleBgColorChange(bgClass, position)}
+                      onBgColorChange={isActive ? handleBgColorChange : (position === 1 || position === -1) ? (bgClass) => handleBgColorChange(bgClass, true) : undefined}
                       disableSwipe={true}
                       useContainerSize={true}
                       onCategoryStripClick={isActive ? () => {
