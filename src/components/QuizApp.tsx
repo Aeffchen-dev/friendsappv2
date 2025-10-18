@@ -258,7 +258,7 @@ export function QuizApp() {
   const handleDragEnd = () => {
     if (!isDragging) return;
     
-    const threshold = 50;
+    const threshold = 80;
     
     setIsDragging(false);
     setIsAnimating(true);
@@ -327,7 +327,7 @@ export function QuizApp() {
     setTimeout(() => {
       setIsAnimating(false);
       setDragDirection(null);
-    }, 300);
+    }, 350);
   };
 
   const nextCategory = () => {
@@ -572,59 +572,22 @@ export function QuizApp() {
               
               const dragTranslateXPx = isDragging && dragDirection === 'horizontal' ? dragOffsetX : 0;
               
-              // Scale - dynamic scaling based on drag distance and position
-              let scale = 1;
-              if (isDragging && dragDirection === 'horizontal') {
-                if (isActive) {
-                  // Active card scales down from 100% to 80% as it's dragged
-                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1); // 120px threshold
-                  scale = 1 - (dragProgress * 0.2); // 100% to 80%
-                } else if (position === 1 || position === -1) {
-                  // Adjacent cards scale up from 80% to 100% as active card is dragged
-                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-                  scale = 0.8 + (dragProgress * 0.2); // 80% to 100%
-                }
-              } else if (isAnimating && dragDirection === 'horizontal') {
-                // During transition animation
-                if (isActive) {
-                  scale = 0.8; // Exiting card at 80%
-                } else if (position === 1 || position === -1) {
-                  scale = 1; // Entering card at 100%
-                } else {
-                  scale = 0.8; // Off-screen cards at 80%
-                }
-              } else {
-                // Default states
-                if (isActive) {
-                  scale = 1; // Active card at 100%
-                } else {
-                  scale = 0.8; // Non-active cards at 80%
-                }
-              }
-              
-              // Rotation - rotate up to 5° based on drag/swipe direction
+              // Rotation - rotate towards outside during transition
               let rotateZ = 0;
-              if (isDragging && dragDirection === 'horizontal') {
+              if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
                 if (isActive) {
-                  // Active card rotates up to 5° in swipe direction
-                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-                  const direction = dragOffsetX > 0 ? 1 : -1;
-                  rotateZ = direction * dragProgress * 5; // Max ±5deg
+                  // Active card rotates in direction of swipe
+                  const dragProgress = isDragging ? dragOffsetX / window.innerWidth : 0;
+                  rotateZ = dragProgress * 3; // Max ±3deg based on drag
                 } else if (position === -1 || position === -2) {
-                  // Prev cards start rotated
-                  rotateZ = -5;
-                } else if (position === 1 || position === 2) {
-                  // Next cards start rotated
-                  rotateZ = 5;
-                }
-              } else if (isAnimating && dragDirection === 'horizontal') {
-                if (isActive) {
-                  // Exiting card rotates 5° in exit direction
-                  rotateZ = dragOffsetX > 0 ? 5 : -5;
-                } else if (position === -1 || position === -2) {
-                  rotateZ = -5;
-                } else if (position === 1 || position === 2) {
-                  rotateZ = 5;
+                  // Prev cards rotate counter-clockwise
+                  rotateZ = -3;
+                } else if (position === 1) {
+                  // Next card rotates clockwise
+                  rotateZ = 3;
+                } else if (position === 2) {
+                  // Card after next also rotates clockwise
+                  rotateZ = 3;
                 }
               }
               
@@ -682,8 +645,8 @@ export function QuizApp() {
                   style={{
                     width: '100vw',
                     height: '100vh',
-                    transform: `translateX(${translateXPx + dragTranslateXPx}px) scale(${scale}) rotateZ(${rotateZ}deg)`,
-                    transition: isDragging ? 'none' : (isAnimating && dragDirection === 'horizontal' ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)'),
+                    transform: `translateX(${translateXPx + dragTranslateXPx}px) rotateZ(${rotateZ}deg)`,
+                    transition: isDragging ? (dragDirection === 'horizontal' && !isActive && (position === 1 || position === -1) && dragJustWentHorizontal ? 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none') : (isAnimating && dragDirection === 'horizontal' ? 'transform 320ms cubic-bezier(0.16, 1, 0.3, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)'),
                     animation: (isActive || position === 1) && !hasInteracted && currentShuffleIndex === 0 ? 'swipeHint 0.4s ease-in-out 1s 1' : 'none',
                     pointerEvents: !isActive && (position === 1 || position === -1) ? 'auto' : (isActive ? 'auto' : 'none'),
                     willChange: (isDragging || (isAnimating && dragDirection === 'horizontal')) ? 'transform' : 'auto',
@@ -756,60 +719,25 @@ export function QuizApp() {
               const baseTranslateX = catPosition * cardSpacingVw;
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               
-              // Scale - dynamic scaling based on drag distance and position
-              let scaleH = 1;
-              if (isDragging && dragDirection === 'horizontal') {
-                if (isCategoryActive) {
-                  // Active card scales down from 100% to 80% as it's dragged
-                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1); // 120px threshold
-                  scaleH = 1 - (dragProgress * 0.2); // 100% to 80%
-                } else if (catPosition === 1 || catPosition === -1) {
-                  // Adjacent cards scale up from 80% to 100% as active card is dragged
-                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-                  scaleH = 0.8 + (dragProgress * 0.2); // 80% to 100%
-                }
-              } else if ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') {
-                // During transition animation
-                if (isCategoryActive) {
-                  scaleH = 0.8; // Exiting card at 80%
-                } else if (catPosition === 1 || catPosition === -1) {
-                  scaleH = 1; // Entering card at 100%
-                } else {
-                  scaleH = 0.8; // Off-screen cards at 80%
-                }
-              } else {
-                // Default states
-                if (isCategoryActive) {
-                  scaleH = 1; // Active card at 100%
-                } else {
-                  scaleH = 0.8; // Non-active cards at 80%
-                }
-              }
+              // Horizontal scale - all cards at scale 1
+              const scaleH = 1;
               
-              // Rotation - rotate up to 5° based on drag/swipe direction
+              // Horizontal rotation - rotate towards outside during transition
               let rotateZ = 0;
-              if (isDragging && dragDirection === 'horizontal') {
+              if ((isDragging && dragDirection === 'horizontal') || (isAnimating && dragDirection === 'horizontal')) {
                 if (isCategoryActive) {
-                  // Active card rotates up to 5° in swipe direction
-                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-                  const direction = dragOffsetX > 0 ? 1 : -1;
-                  rotateZ = direction * dragProgress * 5; // Max ±5deg
-                } else if (catPosition === -1 || catPosition === -2) {
-                  // Prev cards start rotated
-                  rotateZ = -5;
-                } else if (catPosition === 1 || catPosition === 2) {
-                  // Next cards start rotated
-                  rotateZ = 5;
-                }
-              } else if ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') {
-                if (isCategoryActive) {
-                  // Exiting card rotates 5° in exit direction
-                  const lastDragDirection = dragOffsetX > 0 ? 1 : -1;
-                  rotateZ = lastDragDirection * 5;
-                } else if (catPosition === -1 || catPosition === -2) {
-                  rotateZ = -5;
-                } else if (catPosition === 1 || catPosition === 2) {
-                  rotateZ = 5;
+                  // Active card rotates in direction of swipe
+                  const dragProgress = isDragging ? dragOffsetX / window.innerWidth : 0;
+                  rotateZ = dragProgress * 3; // Max ±3deg based on drag
+                } else if (catPosition === -1) {
+                  // Prev card rotates counter-clockwise
+                  rotateZ = -3;
+                } else if (catPosition === 1) {
+                  // Next card rotates clockwise
+                  rotateZ = 3;
+                } else if (catPosition === 2) {
+                  // Card after next also rotates clockwise
+                  rotateZ = 3;
                 }
               }
               
@@ -881,8 +809,8 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${baseTranslateX + dragTranslateX}vw) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
-                    transition: isDragging ? 'none' : ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)'),
-                    animation: 'none',
+                    transition: isDragging ? (dragDirection === 'horizontal' && !isCategoryActive && (catPosition === 1 || catPosition === -1) && dragJustWentHorizontal ? 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none') : ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? 'transform 320ms cubic-bezier(0.16, 1, 0.3, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)'),
+                    animation: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' && Math.abs(catPosition) <= 1 ? 'scaleTransition 320ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
                     pointerEvents: isCategoryActive || (!isCategoryActive && (catPosition === 1 || catPosition === -1)) ? 'auto' : 'none',
                     willChange: (isDragging || ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal')) ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
