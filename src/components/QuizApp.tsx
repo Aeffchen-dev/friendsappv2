@@ -275,11 +275,11 @@ export function QuizApp() {
       if (isShuffleMode) {
         // In shuffle mode, navigate through shuffled questions
         if (dragOffsetX < -threshold) {
-          setLogoSqueezeLeft(true);
+          triggerLogoSqueeze('left', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setPrevShuffleIndex(currentShuffleIndex);
           setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
         } else if (dragOffsetX > threshold) {
-          setLogoSqueezeRight(true);
+          triggerLogoSqueeze('right', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setPrevShuffleIndex(currentShuffleIndex);
           setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
         }
@@ -287,7 +287,7 @@ export function QuizApp() {
         // Normal category mode
         if (dragOffsetX < -threshold) {
           console.log('Swipe left - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
-          setLogoSqueezeLeft(true);
+          triggerLogoSqueeze('left', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setIsHorizontalSliding(true);
           setPrevCategoryIndex(currentCategoryIndex);
           setCurrentCategoryIndex(prev => {
@@ -298,7 +298,7 @@ export function QuizApp() {
           setTimeout(() => setIsHorizontalSliding(false), 350);
         } else if (dragOffsetX > threshold) {
           console.log('Swipe right - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
-          setLogoSqueezeRight(true);
+          triggerLogoSqueeze('right', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setIsHorizontalSliding(true);
           setPrevCategoryIndex(currentCategoryIndex);
           setCurrentCategoryIndex(prev => {
@@ -343,13 +343,13 @@ export function QuizApp() {
   };
 
   const nextCategory = () => {
-    setLogoSqueezeLeft(true);
+    triggerLogoSqueeze('left');
     setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
     setTimeout(() => setLogoSqueezeLeft(false), 350);
   };
 
   const prevCategory = () => {
-    setLogoSqueezeRight(true);
+    triggerLogoSqueeze('right');
     setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
     setTimeout(() => setLogoSqueezeRight(false), 350);
   };
@@ -407,6 +407,24 @@ export function QuizApp() {
     setTimeout(() => setLogoStretch(false), 2500);
   };
 
+  // Smooth, symmetric logo squeeze for horizontal transitions
+  const triggerLogoSqueeze = (direction: 'left' | 'right', baseProgress?: number) => {
+    const start = Math.max(baseProgress ?? 0, 0.6);
+    if (direction === 'left') setLogoSqueezeLeft(true); else setLogoSqueezeRight(true);
+    // Start from current or minimum progress, then animate to 1 and back to 0
+    setLogoSqueezeProgress(start);
+    requestAnimationFrame(() => {
+      setLogoSqueezeProgress(1);
+    });
+    // Ease-out to 0 before the slide animation ends to avoid snap
+    setTimeout(() => {
+      setLogoSqueezeProgress(0);
+    }, 180);
+    // Clear direction flags slightly after slide completes
+    setTimeout(() => {
+      if (direction === 'left') setLogoSqueezeLeft(false); else setLogoSqueezeRight(false);
+    }, 320);
+  };
   const handleLogoClick = () => {
     triggerLogoStretch();
   };
@@ -511,7 +529,7 @@ export function QuizApp() {
             style={{
               transform: isDragging && dragDirection === 'horizontal' 
                 ? `scaleX(${1 + (logoSqueezeProgress * 0.08)})` 
-                : logoSqueezeProgress > 0 && (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal'
+                : logoSqueezeProgress > 0
                 ? `scaleX(${1 + (logoSqueezeProgress * 0.08)})`
                 : 'scaleX(1)',
               transformOrigin: (isDragging && dragOffsetX < 0) || logoSqueezeLeft ? 'right' : 'left',
@@ -675,7 +693,7 @@ export function QuizApp() {
                       // Click on next card - go next with animation
                       setIsAnimating(true);
                       setDragDirection('horizontal');
-                      setLogoSqueezeLeft(true);
+                       triggerLogoSqueeze('left');
                       setPrevShuffleIndex(currentShuffleIndex);
                       setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
                       setTimeout(() => {
@@ -687,7 +705,7 @@ export function QuizApp() {
                       // Click on prev card - go prev with animation
                       setIsAnimating(true);
                       setDragDirection('horizontal');
-                      setLogoSqueezeRight(true);
+                       triggerLogoSqueeze('right');
                       setPrevShuffleIndex(currentShuffleIndex);
                       setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
                       setTimeout(() => {
@@ -704,7 +722,7 @@ export function QuizApp() {
                         // Left 30% of screen - go to prev
                         setIsAnimating(true);
                         setDragDirection('horizontal');
-                        setLogoSqueezeRight(true);
+                         triggerLogoSqueeze('right');
                         setPrevShuffleIndex(currentShuffleIndex);
                         setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
                         setTimeout(() => {
@@ -753,7 +771,7 @@ export function QuizApp() {
                         // Click on category strip - go to prev horizontal slide in shuffle mode
                         setIsAnimating(true);
                         setDragDirection('horizontal');
-                        setLogoSqueezeRight(true);
+                         triggerLogoSqueeze('right');
                         setPrevShuffleIndex(currentShuffleIndex);
                         setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
                         setTimeout(() => {
@@ -880,7 +898,7 @@ export function QuizApp() {
                       // Mobile & Desktop: Click on next category card with animation
                       setIsAnimating(true);
                       setDragDirection('horizontal');
-                      setLogoSqueezeLeft(true);
+                       triggerLogoSqueeze('left');
                       setIsHorizontalSliding(true);
                       setPrevCategoryIndex(currentCategoryIndex);
                       setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
@@ -896,7 +914,7 @@ export function QuizApp() {
                       // Mobile & Desktop: Click on prev category card with animation
                       setIsAnimating(true);
                       setDragDirection('horizontal');
-                      setLogoSqueezeRight(true);
+                       triggerLogoSqueeze('right');
                       setIsHorizontalSliding(true);
                       setPrevCategoryIndex(currentCategoryIndex);
                       setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
@@ -917,7 +935,7 @@ export function QuizApp() {
                         // Left 30% of screen - go to prev category
                         setIsAnimating(true);
                         setDragDirection('horizontal');
-                        setLogoSqueezeRight(true);
+                         triggerLogoSqueeze('right');
                         setIsHorizontalSliding(true);
                         setPrevCategoryIndex(currentCategoryIndex);
                         setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
@@ -1078,7 +1096,7 @@ export function QuizApp() {
                             // Active card: Click on category strip - go to prev horizontal slide (category) with animation
                             setIsAnimating(true);
                             setDragDirection('horizontal');
-                            setLogoSqueezeRight(true);
+                             triggerLogoSqueeze('right');
                             setIsHorizontalSliding(true);
                             setPrevCategoryIndex(currentCategoryIndex);
                             setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
@@ -1097,7 +1115,7 @@ export function QuizApp() {
                             
                             setIsAnimating(true);
                             setDragDirection('horizontal');
-                            setLogoSqueezeRight(true);
+                             triggerLogoSqueeze('right');
                             setIsHorizontalSliding(true);
                             setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                             setTimeout(() => {
@@ -1119,7 +1137,7 @@ export function QuizApp() {
                             
                             if (catPosition === 1) {
                               // Next category
-                              setLogoSqueezeLeft(true);
+                               triggerLogoSqueeze('left');
                               setPrevCategoryIndex(currentCategoryIndex);
                               setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
                               setTimeout(() => {
@@ -1127,7 +1145,7 @@ export function QuizApp() {
                               }, 300);
                             } else {
                               // Prev category
-                              setLogoSqueezeRight(true);
+                               triggerLogoSqueeze('right');
                               setPrevCategoryIndex(currentCategoryIndex);
                               setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
                               setTimeout(() => {
