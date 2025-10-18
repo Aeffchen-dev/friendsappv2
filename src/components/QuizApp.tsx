@@ -501,17 +501,16 @@ export function QuizApp() {
       className="h-[100svh] overflow-hidden flex flex-col relative"
       style={{
         background: getColorFromBgClass(prevBgColor),
-        transition: loading ? 'none' : 'background 600ms ease-out'
+        transition: loading ? 'none' : 'background 800ms cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
       {/* Overlay that fades in with new color */}
       <div 
-        key={bgColor}
         className="absolute inset-0 pointer-events-none"
         style={{
           background: getColorFromBgClass(bgColor),
           opacity: loading ? 0 : (bgColor === prevBgColor ? 0 : 1),
-          transition: loading ? 'none' : 'opacity 600ms ease-out'
+          transition: loading ? 'none' : 'opacity 800ms cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       />
       {/* App Header - Hidden during loading */}
