@@ -620,8 +620,8 @@ export function QuizApp() {
       />
       {/* App Header - Hidden during loading */}
       {!loading && (
-      <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50}}>
-        <div className="flex justify-between items-center px-4 py-4">
+      <div className="app-header flex-shrink-0 relative z-10" style={{position: 'sticky', top: 0, zIndex: 50, opacity: 1}}>
+        <div className="flex justify-between items-center px-4 py-4" style={{opacity: 1}}>
           <svg 
             width="67" 
             height="32" 
@@ -637,22 +637,24 @@ export function QuizApp() {
                 ? `scaleX(${1 + (logoSqueezeProgress * 0.08)})`
                 : 'scaleX(1)',
               transformOrigin: (isDragging && dragOffsetX < 0) || logoSqueezeLeft ? 'right' : 'left',
-              transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)'
+              transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+              opacity: 1
             }}
           >
-            <path d="M24.1808 3.79373C17.2269 3.79372 15.558 5.76916 13.3328 14.7997C11.1076 23.8302 9.80953 27.9692 9.43866 28.9099" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)'}}/>
-            <path d="M38.6502 3.79373C31.6964 3.79372 30.0274 5.76916 27.8022 14.7997C25.577 23.8302 24.279 27.9692 23.9081 28.9099" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)'}}/>
-            <path d="M53.1193 3.79373C46.1655 3.79372 44.4966 5.76916 42.2713 14.7997C40.0461 23.8302 38.7481 27.9692 38.3772 28.9099" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)'}}/>
-            <path d="M3 20.0332C4.22067 19.6156 5.12769 19.3985 6.5249 19.1832C16.8259 17.5961 27.318 16.7384 37.7276 16.3157C45.2899 16.0086 52.8539 16.7693 60.4071 16.361C61.8418 16.2835 62.5665 15.8384 64 16.157" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)'}}/>
+            <path d="M24.1808 3.79373C17.2269 3.79372 15.558 5.76916 13.3328 14.7997C11.1076 23.8302 9.80953 27.9692 9.43866 28.9099" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)', opacity: 1}}/>
+            <path d="M38.6502 3.79373C31.6964 3.79372 30.0274 5.76916 27.8022 14.7997C25.577 23.8302 24.279 27.9692 23.9081 28.9099" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)', opacity: 1}}/>
+            <path d="M53.1193 3.79373C46.1655 3.79372 44.4966 5.76916 42.2713 14.7997C40.0461 23.8302 38.7481 27.9692 38.3772 28.9099" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)', opacity: 1}}/>
+            <path d="M3 20.0332C4.22067 19.6156 5.12769 19.3985 6.5249 19.1832C16.8259 17.5961 27.318 16.7384 37.7276 16.3157C45.2899 16.0086 52.8539 16.7693 60.4071 16.361C61.8418 16.2835 62.5665 15.8384 64 16.157" stroke={getBlendedHeaderColor()} strokeWidth="5.84043" strokeLinecap="round" style={{transition: isDragging ? 'none' : 'stroke 600ms cubic-bezier(0.4, 0, 0.2, 1)', opacity: 1}}/>
           </svg>
           <button 
             onClick={handleToggleMode}
             style={{
               fontSize: '14px',
               color: getBlendedHeaderColor(),
-              transition: isDragging ? 'none' : 'color 600ms cubic-bezier(0.4, 0, 0.2, 1)'
+              transition: isDragging ? 'none' : 'color 600ms cubic-bezier(0.4, 0, 0.2, 1)',
+              opacity: 1
             }}
-            className="font-normal text-xs align-baseline cursor-pointer opacity-100"
+            className="font-normal text-xs align-baseline cursor-pointer"
           >
             {isShuffleMode ? 'Kategorien sortieren' : 'Kategorien mischen'}
           </button>
