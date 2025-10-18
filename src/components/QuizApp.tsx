@@ -866,19 +866,22 @@ export function QuizApp() {
                     rotateZ = dragProgress * 5; // Rotate up to +5deg (opposite direction)
                   }
                 } else if (catPosition === -1) {
-                  // Prev card rotates as active card is dragged right
+                  // Prev card rotates as active card is dragged right - reduced rotation
                   const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
                   if (dragOffsetX > 0) {
-                    rotateZ = dragProgress * 5; // Rotate up to 5deg
+                    rotateZ = dragProgress * 2; // Reduced to 2deg
                   }
                 }
               } else if ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') {
                 if (isEnteringCategoryActive) {
                   rotateZ = 0; // New active animates to 0°
                 } else if (isCategoryActive) {
-                  // Exiting card rotates 5° in exit direction
+                  // Exiting card rotates in exit direction - reduced when going back
                   const lastDragDirection = dragOffsetX > 0 ? 1 : -1;
-                  rotateZ = lastDragDirection * 5;
+                  rotateZ = lastDragDirection > 0 ? 5 : 2; // Reduced rotation when going back (left)
+                } else if (catPosition === -1) {
+                  // Previous card has minimal rotation during horizontal prev transition
+                  rotateZ = 0;
                 }
               }
               // Default: all cards at 0° rotation
