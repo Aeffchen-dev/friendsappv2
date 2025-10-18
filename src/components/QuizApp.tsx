@@ -39,7 +39,7 @@ export function QuizApp() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [dragDirection, setDragDirection] = useState<'horizontal' | 'vertical' | null>(null);
   const [isHorizontalSliding, setIsHorizontalSliding] = useState(false);
-
+  const [dragJustWentHorizontal, setDragJustWentHorizontal] = useState(false);
   // Group questions by category
   const questionsByCategory = useMemo(() => {
     const grouped: { [key: string]: Question[] } = {};
@@ -235,6 +235,8 @@ export function QuizApp() {
       // Determine primary direction
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         setDragDirection('horizontal');
+        setDragJustWentHorizontal(true);
+        setTimeout(() => setDragJustWentHorizontal(false), 180);
       } else {
         setDragDirection('vertical');
       }
@@ -644,10 +646,10 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) rotateZ(${rotateZ}deg)`,
-                    transition: isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: isDragging ? (dragDirection === 'horizontal' && !isActive && (position === 1 || position === -1) && dragJustWentHorizontal ? 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none') : (isAnimating && dragDirection === 'horizontal' ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)'),
                     animation: (isActive || position === 1) && !hasInteracted && currentShuffleIndex === 0 ? 'swipeHint 0.4s ease-in-out 1s 1' : 'none',
                     pointerEvents: !isActive && (position === 1 || position === -1) ? 'auto' : (isActive ? 'auto' : 'none'),
-                    willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
+                    willChange: (isDragging || (isAnimating && dragDirection === 'horizontal')) ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
                     visibility: shouldHide ? 'hidden' : 'visible',
                     cursor: !isActive && (position === 1 || position === -1) ? 'pointer' : 'default'
@@ -807,10 +809,10 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${baseTranslateX + dragTranslateX}vw) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
-                    transition: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? (isCategoryActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: isDragging ? (dragDirection === 'horizontal' && !isCategoryActive && (catPosition === 1 || catPosition === -1) && dragJustWentHorizontal ? 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1)' : 'none') : ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' ? (isCategoryActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)'),
                     animation: (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal' && Math.abs(catPosition) <= 1 ? 'scaleTransition 350ms ease-in-out' : 'none',
                     pointerEvents: isCategoryActive || (!isCategoryActive && (catPosition === 1 || catPosition === -1)) ? 'auto' : 'none',
-                    willChange: isAnimating && dragDirection === 'horizontal' ? 'transform' : 'auto',
+                    willChange: (isDragging || ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal')) ? 'transform' : 'auto',
                     opacity: shouldHide ? 0 : 1,
                     visibility: shouldHide ? 'hidden' : 'visible',
                     cursor: !isCategoryActive && (catPosition === 1 || catPosition === -1) ? 'pointer' : (isCategoryActive ? 'grab' : 'default')
