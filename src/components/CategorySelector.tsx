@@ -202,7 +202,7 @@ export function CategorySelector({
                     backgroundColor: 'hsl(0 0% 10%)',
                     transformOrigin: 'left',
                     animation: isSelected 
-                      ? 'filter-item-bounce 0.4s cubic-bezier(0.22, 1, 0.36, 1) both' 
+                      ? 'filter-item-bounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both' 
                       : undefined
                   }}
                   onClick={() => handleCategoryToggle(category)}
@@ -219,9 +219,9 @@ export function CategorySelector({
                       transformOrigin: 'left',
                       willChange: 'width',
                       animation: isSelected 
-                        ? 'color-stroke-expand 0.4s cubic-bezier(0.22, 1, 0.36, 1) both' 
+                        ? 'color-stroke-expand 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both' 
                         : 'color-stroke-contract 0.4s cubic-bezier(0.22, 1, 0.36, 1) both'
-                    }} 
+                    }}
                   />
                   
                   <span className="font-bold text-sm uppercase tracking-wide relative z-10 transition-colors duration-300" 
