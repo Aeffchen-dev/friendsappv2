@@ -427,7 +427,7 @@ All colors MUST be HSL.
   
   .checkmark-animate {
     stroke-dasharray: 0 16;
-    animation: checkmark-draw 0.3s ease-out 0.05s forwards;
+    animation: checkmark-draw 0.3s ease-out 0s forwards;
   }
   
   /* Color stroke bidirectional expand/contract animations */
@@ -443,7 +443,7 @@ All colors MUST be HSL.
       border-bottom-right-radius: 999px;
     }
     75% { 
-      width: calc(100% - 20px);
+      width: calc(100% - 30px);
     }
     100% { 
       width: 100%;
@@ -474,7 +474,7 @@ All colors MUST be HSL.
       transform: scaleX(1);
     }
     75% { 
-      transform: scaleX(0.975);
+      transform: scaleX(0.96);
     }
     100% { 
       transform: scaleX(1);
