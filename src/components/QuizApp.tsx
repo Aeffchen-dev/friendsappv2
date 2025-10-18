@@ -586,10 +586,12 @@ export function QuizApp() {
     if (loading) return 0;
     const targetColor = getTargetBgColor();
     
-    // During horizontal drag, blend based on drag progress
+    // During horizontal drag, blend based on drag progress with slower easing
     if (isDragging && dragDirection === 'horizontal') {
       const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-      return dragProgress;
+      // Use quadratic easing to make color fade more gradual
+      const easedProgress = dragProgress * dragProgress;
+      return easedProgress * 0.85; // Max 85% during drag
     }
     
     // During animation, keep opacity at 1 if we're transitioning to new color
