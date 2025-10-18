@@ -569,13 +569,17 @@ export function QuizApp() {
               const maxCardWidthPx = 600;
               const actualCardWidth = isMobile ? cardWidthVw : Math.min(cardWidthVw, maxCardWidthPx);
               
-              // For desktop, position -1 (prev card) at activeCardWidth + 16px + 24px + 16px
+              // Positioning with right-side peek for next card
+              const peekPx = isMobile ? 40 : 56;
               let translateXPx;
               if (!isMobile && position === -1) {
-                translateXPx = -(actualCardWidth + 56); // 16px + 24px + 16px = 56px
+                translateXPx = -(actualCardWidth + 56); // Keep explicit left spacing on desktop
               } else {
                 const totalCardWidth = actualCardWidth + baseCardSpacingPx;
                 translateXPx = position * totalCardWidth;
+                if (position === 1) {
+                  translateXPx -= peekPx; // pull next card left to show a right-hand peek
+                }
               }
               
               const dragTranslateXPx = isDragging && dragDirection === 'horizontal' ? dragOffsetX : 0;
@@ -773,7 +777,14 @@ export function QuizApp() {
               const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx); // Card width (80vw or 600px max)
               const totalCardWidth = hCardWidth + baseCardSpacingPx; // Total width including spacing
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
-              const baseTranslateX = catPosition * cardSpacingVw;
+              let baseTranslateX = catPosition * cardSpacingVw;
+              // Show a right-side peek of the next horizontal slide
+              const isMobileH = window.innerWidth < 768;
+              const peekPxH = isMobileH ? 40 : 56;
+              const peekVwH = (peekPxH / window.innerWidth) * 100;
+              if (catPosition === 1) {
+                baseTranslateX -= peekVwH;
+              }
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               
               // Scale - dynamic scaling based on drag distance and position
