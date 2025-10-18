@@ -873,19 +873,12 @@ export function QuizApp() {
                   }
                 }
               } else if ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') {
-                const n = displayCategories.length || 1;
-                const isPrevMove = ((prevCategoryIndex - 1 + n) % n) === currentCategoryIndex;
                 if (isEnteringCategoryActive) {
                   rotateZ = 0; // New active animates to 0°
                 } else if (isCategoryActive) {
-                  // Exiting card rotates depending on direction
-                  rotateZ = isPrevMove ? 5 : -5; // prev move: tilt clockwise, next move: counter-clockwise
-                } else if (catPosition === -1) {
-                  // Previous card (left). On prev move it should tilt opposite to active.
-                  rotateZ = isPrevMove ? -5 : 0;
-                } else if (catPosition === 1) {
-                  // Next card (right). On next move it should tilt opposite to active.
-                  rotateZ = isPrevMove ? 0 : 5;
+                  // Exiting card rotates 5° in exit direction
+                  const lastDragDirection = dragOffsetX > 0 ? 1 : -1;
+                  rotateZ = lastDragDirection * 5;
                 }
               }
               // Default: all cards at 0° rotation
@@ -981,38 +974,39 @@ export function QuizApp() {
                     
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Hide all previous vertical slides of next horizontal cards
-                    const shouldHideVerticalPrev = (qPosition < 0 && catPosition === 1);
+                    // Hide all previous vertical slides during horizontal transitions in stacked mode
+                    const shouldHideVerticalPrev = qPosition < 0 &&
+                      (((isDragging && dragDirection === 'horizontal') || isHorizontalSliding || isAnimating) &&
+                      (catPosition !== 0 || isCategoryActive));
                     
-                    // Calculate vertical transform
+                    // Calculate vertical transform - fixed spacing between cards (32px)
+                    const vCardSpacingPx = 32; // 32px gap between cards
+                    const cardHeight = window.innerHeight * 0.8; // Card height (80vh)
+                    const totalCardHeight = cardHeight + vCardSpacingPx; // Total height including spacing
+                    const cardSpacingVh = (totalCardHeight / window.innerHeight) * 100; // Convert to vh
+                    
+                    // Calculate position - show next card with 32px margin
                     let baseTranslateY;
                     
                     if (qPosition === -1) {
-                      // Move previous card completely out of viewport at top
-                      baseTranslateY = -120; // Fully off-screen
+                      // Move previous card up by 70vh + header offset + 48px mobile, 64px desktop
+                      const isMobile = window.innerWidth < 768;
+                      const offsetPx = isMobile ? 112 : 144; // 64+16+16+16 or 80+16+16+16+16
+                      const offsetVh = (offsetPx / window.innerHeight) * 100;
+                      baseTranslateY = -(70 + offsetVh);
                     } else if (qPosition === 1) {
                       // Next card positioned with gap after active card
+                      // Mobile: 70vh + 16px, Desktop: 80vh + 32px
                       const isMobile = window.innerWidth < 768;
                       const activeCardHeight = isMobile ? 70 : 80;
                       const gapPx = isMobile ? 16 : 32;
                       const gapVh = (gapPx / window.innerHeight) * 100;
                       baseTranslateY = activeCardHeight + gapVh;
-                    } else if (qPosition === 0 && catPosition === 1) {
-                      // Next horizontal category's active card - vertically centered to current active
-                      baseTranslateY = 0;
                     } else {
-                      // Default stacking for other positions
-                      const cardHeight = window.innerHeight * 0.8;
-                      const gapPx = 32;
-                      const totalHeight = cardHeight + gapPx;
-                      baseTranslateY = qPosition * ((totalHeight / window.innerHeight) * 100);
+                      baseTranslateY = qPosition * cardSpacingVh;
                     }
                     
                     // Only apply vertical drag to the active category
-                    const cardHeight = window.innerHeight * 0.8;
-                    const gapPx = 32;
-                    const totalHeight = cardHeight + gapPx;
-                    const cardSpacingVh = (totalHeight / window.innerHeight) * 100;
                     const dragTranslateY = (isCategoryActive && isDragging && dragDirection === 'vertical') ? (dragOffsetY / window.innerHeight) * cardSpacingVh : 0;
 
                     // Vertical scale - all cards at scale 1
@@ -1075,13 +1069,11 @@ export function QuizApp() {
                         }}
                         style={{
                           position: 'absolute',
-                          top: window.innerWidth < 768 ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : 'calc(50% + 8px)',
+                          top: window.innerWidth >= 768 ? '64px' : '48px',
                           left: window.innerWidth >= 768 ? '16px' : '16px',
                           width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
-                          height: window.innerWidth < 768 
-                            ? 'calc(100svh - 48px - 46px - 8px)' // header + footer + minimal spacing
-                            : 'calc(100svh - 64px - 46px - 4px)', // header + footer - 4px
-                          transform: qPosition === 0 && isActive ? 'translateY(-50%)' : `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
+                          height: '80vh',
+                          transform: `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                           animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : (isCategoryActive && !isActive && (qPosition === 1 || qPosition === -1) ? 'auto' : 'none'),

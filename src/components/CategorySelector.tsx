@@ -199,17 +199,13 @@ export function CategorySelector({
                   className="flex items-center justify-between py-3 pr-3 pl-8 cursor-pointer relative overflow-hidden"
                   style={{ 
                     borderRadius: '4px 999px 999px 4px',
-                    backgroundColor: 'hsl(0 0% 10%)',
-                    transformOrigin: 'left',
-                    animation: isSelected 
-                      ? 'filter-item-bounce 0.25s ease-in-out both' 
-                      : undefined
+                    backgroundColor: 'hsl(0 0% 10%)'
                   }}
                   onClick={() => handleCategoryToggle(category)}
                 >
-                  {/* Color strip - 16px when unselected, full width when selected */}
+                  {/* Color strip - 8px when unselected, full width when selected */}
                   <div 
-                    className={`absolute inset-y-0 left-0 ${isSelected ? 'w-full' : 'w-4'}`}
+                    className={`absolute inset-y-0 left-0 ${isSelected ? 'w-full' : 'w-2'}`}
                     style={{ 
                       backgroundColor: colors.cardBg,
                       borderTopLeftRadius: '4px',
@@ -217,11 +213,9 @@ export function CategorySelector({
                       borderTopRightRadius: isSelected ? '999px' : '4px',
                       borderBottomRightRadius: isSelected ? '999px' : '4px',
                       transformOrigin: 'left',
-                      willChange: 'width',
-                      animation: isSelected 
-                        ? 'color-stroke-expand 0.25s ease-in-out both' 
-                        : 'color-stroke-contract 0.25s ease-in-out both'
-                    }}
+                      willChange: 'transform',
+                      animation: isSelected ? 'strip-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1) both' : undefined
+                    }} 
                   />
                   
                   <span className="font-bold text-sm uppercase tracking-wide relative z-10 transition-colors duration-300" 

@@ -427,58 +427,28 @@ All colors MUST be HSL.
   
   .checkmark-animate {
     stroke-dasharray: 0 16;
-    animation: checkmark-draw 0.3s ease-out 0s forwards;
+    animation: checkmark-draw 0.3s ease-out 0.05s forwards;
   }
   
-  /* Color stroke bidirectional expand/contract animations */
+  /* Color stroke simple expand/contract animations */
   @keyframes color-stroke-expand {
-    0% { 
-      width: 16px;
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px;
-    }
-    60% {
-      width: 100%;
-      border-top-right-radius: 999px;
-      border-bottom-right-radius: 999px;
-    }
-    75% { 
-      width: calc(100% - 30px);
-    }
-    100% { 
-      width: 100%;
-      border-top-right-radius: 999px;
-      border-bottom-right-radius: 999px;
-    }
+    0% { width: 8px; }
+    100% { width: 100%; }
   }
 
   @keyframes color-stroke-contract {
-    0% { 
-      width: 100%;
-      border-top-right-radius: 999px;
-      border-bottom-right-radius: 999px;
-    }
-    100% { 
-      width: 16px;
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px;
-    }
+    0% { width: 100%; }
+    100% { width: 8px; }
+  }
+  
+  .color-stroke-expand {
+    animation: color-stroke-expand 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    animation-fill-mode: forwards;
   }
 
-  /* Filter item bounce animations */
-  @keyframes filter-item-bounce {
-    0% { 
-      transform: scaleX(1);
-    }
-    60% {
-      transform: scaleX(1);
-    }
-    75% { 
-      transform: scaleX(0.96);
-    }
-    100% { 
-      transform: scaleX(1);
-    }
+  .color-stroke-contract {
+    animation: color-stroke-contract 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    animation-fill-mode: forwards;
   }
   
   /* Ensure header and footer are always visible */
