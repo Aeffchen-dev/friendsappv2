@@ -582,8 +582,8 @@ export function QuizApp() {
                 } else if (position === -1 || position === -2) {
                   // Prev cards rotate counter-clockwise
                   rotateZ = -3;
-                } else if (position === 2) {
-                  // Card after next rotates clockwise
+                } else if (position === 1) {
+                  // Next card rotates clockwise
                   rotateZ = 3;
                 }
               }
@@ -729,8 +729,8 @@ export function QuizApp() {
                 } else if (catPosition === -1) {
                   // Prev card rotates counter-clockwise
                   rotateZ = -3;
-                } else if (catPosition === 2) {
-                  // Card after next rotates clockwise
+                } else if (catPosition === 1) {
+                  // Next card rotates clockwise
                   rotateZ = 3;
                 }
               }
