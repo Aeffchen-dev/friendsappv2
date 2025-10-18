@@ -564,7 +564,7 @@ export function QuizApp() {
               const isMobile = window.innerWidth < 768;
               
               // Calculate horizontal transform with proper spacing
-              const baseCardSpacingPx = isMobile ? 8 : 16; // Reduced spacing for better visibility
+              const baseCardSpacingPx = isMobile ? 16 : 32;
               const cardWidthVw = window.innerWidth * 0.85; // 85vw in pixels
               const maxCardWidthPx = 600;
               const actualCardWidth = isMobile ? cardWidthVw : Math.min(cardWidthVw, maxCardWidthPx);
@@ -762,7 +762,7 @@ export function QuizApp() {
 
               
               // Calculate horizontal transform - equal spacing between all cards
-              const baseCardSpacingPx = 16; // Reduced spacing for better visibility
+              const baseCardSpacingPx = 32;
               const maxCardWidthPx = 600; // Max width for desktop
               const vwCardWidth = window.innerWidth * 0.8; // 80vw
               const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx); // Card width (80vw or 600px max)
