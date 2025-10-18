@@ -627,8 +627,14 @@ export function QuizApp() {
     
     const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
     
+    // Apply easing for smoother, more natural transition
+    // Using cubic ease-in-out: starts slow, speeds up, then slows down
+    const easedProgress = dragProgress < 0.5
+      ? 4 * dragProgress * dragProgress * dragProgress
+      : 1 - Math.pow(-2 * dragProgress + 2, 3) / 2;
+    
     // Interpolate between current and target color
-    const interpolatedColor = interpolateHSL(currentColor, targetColor, dragProgress);
+    const interpolatedColor = interpolateHSL(currentColor, targetColor, easedProgress);
     
     return {
       background: interpolatedColor,
