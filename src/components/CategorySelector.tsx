@@ -20,6 +20,7 @@ export function CategorySelector({
 }: CategorySelectorProps) {
   const [tempSelection, setTempSelection] = useState<string[]>(selectedCategories);
   const [strokeAnimations, setStrokeAnimations] = useState<{[key: string]: boolean}>({});
+  const [animatingItems, setAnimatingItems] = useState<{[key: string]: boolean}>({});
 
   // Update temp selection when selectedCategories prop changes
   useEffect(() => {
@@ -149,11 +150,21 @@ export function CategorySelector({
 
 
   const handleCategoryToggle = (category: string) => {
+    const isCurrentlySelected = tempSelection.includes(category);
+    
     setTempSelection(prev => 
       prev.includes(category) 
         ? prev.filter(c => c !== category)
         : [...prev, category]
     );
+
+    // Trigger animation only when checking (not unchecking)
+    if (!isCurrentlySelected) {
+      setAnimatingItems(prev => ({ ...prev, [category]: true }));
+      setTimeout(() => {
+        setAnimatingItems(prev => ({ ...prev, [category]: false }));
+      }, 420);
+    }
   };
 
   const handleApply = () => {
@@ -191,6 +202,7 @@ export function CategorySelector({
           <div className="flex-1 pr-8 pt-24 pb-8 space-y-3 overflow-y-auto w-full lg:max-w-[80%]">
             {categories.map((category) => {
               const isSelected = tempSelection.includes(category);
+              const isAnimating = animatingItems[category];
               const colors = getCategoryColors(category);
               
               return (
@@ -199,7 +211,9 @@ export function CategorySelector({
                   className="flex items-center justify-between py-3 pr-3 pl-8 cursor-pointer relative overflow-hidden"
                   style={{ 
                     borderRadius: '4px 999px 999px 4px',
-                    backgroundColor: 'hsl(0 0% 10%)'
+                    backgroundColor: 'hsl(0 0% 10%)',
+                    transformOrigin: 'left',
+                    animation: isAnimating ? 'item-bounce 420ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined
                   }}
                   onClick={() => handleCategoryToggle(category)}
                 >
@@ -213,8 +227,9 @@ export function CategorySelector({
                       borderTopRightRadius: isSelected ? '999px' : '4px',
                       borderBottomRightRadius: isSelected ? '999px' : '4px',
                       transformOrigin: 'left',
-                      willChange: 'transform',
-                      animation: isSelected ? 'strip-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1) both' : undefined
+                      willChange: 'width',
+                      animation: isAnimating ? 'strip-expand-bounce 420ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
+                      transition: !isAnimating && !isSelected ? 'width 250ms ease-out, border-radius 250ms ease-out' : undefined
                     }} 
                   />
                   
@@ -233,7 +248,7 @@ export function CategorySelector({
                        }}
                     >
                        <div
-                        className={`w-8 h-8 border border-white flex items-center justify-center transition-all ease-out ${isSelected ? 'bg-white duration-200 delay-150' : 'bg-transparent duration-100 hover:bg-white/10'}`}
+                        className={`w-8 h-8 border border-white flex items-center justify-center transition-all ease-out ${isSelected ? 'bg-white duration-200 delay-200' : 'bg-transparent duration-100 hover:bg-white/10'}`}
                          style={{ 
                            width: '32px', 
                            height: '32px', 

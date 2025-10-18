@@ -427,7 +427,40 @@ All colors MUST be HSL.
   
   .checkmark-animate {
     stroke-dasharray: 0 16;
-    animation: checkmark-draw 0.3s ease-out 0.05s forwards;
+    animation: checkmark-draw 0.2s ease-out 0.22s forwards;
+  }
+
+  /* Strip expand with bounce animation */
+  @keyframes strip-expand-bounce {
+    0% {
+      width: 8px;
+    }
+    70% {
+      width: 100%;
+    }
+    85% {
+      width: 97%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+  /* Item bounce animation */
+  @keyframes item-bounce {
+    0% {
+      transform: scaleX(1);
+    }
+    70% {
+      transform: scaleX(1);
+    }
+    85% {
+      transform: scaleX(0.97);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
   }
   
   /* Color stroke simple expand/contract animations */
@@ -554,11 +587,3 @@ All colors MUST be HSL.
   .animate-spin-ease {
     animation: spin-ease 0.6s ease-in-out infinite;
   }
-  
-  /* Strip bounce for category color expansion */
-  @keyframes strip-bounce {
-    0% { transform: scaleX(0.06); }
-    70% { transform: scaleX(1.06); }
-    100% { transform: scaleX(1); }
-  }
-}
