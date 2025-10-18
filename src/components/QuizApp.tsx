@@ -573,7 +573,33 @@ export function QuizApp() {
     return interpolateColor(currentColor, targetColor, dragProgress);
   };
 
-  // Get background gradient based on drag state
+  // Parse HSL color string to individual values
+  const parseHSL = (hslString: string): { h: number; s: number; l: number } => {
+    const match = hslString.match(/hsl\((\d+\.?\d*),\s*(\d+\.?\d*)%,\s*(\d+\.?\d*)%\)/);
+    if (match) {
+      return {
+        h: parseFloat(match[1]),
+        s: parseFloat(match[2]),
+        l: parseFloat(match[3])
+      };
+    }
+    return { h: 0, s: 0, l: 0 };
+  };
+
+  // Interpolate between two HSL colors
+  const interpolateHSL = (color1: string, color2: string, progress: number): string => {
+    const hsl1 = parseHSL(color1);
+    const hsl2 = parseHSL(color2);
+    
+    // Interpolate each channel
+    const h = hsl1.h + (hsl2.h - hsl1.h) * progress;
+    const s = hsl1.s + (hsl2.s - hsl1.s) * progress;
+    const l = hsl1.l + (hsl2.l - hsl1.l) * progress;
+    
+    return `hsl(${h}, ${s}%, ${l}%)`;
+  };
+
+  // Get background color based on drag state
   const getBackgroundStyle = () => {
     if (loading) {
       return { background: getColorFromBgClass(bgColor) };
@@ -589,22 +615,18 @@ export function QuizApp() {
       };
     }
 
-    // During horizontal drag - gradient transition
+    // During horizontal drag - HSL interpolation
     const targetColor = dragOffsetX < 0 
       ? getColorFromBgClass(nextCardBgColor)
       : getColorFromBgClass(prevCardBgColor);
     
     const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
-    const easedProgress = dragProgress * dragProgress; // Quadratic easing
     
-    // Calculate gradient position (0% to 100%)
-    const gradientPosition = easedProgress * 100;
-    
-    // Gradient shifts from left to right (or right to left)
-    const direction = dragOffsetX < 0 ? 'to right' : 'to left';
+    // Interpolate between current and target color
+    const interpolatedColor = interpolateHSL(currentColor, targetColor, dragProgress);
     
     return {
-      background: `linear-gradient(${direction}, ${currentColor} ${100 - gradientPosition}%, ${targetColor} 100%)`,
+      background: interpolatedColor,
       transition: 'none'
     };
   };
