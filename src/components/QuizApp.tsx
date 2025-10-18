@@ -22,6 +22,7 @@ export function QuizApp() {
   const [logoStretch, setLogoStretch] = useState(false);
   const [logoSqueezeLeft, setLogoSqueezeLeft] = useState(false);
   const [logoSqueezeRight, setLogoSqueezeRight] = useState(false);
+  const [logoSqueezeProgress, setLogoSqueezeProgress] = useState(0);
   const [bgColor, setBgColor] = useState('bg-background');
   const [prevBgColor, setPrevBgColor] = useState('bg-background');
   const [headerTextColor, setHeaderTextColor] = useState('text-white');
@@ -250,6 +251,10 @@ export function QuizApp() {
       const maxOffset = window.innerWidth;
       const clampedOffset = Math.max(-maxOffset, Math.min(maxOffset, deltaX));
       setDragOffsetX(clampedOffset);
+      
+      // Update logo squeeze based on drag progress
+      const dragProgress = Math.min(Math.abs(clampedOffset) / 120, 1);
+      setLogoSqueezeProgress(dragProgress);
     } else if (dragDirection === 'vertical') {
       e.preventDefault();
       const maxOffset = window.innerHeight;
@@ -273,12 +278,10 @@ export function QuizApp() {
           setLogoSqueezeLeft(true);
           setPrevShuffleIndex(currentShuffleIndex);
           setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
-          setTimeout(() => setLogoSqueezeLeft(false), 300);
         } else if (dragOffsetX > threshold) {
           setLogoSqueezeRight(true);
           setPrevShuffleIndex(currentShuffleIndex);
           setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
-          setTimeout(() => setLogoSqueezeRight(false), 300);
         }
       } else {
         // Normal category mode
@@ -292,7 +295,6 @@ export function QuizApp() {
             console.log('Moving from category', prev, 'to', next);
             return next;
           });
-          setTimeout(() => setLogoSqueezeLeft(false), 300);
           setTimeout(() => setIsHorizontalSliding(false), 350);
         } else if (dragOffsetX > threshold) {
           console.log('Swipe right - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
@@ -304,11 +306,11 @@ export function QuizApp() {
             console.log('Moving from category', prev, 'to', next);
             return next;
           });
-          setTimeout(() => setLogoSqueezeRight(false), 300);
           setTimeout(() => setIsHorizontalSliding(false), 350);
         }
       }
       setDragOffsetX(0);
+      setLogoSqueezeProgress(0);
     } else if (dragDirection === 'vertical' && !isShuffleMode) {
       // Vertical swipe only in normal mode
       const currentCategory = displayCategories[currentCategoryIndex];
@@ -334,6 +336,8 @@ export function QuizApp() {
     setTimeout(() => {
       setIsAnimating(false);
       setDragDirection(null);
+      setLogoSqueezeLeft(false);
+      setLogoSqueezeRight(false);
     }, 300);
   };
 
@@ -501,8 +505,17 @@ export function QuizApp() {
             viewBox="0 0 67 32" 
             fill="none" 
             xmlns="http://www.w3.org/2000/svg"
-            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''} ${logoSqueezeLeft ? 'logo-squeeze-left' : ''} ${logoSqueezeRight ? 'logo-squeeze-right' : ''} transition-all duration-500`}
+            className={`h-8 w-auto logo-clickable align-baseline ${logoStretch ? 'logo-stretch' : ''}`}
             onClick={handleLogoClick}
+            style={{
+              transform: isDragging && dragDirection === 'horizontal' 
+                ? `scaleX(${1 + (logoSqueezeProgress * 0.08)})` 
+                : (isAnimating || isHorizontalSliding) && dragDirection === 'horizontal'
+                ? `scaleX(${1 + (0.08 * (logoSqueezeLeft || logoSqueezeRight ? 1 : 0))})`
+                : 'scaleX(1)',
+              transformOrigin: dragOffsetX < 0 || logoSqueezeLeft ? 'right' : 'left',
+              transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
           >
             <path d="M24.1808 3.79373C17.2269 3.79372 15.558 5.76916 13.3328 14.7997C11.1076 23.8302 9.80953 27.9692 9.43866 28.9099" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
             <path d="M38.6502 3.79373C31.6964 3.79372 30.0274 5.76916 27.8022 14.7997C25.577 23.8302 24.279 27.9692 23.9081 28.9099" className={headerTextColor} stroke="currentColor" strokeWidth="5.84043" strokeLinecap="round"/>
@@ -942,9 +955,11 @@ export function QuizApp() {
                     
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Hide previous vertical slide on desktop during horizontal slide
-                    const isDesktop = window.innerWidth >= 768;
-                    const shouldHideVerticalPrev = isDesktop && isHorizontalSliding && qPosition === -1;
+                    // Hide previous vertical slides during horizontal transitions
+                    const shouldHideVerticalPrev = qPosition === -1 && 
+                      (isDragging || isAnimating || isHorizontalSliding) && 
+                      dragDirection === 'horizontal' && 
+                      (isCategoryActive || catPosition === 1);
                     
                     // Calculate vertical transform - fixed spacing between cards (32px)
                     const vCardSpacingPx = 32; // 32px gap between cards
