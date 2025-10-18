@@ -202,7 +202,7 @@ export function CategorySelector({
                     backgroundColor: 'hsl(0 0% 10%)',
                     transformOrigin: 'left',
                     animation: isSelected 
-                      ? 'filter-item-bounce 0.35s ease-in-out both' 
+                      ? 'filter-item-bounce 0.25s ease-in-out both' 
                       : undefined
                   }}
                   onClick={() => handleCategoryToggle(category)}
@@ -219,8 +219,8 @@ export function CategorySelector({
                       transformOrigin: 'left',
                       willChange: 'width',
                       animation: isSelected 
-                        ? 'color-stroke-expand 0.35s ease-in-out both' 
-                        : 'color-stroke-contract 0.35s ease-in-out both'
+                        ? 'color-stroke-expand 0.25s ease-in-out both' 
+                        : 'color-stroke-contract 0.25s ease-in-out both'
                     }}
                   />
                   
