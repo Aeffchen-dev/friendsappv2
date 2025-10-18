@@ -564,7 +564,7 @@ export function QuizApp() {
       return getColorFromTextClass(headerTextColor);
     }
     
-    const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+    const dragProgress = Math.min(Math.abs(dragOffsetX) / (window.innerWidth * 0.8), 1);
     const currentColor = getColorFromTextClass(headerTextColor);
     const targetColor = dragOffsetX < 0 
       ? getColorFromTextClass(nextCardHeaderTextColor) 
@@ -603,7 +603,7 @@ export function QuizApp() {
       ? getColorFromBgClass(nextCardBgColor)
       : getColorFromBgClass(prevCardBgColor);
     
-    const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+    const dragProgress = Math.min(Math.abs(dragOffsetX) / (window.innerWidth * 0.8), 1);
     const percentage = (dragProgress * 100).toFixed(1);
     
     return {
