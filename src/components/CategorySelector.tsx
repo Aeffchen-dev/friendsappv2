@@ -203,9 +203,9 @@ export function CategorySelector({
                   }}
                   onClick={() => handleCategoryToggle(category)}
                 >
-                  {/* Color strip - 8px when unselected, full width when selected */}
+                  {/* Color strip - 24px when unselected, full width when selected */}
                   <div 
-                    className={`absolute inset-y-0 left-0 ${isSelected ? 'w-full' : 'w-2'}`}
+                    className={`absolute inset-y-0 left-0 ${isSelected ? 'w-full' : 'w-6'}`}
                     style={{ 
                       backgroundColor: colors.cardBg,
                       borderTopLeftRadius: '4px',
@@ -213,8 +213,10 @@ export function CategorySelector({
                       borderTopRightRadius: isSelected ? '999px' : '4px',
                       borderBottomRightRadius: isSelected ? '999px' : '4px',
                       transformOrigin: 'left',
-                      willChange: 'transform',
-                      animation: isSelected ? 'strip-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1) both' : undefined
+                      willChange: 'width',
+                      animation: isSelected 
+                        ? 'color-stroke-expand 0.4s cubic-bezier(0.22, 1, 0.36, 1) both' 
+                        : 'color-stroke-contract 0.4s cubic-bezier(0.22, 1, 0.36, 1) both'
                     }} 
                   />
                   
