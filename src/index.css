@@ -433,7 +433,7 @@ All colors MUST be HSL.
   /* Color stroke bidirectional expand/contract animations */
   @keyframes color-stroke-expand {
     0% { 
-      width: 24px;
+      width: 16px;
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
     }
@@ -451,7 +451,7 @@ All colors MUST be HSL.
       border-bottom-right-radius: 999px;
     }
     100% { 
-      width: 24px;
+      width: 16px;
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
     }

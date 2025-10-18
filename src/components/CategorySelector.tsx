@@ -203,9 +203,9 @@ export function CategorySelector({
                   }}
                   onClick={() => handleCategoryToggle(category)}
                 >
-                  {/* Color strip - 24px when unselected, full width when selected */}
+                  {/* Color strip - 16px when unselected, full width when selected */}
                   <div 
-                    className={`absolute inset-y-0 left-0 ${isSelected ? 'w-full' : 'w-6'}`}
+                    className={`absolute inset-y-0 left-0 ${isSelected ? 'w-full' : 'w-4'}`}
                     style={{ 
                       backgroundColor: colors.cardBg,
                       borderTopLeftRadius: '4px',
