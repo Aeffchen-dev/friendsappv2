@@ -501,10 +501,19 @@ export function QuizApp() {
     return `hsl(var(--${varName}))`;
   };
 
-  // Calculate background opacity based on drag progress
+  // Calculate background opacity and target color based on drag progress
+  const getTargetBgColor = () => {
+    if (isDragging && dragDirection === 'horizontal') {
+      // Return next card color when dragging left, prev when dragging right
+      return dragOffsetX < 0 ? nextBgColor : prevBgColor;
+    }
+    return bgColor;
+  };
+  
   const getBgOpacity = () => {
     if (loading) return 0;
-    if (bgColor === prevBgColor) return 0;
+    const targetColor = getTargetBgColor();
+    if (targetColor === bgColor && bgColor === prevBgColor) return 0;
     
     // During horizontal drag, blend based on drag progress
     if (isDragging && dragDirection === 'horizontal') {
@@ -512,14 +521,14 @@ export function QuizApp() {
       return dragProgress;
     }
     
-    return 1;
+    return targetColor === bgColor ? 1 : 0;
   };
 
   return (
     <div 
       className="h-[100svh] overflow-hidden flex flex-col relative"
       style={{
-        background: getColorFromBgClass(prevBgColor),
+        background: getColorFromBgClass(bgColor),
         transition: loading ? 'none' : 'background 600ms cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
@@ -527,7 +536,7 @@ export function QuizApp() {
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: getColorFromBgClass(bgColor),
+          background: getColorFromBgClass(getTargetBgColor()),
           opacity: getBgOpacity(),
           transition: loading ? 'none' : (isDragging ? 'none' : 'opacity 600ms cubic-bezier(0.4, 0, 0.2, 1)')
         }}
