@@ -974,13 +974,12 @@ export function QuizApp() {
                     
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Hide previous vertical slides during horizontal transitions
-                    // Also hide previous vertical card of next horizontal row in stacked mode
-                    const shouldHideVerticalPrev = qPosition === -1 && 
+                    // Hide all previous vertical slides during horizontal transitions in stacked mode
+                    const shouldHideVerticalPrev = qPosition < 0 && 
                       ((isDragging || isAnimating || isHorizontalSliding) && 
                       dragDirection === 'horizontal' && 
                       (isCategoryActive || catPosition === 1)) ||
-                      (catPosition === 1 && qPosition === -1);
+                      (catPosition === 1 && qPosition < 0);
                     
                     // Calculate vertical transform - fixed spacing between cards (32px)
                     const vCardSpacingPx = 32; // 32px gap between cards
