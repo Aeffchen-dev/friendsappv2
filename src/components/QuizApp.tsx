@@ -974,8 +974,10 @@ export function QuizApp() {
                     
                     const isActive = isCategoryActive && qPosition === 0;
                     
-                    // Hide all previous vertical slides of next horizontal cards
-                    const shouldHideVerticalPrev = (qPosition < 0 && catPosition === 1);
+                    // Hide all previous vertical slides during horizontal transitions in stacked mode
+                    const shouldHideVerticalPrev = qPosition < 0 &&
+                      (((isDragging && dragDirection === 'horizontal') || isHorizontalSliding || isAnimating) &&
+                      (catPosition !== 0 || isCategoryActive));
                     
                     // Calculate vertical transform - fixed spacing between cards (32px)
                     const vCardSpacingPx = 32; // 32px gap between cards
@@ -1067,13 +1069,11 @@ export function QuizApp() {
                         }}
                         style={{
                           position: 'absolute',
-                          top: window.innerWidth < 768 ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : 'calc(50% + 8px)',
+                          top: window.innerWidth >= 768 ? '64px' : '48px',
                           left: window.innerWidth >= 768 ? '16px' : '16px',
                           width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
-                          height: window.innerWidth < 768 
-                            ? 'calc(100svh - 48px - 46px - 8px)' // header + footer + minimal spacing
-                            : 'calc(100svh - 64px - 46px - 4px)', // header + footer - 4px
-                          transform: qPosition === 0 && isActive ? 'translateY(-50%)' : `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
+                          height: '80vh',
+                          transform: `translateY(${baseTranslateY + dragTranslateY}vh) scale(${scale})`,
                           transition: isAnimating && dragDirection === 'vertical' && isCategoryActive ? (isActive ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1) 100ms' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)') : 'none',
                           animation: isAnimating && dragDirection === 'vertical' && isCategoryActive ? 'scaleTransition 350ms ease-in-out' : 'none',
                           pointerEvents: isActive ? 'auto' : (isCategoryActive && !isActive && (qPosition === 1 || qPosition === -1) ? 'auto' : 'none'),
