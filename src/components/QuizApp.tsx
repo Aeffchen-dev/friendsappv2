@@ -873,16 +873,19 @@ export function QuizApp() {
                   }
                 }
               } else if ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') {
+                const n = displayCategories.length || 1;
+                const isPrevMove = ((prevCategoryIndex - 1 + n) % n) === currentCategoryIndex;
                 if (isEnteringCategoryActive) {
                   rotateZ = 0; // New active animates to 0°
                 } else if (isCategoryActive) {
-                  // Exiting card rotates 5° in exit direction
-                  const isMovingToPrev = prevCategoryIndex < currentCategoryIndex || 
-                                        (prevCategoryIndex === displayCategories.length - 1 && currentCategoryIndex === 0);
-                  rotateZ = isMovingToPrev ? -5 : 5; // Rotate in opposite direction when going to previous
+                  // Exiting card rotates depending on direction
+                  rotateZ = isPrevMove ? 5 : -5; // prev move: tilt clockwise, next move: counter-clockwise
                 } else if (catPosition === -1) {
-                  // Previous card entering - rotate in opposite direction
-                  rotateZ = -5;
+                  // Previous card (left). On prev move it should tilt opposite to active.
+                  rotateZ = isPrevMove ? -5 : 0;
+                } else if (catPosition === 1) {
+                  // Next card (right). On next move it should tilt opposite to active.
+                  rotateZ = isPrevMove ? 0 : 5;
                 }
               }
               // Default: all cards at 0° rotation
