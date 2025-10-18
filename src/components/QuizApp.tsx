@@ -25,6 +25,7 @@ export function QuizApp() {
   const [logoSqueezeProgress, setLogoSqueezeProgress] = useState(0);
   const [bgColor, setBgColor] = useState('bg-background');
   const [prevBgColor, setPrevBgColor] = useState('bg-background');
+  const [nextBgColor, setNextBgColor] = useState('bg-background');
   const [headerTextColor, setHeaderTextColor] = useState('text-white');
   const [isShuffleMode, setIsShuffleMode] = useState(true);
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
@@ -476,15 +477,19 @@ export function QuizApp() {
     }
   };
 
-  const handleBgColorChange = (newBgClass: string) => {
-    setPrevBgColor(bgColor);
-    setBgColor(newBgClass);
-    
-    // Extract category from background class
-    const colorMatch = newBgClass.match(/bg-quiz-(\w+(-\w+)*)-bg-dark/);
-    if (colorMatch) {
-      const category = colorMatch[1];
-      setHeaderTextColor(getHeaderColorForCategory(category));
+  const handleBgColorChange = (newBgClass: string, isNextCard: boolean = false) => {
+    if (isNextCard) {
+      setNextBgColor(newBgClass);
+    } else {
+      setPrevBgColor(bgColor);
+      setBgColor(newBgClass);
+      
+      // Extract category from background class
+      const colorMatch = newBgClass.match(/bg-quiz-(\w+(-\w+)*)-bg-dark/);
+      if (colorMatch) {
+        const category = colorMatch[1];
+        setHeaderTextColor(getHeaderColorForCategory(category));
+      }
     }
   };
 
@@ -496,12 +501,26 @@ export function QuizApp() {
     return `hsl(var(--${varName}))`;
   };
 
+  // Calculate background opacity based on drag progress
+  const getBgOpacity = () => {
+    if (loading) return 0;
+    if (bgColor === prevBgColor) return 0;
+    
+    // During horizontal drag, blend based on drag progress
+    if (isDragging && dragDirection === 'horizontal') {
+      const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+      return dragProgress;
+    }
+    
+    return 1;
+  };
+
   return (
     <div 
       className="h-[100svh] overflow-hidden flex flex-col relative"
       style={{
         background: getColorFromBgClass(prevBgColor),
-        transition: loading ? 'none' : 'background 800ms cubic-bezier(0.4, 0, 0.2, 1)'
+        transition: loading ? 'none' : 'background 600ms cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
       {/* Overlay that fades in with new color */}
@@ -509,8 +528,8 @@ export function QuizApp() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background: getColorFromBgClass(bgColor),
-          opacity: loading ? 0 : (bgColor === prevBgColor ? 0 : 1),
-          transition: loading ? 'none' : 'opacity 800ms cubic-bezier(0.4, 0, 0.2, 1)'
+          opacity: getBgOpacity(),
+          transition: loading ? 'none' : (isDragging ? 'none' : 'opacity 600ms cubic-bezier(0.4, 0, 0.2, 1)')
         }}
       />
       {/* App Header - Hidden during loading */}
@@ -766,7 +785,7 @@ export function QuizApp() {
                       onSwipeLeft={() => {}}
                       onSwipeRight={() => {}}
                       animationClass=""
-                      onBgColorChange={isActive ? handleBgColorChange : undefined}
+                      onBgColorChange={isActive ? handleBgColorChange : (position === 1 || position === -1) ? (bgClass) => handleBgColorChange(bgClass, true) : undefined}
                       disableSwipe={true}
                       useContainerSize={true}
                       onCategoryStripClick={isActive ? () => {
