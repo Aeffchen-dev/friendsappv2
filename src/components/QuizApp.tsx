@@ -1206,7 +1206,13 @@ export function QuizApp() {
                           onSwipeLeft={nextCategory}
                           onSwipeRight={prevCategory}
                           animationClass=""
-                          onBgColorChange={isActive ? handleBgColorChange : undefined}
+                          onBgColorChange={
+                            isActive 
+                              ? handleBgColorChange 
+                              : (!isCategoryActive && (catPosition === 1 || catPosition === -1)) 
+                                ? (bgClass) => handleBgColorChange(bgClass, catPosition) 
+                                : undefined
+                          }
                           disableSwipe={true}
                           onCategoryStripClick={isActive ? () => {
                             // Active card: Click on category strip - go to prev horizontal slide (category) with animation
