@@ -430,32 +430,29 @@ All colors MUST be HSL.
     animation: checkmark-draw 0.25s ease-out 0.15s forwards;
   }
   
-  /* Color strip expand with bounce - only on check */
+  /* Color strip expand with bounce */
   @keyframes strip-bounce {
     0% { 
       transform: scaleX(0);
     }
-    55% {
-      transform: scaleX(1.08);
+    60% {
+      transform: scaleX(1.03);
     }
-    75% {
-      transform: scaleX(0.96);
-    }
-    90% {
-      transform: scaleX(1.02);
+    80% {
+      transform: scaleX(0.98);
     }
     100% { 
       transform: scaleX(1);
     }
   }
   
-  /* Color strip contract - no bounce on uncheck */
-  @keyframes strip-contract {
-    0% { 
-      transform: scaleX(1);
+  /* Filter item bounce */
+  @keyframes item-bounce {
+    0%, 100% {
+      transform: scale(1);
     }
-    100% { 
-      transform: scaleX(0);
+    50% {
+      transform: scale(1.02);
     }
   }
   
