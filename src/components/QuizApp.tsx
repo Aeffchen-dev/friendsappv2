@@ -564,7 +564,7 @@ export function QuizApp() {
               const isMobile = window.innerWidth < 768;
               
               // Calculate horizontal transform with proper spacing
-              const baseCardSpacingPx = isMobile ? 16 : 32;
+              const baseCardSpacingPx = isMobile ? 8 : 16; // Reduced spacing for better visibility
               const cardWidthVw = window.innerWidth * 0.85; // 85vw in pixels
               const maxCardWidthPx = 600;
               const actualCardWidth = isMobile ? cardWidthVw : Math.min(cardWidthVw, maxCardWidthPx);
@@ -615,12 +615,18 @@ export function QuizApp() {
                   const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
                   const direction = dragOffsetX > 0 ? 1 : -1;
                   rotateZ = direction * dragProgress * 5; // Max ±5deg
-                } else if (position === -1 || position === -2) {
-                  // Prev cards start rotated
-                  rotateZ = -5;
-                } else if (position === 1 || position === 2) {
-                  // Next cards start rotated
-                  rotateZ = 5;
+                } else if (position === 1) {
+                  // Next card rotates as active card is dragged left
+                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+                  if (dragOffsetX < 0) {
+                    rotateZ = -dragProgress * 5; // Rotate up to -5deg
+                  }
+                } else if (position === -1) {
+                  // Prev card rotates as active card is dragged right
+                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+                  if (dragOffsetX > 0) {
+                    rotateZ = dragProgress * 5; // Rotate up to 5deg
+                  }
                 }
               } else if (isAnimating && dragDirection === 'horizontal') {
                 if (isEnteringActive) {
@@ -628,18 +634,9 @@ export function QuizApp() {
                 } else if (isActive) {
                   // Exiting card rotates 5° in exit direction
                   rotateZ = dragOffsetX > 0 ? 5 : -5;
-                } else if (position === -1 || position === -2) {
-                  rotateZ = -5; // Keep prev cards rotated
-                } else if (position === 1 || position === 2) {
-                  rotateZ = 5; // Keep next cards rotated during transition
-                }
-              } else {
-                // After animation completes, only active card has 0 rotation
-                if (!isActive) {
-                  if (position === -1 || position === -2) rotateZ = -5;
-                  else if (position === 1 || position === 2) rotateZ = 5;
                 }
               }
+              // Default: all cards at 0° rotation
               
               const shouldHide = Math.abs(position) === 2 && (isDragging || isAnimating) && dragDirection === 'horizontal';
               
@@ -765,7 +762,7 @@ export function QuizApp() {
 
               
               // Calculate horizontal transform - equal spacing between all cards
-              const baseCardSpacingPx = 32; // Base 32px spacing
+              const baseCardSpacingPx = 16; // Reduced spacing for better visibility
               const maxCardWidthPx = 600; // Max width for desktop
               const vwCardWidth = window.innerWidth * 0.8; // 80vw
               const hCardWidth = Math.min(vwCardWidth, maxCardWidthPx); // Card width (80vw or 600px max)
@@ -814,12 +811,18 @@ export function QuizApp() {
                   const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
                   const direction = dragOffsetX > 0 ? 1 : -1;
                   rotateZ = direction * dragProgress * 5; // Max ±5deg
-                } else if (catPosition === -1 || catPosition === -2) {
-                  // Prev cards start rotated
-                  rotateZ = -5;
-                } else if (catPosition === 1 || catPosition === 2) {
-                  // Next cards start rotated
-                  rotateZ = 5;
+                } else if (catPosition === 1) {
+                  // Next card rotates as active card is dragged left
+                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+                  if (dragOffsetX < 0) {
+                    rotateZ = -dragProgress * 5; // Rotate up to -5deg
+                  }
+                } else if (catPosition === -1) {
+                  // Prev card rotates as active card is dragged right
+                  const dragProgress = Math.min(Math.abs(dragOffsetX) / 120, 1);
+                  if (dragOffsetX > 0) {
+                    rotateZ = dragProgress * 5; // Rotate up to 5deg
+                  }
                 }
               } else if ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal') {
                 if (isEnteringCategoryActive) {
@@ -828,18 +831,9 @@ export function QuizApp() {
                   // Exiting card rotates 5° in exit direction
                   const lastDragDirection = dragOffsetX > 0 ? 1 : -1;
                   rotateZ = lastDragDirection * 5;
-                } else if (catPosition === -1 || catPosition === -2) {
-                  rotateZ = -5; // Keep prev cards rotated
-                } else if (catPosition === 1 || catPosition === 2) {
-                  rotateZ = 5; // Keep next cards rotated during transition
-                }
-              } else {
-                // After animation completes, only active card has 0 rotation
-                if (!isCategoryActive) {
-                  if (catPosition === -1 || catPosition === -2) rotateZ = -5;
-                  else if (catPosition === 1 || catPosition === 2) rotateZ = 5;
                 }
               }
+              // Default: all cards at 0° rotation
               
               // Hide cards at extreme positions during animation to prevent visible wraparound
               const shouldHide = Math.abs(catPosition) === 2 && (isDragging || isAnimating) && dragDirection === 'horizontal';
