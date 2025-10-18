@@ -21,11 +21,31 @@ export function CategorySelector({
   const [tempSelection, setTempSelection] = useState<string[]>(selectedCategories);
   const [strokeAnimations, setStrokeAnimations] = useState<{[key: string]: boolean}>({});
   const [animatingItems, setAnimatingItems] = useState<{[key: string]: boolean}>({});
+  const [isInitialOpen, setIsInitialOpen] = useState(false);
 
   // Update temp selection when selectedCategories prop changes
   useEffect(() => {
     setTempSelection(selectedCategories);
   }, [selectedCategories]);
+
+  // Handle modal open animation
+  useEffect(() => {
+    if (open) {
+      setIsInitialOpen(true);
+      // Trigger bounce for all selected categories
+      const selected = categories.filter(cat => selectedCategories.includes(cat));
+      const animState: {[key: string]: boolean} = {};
+      selected.forEach(cat => {
+        animState[cat] = true;
+      });
+      setAnimatingItems(animState);
+      
+      setTimeout(() => {
+        setAnimatingItems({});
+        setIsInitialOpen(false);
+      }, 450);
+    }
+  }, [open, categories, selectedCategories]);
 
   const getCategoryColors = (category: string) => {
     const categoryLower = category.toLowerCase();
@@ -158,12 +178,12 @@ export function CategorySelector({
         : [...prev, category]
     );
 
-    // Trigger animation only when checking (not unchecking)
-    if (!isCurrentlySelected) {
+    // Trigger animation only when checking (not unchecking) and not during initial open
+    if (!isCurrentlySelected && !isInitialOpen) {
       setAnimatingItems(prev => ({ ...prev, [category]: true }));
       setTimeout(() => {
         setAnimatingItems(prev => ({ ...prev, [category]: false }));
-      }, 420);
+      }, 450);
     }
   };
 
@@ -213,7 +233,7 @@ export function CategorySelector({
                     borderRadius: '4px 999px 999px 4px',
                     backgroundColor: 'hsl(0 0% 10%)',
                     transformOrigin: 'left',
-                    animation: isAnimating ? 'item-bounce 420ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined
+                    animation: isAnimating ? 'item-bounce 450ms cubic-bezier(0.34, 1.56, 0.64, 1)' : undefined
                   }}
                   onClick={() => handleCategoryToggle(category)}
                 >
@@ -228,7 +248,7 @@ export function CategorySelector({
                       borderBottomRightRadius: isSelected ? '999px' : '4px',
                       transformOrigin: 'left',
                       willChange: 'width',
-                      animation: isAnimating ? 'strip-expand-bounce 420ms cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
+                      animation: isAnimating ? 'strip-expand-bounce 450ms cubic-bezier(0.34, 1.56, 0.64, 1)' : undefined,
                       transition: !isAnimating && !isSelected ? 'width 250ms ease-out, border-radius 250ms ease-out' : undefined
                     }} 
                   />
@@ -257,24 +277,24 @@ export function CategorySelector({
                            outlineOffset: '0px'
                          }}
                       >
-                         {isSelected && (
-                           <svg 
-                             width="20" 
-                             height="20" 
-                             viewBox="0 0 16 16" 
-                             fill="none"
-                             className="checkmark-animate"
-                           >
-                             <path 
-                               d="M3 8l3 3 7-7" 
-                               stroke="black" 
-                               strokeWidth="2" 
-                               strokeLinecap="round" 
-                               strokeLinejoin="round"
-                               fill="none"
-                             />
-                           </svg>
-                         )}
+                          {isSelected && (
+                            <svg 
+                              width="20" 
+                              height="20" 
+                              viewBox="0 0 16 16" 
+                              fill="none"
+                              className={isInitialOpen ? '' : 'checkmark-animate'}
+                            >
+                              <path 
+                                d="M3 8l3 3 7-7" 
+                                stroke="black" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round"
+                                fill="none"
+                              />
+                            </svg>
+                          )}
                       </div>
                     </div>
                   </div>
