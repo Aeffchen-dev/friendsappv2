@@ -1126,88 +1126,44 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create irregular spacing zones for each line to avoid overlap
-  // Each line gets its own horizontal "lane" with varied positioning
-  const laneSpacing = [
-    { startYMin: 100, startYMax: 110, xOffset: -20 },  // Bottom left start
-    { startYMin: 75, startYMax: 90, xOffset: -15 },    // Lower middle start
-    { startYMin: 50, startYMax: 65, xOffset: -25 },    // Middle start
-    { startYMin: 25, startYMax: 40, xOffset: -18 }     // Upper middle start
+  // Create circles in different sizes
+  // Each circle gets a unique size and position
+  const circleSizes = [
+    { radiusMin: 15, radiusMax: 25 },  // Small
+    { radiusMin: 30, radiusMax: 45 },  // Medium
+    { radiusMin: 50, radiusMax: 70 },  // Large
+    { radiusMin: 20, radiusMax: 35 }   // Small-Medium
   ];
   
-  const lane = laneSpacing[lineIndex % 4];
+  const sizeConfig = circleSizes[lineIndex % 4];
+  const radius = getRandomValue(questionText + 'radius' + lineIndex, sizeConfig.radiusMin, sizeConfig.radiusMax);
   
-  // Start from bottom-left, extending beyond card edge
-  const startX = lane.xOffset + getRandomValue(questionText + 'startX' + lineIndex, -5, 5);
-  const startY = getRandomValue(questionText + 'startY' + lineIndex, lane.startYMin, lane.startYMax);
+  // Position circles across the card - different zones to avoid overlap
+  const positionZones = [
+    { xMin: 10, xMax: 35, yMin: 15, yMax: 40 },   // Top left
+    { xMin: 50, xMax: 80, yMin: 25, yMax: 50 },   // Top right
+    { xMin: 15, xMax: 40, yMin: 60, yMax: 85 },   // Bottom left
+    { xMin: 60, xMax: 90, yMin: 65, yMax: 90 }    // Bottom right
+  ];
   
-  // Diagonal flow angle (bottom-left to top-right)
-  // Varied angles for each line to create dynamic rhythm
-  const baseAngle = -50; // Negative for upward slope
-  const angleVariation = getRandomValue(questionText + 'angle' + lineIndex, -8, 8);
-  const angle = baseAngle + angleVariation;
-  
-  // Length - long enough to extend beyond card edges
-  const length = getRandomValue(questionText + 'length' + lineIndex, 140, 180);
-  
-  // Higher amplitude for more pronounced S-curves (curvature: 0.7)
-  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 18, 28);
-  
-  // Create gentle S-curve with 2-3 waves
-  const numWaves = Math.floor(getRandomValue(questionText + 'numWaves' + lineIndex, 2, 3.5));
-  
-  // Generate smooth wave path with extended S-curves
-  let pathData = `M ${startX},${startY}`;
-  
-  const segmentLength = length / numWaves;
-  
-  for (let i = 0; i < numWaves; i++) {
-    const t = i / numWaves;
-    const nextT = (i + 1) / numWaves;
-    
-    const x1 = startX + Math.cos(angle * Math.PI / 180) * segmentLength * t;
-    const y1 = startY + Math.sin(angle * Math.PI / 180) * segmentLength * t;
-    
-    const x2 = startX + Math.cos(angle * Math.PI / 180) * segmentLength * nextT;
-    const y2 = startY + Math.sin(angle * Math.PI / 180) * segmentLength * nextT;
-    
-    // Enhanced control points for more organic S-curves with higher curvature
-    // Perpendicular offset creates the wave motion
-    const perpAngle = angle + 90;
-    const curveDirection = i % 2 === 0 ? 1 : -1;
-    
-    // Control point 1: 1/3 along the segment, curved perpendicular
-    const cp1X = x1 + Math.cos(angle * Math.PI / 180) * segmentLength * 0.4 
-                    + Math.cos(perpAngle * Math.PI / 180) * amplitude * curveDirection * 0.9;
-    const cp1Y = y1 + Math.sin(angle * Math.PI / 180) * segmentLength * 0.4 
-                    + Math.sin(perpAngle * Math.PI / 180) * amplitude * curveDirection * 0.9;
-    
-    // Control point 2: 2/3 along the segment, curved opposite direction
-    const cp2X = x1 + Math.cos(angle * Math.PI / 180) * segmentLength * 0.7 
-                    + Math.cos(perpAngle * Math.PI / 180) * amplitude * curveDirection * -0.9;
-    const cp2Y = y1 + Math.sin(angle * Math.PI / 180) * segmentLength * 0.7 
-                    + Math.sin(perpAngle * Math.PI / 180) * amplitude * curveDirection * -0.9;
-    
-    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${x2},${y2}`;
-  }
+  const zone = positionZones[lineIndex % 4];
+  const cx = getRandomValue(questionText + 'cx' + lineIndex, zone.xMin, zone.xMax);
+  const cy = getRandomValue(questionText + 'cy' + lineIndex, zone.yMin, zone.yMax);
   
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
       <svg 
-        className="absolute" 
-        width="200%" 
-        height="200%" 
-        viewBox="-50 -50 200 200"
+        className="absolute w-full h-full" 
+        viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        style={{ overflow: 'visible', left: '-50%', top: '-50%' }}
       >
-        <path 
-          d={pathData}
-          stroke="#F6B5D3"
-          strokeWidth="11"
+        <circle 
+          cx={cx}
+          cy={cy}
+          r={radius}
           fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          stroke="#F6B5D3"
+          strokeWidth="2.5"
         />
       </svg>
     </div>
