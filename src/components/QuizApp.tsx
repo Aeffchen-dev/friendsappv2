@@ -456,14 +456,14 @@ export function QuizApp() {
     requestAnimationFrame(() => {
       setLogoSqueezeProgress(1);
     });
-    // Ease-out to 0 aligned with the 300ms slide transition
+    // Ease-out to 0 aligned with the 350ms slide transition
     setTimeout(() => {
       setLogoSqueezeProgress(0);
-    }, 150); // Half of 300ms transition
-    // Clear direction flags after slide completes (300ms)
+    }, 175); // Half of 350ms transition
+    // Clear direction flags after slide completes (350ms)
     setTimeout(() => {
       if (direction === 'left') setLogoSqueezeLeft(false); else setLogoSqueezeRight(false);
-    }, 300);
+    }, 350);
   };
   const handleLogoClick = () => {
     triggerLogoStretch();
@@ -672,7 +672,7 @@ export function QuizApp() {
                 ? `scaleX(${1 + (logoSqueezeProgress * 0.08)})`
                 : 'scaleX(1)',
               transformOrigin: (isDragging && dragOffsetX < 0) || logoSqueezeLeft ? 'right' : 'left',
-              transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+              transition: isDragging ? 'none' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)',
               opacity: 1
             }}
           >
@@ -882,7 +882,7 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) scale(${scale}) rotateZ(${rotateZ}deg)`,
-                    transition: isDragging ? 'none' : ((isAnimating && dragDirection === 'horizontal') || (!isAnimating && !isDragging && position === 0 && scale < 1)) ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: isDragging ? 'none' : ((isAnimating && dragDirection === 'horizontal') || (!isAnimating && !isDragging && position === 0 && scale < 1)) ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
                     animation: isActive && !hasInteracted && currentShuffleIndex === 0 
                       ? 'swipeHint 350ms ease-in-out 1s 1' 
                       : (position === 1 && !hasInteracted && currentShuffleIndex === 0 
@@ -1102,7 +1102,7 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${baseTranslateX + dragTranslateX}vw) scale(${scaleH}) rotateZ(${rotateZ}deg)`,
-                    transition: isDragging ? 'none' : 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: isDragging ? 'none' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)',
                     animation: 'none',
                     pointerEvents: isCategoryActive || (!isCategoryActive && (catPosition === 1 || catPosition === -1)) ? 'auto' : 'none',
                     willChange: (isDragging || ((isAnimating || isHorizontalSliding) && dragDirection === 'horizontal')) ? 'transform' : 'auto',
