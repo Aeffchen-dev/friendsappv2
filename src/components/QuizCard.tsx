@@ -1159,16 +1159,15 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
-  // Create smooth sinusoidal wave path
-  const numPoints = 120; // More points for smoother sine curves
-  const waveFrequency = 2.5; // Lower frequency for longer, flowing waves
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 12.0, 18.0);
+  // Create wavy snake-like path around the circle with very high amplitude
+  const numPoints = 80; // Even more points for ultra smooth curves
+  const waveFrequency = 4; // Very few waves for maximum roundness
+  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 11.9, 17.0); // 70% increase in amplitude (7.0*1.7=11.9, 10.0*1.7=17.0)
   
   let pathData = '';
   
   for (let i = 0; i <= numPoints; i++) {
     const angle = (i / numPoints) * Math.PI * 2;
-    // Pure sinusoidal modulation - no star patterns
     const waveOffset = Math.sin(angle * waveFrequency) * waveAmplitude;
     const r = radius + waveOffset;
     
