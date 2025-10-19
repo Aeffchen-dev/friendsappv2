@@ -351,7 +351,7 @@ export function QuizApp() {
       }
       setDragOffsetX(0);
       // Keep logoSqueezeProgress for smooth animation, reset after animation completes
-      setTimeout(() => setLogoSqueezeProgress(0), 300);
+      setTimeout(() => setLogoSqueezeProgress(0), 350);
     } else if (dragDirection === 'vertical' && !isShuffleMode) {
       // Vertical swipe only in normal mode
       const currentCategory = displayCategories[currentCategoryIndex];
@@ -379,7 +379,7 @@ export function QuizApp() {
       setDragDirection(null);
       setLogoSqueezeLeft(false);
       setLogoSqueezeRight(false);
-    }, 300);
+    }, 350);
   };
 
   const nextCategory = () => {
