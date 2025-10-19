@@ -728,7 +728,7 @@ export function QuizApp() {
               />
             </svg>
           </div>
-        ) : selectedCategories.length === 0 ? (
+        ) : selectedCategories.length === 0 || (isShuffleMode && shuffledQuestions.length === 0) ? (
           // Empty state when no categories selected
           <div className="flex items-center justify-center px-8 h-full">
             <p className="text-white text-center" style={{ fontSize: '14px', maxWidth: '80%' }}>
