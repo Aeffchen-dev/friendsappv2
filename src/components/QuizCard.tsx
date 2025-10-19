@@ -1160,9 +1160,9 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
   // Create wavy snake-like path around the circle with very high amplitude
-  const numPoints = 64; // More points for smoother curves
-  const waveFrequency = 5; // Even fewer waves for bigger, rounder curves
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 6.5, 9.5); // Much bigger amplitude for larger curves
+  const numPoints = 80; // Even more points for ultra smooth curves
+  const waveFrequency = 4; // Very few waves for maximum roundness
+  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 7.0, 10.0); // Very high amplitude for absolutely rounded curves
   
   let pathData = '';
   
