@@ -728,6 +728,13 @@ export function QuizApp() {
               />
             </svg>
           </div>
+        ) : selectedCategories.length === 0 ? (
+          // Empty state when no categories selected
+          <div className="flex items-center justify-center px-8 h-full">
+            <p className="text-white text-center" style={{ fontSize: '14px', maxWidth: '80%' }}>
+              Aktuell hast du alle Kategorien abgewählt. Aktiviere mindestens eine Kategorie, um die Fragen anzuzeigen
+            </p>
+          </div>
         ) : isShuffleMode ? (
           // Shuffle mode: show all questions horizontally with full height cards
           <div className="relative w-full h-full flex justify-center items-center overflow-hidden">
