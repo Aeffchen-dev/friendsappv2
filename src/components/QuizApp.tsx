@@ -1219,7 +1219,7 @@ export function QuizApp() {
                         }}
                         style={{
                           position: 'absolute',
-                          top: window.innerWidth >= 768 ? '64px' : '48px',
+                          top: window.innerWidth >= 768 ? '48px' : '32px',
                           left: window.innerWidth >= 768 ? '16px' : '16px',
                           width: window.innerWidth >= 768 ? `${Math.min(window.innerWidth * 0.8, 600)}px` : 'calc(80vw + 16px)',
                           height: '80vh',
