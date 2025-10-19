@@ -1131,26 +1131,26 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     { 
       radiusMin: 20, 
       radiusMax: 32, 
-      xMin: 88,   // Top right corner - moved more into card
-      xMax: 103, 
-      yMin: -30,  // Top area
-      yMax: -20 
+      xMin: 82,   // Top right - positioned to show 2 curves
+      xMax: 95, 
+      yMin: -22,  // Top area
+      yMax: -12 
     },
     { 
       radiusMin: 31.5, 
       radiusMax: 49.3, 
-      xMin: -25,   // Left edge - well separated
-      xMax: -10, 
-      yMin: 25,   // Upper-middle - separated from others
-      yMax: 40 
+      xMin: -15,   // Left - positioned to show 2 curves
+      xMax: -5, 
+      yMin: 30,   // Middle
+      yMax: 45 
     },
     { 
       radiusMin: 22, 
       radiusMax: 34, 
-      xMin: 100,   // Right side - moved more into card
-      xMax: 115, 
-      yMin: 95,   // Bottom
-      yMax: 110 
+      xMin: 92,   // Bottom right - positioned to show 2 curves
+      xMax: 105, 
+      yMin: 88,   // Bottom
+      yMax: 100 
     }
   ];
   
@@ -1159,9 +1159,9 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
-  // Create wavy sine wave path around the circle - 2 visible curves per circle
+  // Create wavy sine wave path around the circle
   const numPoints = 120;
-  const waveFrequency = 2.5; // Reduced frequency for 2 visible curves
+  const waveFrequency = 6; // Increased frequency for more waves
   const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 13.3, 20.0); // Sine wave amplitude
   
   let pathData = '';
