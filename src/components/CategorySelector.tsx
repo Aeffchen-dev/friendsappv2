@@ -221,7 +221,7 @@ export function CategorySelector({
           {/* Categories List */}
           {tempSelection.length === 0 ? (
             <div className="flex-1 flex items-center justify-center px-8">
-              <p className="text-white text-xl text-center" style={{ maxWidth: '80%' }}>
+              <p className="text-white text-center" style={{ fontSize: '14px', maxWidth: '80%' }}>
                 Aktuell hast du alle Kategorien abgewählt. Aktiviere mindestens eine Kategorie, um die Fragen anzuzeigen
               </p>
             </div>
