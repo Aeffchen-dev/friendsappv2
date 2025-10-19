@@ -1168,18 +1168,17 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   for (let i = 0; i <= numPoints; i++) {
     const angle = (i / numPoints) * Math.PI * 2;
     
-    // Each wave gets its own unique amplitude - some very far from center, some close
+    // Each wave gets its own unique amplitude with wider range for more variation
     const waveIndex = Math.floor(angle * waveFrequency / (Math.PI * 2));
-    const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex + waveIndex, 3.0, 32.0);
+    const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex + waveIndex, 4.0, 22.0);
     
     // Random choice of convex (outward) or concave (inward) for each wave
     const isConvex = getRandomValue(questionText + 'conv' + lineIndex + waveIndex, 0, 1) > 0.5;
     const direction = isConvex ? 1 : -1;
     
-    // Vary the roundness - some more circular, some slightly less
-    const roundnessPower = getRandomValue(questionText + 'round' + lineIndex + waveIndex, 0.5, 0.9);
+    // Use smoother curve with power function for rounder waves
     const sinValue = Math.sin(angle * waveFrequency);
-    const waveOffset = Math.pow(Math.abs(sinValue), roundnessPower) * waveAmplitude * direction;
+    const waveOffset = Math.pow(Math.abs(sinValue), 0.7) * waveAmplitude * direction;
     const r = radius + waveOffset;
     
     const x = cx + Math.cos(angle) * r;
