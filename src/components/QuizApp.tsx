@@ -1133,7 +1133,7 @@ export function QuizApp() {
                     // Also always hide previous vertical cards on the next horizontal slide (catPosition === 1)
                     const shouldHideVerticalPrev = qPosition < 0 && (
                       catPosition === 1 ||
-                      (((isDragging && dragDirection === 'horizontal') || isHorizontalSliding || isAnimating) && (catPosition !== 0 || isCategoryActive))
+                      (((isDragging && dragDirection === 'horizontal') || isHorizontalSliding) && (catPosition !== 0 || isCategoryActive))
                     );
                     
                     // Calculate vertical transform - fixed spacing between cards (32px)
