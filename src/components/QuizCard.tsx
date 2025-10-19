@@ -1147,8 +1147,8 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     { 
       radiusMin: 20, 
       radiusMax: 30, 
-      xMin: 70,   // Lower quarter right side (not corner)
-      xMax: 85, 
+      xMin: 90,   // Right side - 40% outside the card
+      xMax: 105, 
       yMin: 75,   // Lower quarter
       yMax: 85 
     }
