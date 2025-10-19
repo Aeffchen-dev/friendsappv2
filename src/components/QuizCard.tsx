@@ -1162,24 +1162,23 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   // Create wavy snake-like path around the circle with half-circle shapes
   const numPoints = 200; // More points for ultra-smooth rounded curves
   const waveFrequency = getRandomValue(questionText + 'waveFreq' + lineIndex, 2, 3.5); // Fewer waves
-  const baseAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 6.0, 15.0); // More variation in amplitude
   
   let pathData = '';
   
   for (let i = 0; i <= numPoints; i++) {
     const angle = (i / numPoints) * Math.PI * 2;
     
-    // Vary amplitude for each wave segment for more variation
-    const segmentVariation = getRandomValue(questionText + 'seg' + lineIndex + i, 0.7, 1.3);
-    const currentAmplitude = baseAmplitude * segmentVariation;
+    // Each wave gets its own unique amplitude
+    const waveIndex = Math.floor(angle * waveFrequency / (Math.PI * 2));
+    const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex + waveIndex, 6.0, 18.0);
     
-    // Random choice of convex (outward) or concave (inward) for each segment
-    const isConvex = getRandomValue(questionText + 'conv' + lineIndex + Math.floor(i / (numPoints / waveFrequency)), 0, 1) > 0.5;
+    // Random choice of convex (outward) or concave (inward) for each wave
+    const isConvex = getRandomValue(questionText + 'conv' + lineIndex + waveIndex, 0, 1) > 0.5;
     const direction = isConvex ? 1 : -1;
     
     // Use smoother curve with power function for rounder waves
     const sinValue = Math.sin(angle * waveFrequency);
-    const waveOffset = Math.pow(Math.abs(sinValue), 0.7) * currentAmplitude * direction;
+    const waveOffset = Math.pow(Math.abs(sinValue), 0.7) * waveAmplitude * direction;
     const r = radius + waveOffset;
     
     const x = cx + Math.cos(angle) * r;
