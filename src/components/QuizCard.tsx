@@ -1131,26 +1131,26 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     { 
       radiusMin: 20, 
       radiusMax: 32, 
-      xMin: 82,   // Top right - positioned to show 2 curves
-      xMax: 95, 
-      yMin: -22,  // Top area
-      yMax: -12 
+      xMin: 75,   // Top right - moved more into card
+      xMax: 88, 
+      yMin: -15,  // Top area
+      yMax: -5 
     },
     { 
       radiusMin: 31.5, 
       radiusMax: 49.3, 
-      xMin: -15,   // Left - positioned to show 2 curves
-      xMax: -5, 
-      yMin: 30,   // Middle
-      yMax: 45 
+      xMin: -5,   // Left - moved more into card
+      xMax: 5, 
+      yMin: 35,   // Middle
+      yMax: 50 
     },
     { 
       radiusMin: 22, 
       radiusMax: 34, 
-      xMin: 92,   // Bottom right - positioned to show 2 curves
-      xMax: 105, 
-      yMin: 88,   // Bottom
-      yMax: 100 
+      xMin: 82,   // Bottom right - moved more into card
+      xMax: 95, 
+      yMin: 83,   // Bottom
+      yMax: 95 
     }
   ];
   
