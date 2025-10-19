@@ -1160,16 +1160,25 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
   // Create wavy snake-like path around the circle with half-circle shapes
-  const numPoints = 120; // More points for smoother half-circle curves
-  const waveFrequency = 4; // Keep wave count for proper half-circle shapes
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 8.0, 12.0); // Slightly smaller amplitude
+  const numPoints = 150; // More points for smoother half-circle curves
+  const waveFrequency = getRandomValue(questionText + 'waveFreq' + lineIndex, 3, 6); // Vary wave count
+  const baseAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 6.0, 15.0); // More variation in amplitude
   
   let pathData = '';
   
   for (let i = 0; i <= numPoints; i++) {
     const angle = (i / numPoints) * Math.PI * 2;
-    // Use absolute value of sine for half-circle bumps instead of full sine waves
-    const waveOffset = Math.abs(Math.sin(angle * waveFrequency)) * waveAmplitude;
+    
+    // Vary amplitude for each wave segment for more variation
+    const segmentVariation = getRandomValue(questionText + 'seg' + lineIndex + i, 0.7, 1.3);
+    const currentAmplitude = baseAmplitude * segmentVariation;
+    
+    // Random choice of convex (outward) or concave (inward) for each segment
+    const isConvex = getRandomValue(questionText + 'conv' + lineIndex + Math.floor(i / (numPoints / waveFrequency)), 0, 1) > 0.5;
+    const direction = isConvex ? 1 : -1;
+    
+    // Use absolute value of sine for half-circle bumps
+    const waveOffset = Math.abs(Math.sin(angle * waveFrequency)) * currentAmplitude * direction;
     const r = radius + waveOffset;
     
     const x = cx + Math.cos(angle) * r;
