@@ -219,6 +219,13 @@ export function CategorySelector({
           </div>
 
           {/* Categories List */}
+          {tempSelection.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center px-8">
+              <p className="text-white text-center" style={{ fontSize: '12px' }}>
+                Aktuell hast du alle Kategorien abgewählt. Aktiviere mindestens eine Kategorie, um die Fragen anzuzeigen
+              </p>
+            </div>
+          ) : (
           <div className="flex-1 pr-8 pt-24 pb-8 space-y-3 overflow-y-auto w-full lg:max-w-[80%]">
             {categories.map((category) => {
               const isSelected = tempSelection.includes(category);
@@ -301,6 +308,7 @@ export function CategorySelector({
               );
             })}
           </div>
+          )}
 
           {/* Footer */}
           <div className="app-footer flex-shrink-0 h-5 pb-8 relative z-50">
