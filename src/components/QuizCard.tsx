@@ -1145,12 +1145,12 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
       yMax: 50 
     },
     { 
-      radiusMin: 22, 
-      radiusMax: 34, 
-      xMin: 87,   // Bottom right - slightly more outside
-      xMax: 100, 
-      yMin: 78,   // Bottom - moved up
-      yMax: 90 
+      radiusMin: 26, 
+      radiusMax: 32, 
+      xMin: 92,   // Bottom right - more outside
+      xMax: 105, 
+      yMin: 73,   // Bottom - moved more up
+      yMax: 85 
     }
   ];
   
