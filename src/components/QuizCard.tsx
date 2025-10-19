@@ -1139,16 +1139,16 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     { 
       radiusMin: 22, 
       radiusMax: 35, 
-      xMin: -20,   // Left edge - negative x for cutoff
-      xMax: -5, 
+      xMin: -10,   // Left edge - show 70% (less negative for more visibility)
+      xMax: 0, 
       yMin: 40, 
       yMax: 60 
     },
     { 
       radiusMin: 20, 
       radiusMax: 30, 
-      xMin: 60, 
-      xMax: 80, 
+      xMin: 85,   // Bottom right corner
+      xMax: 100, 
       yMin: 95,   // Bottom edge - y beyond 100 for cutoff
       yMax: 110 
     }
@@ -1159,10 +1159,10 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
-  // Create wavy snake-like path around the circle with higher amplitude
+  // Create wavy snake-like path around the circle with very high amplitude
   const numPoints = 64; // More points for smoother curves
   const waveFrequency = 6; // Fewer waves for rounder curves
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 2.8, 4.5); // Higher amplitude
+  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 4.5, 7.0); // Much higher amplitude for very rounded curves
   
   let pathData = '';
   
@@ -1195,7 +1195,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
           d={pathData}
           fill="none"
           stroke="#F6B5D3"
-          strokeWidth="4.5"
+          strokeWidth="6"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
