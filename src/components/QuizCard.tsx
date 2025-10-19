@@ -1160,37 +1160,26 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
   // Create wavy snake-like path around the circle with half-circle shapes
-  const numPoints = 200; // Many more points for ultra-smooth curves
+  const numPoints = 120; // More points for smoother half-circle curves
   const waveFrequency = 4; // Keep wave count for proper half-circle shapes
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 5.0, 20.0); // Much more variation in amplitude
+  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 8.0, 12.0); // Slightly smaller amplitude
   
-  let points: { x: number; y: number }[] = [];
+  let pathData = '';
   
-  // Generate points with smooth half-circle waves
   for (let i = 0; i <= numPoints; i++) {
     const angle = (i / numPoints) * Math.PI * 2;
-    // Use absolute value of sine for half-circle bumps
+    // Use absolute value of sine for half-circle bumps instead of full sine waves
     const waveOffset = Math.abs(Math.sin(angle * waveFrequency)) * waveAmplitude;
     const r = radius + waveOffset;
     
     const x = cx + Math.cos(angle) * r;
     const y = cy + Math.sin(angle) * r;
     
-    points.push({ x, y });
-  }
-  
-  // Create smooth Bezier curve path
-  let pathData = `M ${points[0].x},${points[0].y}`;
-  for (let i = 1; i < points.length; i++) {
-    const prev = points[i - 1];
-    const curr = points[i];
-    const next = points[(i + 1) % points.length];
-    
-    // Calculate control points for smooth curves
-    const cp1x = prev.x + (curr.x - prev.x) * 0.5;
-    const cp1y = prev.y + (curr.y - prev.y) * 0.5;
-    
-    pathData += ` Q ${cp1x},${cp1y} ${curr.x},${curr.y}`;
+    if (i === 0) {
+      pathData = `M ${x},${y}`;
+    } else {
+      pathData += ` L ${x},${y}`;
+    }
   }
   
   // Close the path
