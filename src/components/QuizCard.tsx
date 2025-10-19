@@ -1129,24 +1129,24 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   // Position circles at edges so they're cut off and don't overlap
   const circleConfigs = [
     { 
-      radiusMin: 30, 
-      radiusMax: 47, 
+      radiusMin: 25.5, 
+      radiusMax: 40, 
       xMin: 105,   // Top right corner
       xMax: 120, 
       yMin: -35,  // Top area
       yMax: -25 
     },
     { 
-      radiusMin: 37, 
-      radiusMax: 58, 
+      radiusMin: 31.5, 
+      radiusMax: 49.3, 
       xMin: -25,   // Left edge - well separated
       xMax: -10, 
       yMin: 25,   // Upper-middle - separated from others
       yMax: 40 
     },
     { 
-      radiusMin: 33, 
-      radiusMax: 50, 
+      radiusMin: 28, 
+      radiusMax: 42.5, 
       xMin: 110,   // Right side
       xMax: 125, 
       yMin: 100,   // Bottom - far from top right circle
@@ -1158,6 +1158,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const radius = getRandomValue(questionText + 'radius' + lineIndex, config.radiusMin, config.radiusMax);
   const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
+  const rotation = getRandomValue(questionText + 'rotation' + lineIndex, -180, 180); // Random rotation
   
   // Create wavy snake-like path around the circle with half-circle shapes
   const numPoints = 120; // More points for smoother half-circle curves
@@ -1191,6 +1192,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
         className="absolute w-full h-full" 
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
+        style={{ transform: `rotate(${rotation}deg)`, transformOrigin: `${cx}% ${cy}%` }}
       >
         <path 
           d={pathData}
