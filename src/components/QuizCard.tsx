@@ -1131,8 +1131,8 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     { 
       radiusMin: 20, 
       radiusMax: 32, 
-      xMin: 95,   // Top right corner - moved more into card
-      xMax: 110, 
+      xMin: 88,   // Top right corner - moved more into card
+      xMax: 103, 
       yMin: -30,  // Top area
       yMax: -20 
     },
