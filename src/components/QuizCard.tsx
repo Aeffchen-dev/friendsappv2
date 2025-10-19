@@ -1162,7 +1162,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   // Create wavy sine wave path around the circle
   const numPoints = 120;
   const waveFrequency = 4;
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 6.0, 10.0); // Sine wave amplitude
+  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 13.3, 20.0); // Sine wave amplitude
   
   let pathData = '';
   
