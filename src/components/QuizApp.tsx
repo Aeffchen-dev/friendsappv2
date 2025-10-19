@@ -456,14 +456,14 @@ export function QuizApp() {
     requestAnimationFrame(() => {
       setLogoSqueezeProgress(1);
     });
-    // Ease-out to 0 before the slide animation ends to avoid snap
+    // Ease-out to 0 aligned with the 300ms slide transition
     setTimeout(() => {
       setLogoSqueezeProgress(0);
-    }, 180);
-    // Clear direction flags slightly after slide completes
+    }, 150); // Half of 300ms transition
+    // Clear direction flags after slide completes (300ms)
     setTimeout(() => {
       if (direction === 'left') setLogoSqueezeLeft(false); else setLogoSqueezeRight(false);
-    }, 320);
+    }, 300);
   };
   const handleLogoClick = () => {
     triggerLogoStretch();
