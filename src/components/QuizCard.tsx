@@ -1159,17 +1159,18 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
-  // Create wavy snake-like path around the circle with half-circle shapes
-  const numPoints = 120; // More points for smoother half-circle curves
-  const waveFrequency = 4; // Keep wave count for proper half-circle shapes
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 8.0, 12.0); // Slightly smaller amplitude
+  // Create wavy snake-like path around the circle with long, stretched S-curves
+  const numPoints = 120; // More points for smoother curves
+  const waveFrequency = getRandomValue(questionText + 'waveFreq' + lineIndex, 2, 3); // Low frequency for wide, shallow bends
   
   let pathData = '';
   
   for (let i = 0; i <= numPoints; i++) {
     const angle = (i / numPoints) * Math.PI * 2;
-    // Use absolute value of sine for half-circle bumps instead of full sine waves
-    const waveOffset = Math.abs(Math.sin(angle * waveFrequency)) * waveAmplitude;
+    // Each point gets its own amplitude variation for unique curves
+    const pointAmplitude = getRandomValue(questionText + 'pointAmp' + lineIndex + i, 6.0, 18.0);
+    // Long, stretched S-curve with shallow bends
+    const waveOffset = Math.sin(angle * waveFrequency) * pointAmplitude;
     const r = radius + waveOffset;
     
     const x = cx + Math.cos(angle) * r;
