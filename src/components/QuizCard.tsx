@@ -1158,7 +1158,6 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const radius = getRandomValue(questionText + 'radius' + lineIndex, config.radiusMin, config.radiusMax);
   const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
-  const rotation = getRandomValue(questionText + 'rotation' + lineIndex, -180, 180); // Random rotation
   
   // Create wavy snake-like path around the circle with half-circle shapes
   const numPoints = 120; // More points for smoother half-circle curves
@@ -1192,7 +1191,6 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
         className="absolute w-full h-full" 
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        style={{ transform: `rotate(${rotation}deg)`, transformOrigin: `${cx}% ${cy}%` }}
       >
         <path 
           d={pathData}
