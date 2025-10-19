@@ -887,9 +887,9 @@ export function QuizApp() {
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) scale(${scale}) rotateZ(${rotateZ}deg)`,
                     transition: isDragging ? 'none' : ((isAnimating && dragDirection === 'horizontal') || (!isAnimating && !isDragging && position === 0 && scale < 1)) ? 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
                     animation: isActive && !hasInteracted && currentShuffleIndex === 0 
-                      ? 'swipeHint 350ms ease-in-out 1s 1' 
+                      ? 'swipeHint 350ms ease-in-out 300ms 1' 
                       : (position === 1 && !hasInteracted && currentShuffleIndex === 0 
-                        ? 'swipeHintNext 350ms ease-in-out 1s 1' 
+                        ? 'swipeHintNext 350ms ease-in-out 300ms 1' 
                         : 'none'),
                     pointerEvents: !isActive && (position === 1 || position === -1) ? 'auto' : (isActive ? 'auto' : 'none'),
                     willChange: (isDragging || (isAnimating && dragDirection === 'horizontal')) ? 'transform' : 'auto',
