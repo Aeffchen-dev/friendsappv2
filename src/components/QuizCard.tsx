@@ -1126,27 +1126,37 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Generate smooth wavy ribbon lines - open ended
-  const startX = getRandomValue(questionText + 'startX' + lineIndex, -10, 20);
-  const startY = getRandomValue(questionText + 'startY' + lineIndex, 10, 90);
+  // Create irregular spacing zones for each line to avoid overlap
+  // Each line gets its own horizontal "lane" with varied positioning
+  const laneSpacing = [
+    { startYMin: 100, startYMax: 110, xOffset: -20 },  // Bottom left start
+    { startYMin: 75, startYMax: 90, xOffset: -15 },    // Lower middle start
+    { startYMin: 50, startYMax: 65, xOffset: -25 },    // Middle start
+    { startYMin: 25, startYMax: 40, xOffset: -18 }     // Upper middle start
+  ];
   
-  // Angle for diagonal flow - each wave has different tilt
-  const angle = getRandomValue(questionText + 'angle' + lineIndex, 25, 65);
+  const lane = laneSpacing[lineIndex % 4];
   
-  // Length of the wave
-  const length = getRandomValue(questionText + 'length' + lineIndex, 80, 140);
+  // Start from bottom-left, extending beyond card edge
+  const startX = lane.xOffset + getRandomValue(questionText + 'startX' + lineIndex, -5, 5);
+  const startY = getRandomValue(questionText + 'startY' + lineIndex, lane.startYMin, lane.startYMax);
   
-  // Wave amplitude (how tall the curves are)
-  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 8, 18);
+  // Diagonal flow angle (bottom-left to top-right)
+  // Varied angles for each line to create dynamic rhythm
+  const baseAngle = -50; // Negative for upward slope
+  const angleVariation = getRandomValue(questionText + 'angle' + lineIndex, -8, 8);
+  const angle = baseAngle + angleVariation;
   
-  // Number of waves (2-3 waves per line)
-  const numWaves = Math.floor(getRandomValue(questionText + 'numWaves' + lineIndex, 2, 4));
+  // Length - long enough to extend beyond card edges
+  const length = getRandomValue(questionText + 'length' + lineIndex, 140, 180);
   
-  // Calculate end point based on angle
-  const endX = startX + Math.cos(angle * Math.PI / 180) * length;
-  const endY = startY + Math.sin(angle * Math.PI / 180) * length;
+  // Higher amplitude for more pronounced S-curves (curvature: 0.7)
+  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 18, 28);
   
-  // Generate smooth wave path using cubic bezier curves
+  // Create gentle S-curve with 2-3 waves
+  const numWaves = Math.floor(getRandomValue(questionText + 'numWaves' + lineIndex, 2, 3.5));
+  
+  // Generate smooth wave path with extended S-curves
   let pathData = `M ${startX},${startY}`;
   
   const segmentLength = length / numWaves;
@@ -1161,18 +1171,28 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     const x2 = startX + Math.cos(angle * Math.PI / 180) * segmentLength * nextT;
     const y2 = startY + Math.sin(angle * Math.PI / 180) * segmentLength * nextT;
     
-    // Control points for smooth S-curve
-    const cp1X = x1 + Math.cos(angle * Math.PI / 180) * segmentLength * 0.33 + Math.cos((angle + 90) * Math.PI / 180) * amplitude * (i % 2 === 0 ? 1 : -1);
-    const cp1Y = y1 + Math.sin(angle * Math.PI / 180) * segmentLength * 0.33 + Math.sin((angle + 90) * Math.PI / 180) * amplitude * (i % 2 === 0 ? 1 : -1);
+    // Enhanced control points for more organic S-curves with higher curvature
+    // Perpendicular offset creates the wave motion
+    const perpAngle = angle + 90;
+    const curveDirection = i % 2 === 0 ? 1 : -1;
     
-    const cp2X = x1 + Math.cos(angle * Math.PI / 180) * segmentLength * 0.66 + Math.cos((angle + 90) * Math.PI / 180) * amplitude * (i % 2 === 0 ? -1 : 1);
-    const cp2Y = y1 + Math.sin(angle * Math.PI / 180) * segmentLength * 0.66 + Math.sin((angle + 90) * Math.PI / 180) * amplitude * (i % 2 === 0 ? -1 : 1);
+    // Control point 1: 1/3 along the segment, curved perpendicular
+    const cp1X = x1 + Math.cos(angle * Math.PI / 180) * segmentLength * 0.4 
+                    + Math.cos(perpAngle * Math.PI / 180) * amplitude * curveDirection * 0.9;
+    const cp1Y = y1 + Math.sin(angle * Math.PI / 180) * segmentLength * 0.4 
+                    + Math.sin(perpAngle * Math.PI / 180) * amplitude * curveDirection * 0.9;
+    
+    // Control point 2: 2/3 along the segment, curved opposite direction
+    const cp2X = x1 + Math.cos(angle * Math.PI / 180) * segmentLength * 0.7 
+                    + Math.cos(perpAngle * Math.PI / 180) * amplitude * curveDirection * -0.9;
+    const cp2Y = y1 + Math.sin(angle * Math.PI / 180) * segmentLength * 0.7 
+                    + Math.sin(perpAngle * Math.PI / 180) * amplitude * curveDirection * -0.9;
     
     pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${x2},${y2}`;
   }
   
   return (
-    <div className="absolute inset-0 z-0 overflow-visible">
+    <div className="absolute inset-0 z-0 overflow-hidden">
       <svg 
         className="absolute" 
         width="200%" 
@@ -1183,8 +1203,8 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
       >
         <path 
           d={pathData}
-          stroke="#F1A8C6"
-          strokeWidth="6"
+          stroke="#F6B5D3"
+          strokeWidth="11"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
