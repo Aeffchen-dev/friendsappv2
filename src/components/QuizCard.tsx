@@ -1126,12 +1126,32 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create 3 snake-like circles in different sizes
-  // Position them so they don't overlap
+  // Position circles at edges so they're cut off and don't overlap
   const circleConfigs = [
-    { radiusMin: 12, radiusMax: 18, xMin: 15, xMax: 30, yMin: 20, yMax: 40 },   // Small circle, top left
-    { radiusMin: 22, radiusMax: 32, xMin: 55, xMax: 75, yMin: 15, yMax: 35 },   // Medium circle, top right
-    { radiusMin: 16, radiusMax: 24, xMin: 25, xMax: 45, yMin: 65, yMax: 85 }    // Small-medium circle, bottom
+    { 
+      radiusMin: 18, 
+      radiusMax: 28, 
+      xMin: 15, 
+      xMax: 35, 
+      yMin: -15,  // Top edge - negative y for cutoff
+      yMax: -5 
+    },
+    { 
+      radiusMin: 22, 
+      radiusMax: 35, 
+      xMin: 95,   // Right edge - x beyond 100 for cutoff
+      xMax: 110, 
+      yMin: 40, 
+      yMax: 60 
+    },
+    { 
+      radiusMin: 20, 
+      radiusMax: 30, 
+      xMin: 60, 
+      xMax: 80, 
+      yMin: 95,   // Bottom edge - y beyond 100 for cutoff
+      yMax: 110 
+    }
   ];
   
   const config = circleConfigs[lineIndex % 3];
