@@ -43,7 +43,7 @@ export function CategorySelector({
       setTimeout(() => {
         setAnimatingItems({});
         setIsInitialOpen(false);
-      }, 450);
+      }, 350);
     }
   }, [open, categories, selectedCategories]);
 
@@ -183,7 +183,7 @@ export function CategorySelector({
       setAnimatingItems(prev => ({ ...prev, [category]: true }));
       setTimeout(() => {
         setAnimatingItems(prev => ({ ...prev, [category]: false }));
-      }, 450);
+      }, 350);
     }
   };
 
@@ -233,7 +233,7 @@ export function CategorySelector({
                     borderRadius: '4px 999px 999px 4px',
                     backgroundColor: 'hsl(0 0% 10%)',
                     transformOrigin: 'left',
-                    animation: isAnimating ? 'item-bounce 450ms cubic-bezier(0.34, 1.56, 0.64, 1)' : undefined
+                    animation: isAnimating ? 'item-bounce 350ms cubic-bezier(0.34, 1.8, 0.64, 1)' : undefined
                   }}
                   onClick={() => handleCategoryToggle(category)}
                 >
@@ -248,7 +248,7 @@ export function CategorySelector({
                       borderBottomRightRadius: isSelected ? '999px' : '4px',
                       transformOrigin: 'left',
                       willChange: 'width',
-                      animation: isAnimating ? 'strip-expand-bounce 450ms cubic-bezier(0.34, 1.56, 0.64, 1)' : undefined,
+                      animation: isAnimating ? 'strip-expand-bounce 350ms cubic-bezier(0.34, 1.8, 0.64, 1)' : undefined,
                       transition: !isAnimating && !isSelected ? 'width 250ms ease-out, border-radius 250ms ease-out' : undefined
                     }} 
                   />
