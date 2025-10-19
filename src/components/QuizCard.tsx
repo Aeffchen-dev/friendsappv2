@@ -1168,9 +1168,9 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   for (let i = 0; i <= numPoints; i++) {
     const angle = (i / numPoints) * Math.PI * 2;
     
-    // Each wave gets its own unique amplitude
+    // Each wave gets its own unique amplitude with wider range for more variation
     const waveIndex = Math.floor(angle * waveFrequency / (Math.PI * 2));
-    const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex + waveIndex, 6.0, 18.0);
+    const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex + waveIndex, 4.0, 22.0);
     
     // Random choice of convex (outward) or concave (inward) for each wave
     const isConvex = getRandomValue(questionText + 'conv' + lineIndex + waveIndex, 0, 1) > 0.5;
