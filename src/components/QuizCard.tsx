@@ -589,13 +589,13 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 4 wavy ribbon lines per card
-        const numLines = 4;
+        // Generate 3 snake-like circular lines per card
+        const numCircles = 3;
         
         return (
           <>
-            {/* Wavy ribbon lines */}
-            {Array.from({ length: numLines }).map((_, index) => (
+            {/* Snake-like circular lines */}
+            {Array.from({ length: numCircles }).map((_, index) => (
               <WavyLine 
                 key={`wave-${index}`}
                 questionText={question.question}
@@ -1126,29 +1126,43 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create circles in different sizes
-  // Each circle gets a unique size and position
-  const circleSizes = [
-    { radiusMin: 15, radiusMax: 25 },  // Small
-    { radiusMin: 30, radiusMax: 45 },  // Medium
-    { radiusMin: 50, radiusMax: 70 },  // Large
-    { radiusMin: 20, radiusMax: 35 }   // Small-Medium
+  // Create 3 snake-like circles in different sizes
+  // Position them so they don't overlap
+  const circleConfigs = [
+    { radiusMin: 12, radiusMax: 18, xMin: 15, xMax: 30, yMin: 20, yMax: 40 },   // Small circle, top left
+    { radiusMin: 22, radiusMax: 32, xMin: 55, xMax: 75, yMin: 15, yMax: 35 },   // Medium circle, top right
+    { radiusMin: 16, radiusMax: 24, xMin: 25, xMax: 45, yMin: 65, yMax: 85 }    // Small-medium circle, bottom
   ];
   
-  const sizeConfig = circleSizes[lineIndex % 4];
-  const radius = getRandomValue(questionText + 'radius' + lineIndex, sizeConfig.radiusMin, sizeConfig.radiusMax);
+  const config = circleConfigs[lineIndex % 3];
+  const radius = getRandomValue(questionText + 'radius' + lineIndex, config.radiusMin, config.radiusMax);
+  const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
+  const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
-  // Position circles across the card - different zones to avoid overlap
-  const positionZones = [
-    { xMin: 10, xMax: 35, yMin: 15, yMax: 40 },   // Top left
-    { xMin: 50, xMax: 80, yMin: 25, yMax: 50 },   // Top right
-    { xMin: 15, xMax: 40, yMin: 60, yMax: 85 },   // Bottom left
-    { xMin: 60, xMax: 90, yMin: 65, yMax: 90 }    // Bottom right
-  ];
+  // Create wavy snake-like path around the circle
+  const numPoints = 48; // Number of points for smooth snake effect
+  const waveFrequency = 8; // How many waves around the circle
+  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 1.2, 2.2); // Wave size
   
-  const zone = positionZones[lineIndex % 4];
-  const cx = getRandomValue(questionText + 'cx' + lineIndex, zone.xMin, zone.xMax);
-  const cy = getRandomValue(questionText + 'cy' + lineIndex, zone.yMin, zone.yMax);
+  let pathData = '';
+  
+  for (let i = 0; i <= numPoints; i++) {
+    const angle = (i / numPoints) * Math.PI * 2;
+    const waveOffset = Math.sin(angle * waveFrequency) * waveAmplitude;
+    const r = radius + waveOffset;
+    
+    const x = cx + Math.cos(angle) * r;
+    const y = cy + Math.sin(angle) * r;
+    
+    if (i === 0) {
+      pathData = `M ${x},${y}`;
+    } else {
+      pathData += ` L ${x},${y}`;
+    }
+  }
+  
+  // Close the path
+  pathData += ' Z';
   
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
@@ -1157,13 +1171,13 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
       >
-        <circle 
-          cx={cx}
-          cy={cy}
-          r={radius}
+        <path 
+          d={pathData}
           fill="none"
           stroke="#F6B5D3"
-          strokeWidth="2.5"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </div>
