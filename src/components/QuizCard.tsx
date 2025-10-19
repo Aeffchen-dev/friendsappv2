@@ -1126,65 +1126,82 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Position circles at edges so they're cut off and don't overlap
-  const circleConfigs = [
+  // Only 2-3 curves positioned strategically
+  const curveConfigs = [
     { 
-      radiusMin: 18, 
-      radiusMax: 28, 
-      xMin: 85,   // Top right corner - x position
-      xMax: 95, 
-      yMin: -15,  // Top edge - negative y for cutoff
-      yMax: -5 
+      startX: 10,
+      startY: 30,
+      endX: 45,
+      endY: 25,
+      heightVariation: 8
     },
     { 
-      radiusMin: 22, 
-      radiusMax: 35, 
-      xMin: 5,   // Left edge - moved more into the card
-      xMax: 15, 
-      yMin: 40, 
-      yMax: 60 
+      startX: 55,
+      startY: 70,
+      endX: 95,
+      endY: 65,
+      heightVariation: 12
     },
     { 
-      radiusMin: 20, 
-      radiusMax: 30, 
-      xMin: 90,   // Right side - 40% outside the card
-      xMax: 105, 
-      yMin: 75,   // Lower quarter
-      yMax: 85 
+      startX: 15,
+      startY: 80,
+      endX: 40,
+      endY: 85,
+      heightVariation: 10
     }
   ];
   
-  const config = circleConfigs[lineIndex % 3];
-  const radius = getRandomValue(questionText + 'radius' + lineIndex, config.radiusMin, config.radiusMax);
-  const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
-  const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
+  const config = curveConfigs[lineIndex % 2]; // Only show 2 curves
   
-  // Create wavy snake-like path around the circle with long, stretched S-curves
-  const numPoints = 120; // More points for smoother curves
-  const waveFrequency = getRandomValue(questionText + 'waveFreq' + lineIndex, 2, 3); // Low frequency for wide, shallow bends
+  // Long, uneven wavelength with subtle variations
+  const numPoints = 100;
+  const baseWavelength = getRandomValue(questionText + 'baseWave' + lineIndex, 15, 25); // Long wavelength
   
+  const startX = config.startX;
+  const startY = config.startY;
+  const endX = config.endX;
+  const endY = config.endY;
+  const curveLength = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+  
+  // Create the main curve path with half-circle ends
   let pathData = '';
   
+  // Start with half-circle cap
+  const capRadius = 4;
+  const angle = Math.atan2(endY - startY, endX - startX);
+  
+  // Half-circle at start (left side)
+  const startCapX1 = startX - Math.sin(angle) * capRadius;
+  const startCapY1 = startY + Math.cos(angle) * capRadius;
+  const startCapX2 = startX + Math.sin(angle) * capRadius;
+  const startCapY2 = startY - Math.cos(angle) * capRadius;
+  
+  pathData = `M ${startCapX1},${startCapY1} A ${capRadius},${capRadius} 0 0,1 ${startCapX2},${startCapY2}`;
+  
+  // Main wavy curve from start to end
   for (let i = 0; i <= numPoints; i++) {
-    const angle = (i / numPoints) * Math.PI * 2;
-    // Each point gets its own amplitude variation for unique curves
-    const pointAmplitude = getRandomValue(questionText + 'pointAmp' + lineIndex + i, 6.0, 18.0);
-    // Long, stretched S-curve with shallow bends
-    const waveOffset = Math.sin(angle * waveFrequency) * pointAmplitude;
-    const r = radius + waveOffset;
+    const t = i / numPoints;
+    const x = startX + (endX - startX) * t;
+    const baseY = startY + (endY - startY) * t;
     
-    const x = cx + Math.cos(angle) * r;
-    const y = cy + Math.sin(angle) * r;
+    // Long, uneven wavelength with subtle variations per point
+    const pointWavelength = baseWavelength + getRandomValue(questionText + 'pointWave' + lineIndex + i, -3, 3);
+    const amplitude = getRandomValue(questionText + 'amp' + lineIndex + i, config.heightVariation * 0.8, config.heightVariation * 1.2);
+    const waveOffset = Math.sin(t * Math.PI * 2 * (curveLength / pointWavelength)) * amplitude;
     
-    if (i === 0) {
-      pathData = `M ${x},${y}`;
-    } else {
-      pathData += ` L ${x},${y}`;
-    }
+    const y = baseY + waveOffset;
+    
+    pathData += ` L ${x},${y}`;
   }
   
-  // Close the path
-  pathData += ' Z';
+  // End with half-circle cap
+  const endCapX1 = endX + Math.sin(angle) * capRadius;
+  const endCapY1 = endY - Math.cos(angle) * capRadius;
+  const endCapX2 = endX - Math.sin(angle) * capRadius;
+  const endCapY2 = endY + Math.cos(angle) * capRadius;
+  
+  pathData += ` A ${capRadius},${capRadius} 0 0,1 ${endCapX1},${endCapY1}`;
+  pathData += ` A ${capRadius},${capRadius} 0 0,1 ${endCapX2},${endCapY2} Z`;
   
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
