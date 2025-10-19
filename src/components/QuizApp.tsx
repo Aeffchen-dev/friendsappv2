@@ -87,6 +87,14 @@ export function QuizApp() {
       const shuffled: Question[] = [];
       const categoryKeys = Object.keys(byCategory);
 
+      // If no categories, return empty array
+      if (categoryKeys.length === 0) {
+        setShuffledQuestions([]);
+        setPrevShuffleIndex(0);
+        setCurrentShuffleIndex(0);
+        return;
+      }
+
       // Track remaining counts per category
       const remaining: Record<string, number> = {};
       categoryKeys.forEach((cat) => (remaining[cat] = byCategory[cat].length));
