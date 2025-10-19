@@ -1129,12 +1129,12 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   // Position circles at edges so they're cut off and don't overlap
   const circleConfigs = [
     { 
-      radiusMin: 25.5, 
-      radiusMax: 40, 
-      xMin: 105,   // Top right corner
-      xMax: 120, 
-      yMin: -35,  // Top area
-      yMax: -25 
+      radiusMin: 20, 
+      radiusMax: 32, 
+      xMin: 95,   // Top right corner - moved more into card
+      xMax: 110, 
+      yMin: -30,  // Top area
+      yMax: -20 
     },
     { 
       radiusMin: 31.5, 
@@ -1145,12 +1145,12 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
       yMax: 40 
     },
     { 
-      radiusMin: 28, 
-      radiusMax: 42.5, 
-      xMin: 110,   // Right side
-      xMax: 125, 
-      yMin: 100,   // Bottom - far from top right circle
-      yMax: 115 
+      radiusMin: 22, 
+      radiusMax: 34, 
+      xMin: 100,   // Right side - moved more into card
+      xMax: 115, 
+      yMin: 95,   // Bottom
+      yMax: 110 
     }
   ];
   
