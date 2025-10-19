@@ -1159,16 +1159,34 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
-  // Create wavy snake-like path around the circle with very high amplitude
-  const numPoints = 80; // Even more points for ultra smooth curves
-  const waveFrequency = 4; // Very few waves for maximum roundness
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 11.9, 17.0); // 70% increase in amplitude (7.0*1.7=11.9, 10.0*1.7=17.0)
+  // Create smooth S-curve snake-like path with broad curvature and variation
+  const numPoints = 120; // More points for ultra smooth S-curves
+  const baseFrequency = getRandomValue(questionText + 'freq' + lineIndex, 2.5, 3.5); // Broader waves
+  const amplitude1 = getRandomValue(questionText + 'amp1' + lineIndex, 11.9, 17.0); // Primary wave
+  const amplitude2 = getRandomValue(questionText + 'amp2' + lineIndex, 5.0, 8.0); // Secondary wave for variation
+  const amplitude3 = getRandomValue(questionText + 'amp3' + lineIndex, 2.0, 4.0); // Tertiary wave for subtle reversals
+  const phaseShift = getRandomValue(questionText + 'phase' + lineIndex, 0, Math.PI); // Variation in starting phase
   
   let pathData = '';
   
   for (let i = 0; i <= numPoints; i++) {
     const angle = (i / numPoints) * Math.PI * 2;
-    const waveOffset = Math.sin(angle * waveFrequency) * waveAmplitude;
+    
+    // Combine multiple sine waves for smooth S-curve transitions with variation
+    // Primary wave creates the main S-curve
+    const wave1 = Math.sin(angle * baseFrequency + phaseShift) * amplitude1;
+    // Secondary wave adds variation to each curve
+    const wave2 = Math.sin(angle * (baseFrequency * 1.7) + phaseShift * 0.5) * amplitude2;
+    // Tertiary wave creates subtle third reversals on longer waves
+    const wave3 = Math.sin(angle * (baseFrequency * 3.2) + phaseShift * 0.3) * amplitude3;
+    
+    // Smooth easing function for broad curvature (cubic easing)
+    const t = i / numPoints;
+    const easing = t < 0.5 
+      ? 4 * t * t * t 
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    
+    const waveOffset = (wave1 + wave2 + wave3) * (0.8 + easing * 0.4); // Apply smooth easing
     const r = radius + waveOffset;
     
     const x = cx + Math.cos(angle) * r;
