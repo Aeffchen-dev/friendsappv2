@@ -1131,26 +1131,26 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     { 
       radiusMin: 30, 
       radiusMax: 47, 
-      xMin: 105,   // Top right corner - pushed much further right
+      xMin: 105,   // Top right corner
       xMax: 120, 
-      yMin: -35,  // Top edge - pushed much further up
-      yMax: -20 
+      yMin: -35,  // Top area
+      yMax: -25 
     },
     { 
       radiusMin: 37, 
       radiusMax: 58, 
-      xMin: -20,   // Left edge - pushed much further left
-      xMax: -5, 
-      yMin: 40, 
-      yMax: 60 
+      xMin: -25,   // Left edge - well separated
+      xMax: -10, 
+      yMin: 25,   // Upper-middle - separated from others
+      yMax: 40 
     },
     { 
       radiusMin: 33, 
       radiusMax: 50, 
-      xMin: 110,   // Right side - pushed much further right
+      xMin: 110,   // Right side
       xMax: 125, 
-      yMin: 95,   // Bottom - pushed much further down
-      yMax: 105 
+      yMin: 100,   // Bottom - far from top right circle
+      yMax: 115 
     }
   ];
   
