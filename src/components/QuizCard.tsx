@@ -1161,7 +1161,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   
   // Create smooth sinusoidal wave path
   const numPoints = 120; // More points for smoother sine curves
-  const waveFrequency = 2.5; // Lower frequency for longer, flowing waves
+  const waveFrequency = getRandomValue(questionText + 'waveFreq' + lineIndex, 3, 5); // Random frequency between 3 and 5
   const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 12.0, 18.0);
   
   let pathData = '';
