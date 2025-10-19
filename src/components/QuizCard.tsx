@@ -1129,24 +1129,24 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   // Position circles at edges so they're cut off and don't overlap
   const circleConfigs = [
     { 
-      radiusMin: 18, 
-      radiusMax: 28, 
+      radiusMin: 30, 
+      radiusMax: 47, 
       xMin: 85,   // Top right corner - x position
       xMax: 95, 
       yMin: -15,  // Top edge - negative y for cutoff
       yMax: -5 
     },
     { 
-      radiusMin: 22, 
-      radiusMax: 35, 
+      radiusMin: 37, 
+      radiusMax: 58, 
       xMin: 5,   // Left edge - moved more into the card
       xMax: 15, 
       yMin: 40, 
       yMax: 60 
     },
     { 
-      radiusMin: 20, 
-      radiusMax: 30, 
+      radiusMin: 33, 
+      radiusMax: 50, 
       xMin: 90,   // Right side - 40% outside the card
       xMax: 105, 
       yMin: 75,   // Lower quarter
@@ -1162,7 +1162,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   // Create wavy snake-like path around the circle with half-circle shapes
   const numPoints = 120; // More points for smoother half-circle curves
   const waveFrequency = 4; // Keep wave count for proper half-circle shapes
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 8.0, 12.0); // Slightly smaller amplitude
+  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 13.3, 20.0); // 2/3 bigger amplitude
   
   let pathData = '';
   
