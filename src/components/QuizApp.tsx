@@ -738,9 +738,9 @@ export function QuizApp() {
           </div>
         ) : selectedCategories.length === 0 || (isShuffleMode && shuffledQuestions.length === 0) ? (
           // Empty state when no categories selected
-          <div className="flex items-center justify-center px-8 h-full">
+          <div className="flex items-center justify-center px-8 h-full bg-black">
             <p className="text-white text-center" style={{ fontSize: '14px', maxWidth: '80%' }}>
-              Aktuell hast du alle Kategorien abgewählt. Aktiviere mindestens eine Kategorie, um die Fragen anzuzeigen
+              Aktuell hast du alle Kategorien abgewählt. Aktiviere mindestens eine Kategorie, um die Fragen anzuzeigen.
             </p>
           </div>
         ) : isShuffleMode ? (
