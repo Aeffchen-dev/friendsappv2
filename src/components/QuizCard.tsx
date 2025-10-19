@@ -1139,10 +1139,10 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
-  // Create wavy snake-like path around the circle
-  const numPoints = 48; // Number of points for smooth snake effect
-  const waveFrequency = 8; // How many waves around the circle
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 1.2, 2.2); // Wave size
+  // Create wavy snake-like path around the circle with higher amplitude
+  const numPoints = 64; // More points for smoother curves
+  const waveFrequency = 6; // Fewer waves for rounder curves
+  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 2.8, 4.5); // Higher amplitude
   
   let pathData = '';
   
@@ -1175,7 +1175,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
           d={pathData}
           fill="none"
           stroke="#F6B5D3"
-          strokeWidth="2.2"
+          strokeWidth="4.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
