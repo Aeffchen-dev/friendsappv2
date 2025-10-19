@@ -466,7 +466,7 @@ export function QuizApp() {
     }, 350);
   };
   const handleLogoClick = () => {
-    triggerLogoStretch();
+    window.location.reload();
   };
 
   const handleCategoriesChange = (categories: string[]) => {
