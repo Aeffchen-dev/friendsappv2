@@ -1139,18 +1139,18 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     { 
       radiusMin: 22, 
       radiusMax: 35, 
-      xMin: -10,   // Left edge - show 70% (less negative for more visibility)
-      xMax: 0, 
+      xMin: 5,   // Left edge - moved more into the card
+      xMax: 15, 
       yMin: 40, 
       yMax: 60 
     },
     { 
       radiusMin: 20, 
       radiusMax: 30, 
-      xMin: 85,   // Bottom right corner
-      xMax: 100, 
-      yMin: 95,   // Bottom edge - y beyond 100 for cutoff
-      yMax: 110 
+      xMin: 70,   // Lower quarter right side (not corner)
+      xMax: 85, 
+      yMin: 75,   // Lower quarter
+      yMax: 85 
     }
   ];
   
@@ -1195,7 +1195,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
           d={pathData}
           fill="none"
           stroke="#F6B5D3"
-          strokeWidth="6"
+          strokeWidth="8"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
