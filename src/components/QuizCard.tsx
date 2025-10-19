@@ -1131,8 +1131,8 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     { 
       radiusMin: 18, 
       radiusMax: 28, 
-      xMin: 15, 
-      xMax: 35, 
+      xMin: 85,   // Top right corner - x position
+      xMax: 95, 
       yMin: -15,  // Top edge - negative y for cutoff
       yMax: -5 
     },
