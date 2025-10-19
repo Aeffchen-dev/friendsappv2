@@ -1126,63 +1126,78 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Position circles at edges so they're cut off and don't overlap
-  const circleConfigs = [
-    { 
-      radiusMin: 18, 
-      radiusMax: 28, 
-      xMin: 85,   // Top right corner - x position
-      xMax: 95, 
-      yMin: -15,  // Top edge - negative y for cutoff
-      yMax: -5 
-    },
-    { 
-      radiusMin: 22, 
-      radiusMax: 35, 
-      xMin: 5,   // Left edge - moved more into the card
-      xMax: 15, 
-      yMin: 40, 
-      yMax: 60 
-    },
-    { 
-      radiusMin: 20, 
-      radiusMax: 30, 
-      xMin: 90,   // Right side - 40% outside the card
-      xMax: 105, 
-      yMin: 75,   // Lower quarter
-      yMax: 85 
-    }
+  // Each line flows diagonally from bottom-left to top-right
+  // with 2-3 smooth S-curve bends
+  
+  // Starting positions - staggered to create rhythm
+  const startConfigs = [
+    { xMin: -15, xMax: -5, yMin: 95, yMax: 110 },    // Bottom left, extends beyond
+    { xMin: -10, xMax: 5, yMin: 85, yMax: 100 },     // Slightly higher start
+    { xMin: -5, xMax: 10, yMin: 75, yMax: 90 }       // Even higher start
   ];
   
-  const config = circleConfigs[lineIndex % 3];
-  const radius = getRandomValue(questionText + 'radius' + lineIndex, config.radiusMin, config.radiusMax);
-  const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
-  const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
+  const config = startConfigs[lineIndex % 3];
+  const startX = getRandomValue(questionText + 'startX' + lineIndex, config.xMin, config.xMax);
+  const startY = getRandomValue(questionText + 'startY' + lineIndex, config.yMin, config.yMax);
   
-  // Create wavy snake-like path around the circle with very high amplitude
-  const numPoints = 80; // Even more points for ultra smooth curves
-  const waveFrequency = 4; // Very few waves for maximum roundness
-  const waveAmplitude = getRandomValue(questionText + 'waveAmp' + lineIndex, 7.0, 10.0); // Very high amplitude for absolutely rounded curves
+  // Wavelength approximately 1.3x card width (130 units)
+  const wavelength = getRandomValue(questionText + 'wavelength' + lineIndex, 120, 140);
   
-  let pathData = '';
+  // Amplitude 0.15-0.2x card height (15-20 units)
+  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 15, 22);
   
-  for (let i = 0; i <= numPoints; i++) {
-    const angle = (i / numPoints) * Math.PI * 2;
-    const waveOffset = Math.sin(angle * waveFrequency) * waveAmplitude;
-    const r = radius + waveOffset;
+  // Phase offset for each line
+  const phaseOffset = (lineIndex * Math.PI) / 2;
+  
+  // Diagonal angle (bottom-left to top-right)
+  const angle = getRandomValue(questionText + 'angle' + lineIndex, -45, -38);
+  
+  // Create smooth S-curve with 2-3 bends using cubic Bézier curves
+  const numBends = Math.floor(getRandomValue(questionText + 'numBends' + lineIndex, 2, 3.5));
+  
+  // Calculate path length to extend beyond card
+  const pathLength = 140;
+  
+  // Start path
+  let pathData = `M ${startX},${startY}`;
+  
+  // Create smooth S-curves using cubic Bézier
+  for (let i = 0; i < numBends; i++) {
+    const t = i / numBends;
+    const nextT = (i + 1) / numBends;
     
-    const x = cx + Math.cos(angle) * r;
-    const y = cy + Math.sin(angle) * r;
+    // Progress along diagonal path
+    const x1 = startX + Math.cos(angle * Math.PI / 180) * pathLength * t;
+    const y1 = startY + Math.sin(angle * Math.PI / 180) * pathLength * t;
     
-    if (i === 0) {
-      pathData = `M ${x},${y}`;
-    } else {
-      pathData += ` L ${x},${y}`;
-    }
+    const x2 = startX + Math.cos(angle * Math.PI / 180) * pathLength * nextT;
+    const y2 = startY + Math.sin(angle * Math.PI / 180) * pathLength * nextT;
+    
+    // Calculate wave offset (alternating convex/concave)
+    const waveDirection = i % 2 === 0 ? 1 : -1;
+    const wavePhase = phaseOffset + t * Math.PI * 2;
+    
+    // Perpendicular offset for wave motion
+    const perpAngle = angle + 90;
+    
+    // Control points for smooth cubic Bézier S-curve
+    // First control point at 1/3 of segment
+    const cp1Progress = t + (nextT - t) * 0.33;
+    const cp1X = startX + Math.cos(angle * Math.PI / 180) * pathLength * cp1Progress;
+    const cp1Y = startY + Math.sin(angle * Math.PI / 180) * pathLength * cp1Progress;
+    const cp1OffsetX = Math.cos(perpAngle * Math.PI / 180) * amplitude * waveDirection * 0.85;
+    const cp1OffsetY = Math.sin(perpAngle * Math.PI / 180) * amplitude * waveDirection * 0.85;
+    
+    // Second control point at 2/3 of segment (opposite direction for S-curve)
+    const cp2Progress = t + (nextT - t) * 0.67;
+    const cp2X = startX + Math.cos(angle * Math.PI / 180) * pathLength * cp2Progress;
+    const cp2Y = startY + Math.sin(angle * Math.PI / 180) * pathLength * cp2Progress;
+    const cp2OffsetX = Math.cos(perpAngle * Math.PI / 180) * amplitude * waveDirection * -0.85;
+    const cp2OffsetY = Math.sin(perpAngle * Math.PI / 180) * amplitude * waveDirection * -0.85;
+    
+    // Add cubic Bézier curve
+    pathData += ` C ${cp1X + cp1OffsetX},${cp1Y + cp1OffsetY} ${cp2X + cp2OffsetX},${cp2Y + cp2OffsetY} ${x2},${y2}`;
   }
-  
-  // Close the path
-  pathData += ' Z';
   
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
