@@ -882,7 +882,7 @@ export function QuizApp() {
                     width: '100vw',
                     height: '100vh',
                     transform: `translateX(${translateXPx + dragTranslateXPx}px) scale(${scale}) rotateZ(${rotateZ}deg)`,
-                    transition: isDragging ? 'none' : ((isAnimating && dragDirection === 'horizontal') || (!isAnimating && !isDragging && position === 0 && scale < 1)) ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: isDragging ? 'none' : ((isAnimating && dragDirection === 'horizontal') || (!isAnimating && !isDragging && position === 0 && scale < 1)) ? 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)' : 'transform 350ms cubic-bezier(0.4, 0, 0.2, 1)',
                     animation: isActive && !hasInteracted && currentShuffleIndex === 0 
                       ? 'swipeHint 350ms ease-in-out 1s 1' 
                       : (position === 1 && !hasInteracted && currentShuffleIndex === 0 
