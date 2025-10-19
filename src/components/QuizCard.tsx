@@ -589,15 +589,15 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Generate 3 starfish shapes per card
-        const numStarfish = 3;
+        // Generate 4 wavy ribbon lines per card
+        const numLines = 4;
         
         return (
           <>
-            {/* Starfish shapes */}
-            {Array.from({ length: numStarfish }).map((_, index) => (
+            {/* Wavy ribbon lines */}
+            {Array.from({ length: numLines }).map((_, index) => (
               <WavyLine 
-                key={`star-${index}`}
+                key={`wave-${index}`}
                 questionText={question.question}
                 lineIndex={index}
               />
@@ -1126,66 +1126,65 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     return min + normalized * (max - min);
   };
   
-  // Create smooth starfish with positioning ensuring 60% visibility - unique per index
-  const centerX = getRandomValue(questionText + 'centerX' + lineIndex + 'unique', 15, 85);
-  const centerY = getRandomValue(questionText + 'centerY' + lineIndex + 'unique', 15, 85);
-  const outerRadius = getRandomValue(questionText + 'outerRadius' + lineIndex + 'unique', 15, 30);
-  const innerRadius = outerRadius * getRandomValue(questionText + 'innerRatio' + lineIndex + 'unique', 0.15, 0.5);
-  const numArms = Math.floor(getRandomValue(questionText + 'arms' + lineIndex, 4, 7));
+  // Generate smooth wavy ribbon lines - open ended
+  const startX = getRandomValue(questionText + 'startX' + lineIndex, -10, 20);
+  const startY = getRandomValue(questionText + 'startY' + lineIndex, 10, 90);
   
-  let pathData = '';
+  // Angle for diagonal flow - each wave has different tilt
+  const angle = getRandomValue(questionText + 'angle' + lineIndex, 25, 65);
   
-  // Calculate all points around the starfish
-  const points = [];
+  // Length of the wave
+  const length = getRandomValue(questionText + 'length' + lineIndex, 80, 140);
   
-  for (let i = 0; i < numArms * 2; i++) {
-    const angle = (360 / (numArms * 2)) * i;
-    const rad = (angle * Math.PI) / 180;
-    const isOuter = i % 2 === 0;
-    const radius = isOuter ? outerRadius : innerRadius;
+  // Wave amplitude (how tall the curves are)
+  const amplitude = getRandomValue(questionText + 'amplitude' + lineIndex, 8, 18);
+  
+  // Number of waves (2-3 waves per line)
+  const numWaves = Math.floor(getRandomValue(questionText + 'numWaves' + lineIndex, 2, 4));
+  
+  // Calculate end point based on angle
+  const endX = startX + Math.cos(angle * Math.PI / 180) * length;
+  const endY = startY + Math.sin(angle * Math.PI / 180) * length;
+  
+  // Generate smooth wave path using cubic bezier curves
+  let pathData = `M ${startX},${startY}`;
+  
+  const segmentLength = length / numWaves;
+  
+  for (let i = 0; i < numWaves; i++) {
+    const t = i / numWaves;
+    const nextT = (i + 1) / numWaves;
     
-    const x = centerX + Math.cos(rad) * radius;
-    const y = centerY + Math.sin(rad) * radius;
+    const x1 = startX + Math.cos(angle * Math.PI / 180) * segmentLength * t;
+    const y1 = startY + Math.sin(angle * Math.PI / 180) * segmentLength * t;
     
-    points.push({ x, y, isOuter });
+    const x2 = startX + Math.cos(angle * Math.PI / 180) * segmentLength * nextT;
+    const y2 = startY + Math.sin(angle * Math.PI / 180) * segmentLength * nextT;
+    
+    // Control points for smooth S-curve
+    const cp1X = x1 + Math.cos(angle * Math.PI / 180) * segmentLength * 0.33 + Math.cos((angle + 90) * Math.PI / 180) * amplitude * (i % 2 === 0 ? 1 : -1);
+    const cp1Y = y1 + Math.sin(angle * Math.PI / 180) * segmentLength * 0.33 + Math.sin((angle + 90) * Math.PI / 180) * amplitude * (i % 2 === 0 ? 1 : -1);
+    
+    const cp2X = x1 + Math.cos(angle * Math.PI / 180) * segmentLength * 0.66 + Math.cos((angle + 90) * Math.PI / 180) * amplitude * (i % 2 === 0 ? -1 : 1);
+    const cp2Y = y1 + Math.sin(angle * Math.PI / 180) * segmentLength * 0.66 + Math.sin((angle + 90) * Math.PI / 180) * amplitude * (i % 2 === 0 ? -1 : 1);
+    
+    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${x2},${y2}`;
   }
-  
-  // Start the path
-  pathData = `M ${points[0].x},${points[0].y}`;
-  
-  // Create smooth curves between all points with rounded transitions
-  for (let i = 0; i < points.length; i++) {
-    const next = points[(i + 1) % points.length];
-    const nextNext = points[(i + 2) % points.length];
-    
-    // Use cubic bezier for smoother, rounder curves
-    const cp1X = next.x;
-    const cp1Y = next.y;
-    const cp2X = next.x;
-    const cp2Y = next.y;
-    const endX = (next.x + nextNext.x) / 2;
-    const endY = (next.y + nextNext.y) / 2;
-    
-    pathData += ` C ${cp1X},${cp1Y} ${cp2X},${cp2Y} ${endX},${endY}`;
-  }
-  
-  // Close the path
-  pathData += ' Z';
   
   return (
     <div className="absolute inset-0 z-0 overflow-visible">
       <svg 
         className="absolute" 
-        width="250%" 
-        height="250%" 
-        viewBox="-75 -75 250 250"
+        width="200%" 
+        height="200%" 
+        viewBox="-50 -50 200 200"
         preserveAspectRatio="none"
-        style={{ overflow: 'visible', left: '-75%', top: '-75%' }}
+        style={{ overflow: 'visible', left: '-50%', top: '-50%' }}
       >
         <path 
           d={pathData}
           stroke="#F1A8C6"
-          strokeWidth="5"
+          strokeWidth="6"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
