@@ -818,11 +818,8 @@ export function QuizApp() {
                 if (isEnteringActive) {
                   rotateZ = 0; // New active animates to 0°
                 } else if (isActive) {
-                  // Exiting card rotates 5° in exit direction
-                  rotateZ = dragOffsetX > 0 ? 5 : -5;
-                } else if (position === -1) {
-                  // Previous card rotates -5° during horizontal prev transition
-                  rotateZ = -5;
+                  // Exiting card rotates to 0° (no rotation during exit)
+                  rotateZ = 0;
                 }
               }
               // Default: all cards at 0° rotation
@@ -1028,12 +1025,8 @@ export function QuizApp() {
                 if (isEnteringCategoryActive) {
                   rotateZ = 0; // New active animates to 0°
                 } else if (isCategoryActive) {
-                  // Exiting card rotates 5° in exit direction
-                  const lastDragDirection = dragOffsetX > 0 ? 1 : -1;
-                  rotateZ = lastDragDirection * 5;
-                } else if (catPosition === -1) {
-                  // Previous card rotates -5° during horizontal prev transition
-                  rotateZ = -5;
+                  // Exiting card rotates to 0° (no rotation during exit)
+                  rotateZ = 0;
                 }
               }
               // Default: all cards at 0° rotation
