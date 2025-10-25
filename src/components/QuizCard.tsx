@@ -564,9 +564,9 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Position X in bottom area, ensure min 80% visible
-        const posX = getRandomPos(question.question + 'xPosX', 30, 70);
-        const posY = getRandomPos(question.question + 'xPosY', 75, 88);
+        // Position X in bottom area, ensure min 40% visible, allow cutoff
+        const posX = getRandomPos(question.question + 'xPosX', 20, 80);
+        const posY = getRandomPos(question.question + 'xPosY', 70, 90);
         
         return (
           <XShape 
@@ -844,9 +844,9 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
     "M20,30 Q16,26 22,24 Q26,22 30,24 Q34,22 38,24 Q42,22 46,24 Q50,22 54,24 Q58,22 62,24 Q66,26 64,30 Q62,34 56,36 Q50,38 44,36 Q38,38 32,36 Q26,38 22,36 Q18,34 20,30 Z"
   ];
 
-  // Animation speed similar to connection breathing - slow and smooth
-  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 25, 40);
-  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 80, 120);
+  // Much slower animation
+  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 15, 30);
+  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 60, 100);
 
   // Randomize horizontal movement range AND direction for each cloud
   const movementDirection = getRandomValue(questionText + 'cloudDir' + cloudIndex, 0, 1) > 0.5 ? 1 : -1;
