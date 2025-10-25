@@ -830,23 +830,23 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
   
-  // More distinct cloud shapes with bigger differences for visible morphing
+  // Cloud shapes made of circles that morph by changing size and amount
   const cloudShapes = [
-    // Very round and puffy
-    "M20,30 Q15,20 30,15 Q45,10 60,15 Q75,20 70,35 Q65,50 50,50 Q35,50 25,45 Q15,40 20,30 Z",
-    // Stretched horizontally
-    "M15,32 Q10,25 25,20 Q40,18 55,20 Q70,22 75,30 Q78,38 65,42 Q50,45 35,42 Q20,40 15,32 Z",
-    // Tall and narrow
-    "M30,25 Q25,15 35,10 Q45,8 50,12 Q55,16 52,28 Q48,40 40,45 Q32,42 28,35 Q25,30 30,25 Z",
-    // Irregular with bumps
-    "M18,28 Q15,22 25,18 Q32,14 40,16 Q48,18 55,24 Q60,30 58,36 Q54,42 45,44 Q36,45 28,42 Q20,38 18,28 Z",
-    // Wide and flat
-    "M12,33 Q8,28 22,25 Q36,23 50,24 Q64,25 70,31 Q72,37 60,40 Q45,42 30,40 Q18,38 12,33 Z"
+    // 3 large bubbles
+    "M15,30 Q10,22 18,18 Q26,14 34,18 Q38,14 46,18 Q54,14 62,18 Q70,22 65,30 Q60,38 50,38 Q40,38 30,38 Q20,38 15,30 Z",
+    // 4 medium bubbles
+    "M18,32 Q14,26 20,22 Q26,18 32,22 Q36,18 42,22 Q46,18 52,22 Q56,18 62,22 Q68,26 64,32 Q60,38 52,38 Q44,38 36,38 Q28,38 20,38 Q14,38 18,32 Z",
+    // 2 large + 2 small bubbles
+    "M20,30 Q16,24 24,20 Q32,16 40,20 Q44,18 50,22 Q54,20 60,24 Q64,28 60,34 Q56,40 48,40 Q40,40 32,40 Q24,40 20,34 Q16,34 20,30 Z",
+    // 3 varied size bubbles
+    "M22,31 Q18,26 24,22 Q30,18 36,22 Q40,18 48,22 Q54,18 62,24 Q68,30 62,36 Q56,42 48,40 Q40,42 32,40 Q24,38 22,31 Z",
+    // 5 small bubbles
+    "M20,30 Q16,26 22,24 Q26,22 30,24 Q34,22 38,24 Q42,22 46,24 Q50,22 54,24 Q58,22 62,24 Q66,26 64,30 Q62,34 56,36 Q50,38 44,36 Q38,38 32,36 Q26,38 22,36 Q18,34 20,30 Z"
   ];
 
-  // Faster animation
-  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 8, 18);
-  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 20, 35);
+  // Much slower animation
+  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 15, 30);
+  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 60, 100);
 
   // Randomize horizontal movement range AND direction for each cloud
   const movementDirection = getRandomValue(questionText + 'cloudDir' + cloudIndex, 0, 1) > 0.5 ? 1 : -1;
