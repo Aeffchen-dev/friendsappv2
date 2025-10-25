@@ -475,7 +475,7 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
               questionText={question.question}
               eyeIndex={1}
               pupilOffset={pupilOffset}
-              isRollingEyes={false}
+              isRollingEyes={isRollingEyes}
             />
           </div>
         );
@@ -830,23 +830,23 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
   
-  // Cloud shapes made of circles that morph by changing size and amount
+  // Organic cloud shapes made of smooth circles only - no sharp edges
   const cloudShapes = [
-    // 3 large bubbles
-    "M15,30 Q10,22 18,18 Q26,14 34,18 Q38,14 46,18 Q54,14 62,18 Q70,22 65,30 Q60,38 50,38 Q40,38 30,38 Q20,38 15,30 Z",
-    // 4 medium bubbles
-    "M18,32 Q14,26 20,22 Q26,18 32,22 Q36,18 42,22 Q46,18 52,22 Q56,18 62,22 Q68,26 64,32 Q60,38 52,38 Q44,38 36,38 Q28,38 20,38 Q14,38 18,32 Z",
-    // 2 large + 2 small bubbles
-    "M20,30 Q16,24 24,20 Q32,16 40,20 Q44,18 50,22 Q54,20 60,24 Q64,28 60,34 Q56,40 48,40 Q40,40 32,40 Q24,40 20,34 Q16,34 20,30 Z",
-    // 3 varied size bubbles
-    "M22,31 Q18,26 24,22 Q30,18 36,22 Q40,18 48,22 Q54,18 62,24 Q68,30 62,36 Q56,42 48,40 Q40,42 32,40 Q24,38 22,31 Z",
-    // 5 small bubbles
-    "M20,30 Q16,26 22,24 Q26,22 30,24 Q34,22 38,24 Q42,22 46,24 Q50,22 54,24 Q58,22 62,24 Q66,26 64,30 Q62,34 56,36 Q50,38 44,36 Q38,38 32,36 Q26,38 22,36 Q18,34 20,30 Z"
+    // 2 large circles overlapping
+    "M25,28 C25,20 20,15 30,15 C40,15 38,20 38,28 C38,36 40,42 30,42 C20,42 25,36 25,28 M35,30 C35,22 32,18 40,18 C48,18 48,22 48,30 C48,38 48,42 40,42 C32,42 35,38 35,30",
+    // 3 medium circles flowing
+    "M20,28 C20,22 18,18 25,18 C32,18 32,22 32,28 C32,34 32,38 25,38 C18,38 20,34 20,28 M30,30 C30,24 28,20 35,20 C42,20 42,24 42,30 C42,36 42,40 35,40 C28,40 30,36 30,30 M45,28 C45,22 43,18 50,18 C57,18 57,22 57,28 C57,34 57,38 50,38 C43,38 45,34 45,28",
+    // 1 large + 2 small circles
+    "M18,30 C18,20 15,15 28,15 C41,15 40,20 40,30 C40,40 41,45 28,45 C15,45 18,40 18,30 M42,22 C42,18 40,16 45,16 C50,16 50,18 50,22 C50,26 50,28 45,28 C40,28 42,26 42,22 M42,38 C42,34 40,32 45,32 C50,32 50,34 50,38 C50,42 50,44 45,44 C40,44 42,42 42,38",
+    // 4 small circles clustered
+    "M20,25 C20,21 18,19 24,19 C30,19 30,21 30,25 C30,29 30,31 24,31 C18,31 20,29 20,25 M32,25 C32,21 30,19 36,19 C42,19 42,21 42,25 C42,29 42,31 36,31 C30,31 32,29 32,25 M20,35 C20,31 18,29 24,29 C30,29 30,31 30,35 C30,39 30,41 24,41 C18,41 20,39 20,35 M32,35 C32,31 30,29 36,29 C42,29 42,31 42,35 C42,39 42,41 36,41 C30,41 32,39 32,35",
+    // 3 varied size circles
+    "M22,30 C22,24 20,20 28,20 C36,20 36,24 36,30 C36,36 36,40 28,40 C20,40 22,36 22,30 M38,26 C38,22 36,20 42,20 C48,20 48,22 48,26 C48,30 48,32 42,32 C36,32 38,30 38,26 M42,34 C42,30 40,28 46,28 C52,28 52,30 52,34 C52,38 52,40 46,40 C40,40 42,38 42,34"
   ];
 
-  // Much slower animation
-  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 15, 30);
-  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 60, 100);
+  // 60% slower animation (multiply by 2.5)
+  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 37.5, 75);
+  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 150, 250);
 
   // Randomize horizontal movement range AND direction for each cloud
   const movementDirection = getRandomValue(questionText + 'cloudDir' + cloudIndex, 0, 1) > 0.5 ? 1 : -1;
