@@ -430,8 +430,8 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         </>
       )}
 
-      {/* Eyes in background - only for "fuck" category with randomized position */}
-      {question.category.toLowerCase() === 'fuck' && (() => {
+      {/* Eyes in background - for all categories with randomized position */}
+      {(() => {
         const getRandomPos = (seed: string, min: number, max: number) => {
           let hash = 0;
           for (let i = 0; i < seed.length; i++) {
@@ -481,8 +481,8 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
-      {/* Clouds in background - only for "wer aus der runde" category */}
-      {question.category.toLowerCase() === 'wer aus der runde' && (() => {
+      {/* Clouds in background - for all categories */}
+      {(() => {
         const getRandomPos = (seed: string, min: number, max: number) => {
           let hash = 0;
           for (let i = 0; i < seed.length; i++) {
@@ -521,8 +521,8 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
-      {/* Smiley in background - only for "party" category */}
-      {question.category.toLowerCase() === 'party' && (() => {
+      {/* Smiley in background - for all categories */}
+      {(() => {
         const getRandomPos = (seed: string, min: number, max: number) => {
           let hash = 0;
           for (let i = 0; i < seed.length; i++) {
@@ -552,8 +552,8 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
-      {/* X shape in background - only for "identity" category */}
-      {question.category.toLowerCase() === 'identity' && (() => {
+      {/* X shape in background - for all categories */}
+      {(() => {
         const getRandomPos = (seed: string, min: number, max: number) => {
           let hash = 0;
           for (let i = 0; i < seed.length; i++) {
@@ -577,8 +577,8 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
         );
       })()}
 
-      {/* Wavy lines in background - only for "connection" category */}
-      {question.category.toLowerCase() === 'connection' && (() => {
+      {/* Wavy lines in background - for all categories */}
+      {(() => {
         const getRandomValue = (seed: string, min: number, max: number) => {
           let hash = 0;
           for (let i = 0; i < seed.length; i++) {
