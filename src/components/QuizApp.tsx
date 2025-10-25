@@ -46,6 +46,7 @@ export function QuizApp() {
   const [dragDirection, setDragDirection] = useState<'horizontal' | 'vertical' | null>(null);
   const [isHorizontalSliding, setIsHorizontalSliding] = useState(false);
   const [dragJustWentHorizontal, setDragJustWentHorizontal] = useState(false);
+  const [firstCardTop, setFirstCardTop] = useState<string | null>(null);
   // Group questions by category
   const questionsByCategory = useMemo(() => {
     const grouped: { [key: string]: Question[] } = {};
@@ -911,9 +912,15 @@ export function QuizApp() {
                   }}
                 >
                   <div
+                    ref={(el) => {
+                      if (el && position === 0 && !firstCardTop) {
+                        const computedTop = isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : 'calc(50% + 8px)';
+                        setFirstCardTop(computedTop);
+                      }
+                    }}
                     style={{
                       position: 'absolute',
-                      top: isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : 'calc(50% + 8px)',
+                      top: firstCardTop || (isMobile ? 'calc(48px + ((100vh - 48px - 46px) / 2) + 8px)' : 'calc(50% + 8px)'),
                       left: '16px',
                       width: '85vw',
                       maxWidth: '600px',
