@@ -67,101 +67,18 @@ export function QuizApp() {
     return categories;
   }, [categories, selectedCategories, availableCategories]);
 
-  // Create shuffled questions from selected categories with optimal category mixing
+  // Create shuffled questions - all questions from all categories mixed randomly
   useEffect(() => {
     if (isShuffleMode && questions.length > 0) {
-      const filtered = questions.filter(q => selectedCategories.includes(q.category));
-      
-      // Group by category
-      const byCategory: { [key: string]: Question[] } = {};
-      filtered.forEach(q => {
-        if (!byCategory[q.category]) byCategory[q.category] = [];
-        byCategory[q.category].push(q);
-      });
-      
-      // Shuffle each category's questions
-      Object.keys(byCategory).forEach(cat => {
-        byCategory[cat] = [...byCategory[cat]].sort(() => Math.random() - 0.5);
-      });
-      
-      // Mix categories with balanced distribution (avoid clusters and ensure wrap-around diversity)
-      const shuffled: Question[] = [];
-      const categoryKeys = Object.keys(byCategory);
-
-      // If no categories, return empty array
-      if (categoryKeys.length === 0) {
-        setShuffledQuestions([]);
-        setPrevShuffleIndex(0);
-        setCurrentShuffleIndex(0);
-        return;
-      }
-
-      // Track remaining counts per category
-      const remaining: Record<string, number> = {};
-      categoryKeys.forEach((cat) => (remaining[cat] = byCategory[cat].length));
-
-      // Helper to pick next category: highest remaining count, not equal to last category
-      const pickNextCategory = (last: string | ''): string | null => {
-        const candidates = categoryKeys.filter((cat) => remaining[cat] > 0 && cat !== last);
-        if (candidates.length === 0) {
-          // Only last remains or nothing left
-          const fallback = categoryKeys.find((cat) => remaining[cat] > 0) || null;
-          return fallback;
-        }
-        // Choose among categories with max remaining (tie-break randomly)
-        let maxRemain = Math.max(...candidates.map((c) => remaining[c]));
-        const top = candidates.filter((c) => remaining[c] === maxRemain);
-        return top[Math.floor(Math.random() * top.length)];
-      };
-
-      // Start with the category that has the most items for better spread
-      let lastCategory = '' as string | '';
-      let firstCategory = '';
-      let startCat = categoryKeys.reduce((a, b) => (remaining[a] >= remaining[b] ? a : b));
-      if (remaining[startCat] > 0) {
-        const q = byCategory[startCat].shift();
-        if (q) {
-          shuffled.push(q);
-          remaining[startCat]--;
-          firstCategory = startCat;
-          lastCategory = startCat;
-        }
-      }
-
-      while (Object.values(remaining).some((n) => n > 0)) {
-        const nextCat = pickNextCategory(lastCategory);
-        if (!nextCat) break;
-        const q = byCategory[nextCat].shift();
-        if (!q) {
-          remaining[nextCat] = 0;
-          continue;
-        }
-        shuffled.push(q);
-        remaining[nextCat]--;
-        lastCategory = nextCat;
-      }
-
-      // Fix wrap-around: ensure last and first categories differ
-      if (shuffled.length > 1 && firstCategory === lastCategory) {
-        for (let i = shuffled.length - 2; i >= 0; i--) {
-          if (shuffled[i].category !== lastCategory) {
-            const tmp = shuffled[shuffled.length - 1];
-            shuffled[shuffled.length - 1] = shuffled[i];
-            shuffled[i] = tmp;
-            lastCategory = shuffled[shuffled.length - 1].category;
-            break;
-          }
-        }
-      }
-
-      // Debug: visualize category distribution
-      console.info('Shuffled categories:', shuffled.map((q) => q.category));
+      // Take ALL questions and shuffle them completely randomly for maximum mixing
+      // New random order on every reload
+      const shuffled = [...questions].sort(() => Math.random() - 0.5);
       
       setShuffledQuestions(shuffled);
       setPrevShuffleIndex(0);
       setCurrentShuffleIndex(0);
     }
-  }, [isShuffleMode, questions, selectedCategories]);
+  }, [isShuffleMode, questions]);
 
   useEffect(() => {
     // Start logo animation and data loading together
