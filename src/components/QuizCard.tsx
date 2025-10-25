@@ -904,17 +904,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
         <path 
           d={cloudShapes[startShapeIndex]}
           fill="#AFD2EE"
-        >
-          <animate
-            attributeName="d"
-            values={morphValues}
-            dur={`${morphDuration}s`}
-            repeatCount="indefinite"
-            calcMode="spline"
-            keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
-            begin={`${getRandomValue(questionText + 'morphDelay' + cloudIndex, 0, morphDuration * 0.5)}s`}
-          />
-        </path>
+        />
       </svg>
     </div>
   );
