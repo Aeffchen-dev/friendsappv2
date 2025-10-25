@@ -888,15 +888,15 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
         {`
           @keyframes cloudFloat-${cloudIndex} {
             0% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-100%);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-30%);
               filter: blur(${maxBlur * 0.3}px);
             }
             50% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(100%);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(30%);
               filter: blur(0px);
             }
             100% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-100%);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-30%);
               filter: blur(${maxBlur * 0.3}px);
             }
           }
