@@ -35,6 +35,7 @@ export function QuizApp() {
   const [prevShuffleIndex, setPrevShuffleIndex] = useState(0);
   const [prevCategoryIndex, setPrevCategoryIndex] = useState(0);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [shownQuestionIndices, setShownQuestionIndices] = useState<Set<number>>(new Set());
   
   // Drag state
   const [isDragging, setIsDragging] = useState(false);
@@ -77,6 +78,7 @@ export function QuizApp() {
       setShuffledQuestions(shuffled);
       setPrevShuffleIndex(0);
       setCurrentShuffleIndex(0);
+      setShownQuestionIndices(new Set([0])); // Start with first question as shown
     }
   }, [isShuffleMode, questions]);
 
@@ -243,11 +245,15 @@ export function QuizApp() {
         if (dragOffsetX < -threshold) {
           triggerLogoSqueeze('left', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setPrevShuffleIndex(currentShuffleIndex);
-          setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
+          const nextIndex = (currentShuffleIndex + 1) % shuffledQuestions.length;
+          setCurrentShuffleIndex(nextIndex);
+          setShownQuestionIndices(prev => new Set([...prev, nextIndex]));
         } else if (dragOffsetX > threshold) {
           triggerLogoSqueeze('right', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setPrevShuffleIndex(currentShuffleIndex);
-          setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
+          const nextIndex = (currentShuffleIndex - 1 + shuffledQuestions.length) % shuffledQuestions.length;
+          setCurrentShuffleIndex(nextIndex);
+          setShownQuestionIndices(prev => new Set([...prev, nextIndex]));
         }
       } else {
         // Normal category mode
@@ -667,7 +673,9 @@ export function QuizApp() {
             {[-2, -1, 0, 1, 2].map((position) => {
               const qIndex = (currentShuffleIndex + position + shuffledQuestions.length) % shuffledQuestions.length;
               const question = shuffledQuestions[qIndex];
-              if (!question) return null;
+              
+              // Skip if this question was already shown (unless we've shown all questions)
+              if (!question || (shownQuestionIndices.size < shuffledQuestions.length && shownQuestionIndices.has(qIndex) && position > 0)) return null;
               
               const isActive = position === 0;
               const isEnteringActive = isAnimating && dragDirection === 'horizontal' && isActive && prevShuffleIndex !== currentShuffleIndex;
@@ -773,7 +781,9 @@ export function QuizApp() {
                       setDragDirection('horizontal');
                        triggerLogoSqueeze('left');
                       setPrevShuffleIndex(currentShuffleIndex);
-                      setCurrentShuffleIndex(prev => (prev + 1) % shuffledQuestions.length);
+                      const nextIdx = (currentShuffleIndex + 1) % shuffledQuestions.length;
+                      setCurrentShuffleIndex(nextIdx);
+                      setShownQuestionIndices(prev => new Set([...prev, nextIdx]));
                       setTimeout(() => {
                         setLogoSqueezeLeft(false);
                         setIsAnimating(false);
@@ -785,7 +795,9 @@ export function QuizApp() {
                       setDragDirection('horizontal');
                        triggerLogoSqueeze('right');
                       setPrevShuffleIndex(currentShuffleIndex);
-                      setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
+                      const prevIdx = (currentShuffleIndex - 1 + shuffledQuestions.length) % shuffledQuestions.length;
+                      setCurrentShuffleIndex(prevIdx);
+                      setShownQuestionIndices(prev => new Set([...prev, prevIdx]));
                       setTimeout(() => {
                         setLogoSqueezeRight(false);
                         setIsAnimating(false);
@@ -802,7 +814,9 @@ export function QuizApp() {
                         setDragDirection('horizontal');
                          triggerLogoSqueeze('right');
                         setPrevShuffleIndex(currentShuffleIndex);
-                        setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
+                        const prevIdx = (currentShuffleIndex - 1 + shuffledQuestions.length) % shuffledQuestions.length;
+                        setCurrentShuffleIndex(prevIdx);
+                        setShownQuestionIndices(prev => new Set([...prev, prevIdx]));
                         setTimeout(() => {
                           setLogoSqueezeRight(false);
                           setIsAnimating(false);
@@ -861,7 +875,9 @@ export function QuizApp() {
                         setDragDirection('horizontal');
                          triggerLogoSqueeze('right');
                         setPrevShuffleIndex(currentShuffleIndex);
-                        setCurrentShuffleIndex(prev => (prev - 1 + shuffledQuestions.length) % shuffledQuestions.length);
+                        const prevIdx = (currentShuffleIndex - 1 + shuffledQuestions.length) % shuffledQuestions.length;
+                        setCurrentShuffleIndex(prevIdx);
+                        setShownQuestionIndices(prev => new Set([...prev, prevIdx]));
                         setTimeout(() => {
                           setLogoSqueezeRight(false);
                           setIsAnimating(false);
@@ -1291,7 +1307,11 @@ export function QuizApp() {
             <button 
               onClick={() => setCategorySelectorOpen(true)}
               className={`font-normal text-xs transition-colors duration-500 pointer-events-auto opacity-100`}
-              style={{fontSize: '14px', color: selectedCategories.length === 0 ? 'rgb(255, 255, 255)' : undefined}}
+              style={{
+                fontSize: '14px', 
+                color: selectedCategories.length === 0 ? 'rgb(255, 255, 255)' : getBlendedHeaderColor(),
+                transition: 'color 600ms cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
             >
               Kategorien wählen
             </button>
