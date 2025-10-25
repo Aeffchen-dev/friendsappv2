@@ -881,27 +881,31 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
         top: `${posY}%`,
         transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3})`,
         animation: `cloudFloat-${cloudIndex} ${floatDuration}s ease-in-out infinite`,
-        animationDelay: `-${animationDelay}s`, // Negative delay to start at different points
+        animationDelay: `-${animationDelay}s`,
       }}
     >
       <style>
         {`
           @keyframes cloudFloat-${cloudIndex} {
-            0%, 100% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(0px);
+            0% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-60%);
               filter: blur(${maxBlur * 0.1}px);
             }
             ${blurPeak1}% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * moveMultiplier1}px);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-30%);
               filter: blur(${maxBlur * 0.8}px);
             }
             50% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * moveMultiplier2}px);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(60%);
               filter: blur(0px);
             }
             ${blurPeak2}% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(${horizontalMovement * moveMultiplier3}px);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(30%);
               filter: blur(${maxBlur}px);
+            }
+            100% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-60%);
+              filter: blur(${maxBlur * 0.1}px);
             }
           }
         `}
@@ -1075,17 +1079,44 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
   const rotation = getRandomValue(questionText + 'xRot', -30, 30);
   const scale = getRandomValue(questionText + 'xScale', 0.4, 1.0);
   
+  // Random movement animation
+  const moveDuration = getRandomValue(questionText + 'xMoveDur', 15, 25);
+  const moveX1 = getRandomValue(questionText + 'xMoveX1', -3, 3);
+  const moveY1 = getRandomValue(questionText + 'xMoveY1', -3, 3);
+  const moveX2 = getRandomValue(questionText + 'xMoveX2', -3, 3);
+  const moveY2 = getRandomValue(questionText + 'xMoveY2', -3, 3);
+  const moveX3 = getRandomValue(questionText + 'xMoveX3', -3, 3);
+  const moveY3 = getRandomValue(questionText + 'xMoveY3', -3, 3);
+  
   return (
     <div 
       className="absolute z-0"
       style={{
         left: `${posX}%`,
         top: `${posY}%`,
-        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`
+        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`,
+        animation: `xShapeFloat-${questionText} ${moveDuration}s ease-in-out infinite`
       }}
     >
+      <style>
+        {`
+          @keyframes xShapeFloat-${questionText} {
+            0%, 100% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale}) translate(0%, 0%);
+            }
+            25% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale}) translate(${moveX1}%, ${moveY1}%);
+            }
+            50% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale}) translate(${moveX2}%, ${moveY2}%);
+            }
+            75% { 
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale}) translate(${moveX3}%, ${moveY3}%);
+            }
+          }
+        `}
+      </style>
       <svg width="400" height="400" viewBox="0 0 300 300">
-        {/* X shape - two lines crossing */}
         <line 
           x1="50" 
           y1="50" 
@@ -1116,6 +1147,8 @@ interface WavyLineProps {
 }
 
 function WavyLine({ questionText, lineIndex }: WavyLineProps) {
+  const [breathePhase, setBreathePhase] = useState(0);
+  
   const getRandomValue = (seed: string, min: number, max: number) => {
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
@@ -1125,6 +1158,17 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     const normalized = Math.abs(hash % 1000) / 1000;
     return min + normalized * (max - min);
   };
+  
+  // Breathing animation for amplitude
+  useEffect(() => {
+    let phase = 0;
+    const breatheInterval = setInterval(() => {
+      phase += 0.02;
+      setBreathePhase(phase);
+    }, 50);
+    
+    return () => clearInterval(breatheInterval);
+  }, []);
   
   // Position circles at edges so they're cut off and don't overlap
   const circleConfigs = [
@@ -1159,18 +1203,21 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
   const cx = getRandomValue(questionText + 'cx' + lineIndex, config.xMin, config.xMax);
   const cy = getRandomValue(questionText + 'cy' + lineIndex, config.yMin, config.yMax);
   
-  // Create wavy sine wave path around the circle
-  const numPoints = 100; // Reduced points
-  const waveFrequency = 6; // Increased frequency for more waves
-  const waveAmplitude = lineIndex === 0 
-    ? getRandomValue(questionText + 'waveAmp' + lineIndex, 3.0, 5.0) // Less amplitude for top right
-    : getRandomValue(questionText + 'waveAmp' + lineIndex, 6.0, 9.0); // Normal amplitude for others
+  // Create wavy sine wave path around the circle with breathing amplitude
+  const numPoints = 100;
+  const waveFrequency = 6;
+  const baseAmplitude = lineIndex === 0 
+    ? getRandomValue(questionText + 'waveAmp' + lineIndex, 3.0, 5.0)
+    : getRandomValue(questionText + 'waveAmp' + lineIndex, 6.0, 9.0);
+  
+  // Breathing effect: oscillate amplitude between 70% and 130%
+  const breatheMultiplier = 0.7 + 0.3 * (1 + Math.sin(breathePhase));
+  const waveAmplitude = baseAmplitude * breatheMultiplier;
   
   let pathData = '';
   
   for (let i = 0; i <= numPoints; i++) {
     const angle = (i / numPoints) * Math.PI * 2;
-    // Use sine wave for smooth oscillating pattern
     const waveOffset = Math.sin(angle * waveFrequency) * waveAmplitude;
     const r = radius + waveOffset;
     
@@ -1184,7 +1231,6 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
     }
   }
   
-  // Close the path
   pathData += ' Z';
   
   return (
@@ -1201,6 +1247,7 @@ function WavyLine({ questionText, lineIndex }: WavyLineProps) {
           strokeWidth="8"
           strokeLinecap="round"
           strokeLinejoin="round"
+          style={{ transition: 'all 0.05s linear' }}
         />
       </svg>
     </div>
