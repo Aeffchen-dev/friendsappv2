@@ -830,21 +830,19 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
   
-  // Organic cloud shapes made of smooth circles only - no sharp edges
+  // Organic cloud shapes - subtle variations of similar forms for smooth morphing
   const cloudShapes = [
-    // 2 large circles overlapping
+    // Base shape - 2 overlapping circles
     "M25,28 C25,20 20,15 30,15 C40,15 38,20 38,28 C38,36 40,42 30,42 C20,42 25,36 25,28 M35,30 C35,22 32,18 40,18 C48,18 48,22 48,30 C48,38 48,42 40,42 C32,42 35,38 35,30",
-    // 3 medium circles flowing
-    "M20,28 C20,22 18,18 25,18 C32,18 32,22 32,28 C32,34 32,38 25,38 C18,38 20,34 20,28 M30,30 C30,24 28,20 35,20 C42,20 42,24 42,30 C42,36 42,40 35,40 C28,40 30,36 30,30 M45,28 C45,22 43,18 50,18 C57,18 57,22 57,28 C57,34 57,38 50,38 C43,38 45,34 45,28",
-    // 1 large + 2 small circles
-    "M18,30 C18,20 15,15 28,15 C41,15 40,20 40,30 C40,40 41,45 28,45 C15,45 18,40 18,30 M42,22 C42,18 40,16 45,16 C50,16 50,18 50,22 C50,26 50,28 45,28 C40,28 42,26 42,22 M42,38 C42,34 40,32 45,32 C50,32 50,34 50,38 C50,42 50,44 45,44 C40,44 42,42 42,38",
-    // 4 small circles clustered
-    "M20,25 C20,21 18,19 24,19 C30,19 30,21 30,25 C30,29 30,31 24,31 C18,31 20,29 20,25 M32,25 C32,21 30,19 36,19 C42,19 42,21 42,25 C42,29 42,31 36,31 C30,31 32,29 32,25 M20,35 C20,31 18,29 24,29 C30,29 30,31 30,35 C30,39 30,41 24,41 C18,41 20,39 20,35 M32,35 C32,31 30,29 36,29 C42,29 42,31 42,35 C42,39 42,41 36,41 C30,41 32,39 32,35",
-    // 3 varied size circles
-    "M22,30 C22,24 20,20 28,20 C36,20 36,24 36,30 C36,36 36,40 28,40 C20,40 22,36 22,30 M38,26 C38,22 36,20 42,20 C48,20 48,22 48,26 C48,30 48,32 42,32 C36,32 38,30 38,26 M42,34 C42,30 40,28 46,28 C52,28 52,30 52,34 C52,38 52,40 46,40 C40,40 42,38 42,34"
+    // Slightly larger circles
+    "M24,28 C24,19 19,14 31,14 C43,14 41,19 41,28 C41,37 43,43 31,43 C19,43 24,37 24,28 M34,30 C34,21 31,17 41,17 C51,17 51,21 51,30 C51,39 51,43 41,43 C31,43 34,39 34,30",
+    // Slightly closer circles
+    "M26,28 C26,21 21,16 29,16 C37,16 35,21 35,28 C35,35 37,41 29,41 C21,41 26,35 26,28 M33,30 C33,23 30,19 39,19 C48,19 48,23 48,30 C48,37 48,41 39,41 C30,41 33,37 33,30",
+    // Back to medium size
+    "M25,28 C25,20 20,15 30,15 C40,15 38,20 38,28 C38,36 40,42 30,42 C20,42 25,36 25,28 M36,30 C36,22 33,18 41,18 C49,18 49,22 49,30 C49,38 49,42 41,42 C33,42 36,38 36,30"
   ];
 
-  // 60% slower animation (multiply by 2.5)
+  // Slower morphing with smoother easing
   const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 37.5, 75);
   const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 150, 250);
 
@@ -913,7 +911,7 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
             dur={`${morphDuration}s`}
             repeatCount="indefinite"
             calcMode="spline"
-            keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
+            keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
             begin={`${getRandomValue(questionText + 'morphDelay' + cloudIndex, 0, morphDuration * 0.5)}s`}
           />
         </path>
