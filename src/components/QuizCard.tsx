@@ -564,9 +564,9 @@ export function QuizCard({ question, onSwipeLeft, onSwipeRight, animationClass =
           return min + normalized * (max - min);
         };
         
-        // Position X in lower area, allow cutoff
-        const posX = getRandomPos(question.question + 'xPosX', 0, 90);
-        const posY = getRandomPos(question.question + 'xPosY', 60, 95);
+        // Position X in bottom area, ensure min 40% visible, allow cutoff
+        const posX = getRandomPos(question.question + 'xPosX', 20, 80);
+        const posY = getRandomPos(question.question + 'xPosY', 70, 90);
         
         return (
           <XShape 
@@ -1071,23 +1071,23 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
   const rotation = getRandomValue(questionText + 'xRot', -30, 30);
   const scale = getRandomValue(questionText + 'xScale', 0.4, 1.0);
   
-  // Random movement animation
-  const moveDuration = getRandomValue(questionText + 'xMoveDur', 15, 25);
-  const moveX1 = getRandomValue(questionText + 'xMoveX1', -5, 5);
-  const moveY1 = getRandomValue(questionText + 'xMoveY1', -5, 5);
-  const moveX2 = getRandomValue(questionText + 'xMoveX2', -5, 5);
-  const moveY2 = getRandomValue(questionText + 'xMoveY2', -5, 5);
-  const moveX3 = getRandomValue(questionText + 'xMoveX3', -5, 5);
-  const moveY3 = getRandomValue(questionText + 'xMoveY3', -5, 5);
+  // Random movement animation - more visible
+  const moveDuration = getRandomValue(questionText + 'xMoveDur', 12, 20);
+  const moveX1 = getRandomValue(questionText + 'xMoveX1', -10, 10);
+  const moveY1 = getRandomValue(questionText + 'xMoveY1', -10, 10);
+  const moveX2 = getRandomValue(questionText + 'xMoveX2', -10, 10);
+  const moveY2 = getRandomValue(questionText + 'xMoveY2', -10, 10);
+  const moveX3 = getRandomValue(questionText + 'xMoveX3', -10, 10);
+  const moveY3 = getRandomValue(questionText + 'xMoveY3', -10, 10);
   
-  // Subtle scale and rotation variations
-  const scaleVar1 = scale * getRandomValue(questionText + 'xScaleV1', 0.95, 1.05);
-  const scaleVar2 = scale * getRandomValue(questionText + 'xScaleV2', 0.92, 1.08);
-  const scaleVar3 = scale * getRandomValue(questionText + 'xScaleV3', 0.96, 1.04);
+  // More visible scale and rotation variations
+  const scaleVar1 = scale * getRandomValue(questionText + 'xScaleV1', 0.88, 1.12);
+  const scaleVar2 = scale * getRandomValue(questionText + 'xScaleV2', 0.85, 1.15);
+  const scaleVar3 = scale * getRandomValue(questionText + 'xScaleV3', 0.90, 1.10);
   
-  const rotVar1 = rotation + getRandomValue(questionText + 'xRotV1', -8, 8);
-  const rotVar2 = rotation + getRandomValue(questionText + 'xRotV2', -12, 12);
-  const rotVar3 = rotation + getRandomValue(questionText + 'xRotV3', -6, 6);
+  const rotVar1 = rotation + getRandomValue(questionText + 'xRotV1', -15, 15);
+  const rotVar2 = rotation + getRandomValue(questionText + 'xRotV2', -20, 20);
+  const rotVar3 = rotation + getRandomValue(questionText + 'xRotV3', -12, 12);
   
   return (
     <div 
