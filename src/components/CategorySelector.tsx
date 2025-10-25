@@ -233,6 +233,8 @@ export function CategorySelector({
                     borderRadius: '4px 999px 999px 4px',
                     backgroundColor: 'hsl(0 0% 10%)',
                     transformOrigin: 'left',
+                    width: isSelected ? '100%' : '80%',
+                    transition: isAnimating ? undefined : 'width 400ms cubic-bezier(0.34, 1.56, 0.64, 1)',
                     animation: isAnimating ? 'item-bounce 350ms cubic-bezier(0.34, 1.8, 0.64, 1)' : undefined
                   }}
                   onClick={() => handleCategoryToggle(category)}
