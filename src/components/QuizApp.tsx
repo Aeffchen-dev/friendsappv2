@@ -660,7 +660,7 @@ export function QuizApp() {
 
   return (
     <div 
-      className="h-[100svh] overflow-hidden flex flex-col relative"
+      className="h-[100dvh] flex flex-col relative"
       style={getBackgroundStyle()}
     >
       {!loading && (
@@ -708,8 +708,8 @@ export function QuizApp() {
 
       {/* Main Quiz Container */}
       <div 
-        className="flex-1 flex justify-center items-center overflow-hidden relative z-10" 
-        style={{ width: '100vw', height: '100vh', touchAction: 'none' }}
+        className="flex-1 flex justify-center items-center relative z-10" 
+        style={{ width: '100vw', touchAction: 'pan-y' }}
         onPointerDown={handleDragStart}
         onPointerMove={handleDragMove}
         onPointerUp={handleDragEnd}
