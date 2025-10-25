@@ -830,23 +830,23 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
   const rotation = getRandomValue(questionText + 'cloudRot' + cloudIndex, -10, 10);
   const scale = getRandomValue(questionText + 'cloudScale' + cloudIndex, 0.9, 1.1);
   
-  // 5 different organic, fluffy cloud shapes for smooth morphing
+  // More distinct cloud shapes with bigger differences for visible morphing
   const cloudShapes = [
-    // Fluffiger Cloud 1 - rounded bumps
-    "M20,30 Q18,25 22,22 Q20,18 25,16 Q28,12 34,14 Q38,10 44,13 Q50,11 54,16 Q58,14 62,18 Q65,22 63,26 Q66,30 62,33 Q64,37 58,38 Q55,42 48,40 Q44,44 38,42 Q32,44 28,40 Q22,42 18,38 Q15,34 18,30 Z",
-    // Fluffiger Cloud 2 - more irregular
-    "M22,32 Q20,28 24,24 Q22,20 27,18 Q30,14 36,16 Q40,12 46,15 Q52,13 56,18 Q60,16 64,20 Q67,24 65,28 Q68,32 64,35 Q66,39 60,40 Q57,44 50,42 Q46,46 40,44 Q34,46 30,42 Q24,44 20,40 Q17,36 20,32 Z",
-    // Fluffiger Cloud 3 - compact and round
-    "M24,31 Q22,27 26,23 Q24,19 29,17 Q32,13 38,15 Q42,11 48,14 Q54,12 58,17 Q62,15 66,19 Q69,23 67,27 Q70,31 66,34 Q68,38 62,39 Q59,43 52,41 Q48,45 42,43 Q36,45 32,41 Q26,43 22,39 Q19,35 22,31 Z",
-    // Fluffiger Cloud 4 - stretched
-    "M21,30 Q19,26 23,23 Q21,19 26,17 Q29,13 35,15 Q39,11 45,14 Q51,12 55,17 Q59,15 63,19 Q66,23 64,27 Q67,31 63,34 Q65,38 59,39 Q56,43 49,41 Q45,45 39,43 Q33,45 29,41 Q23,43 19,39 Q16,35 19,30 Z",
-    // Fluffiger Cloud 5 - wide and puffy
-    "M23,31 Q21,27 25,24 Q23,20 28,18 Q31,14 37,16 Q41,12 47,15 Q53,13 57,18 Q61,16 65,20 Q68,24 66,28 Q69,32 65,35 Q67,39 61,40 Q58,44 51,42 Q47,46 41,44 Q35,46 31,42 Q25,44 21,40 Q18,36 21,31 Z"
+    // Very round and puffy
+    "M20,30 Q15,20 30,15 Q45,10 60,15 Q75,20 70,35 Q65,50 50,50 Q35,50 25,45 Q15,40 20,30 Z",
+    // Stretched horizontally
+    "M15,32 Q10,25 25,20 Q40,18 55,20 Q70,22 75,30 Q78,38 65,42 Q50,45 35,42 Q20,40 15,32 Z",
+    // Tall and narrow
+    "M30,25 Q25,15 35,10 Q45,8 50,12 Q55,16 52,28 Q48,40 40,45 Q32,42 28,35 Q25,30 30,25 Z",
+    // Irregular with bumps
+    "M18,28 Q15,22 25,18 Q32,14 40,16 Q48,18 55,24 Q60,30 58,36 Q54,42 45,44 Q36,45 28,42 Q20,38 18,28 Z",
+    // Wide and flat
+    "M12,33 Q8,28 22,25 Q36,23 50,24 Q64,25 70,31 Q72,37 60,40 Q45,42 30,40 Q18,38 12,33 Z"
   ];
 
-  // Each cloud gets unique timing - strong variation
-  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 20, 55);
-  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 35, 80);
+  // Faster animation
+  const morphDuration = getRandomValue(questionText + 'morphDur' + cloudIndex, 8, 18);
+  const floatDuration = getRandomValue(questionText + 'floatDur' + cloudIndex, 20, 35);
 
   // Randomize horizontal movement range AND direction for each cloud
   const movementDirection = getRandomValue(questionText + 'cloudDir' + cloudIndex, 0, 1) > 0.5 ? 1 : -1;
@@ -888,24 +888,16 @@ function Cloud({ questionText, cloudIndex, posX, posY }: CloudProps) {
         {`
           @keyframes cloudFloat-${cloudIndex} {
             0% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-60%);
-              filter: blur(${maxBlur * 0.1}px);
-            }
-            ${blurPeak1}% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-30%);
-              filter: blur(${maxBlur * 0.8}px);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-100%);
+              filter: blur(${maxBlur * 0.3}px);
             }
             50% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(60%);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(100%);
               filter: blur(0px);
             }
-            ${blurPeak2}% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(30%);
-              filter: blur(${maxBlur}px);
-            }
             100% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-60%);
-              filter: blur(${maxBlur * 0.1}px);
+              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale * 3}) translateX(-100%);
+              filter: blur(${maxBlur * 0.3}px);
             }
           }
         `}
@@ -1081,12 +1073,21 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
   
   // Random movement animation
   const moveDuration = getRandomValue(questionText + 'xMoveDur', 15, 25);
-  const moveX1 = getRandomValue(questionText + 'xMoveX1', -3, 3);
-  const moveY1 = getRandomValue(questionText + 'xMoveY1', -3, 3);
-  const moveX2 = getRandomValue(questionText + 'xMoveX2', -3, 3);
-  const moveY2 = getRandomValue(questionText + 'xMoveY2', -3, 3);
-  const moveX3 = getRandomValue(questionText + 'xMoveX3', -3, 3);
-  const moveY3 = getRandomValue(questionText + 'xMoveY3', -3, 3);
+  const moveX1 = getRandomValue(questionText + 'xMoveX1', -5, 5);
+  const moveY1 = getRandomValue(questionText + 'xMoveY1', -5, 5);
+  const moveX2 = getRandomValue(questionText + 'xMoveX2', -5, 5);
+  const moveY2 = getRandomValue(questionText + 'xMoveY2', -5, 5);
+  const moveX3 = getRandomValue(questionText + 'xMoveX3', -5, 5);
+  const moveY3 = getRandomValue(questionText + 'xMoveY3', -5, 5);
+  
+  // Subtle scale and rotation variations
+  const scaleVar1 = scale * getRandomValue(questionText + 'xScaleV1', 0.95, 1.05);
+  const scaleVar2 = scale * getRandomValue(questionText + 'xScaleV2', 0.92, 1.08);
+  const scaleVar3 = scale * getRandomValue(questionText + 'xScaleV3', 0.96, 1.04);
+  
+  const rotVar1 = rotation + getRandomValue(questionText + 'xRotV1', -8, 8);
+  const rotVar2 = rotation + getRandomValue(questionText + 'xRotV2', -12, 12);
+  const rotVar3 = rotation + getRandomValue(questionText + 'xRotV3', -6, 6);
   
   return (
     <div 
@@ -1094,7 +1095,6 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
       style={{
         left: `${posX}%`,
         top: `${posY}%`,
-        transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`,
         animation: `xShapeFloat-${questionText} ${moveDuration}s ease-in-out infinite`
       }}
     >
@@ -1105,13 +1105,13 @@ function XShape({ questionText, posX, posY }: XShapeProps) {
               transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale}) translate(0%, 0%);
             }
             25% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale}) translate(${moveX1}%, ${moveY1}%);
+              transform: translate(-50%, -50%) rotate(${rotVar1}deg) scale(${scaleVar1}) translate(${moveX1}%, ${moveY1}%);
             }
             50% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale}) translate(${moveX2}%, ${moveY2}%);
+              transform: translate(-50%, -50%) rotate(${rotVar2}deg) scale(${scaleVar2}) translate(${moveX2}%, ${moveY2}%);
             }
             75% { 
-              transform: translate(-50%, -50%) rotate(${rotation}deg) scale(${scale}) translate(${moveX3}%, ${moveY3}%);
+              transform: translate(-50%, -50%) rotate(${rotVar3}deg) scale(${scaleVar3}) translate(${moveX3}%, ${moveY3}%);
             }
           }
         `}
