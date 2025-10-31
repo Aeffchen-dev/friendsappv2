@@ -967,12 +967,14 @@ export function QuizApp() {
               const totalCardWidth = hCardWidth + baseCardSpacingPx; // Total width including spacing
               const cardSpacingVw = (totalCardWidth / window.innerWidth) * 100; // Convert to vw
               let baseTranslateX = catPosition * cardSpacingVw;
-              // Show a right-side peek of the next horizontal slide
+              // Show peeks of adjacent horizontal slides
               const isMobileH = window.innerWidth < 768;
               const peekPxH = isMobileH ? 40 : 56;
               const peekVwH = (peekPxH / window.innerWidth) * 100;
               if (catPosition === 1) {
-                baseTranslateX -= peekVwH;
+                baseTranslateX -= peekVwH; // Pull next card left to show right peek
+              } else if (catPosition === -1) {
+                baseTranslateX += peekVwH; // Pull prev card right to show left peek
               }
               const dragTranslateX = isDragging && dragDirection === 'horizontal' ? (dragOffsetX / window.innerWidth) * 100 : 0;
               
