@@ -898,18 +898,18 @@ export function QuizApp() {
                   <div
                     ref={(el) => {
                       if (el && position === 0 && !firstCardTop) {
-                        const computedTop = isMobile ? '64px' : 'calc(50% + 8px)';
+                        const computedTop = isMobile ? '80px' : 'calc(50% + 8px)';
                         setFirstCardTop(computedTop);
                       }
                     }}
                     style={{
                       position: 'absolute',
-                      top: firstCardTop || (isMobile ? '64px' : 'calc(50% + 8px)'),
+                      top: firstCardTop || (isMobile ? '80px' : 'calc(50% + 8px)'),
                       left: '16px',
                       width: '85vw',
                       maxWidth: '600px',
                       height: isMobile 
-                        ? 'calc(100svh - 126px)' // 48px header + 16px top spacing + 16px bottom spacing + 46px button
+                        ? 'calc(100svh - 142px)' // 48px header + 32px top spacing + 16px bottom spacing + 46px button
                         : 'calc(100svh - 64px - 46px - 4px)', // header + footer - 4px
                       transform: isMobile ? 'none' : 'translateY(-50%)'
                     }}
