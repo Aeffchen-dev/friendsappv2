@@ -727,8 +727,8 @@ export function QuizApp() {
               const qIndex = (currentShuffleIndex + position + shuffledQuestions.length) % shuffledQuestions.length;
               const question = shuffledQuestions[qIndex];
               
-              // Skip if this question was already shown (unless we've shown all questions)
-              if (!question || (shownQuestionIndices.size < shuffledQuestions.length && shownQuestionIndices.has(qIndex) && position > 0)) return null;
+              // Skip if this question was already shown and is more than 1 position ahead
+              if (!question || (shownQuestionIndices.size < shuffledQuestions.length && shownQuestionIndices.has(qIndex) && position > 1)) return null;
               
               const isActive = position === 0;
               const isEnteringActive = isAnimating && dragDirection === 'horizontal' && isActive && prevShuffleIndex !== currentShuffleIndex;
