@@ -260,15 +260,7 @@ export function CategorySelector({
                     {category}
                   </span>
                   <div>
-                    <div
-                      className="relative cursor-pointer"
-                      onClick={() => {
-                         const newCategories = isSelected 
-                           ? tempSelection.filter(c => c !== category)
-                           : [...tempSelection, category];
-                         setTempSelection(newCategories);
-                       }}
-                    >
+                    <div className="relative pointer-events-none">
                        <div
                         className={`w-8 h-8 border border-white flex items-center justify-center transition-all ease-out ${isSelected ? 'bg-white duration-100 delay-100' : 'bg-transparent duration-100 hover:bg-white/10'}`}
                          style={{ 
