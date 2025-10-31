@@ -71,9 +71,8 @@ export function QuizApp() {
   // Create shuffled questions - all questions from all categories mixed randomly
   useEffect(() => {
     if (isShuffleMode && questions.length > 0) {
-      // Take ALL questions and shuffle them completely randomly for maximum mixing
-      // New random order on every reload
-      const shuffled = [...questions].sort(() => Math.random() - 0.5);
+      // Smart shuffle: maximize category diversity, avoid consecutive same categories
+      const shuffled = shuffleWithCategoryDiversity(questions);
       
       setShuffledQuestions(shuffled);
       setPrevShuffleIndex(0);
@@ -81,6 +80,53 @@ export function QuizApp() {
       setShownQuestionIndices(new Set([0])); // Start with first question as shown
     }
   }, [isShuffleMode, questions]);
+
+  // Helper function to shuffle questions while maximizing category diversity
+  const shuffleWithCategoryDiversity = (questions: Question[]): Question[] => {
+    // Group questions by category
+    const byCategory: { [key: string]: Question[] } = {};
+    questions.forEach(q => {
+      if (!byCategory[q.category]) {
+        byCategory[q.category] = [];
+      }
+      byCategory[q.category].push(q);
+    });
+
+    // Shuffle questions within each category
+    Object.keys(byCategory).forEach(cat => {
+      byCategory[cat].sort(() => Math.random() - 0.5);
+    });
+
+    // Create result array with category diversity
+    const result: Question[] = [];
+    const categoryKeys = Object.keys(byCategory);
+    let lastCategory = '';
+
+    while (result.length < questions.length) {
+      // Find available categories (with remaining questions)
+      const availableCategories = categoryKeys.filter(cat => byCategory[cat].length > 0);
+      
+      if (availableCategories.length === 0) break;
+
+      // Try to pick a category different from the last one
+      let nextCategory: string;
+      const differentCategories = availableCategories.filter(cat => cat !== lastCategory);
+      
+      if (differentCategories.length > 0) {
+        // Pick random from categories different than last
+        nextCategory = differentCategories[Math.floor(Math.random() * differentCategories.length)];
+      } else {
+        // Only one category left, must use it
+        nextCategory = availableCategories[0];
+      }
+
+      // Add next question from chosen category
+      result.push(byCategory[nextCategory].shift()!);
+      lastCategory = nextCategory;
+    }
+
+    return result;
+  };
 
   useEffect(() => {
     // Start logo animation and data loading together
