@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { X, Check } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
-import { triggerHaptic } from '@/lib/haptics';
 
 interface CategorySelectorProps {
   open: boolean;
@@ -172,9 +171,6 @@ export function CategorySelector({
 
   const handleCategoryToggle = (category: string) => {
     const isCurrentlySelected = tempSelection.includes(category);
-    
-    // Trigger haptic feedback for selection
-    triggerHaptic('light');
     
     setTempSelection(prev => 
       prev.includes(category) 

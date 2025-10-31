@@ -2,7 +2,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { QuizCard } from './QuizCard';
 import { CategorySelector } from './CategorySelector';
-import { triggerHaptic } from '@/lib/haptics';
 
 interface Question {
   question: string;
@@ -297,14 +296,12 @@ export function QuizApp() {
       if (isShuffleMode) {
         // In shuffle mode, navigate through shuffled questions
         if (dragOffsetX < -threshold) {
-          triggerHaptic('medium'); // Haptic feedback for swipe
           triggerLogoSqueeze('left', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setPrevShuffleIndex(currentShuffleIndex);
           const nextIndex = (currentShuffleIndex + 1) % shuffledQuestions.length;
           setCurrentShuffleIndex(nextIndex);
           setShownQuestionIndices(prev => new Set([...prev, nextIndex]));
         } else if (dragOffsetX > threshold) {
-          triggerHaptic('medium'); // Haptic feedback for swipe
           triggerLogoSqueeze('right', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setPrevShuffleIndex(currentShuffleIndex);
           const nextIndex = (currentShuffleIndex - 1 + shuffledQuestions.length) % shuffledQuestions.length;
@@ -315,7 +312,6 @@ export function QuizApp() {
         // Normal category mode
         if (dragOffsetX < -threshold) {
           console.log('Swipe left - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
-          triggerHaptic('medium'); // Haptic feedback for swipe
           triggerLogoSqueeze('left', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setIsHorizontalSliding(true);
           setPrevCategoryIndex(currentCategoryIndex);
@@ -327,7 +323,6 @@ export function QuizApp() {
           setTimeout(() => setIsHorizontalSliding(false), 350);
         } else if (dragOffsetX > threshold) {
           console.log('Swipe right - current index:', currentCategoryIndex, 'total categories:', displayCategories.length);
-          triggerHaptic('medium'); // Haptic feedback for swipe
           triggerLogoSqueeze('right', Math.min(Math.abs(dragOffsetX) / 120, 1));
           setIsHorizontalSliding(true);
           setPrevCategoryIndex(currentCategoryIndex);
@@ -347,13 +342,11 @@ export function QuizApp() {
       const currentCategory = displayCategories[currentCategoryIndex];
       const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
       if (dragOffsetY < -threshold) {
-        triggerHaptic('light'); // Haptic feedback for question change
         setQuestionIndicesByCategory(prev => ({
           ...prev,
           [currentCategory]: ((prev[currentCategory] || 0) + 1) % currentCategoryQuestions.length
         }));
       } else if (dragOffsetY > threshold) {
-        triggerHaptic('light'); // Haptic feedback for question change
         setQuestionIndicesByCategory(prev => ({
           ...prev,
           [currentCategory]: ((prev[currentCategory] || 0) - 1 + currentCategoryQuestions.length) % currentCategoryQuestions.length
@@ -375,21 +368,18 @@ export function QuizApp() {
   };
 
   const nextCategory = () => {
-    triggerHaptic('medium'); // Haptic feedback for category change
     triggerLogoSqueeze('left');
     setCurrentCategoryIndex(prev => (prev + 1) % displayCategories.length);
     setTimeout(() => setLogoSqueezeLeft(false), 350);
   };
 
   const prevCategory = () => {
-    triggerHaptic('medium'); // Haptic feedback for category change
     triggerLogoSqueeze('right');
     setCurrentCategoryIndex(prev => (prev - 1 + displayCategories.length) % displayCategories.length);
     setTimeout(() => setLogoSqueezeRight(false), 350);
   };
 
   const nextQuestion = () => {
-    triggerHaptic('light'); // Haptic feedback for question change
     const currentCategory = displayCategories[currentCategoryIndex];
     const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
     setQuestionIndicesByCategory(prev => ({
@@ -399,7 +389,6 @@ export function QuizApp() {
   };
 
   const prevQuestion = () => {
-    triggerHaptic('light'); // Haptic feedback for question change
     const currentCategory = displayCategories[currentCategoryIndex];
     const currentCategoryQuestions = questionsByCategory[currentCategory] || [];
     setQuestionIndicesByCategory(prev => ({
@@ -479,7 +468,6 @@ export function QuizApp() {
   };
 
   const handleToggleMode = () => {
-    triggerHaptic('light'); // Haptic feedback for mode toggle
     if (isShuffleMode) {
       // Switching from shuffle to category mode - reset filter to all categories
       setIsShuffleMode(false);
