@@ -69,23 +69,18 @@ export function QuizApp() {
   }, [categories, selectedCategories, availableCategories]);
 
   // Create shuffled questions - all questions from all categories mixed randomly
-  useEffect(() => {
-    if (isShuffleMode && questions.length > 0) {
-      // Smart shuffle: maximize category diversity, avoid consecutive same categories
-      const shuffled = shuffleWithCategoryDiversity(questions);
-      
-      setShuffledQuestions(shuffled);
-      setPrevShuffleIndex(0);
-      setCurrentShuffleIndex(0);
-      setShownQuestionIndices(new Set([0])); // Start with first question as shown
-    }
-  }, [isShuffleMode, questions]);
-
   // Helper function to shuffle questions while maximizing category diversity
   const shuffleWithCategoryDiversity = (questions: Question[]): Question[] => {
+    // Filter questions by selected categories first
+    const filteredQuestions = selectedCategories.length < availableCategories.length
+      ? questions.filter(q => selectedCategories.includes(q.category))
+      : questions;
+
+    if (filteredQuestions.length === 0) return [];
+
     // Group questions by category
     const byCategory: { [key: string]: Question[] } = {};
-    questions.forEach(q => {
+    filteredQuestions.forEach(q => {
       if (!byCategory[q.category]) {
         byCategory[q.category] = [];
       }
@@ -102,7 +97,7 @@ export function QuizApp() {
     const categoryKeys = Object.keys(byCategory);
     let lastCategory = '';
 
-    while (result.length < questions.length) {
+    while (result.length < filteredQuestions.length) {
       // Find available categories (with remaining questions)
       const availableCategories = categoryKeys.filter(cat => byCategory[cat].length > 0);
       
@@ -127,6 +122,18 @@ export function QuizApp() {
 
     return result;
   };
+
+  useEffect(() => {
+    if (isShuffleMode && questions.length > 0) {
+      // Smart shuffle: maximize category diversity, avoid consecutive same categories
+      const shuffled = shuffleWithCategoryDiversity(questions);
+      
+      setShuffledQuestions(shuffled);
+      setPrevShuffleIndex(0);
+      setCurrentShuffleIndex(0);
+      setShownQuestionIndices(new Set([0])); // Start with first question as shown
+    }
+  }, [isShuffleMode, questions, selectedCategories, availableCategories]);
 
   useEffect(() => {
     // Start logo animation and data loading together
